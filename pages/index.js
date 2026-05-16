@@ -1,78 +1,202 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useApp } from '../context/AppContext';
+import courses from '../data/courses';
 
 export default function Home() {
+  const { wishlist, toggleWishlist } = useApp();
+  const [search, setSearch] = useState('');
+  const [activeCat, setActiveCat] = useState('All');
+  const router = useRouter();
+
+  const categories = ['All', ...new Set(courses.map(c => c.category))];
+
+  const filtered = courses.filter(c => {
+    const catMatch = activeCat === 'All' || c.category === activeCat;
+    const q = search.toLowerCase();
+    const searchMatch = !q ||
+      c.title.toLowerCase().includes(q) ||
+      c.instructor.toLowerCase().includes(q) ||
+      c.category.toLowerCase().includes(q) ||
+      c.keywords.some(k => k.toLowerCase().includes(q));
+    return catMatch && searchMatch;
+  });
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black`}
-    >
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the index.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      {/* HERO */}
+      <div style={{padding:'4.5rem 2rem 2rem', maxWidth:'860px', margin:'0 auto', textAlign:'center'}}>
+        <h1 style={{
+          fontFamily:'Georgia, serif',
+          fontSize:'clamp(2.2rem, 6.5vw, 4.2rem)',
+          fontWeight:'700', lineHeight:'1.1',
+          letterSpacing:'-0.02em', marginBottom:'1.1rem',
+        }}>
+          Learn Without{' '}
+          <span style={{
+            background:'linear-gradient(135deg,#f0c040,#4488ff 50%,#00d4aa)',
+            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
+          }}>
+            Limits.
+          </span>
+        </h1>
+        <p style={{fontSize:'1.05rem', color:'#7a80a0', lineHeight:'1.75', maxWidth:'520px', margin:'0 auto 2.2rem'}}>
+          World-class courses, real video lessons, reading materials, and free certificates — completely free, forever.
+        </p>
+        <div style={{display:'flex', gap:'0.9rem', justifyContent:'center', flexWrap:'wrap'}}>
+          <button onClick={() => document.getElementById('searchInput').focus()} style={{
+            fontSize:'0.9rem', fontWeight:'600', padding:'0.78rem 1.7rem',
+            borderRadius:'12px', border:'none', cursor:'pointer',
+            background:'linear-gradient(135deg,#f0c040,#c8960a)',
+            color:'#000', boxShadow:'0 8px 26px rgba(240,192,64,0.32)',
+          }}>
+            Explore Courses
+          </button>
+          <button onClick={() => router.push('/enrolled')} style={{
+            fontSize:'0.9rem', fontWeight:'600', padding:'0.78rem 1.7rem',
+            borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)',
+            cursor:'pointer', background:'transparent', color:'#eef0f8',
+          }}>
+            My Learning
+          </button>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs/pages/getting-started?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* STATS */}
+      <div style={{display:'flex', justifyContent:'center', gap:'2.5rem', padding:'1.8rem 2rem 2.5rem', flexWrap:'wrap'}}>
+        {[
+          {n:'12', l:'Expert Courses'},
+          {n:'100%', l:'Free Forever'},
+          {n:'50K+', l:'Learners'},
+          {n:'7', l:'Categories'},
+        ].map(s => (
+          <div key={s.l} style={{textAlign:'center'}}>
+            <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#eef0f8'}}>{s.n}</div>
+            <div style={{fontSize:'0.76rem', color:'#7a80a0', marginTop:'2px'}}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* SEARCH & FILTERS */}
+      <div style={{maxWidth:'1240px', margin:'0 auto', padding:'0 2rem 1.2rem'}}>
+        <div style={{position:'relative', marginBottom:'0.9rem'}}>
+          <span style={{position:'absolute', left:'1rem', top:'50%', transform:'translateY(-50%)', color:'#7a80a0'}}>⌕</span>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search by title, instructor, or keyword…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              width:'100%', background:'#0d1117',
+              border:'1px solid rgba(255,255,255,0.06)',
+              borderRadius:'13px', padding:'0.85rem 1rem 0.85rem 2.7rem',
+              fontSize:'0.93rem', color:'#eef0f8', outline:'none',
+            }}
+          />
         </div>
-      </main>
+
+        {/* CATEGORY FILTERS */}
+        <div style={{display:'flex', gap:'0.45rem', flexWrap:'wrap', alignItems:'center'}}>
+          <span style={{fontSize:'0.76rem', color:'#7a80a0', marginRight:'0.3rem'}}>Filter:</span>
+          {categories.map(cat => (
+            <button key={cat} onClick={() => setActiveCat(cat)} style={{
+              fontSize:'0.76rem', fontWeight:'500',
+              padding:'0.35rem 0.85rem', borderRadius:'100px',
+              border: activeCat === cat ? 'none' : '1px solid rgba(255,255,255,0.06)',
+              background: activeCat === cat ? '#4488ff' : 'transparent',
+              color: activeCat === cat ? '#fff' : '#7a80a0',
+              cursor:'pointer',
+            }}>
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* RESULTS INFO */}
+      <div style={{fontSize:'0.8rem', color:'#7a80a0', padding:'0 2rem', maxWidth:'1240px', margin:'0 auto 0.4rem'}}>
+        {search || activeCat !== 'All'
+          ? `${filtered.length} course${filtered.length !== 1 ? 's' : ''} found`
+          : `${courses.length} courses available`}
+      </div>
+
+      {/* COURSE GRID */}
+      <div style={{
+        display:'grid',
+        gridTemplateColumns:'repeat(auto-fill, minmax(295px, 1fr))',
+        gap:'1.3rem', padding:'0 2rem 5rem',
+        maxWidth:'1240px', margin:'0 auto',
+      }}>
+        {filtered.length === 0 ? (
+          <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem', color:'#7a80a0'}}>
+            <div style={{fontSize:'3rem', marginBottom:'1rem'}}>🔍</div>
+            <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses found</h3>
+            <p>Try a different keyword or category</p>
+          </div>
+        ) : filtered.map((c, i) => (
+          <div key={c.id}
+            onClick={() => router.push(`/courses/${c.id}`)}
+            style={{
+              background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+              borderRadius:'16px', overflow:'hidden', cursor:'pointer',
+              transition:'all 0.3s', animationDelay:`${Math.min(i * 0.05, 0.35)}s`,
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.borderColor = 'rgba(68,136,255,0.22)';
+              e.currentTarget.style.background = '#161b26';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
+              e.currentTarget.style.background = '#0d1117';
+            }}
+          >
+            {/* THUMBNAIL */}
+            <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'#161b26'}}>
+              <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}} />
+              <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(6,8,15,0.65) 0%, transparent 55%)'}}/>
+              <span style={{
+                position:'absolute', top:'9px', left:'9px',
+                fontSize:'0.67rem', fontWeight:'700', letterSpacing:'0.08em', textTransform:'uppercase',
+                padding:'0.22rem 0.65rem', borderRadius:'100px',
+                background:'rgba(0,212,170,0.18)', color:'#00d4aa',
+                border:'1px solid rgba(0,212,170,0.28)',
+              }}>Free</span>
+              <div
+                onClick={e => { e.stopPropagation(); toggleWishlist(c.id); }}
+                style={{
+                  position:'absolute', top:'9px', right:'9px',
+                  width:'31px', height:'31px', borderRadius:'50%',
+                  background:'rgba(6,8,15,0.72)', backdropFilter:'blur(8px)',
+                  border:'1px solid rgba(255,255,255,0.13)',
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  fontSize:'0.9rem', cursor:'pointer', zIndex:2,
+                  color: wishlist.includes(c.id) ? '#ff6b9d' : '#eef0f8',
+                }}
+              >
+                {wishlist.includes(c.id) ? '♥' : '♡'}
+              </div>
+            </div>
+
+            {/* CARD BODY */}
+            <div style={{padding:'1.1rem'}}>
+              <div style={{fontSize:'0.7rem', fontWeight:'600', letterSpacing:'0.07em', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.5rem'}}>{c.category}</div>
+              <div style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', lineHeight:'1.35', marginBottom:'0.45rem',
+                display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
+              <div style={{fontSize:'0.8rem', color:'#7a80a0', marginBottom:'0.75rem'}}>by {c.instructor}</div>
+              <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.7rem'}}>
+                <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.8rem'}}>
+                  <span style={{color:'#fbbf24', fontSize:'0.72rem'}}>★★★★★</span> {c.rating}
+                </span>
+                <span style={{fontSize:'0.78rem', color:'#7a80a0'}}>⏱ {c.duration}</span>
+                <span style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', color:'#00d4aa'}}>Free</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
