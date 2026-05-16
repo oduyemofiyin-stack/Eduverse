@@ -12,12 +12,10 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
 
-  // If already logged in go to home
   useEffect(() => {
     if (currentUser) router.push('/');
   }, [currentUser]);
 
-  // Load Google Identity Services
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
@@ -42,7 +40,7 @@ export default function Login() {
       const el = document.getElementById(id);
       if (el && window.google) {
         window.google.accounts.id.renderButton(el, {
-          theme:'filled_black', size:'large', width:360,
+          theme:'filled_black', size:'large', width:340,
           text: id === 'googleSignInBtn' ? 'signin_with' : 'signup_with',
           shape:'rectangular',
         });
@@ -101,33 +99,40 @@ export default function Login() {
       setErrors({ email: 'An account with this email already exists' }); return;
     }
     const newUser = {
-      firstName: form.firstName,
-      lastName: form.lastName,
-      email: form.email,
-      password: form.password,
-      provider: 'email',
-      picture: '',
+      firstName: form.firstName, lastName: form.lastName,
+      email: form.email, password: form.password,
+      provider: 'email', picture: '',
     };
     setUsers(prev => [...prev, newUser]);
     login(newUser);
     router.push('/');
   }
 
-  const inputStyle = (hasErr) => ({
+  const inp = (hasErr) => ({
     width:'100%', background:'#161b26',
     border:`1px solid ${hasErr ? 'rgba(255,107,157,0.6)' : 'rgba(255,255,255,0.13)'}`,
     borderRadius:'11px', padding:'0.78rem 1rem',
-    fontSize:'0.9rem', color:'#eef0f8', outline:'none',
-    fontFamily:'inherit',
+    fontSize:'0.9rem', color:'#eef0f8', outline:'none', fontFamily:'inherit',
   });
 
   return (
-    <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem'}}>
-      <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.13)', borderRadius:'24px', padding:'2.5rem', width:'100%', maxWidth:'440px', position:'relative'}}>
+    <div style={{
+      minHeight:'100vh',
+      background:'#06080f',
+      display:'flex', alignItems:'center', justifyContent:'center',
+      padding:'1rem',
+      backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.08) 0%, transparent 60%)',
+    }}>
+      <div style={{
+        background:'#0d1117',
+        border:'1px solid rgba(255,255,255,0.13)',
+        borderRadius:'24px', padding:'2rem',
+        width:'100%', maxWidth:'420px',
+      }}>
 
         {/* LOGO */}
-        <div style={{display:'flex', alignItems:'center', gap:'10px', justifyContent:'center', marginBottom:'1.8rem'}}>
-          <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
+        <div style={{display:'flex', alignItems:'center', gap:'10px', justifyContent:'center', marginBottom:'1.6rem'}}>
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
             <circle cx="18" cy="18" r="17" stroke="url(#lg1)" strokeWidth="1.5"/>
             <ellipse cx="18" cy="18" rx="17" ry="6.5" stroke="url(#lg2)" strokeWidth="1" strokeDasharray="2.5 2" transform="rotate(-22 18 18)"/>
             <circle cx="18" cy="18" r="4" fill="url(#lg3)"/>
@@ -139,14 +144,14 @@ export default function Login() {
               <linearGradient id="lg3" x1="14" y1="14" x2="22" y2="22"><stop stopColor="#f0c040"/><stop offset="1" stopColor="#4488ff"/></linearGradient>
             </defs>
           </svg>
-          <span style={{fontFamily:'Georgia, serif', fontSize:'1.5rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>Eduverse</span>
+          <span style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>Eduverse</span>
         </div>
 
         {/* TABS */}
-        <div style={{display:'flex', background:'#161b26', borderRadius:'12px', padding:'4px', marginBottom:'1.8rem'}}>
+        <div style={{display:'flex', background:'#161b26', borderRadius:'12px', padding:'4px', marginBottom:'1.6rem'}}>
           {['login','signup'].map(t => (
             <button key={t} onClick={() => switchTab(t)} style={{
-              flex:1, padding:'0.55rem', borderRadius:'9px', border:'none',
+              flex:1, padding:'0.5rem', borderRadius:'9px', border:'none',
               background: tab === t ? '#1e2535' : 'transparent',
               color: tab === t ? '#eef0f8' : '#7a80a0',
               fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer',
@@ -157,22 +162,22 @@ export default function Login() {
         </div>
 
         {/* TITLE */}
-        <div style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', textAlign:'center', marginBottom:'0.3rem'}}>
+        <div style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700', textAlign:'center', marginBottom:'0.3rem'}}>
           {tab === 'login' ? 'Welcome back' : 'Create your account'}
         </div>
-        <div style={{fontSize:'0.83rem', color:'#7a80a0', textAlign:'center', marginBottom:'1.6rem'}}>
+        <div style={{fontSize:'0.82rem', color:'#7a80a0', textAlign:'center', marginBottom:'1.4rem'}}>
           {tab === 'login' ? 'Sign in to continue your learning journey' : 'Join 50,000+ learners. Completely free.'}
         </div>
 
         {/* GOOGLE BUTTON */}
-        <div style={{display:'flex', justifyContent:'center', marginBottom:'1.4rem'}}>
-          <div id={tab === 'login' ? 'googleSignInBtn' : 'googleSignUpBtn'} style={{minHeight:'44px'}}></div>
+        <div style={{display:'flex', justifyContent:'center', marginBottom:'1.2rem', minHeight:'44px'}}>
+          <div id={tab === 'login' ? 'googleSignInBtn' : 'googleSignUpBtn'}></div>
         </div>
 
         {/* DIVIDER */}
-        <div style={{display:'flex', alignItems:'center', gap:'0.8rem', marginBottom:'1.4rem'}}>
+        <div style={{display:'flex', alignItems:'center', gap:'0.8rem', marginBottom:'1.2rem'}}>
           <div style={{flex:1, height:'1px', background:'rgba(255,255,255,0.13)'}}/>
-          <span style={{fontSize:'0.75rem', color:'#3a4060', whiteSpace:'nowrap'}}>
+          <span style={{fontSize:'0.73rem', color:'#3a4060', whiteSpace:'nowrap'}}>
             {tab === 'login' ? 'or sign in with email' : 'or sign up with email'}
           </span>
           <div style={{flex:1, height:'1px', background:'rgba(255,255,255,0.13)'}}/>
@@ -186,77 +191,58 @@ export default function Login() {
         )}
 
         {/* FORM */}
-        <div style={{display:'flex', flexDirection:'column', gap:'0.9rem'}}>
-
-          {/* SIGNUP ONLY — NAME FIELDS */}
+        <div style={{display:'flex', flexDirection:'column', gap:'0.85rem'}}>
           {tab === 'signup' && (
-            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem'}}>
+            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.7rem'}}>
               <div>
-                <label style={{display:'block', fontSize:'0.78rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>First Name</label>
-                <input
-                  type="text" placeholder="John"
-                  value={form.firstName}
+                <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>First Name</label>
+                <input type="text" placeholder="John" value={form.firstName}
                   onChange={e => setForm(p => ({...p, firstName: e.target.value}))}
-                  style={inputStyle(errors.firstName)}
-                />
-                {errors.firstName && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.firstName}</div>}
+                  style={inp(errors.firstName)}/>
+                {errors.firstName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.firstName}</div>}
               </div>
               <div>
-                <label style={{display:'block', fontSize:'0.78rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Last Name</label>
-                <input
-                  type="text" placeholder="Doe"
-                  value={form.lastName}
+                <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Last Name</label>
+                <input type="text" placeholder="Doe" value={form.lastName}
                   onChange={e => setForm(p => ({...p, lastName: e.target.value}))}
-                  style={inputStyle(errors.lastName)}
-                />
-                {errors.lastName && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.lastName}</div>}
+                  style={inp(errors.lastName)}/>
+                {errors.lastName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.lastName}</div>}
               </div>
             </div>
           )}
 
-          {/* EMAIL */}
           <div>
-            <label style={{display:'block', fontSize:'0.78rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email</label>
-            <input
-              type="email" placeholder="you@example.com"
-              value={form.email}
+            <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email</label>
+            <input type="email" placeholder="you@example.com" value={form.email}
               onChange={e => setForm(p => ({...p, email: e.target.value}))}
-              style={inputStyle(errors.email)}
-            />
-            {errors.email && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.email}</div>}
+              style={inp(errors.email)}/>
+            {errors.email && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.email}</div>}
           </div>
 
-          {/* PASSWORD */}
           <div>
-            <label style={{display:'block', fontSize:'0.78rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
-            <input
-              type="password" placeholder="At least 6 characters"
-              value={form.password}
+            <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
+            <input type="password" placeholder="At least 6 characters" value={form.password}
               onChange={e => setForm(p => ({...p, password: e.target.value}))}
               onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
-              style={inputStyle(errors.password)}
-            />
-            {errors.password && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
+              style={inp(errors.password)}/>
+            {errors.password && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
           </div>
 
-          {/* SUBMIT */}
           <button
             onClick={tab === 'login' ? handleLogin : handleSignup}
             style={{
-              width:'100%', padding:'0.88rem', borderRadius:'12px',
+              width:'100%', padding:'0.85rem', borderRadius:'12px',
               border:'none', cursor:'pointer',
               background:'linear-gradient(135deg,#4488ff,#3366dd)',
-              color:'#fff', fontFamily:'inherit', fontSize:'0.95rem',
-              fontWeight:'700', marginTop:'0.3rem',
+              color:'#fff', fontFamily:'inherit', fontSize:'0.92rem',
+              fontWeight:'700', marginTop:'0.2rem',
               boxShadow:'0 8px 22px rgba(68,136,255,0.28)',
-            }}
-          >
+            }}>
             {tab === 'login' ? 'Sign In' : 'Create Free Account'}
           </button>
         </div>
 
-        {/* FOOTER NOTE */}
-        <div style={{fontSize:'0.78rem', color:'#7a80a0', textAlign:'center', marginTop:'1rem'}}>
+        <div style={{fontSize:'0.77rem', color:'#7a80a0', textAlign:'center', marginTop:'1rem'}}>
           {tab === 'login' ? (
             <>Don&apos;t have an account?{' '}
               <span onClick={() => switchTab('signup')} style={{color:'#4488ff', cursor:'pointer'}}>Create one free</span>

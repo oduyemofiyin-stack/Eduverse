@@ -25,12 +25,12 @@ export default function Home() {
   return (
     <div>
       {/* HERO */}
-      <div style={{padding:'4.5rem 2rem 2rem', maxWidth:'860px', margin:'0 auto', textAlign:'center'}}>
+      <div style={{padding:'3rem 1.2rem 1.5rem', maxWidth:'860px', margin:'0 auto', textAlign:'center'}}>
         <h1 style={{
           fontFamily:'Georgia, serif',
-          fontSize:'clamp(2.2rem, 6.5vw, 4.2rem)',
+          fontSize:'clamp(1.9rem, 6vw, 4.2rem)',
           fontWeight:'700', lineHeight:'1.1',
-          letterSpacing:'-0.02em', marginBottom:'1.1rem',
+          letterSpacing:'-0.02em', marginBottom:'1rem',
         }}>
           Learn Without{' '}
           <span style={{
@@ -40,12 +40,17 @@ export default function Home() {
             Limits.
           </span>
         </h1>
-        <p style={{fontSize:'1.05rem', color:'#7a80a0', lineHeight:'1.75', maxWidth:'520px', margin:'0 auto 2.2rem'}}>
+        <p style={{
+          fontSize:'clamp(0.9rem, 2.5vw, 1.05rem)',
+          color:'#7a80a0', lineHeight:'1.75',
+          maxWidth:'520px', margin:'0 auto 1.8rem',
+        }}>
           World-class courses, real video lessons, reading materials, and free certificates — completely free, forever.
         </p>
-        <div style={{display:'flex', gap:'0.9rem', justifyContent:'center', flexWrap:'wrap'}}>
+        <div style={{display:'flex', gap:'0.8rem', justifyContent:'center', flexWrap:'wrap'}}>
           <button onClick={() => document.getElementById('searchInput').focus()} style={{
-            fontSize:'0.9rem', fontWeight:'600', padding:'0.78rem 1.7rem',
+            fontSize:'0.9rem', fontWeight:'600',
+            padding:'0.75rem 1.5rem',
             borderRadius:'12px', border:'none', cursor:'pointer',
             background:'linear-gradient(135deg,#f0c040,#c8960a)',
             color:'#000', boxShadow:'0 8px 26px rgba(240,192,64,0.32)',
@@ -53,7 +58,8 @@ export default function Home() {
             Explore Courses
           </button>
           <button onClick={() => router.push('/enrolled')} style={{
-            fontSize:'0.9rem', fontWeight:'600', padding:'0.78rem 1.7rem',
+            fontSize:'0.9rem', fontWeight:'600',
+            padding:'0.75rem 1.5rem',
             borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)',
             cursor:'pointer', background:'transparent', color:'#eef0f8',
           }}>
@@ -63,28 +69,39 @@ export default function Home() {
       </div>
 
       {/* STATS */}
-      <div style={{display:'flex', justifyContent:'center', gap:'2.5rem', padding:'1.8rem 2rem 2.5rem', flexWrap:'wrap'}}>
+      <div style={{
+        display:'grid',
+        gridTemplateColumns:'repeat(2, 1fr)',
+        gap:'1rem',
+        padding:'1rem 1.2rem 2rem',
+        maxWidth:'500px', margin:'0 auto',
+      }}>
         {[
           {n:'12', l:'Expert Courses'},
           {n:'100%', l:'Free Forever'},
           {n:'50K+', l:'Learners'},
           {n:'7', l:'Categories'},
         ].map(s => (
-          <div key={s.l} style={{textAlign:'center'}}>
-            <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#eef0f8'}}>{s.n}</div>
-            <div style={{fontSize:'0.76rem', color:'#7a80a0', marginTop:'2px'}}>{s.l}</div>
+          <div key={s.l} style={{
+            textAlign:'center',
+            background:'#0d1117',
+            border:'1px solid rgba(255,255,255,0.06)',
+            borderRadius:'12px', padding:'1rem',
+          }}>
+            <div style={{fontFamily:'Georgia, serif', fontSize:'1.8rem', fontWeight:'700', color:'#eef0f8'}}>{s.n}</div>
+            <div style={{fontSize:'0.75rem', color:'#7a80a0', marginTop:'2px'}}>{s.l}</div>
           </div>
         ))}
       </div>
 
       {/* SEARCH & FILTERS */}
-      <div style={{maxWidth:'1240px', margin:'0 auto', padding:'0 2rem 1.2rem'}}>
+      <div style={{maxWidth:'1240px', margin:'0 auto', padding:'0 1.2rem 1.2rem'}}>
         <div style={{position:'relative', marginBottom:'0.9rem'}}>
           <span style={{position:'absolute', left:'1rem', top:'50%', transform:'translateY(-50%)', color:'#7a80a0'}}>⌕</span>
           <input
             id="searchInput"
             type="text"
-            placeholder="Search by title, instructor, or keyword…"
+            placeholder="Search courses…"
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{
@@ -96,9 +113,13 @@ export default function Home() {
           />
         </div>
 
-        {/* CATEGORY FILTERS */}
-        <div style={{display:'flex', gap:'0.45rem', flexWrap:'wrap', alignItems:'center'}}>
-          <span style={{fontSize:'0.76rem', color:'#7a80a0', marginRight:'0.3rem'}}>Filter:</span>
+        {/* FILTERS — horizontal scroll on mobile */}
+        <div style={{
+          display:'flex', gap:'0.45rem',
+          overflowX:'auto', paddingBottom:'0.3rem',
+          scrollbarWidth:'none',
+        }}>
+          <span style={{fontSize:'0.76rem', color:'#7a80a0', marginRight:'0.2rem', whiteSpace:'nowrap', alignSelf:'center'}}>Filter:</span>
           {categories.map(cat => (
             <button key={cat} onClick={() => setActiveCat(cat)} style={{
               fontSize:'0.76rem', fontWeight:'500',
@@ -106,7 +127,7 @@ export default function Home() {
               border: activeCat === cat ? 'none' : '1px solid rgba(255,255,255,0.06)',
               background: activeCat === cat ? '#4488ff' : 'transparent',
               color: activeCat === cat ? '#fff' : '#7a80a0',
-              cursor:'pointer',
+              cursor:'pointer', whiteSpace:'nowrap', flexShrink:0,
             }}>
               {cat}
             </button>
@@ -115,7 +136,7 @@ export default function Home() {
       </div>
 
       {/* RESULTS INFO */}
-      <div style={{fontSize:'0.8rem', color:'#7a80a0', padding:'0 2rem', maxWidth:'1240px', margin:'0 auto 0.4rem'}}>
+      <div style={{fontSize:'0.8rem', color:'#7a80a0', padding:'0 1.2rem', maxWidth:'1240px', margin:'0 auto 0.6rem'}}>
         {search || activeCat !== 'All'
           ? `${filtered.length} course${filtered.length !== 1 ? 's' : ''} found`
           : `${courses.length} courses available`}
@@ -124,8 +145,8 @@ export default function Home() {
       {/* COURSE GRID */}
       <div style={{
         display:'grid',
-        gridTemplateColumns:'repeat(auto-fill, minmax(295px, 1fr))',
-        gap:'1.3rem', padding:'0 2rem 5rem',
+        gridTemplateColumns:'repeat(auto-fill, minmax(min(295px, 100%), 1fr))',
+        gap:'1rem', padding:'0 1.2rem 4rem',
         maxWidth:'1240px', margin:'0 auto',
       }}>
         {filtered.length === 0 ? (
@@ -138,12 +159,13 @@ export default function Home() {
           <div key={c.id}
             onClick={() => router.push(`/courses/${c.id}`)}
             style={{
-              background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+              background:'#0d1117',
+              border:'1px solid rgba(255,255,255,0.06)',
               borderRadius:'16px', overflow:'hidden', cursor:'pointer',
-              transition:'all 0.3s', animationDelay:`${Math.min(i * 0.05, 0.35)}s`,
+              transition:'all 0.3s',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.transform = 'translateY(-4px)';
               e.currentTarget.style.borderColor = 'rgba(68,136,255,0.22)';
               e.currentTarget.style.background = '#161b26';
             }}
@@ -155,7 +177,7 @@ export default function Home() {
           >
             {/* THUMBNAIL */}
             <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'#161b26'}}>
-              <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}} />
+              <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}}/>
               <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(6,8,15,0.65) 0%, transparent 55%)'}}/>
               <span style={{
                 position:'absolute', top:'9px', left:'9px',
@@ -168,11 +190,11 @@ export default function Home() {
                 onClick={e => { e.stopPropagation(); toggleWishlist(c.id); }}
                 style={{
                   position:'absolute', top:'9px', right:'9px',
-                  width:'31px', height:'31px', borderRadius:'50%',
+                  width:'32px', height:'32px', borderRadius:'50%',
                   background:'rgba(6,8,15,0.72)', backdropFilter:'blur(8px)',
                   border:'1px solid rgba(255,255,255,0.13)',
                   display:'flex', alignItems:'center', justifyContent:'center',
-                  fontSize:'0.9rem', cursor:'pointer', zIndex:2,
+                  fontSize:'1rem', cursor:'pointer', zIndex:2,
                   color: wishlist.includes(c.id) ? '#ff6b9d' : '#eef0f8',
                 }}
               >
@@ -181,17 +203,24 @@ export default function Home() {
             </div>
 
             {/* CARD BODY */}
-            <div style={{padding:'1.1rem'}}>
-              <div style={{fontSize:'0.7rem', fontWeight:'600', letterSpacing:'0.07em', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.5rem'}}>{c.category}</div>
-              <div style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', lineHeight:'1.35', marginBottom:'0.45rem',
-                display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
-              <div style={{fontSize:'0.8rem', color:'#7a80a0', marginBottom:'0.75rem'}}>by {c.instructor}</div>
-              <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.7rem'}}>
-                <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.8rem'}}>
-                  <span style={{color:'#fbbf24', fontSize:'0.72rem'}}>★★★★★</span> {c.rating}
+            <div style={{padding:'1rem'}}>
+              <div style={{fontSize:'0.7rem', fontWeight:'600', letterSpacing:'0.07em', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.4rem'}}>{c.category}</div>
+              <div style={{
+                fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700',
+                lineHeight:'1.35', marginBottom:'0.4rem',
+                display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden',
+              }}>{c.title}</div>
+              <div style={{fontSize:'0.78rem', color:'#7a80a0', marginBottom:'0.7rem'}}>by {c.instructor}</div>
+              <div style={{
+                display:'flex', alignItems:'center', justifyContent:'space-between',
+                borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.65rem',
+                flexWrap:'wrap', gap:'0.3rem',
+              }}>
+                <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.78rem'}}>
+                  <span style={{color:'#fbbf24', fontSize:'0.7rem'}}>★★★★★</span> {c.rating}
                 </span>
-                <span style={{fontSize:'0.78rem', color:'#7a80a0'}}>⏱ {c.duration}</span>
-                <span style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', color:'#00d4aa'}}>Free</span>
+                <span style={{fontSize:'0.76rem', color:'#7a80a0'}}>⏱ {c.duration}</span>
+                <span style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', color:'#00d4aa'}}>Free</span>
               </div>
             </div>
           </div>
