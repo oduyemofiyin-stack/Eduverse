@@ -16,7 +16,7 @@ export default function Footer() {
       </div>
       <em style={{color:'#3a4060'}}>Where Curiosity Meets Knowledge</em>
       <br/><br/>
-      © 2025 <span style={{color:'#f0c040'}}>Eduverse</span> · Founded by Oduye Emmanuel · All courses free forever
+      © 2026 <span style={{color:'#f0c040'}}>Eduverse</span> · Founded by Oduye Emmanuel · All courses free forever
     </footer>
   );
 }
