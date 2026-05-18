@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
+import { CourseSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Home() {
@@ -9,9 +10,15 @@ export default function Home() {
   const toast = useToast();
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState('All');
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const categories = ['All', ...new Set(courses.map(c => c.category))];
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filtered = courses.filter(c => {
     const catMatch = activeCat === 'All' || c.category === activeCat;
@@ -151,7 +158,9 @@ export default function Home() {
         gap:'1rem', padding:'0 1.2rem 4rem',
         maxWidth:'1240px', margin:'0 auto',
       }}>
-        {filtered.length === 0 ? (
+        {loading ? (
+          Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
+        ) : filtered.length === 0 ? (
           <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem', color:'#7a80a0'}}>
             <div style={{fontSize:'3rem', marginBottom:'1rem'}}>🔍</div>
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses found</h3>
@@ -235,7 +244,7 @@ export default function Home() {
                 <span style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', color:'#00d4aa'}}>Free</span>
               </div>
 
-              {/* PROGRESS BAR — only for enrolled courses */}
+              {/* PROGRESS BAR */}
               {enrolled.includes(c.id) && (
                 <div style={{marginTop:'0.7rem'}}>
                   <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'#7a80a0', marginBottom:'0.3rem'}}>

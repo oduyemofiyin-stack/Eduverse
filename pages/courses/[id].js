@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
+import { useToast } from '../../components/Toast';
 import courses from '../../data/courses';
+import StarRating from '../../components/StarRating';
 
 export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted } = useApp();
+  const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
   const [quizState, setQuizState] = useState(null);
@@ -17,6 +20,22 @@ export default function CourseDetail() {
 
   const isEnrolled = enrolled.includes(course.id);
   const isWishlisted = wishlist.includes(course.id);
+  const progressPct = getCourseProgress(course.id, course.lessons.length);
+
+  const relatedCourses = courses
+    .filter(c => c.id !== course.id && c.category === course.category)
+    .slice(0, 3);
+
+  const fallbackCourses = courses
+    .filter(c => c.id !== course.id)
+    .slice(0, 3);
+
+  const displayRelated = relatedCourses.length > 0 ? relatedCourses : fallbackCourses;
+
+  function handleLessonOpen(i) {
+    setOpenLesson(openLesson === i ? null : i);
+    if (openLesson !== i) markLesson(course.id, i, course.lessons.length);
+  }
 
   function startQuiz() {
     setQuizState({ idx: 0, score: 0, answered: false, answers: new Array(course.quiz.length).fill(null) });
@@ -44,6 +63,10 @@ export default function CourseDetail() {
   const finished = quizState && quizState.idx === course.quiz.length - 1 && quizState.answered;
   const passed = pct >= 60;
 
+  useEffect(() => {
+    if (finished && passed) markCompleted(course.id);
+  }, [finished, passed]);
+
   return (
     <div style={{maxWidth:'1100px', margin:'0 auto', padding:'0 0 4rem'}}>
 
@@ -56,7 +79,7 @@ export default function CourseDetail() {
         ← Back to courses
       </div>
 
-      {/* HERO IMAGE — mobile only */}
+      {/* MOBILE HERO IMAGE */}
       <div style={{width:'100%', height:'200px', overflow:'hidden', marginTop:'1rem', position:'relative'}}
         className="mobile-hero-img">
         <img src={course.img} alt={course.title} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
@@ -66,7 +89,7 @@ export default function CourseDetail() {
       {/* MAIN LAYOUT */}
       <div style={{padding:'1rem 1.2rem 0'}} className="detail-layout">
 
-        {/* SIDEBAR — shown at top on mobile */}
+        {/* SIDEBAR */}
         <div className="detail-sidebar">
           <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', overflow:'hidden'}}>
             <img src={course.img} alt={course.title}
@@ -75,7 +98,29 @@ export default function CourseDetail() {
             />
             <div style={{padding:'1.2rem'}}>
               <div style={{fontFamily:'Georgia, serif', fontSize:'1.7rem', fontWeight:'700', color:'#00d4aa', marginBottom:'0.9rem'}}>Free</div>
-              <button onClick={() => toggleEnroll(course.id)} style={{
+
+              {/* PROGRESS BAR */}
+              {isEnrolled && (
+                <div style={{marginBottom:'1rem'}}>
+                  <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'#7a80a0', marginBottom:'0.3rem'}}>
+                    <span>Course Progress</span>
+                    <span>{progressPct}%</span>
+                  </div>
+                  <div style={{width:'100%', height:'6px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
+                    <div style={{
+                      height:'100%', borderRadius:'100px',
+                      background:'linear-gradient(135deg,#4488ff,#00d4aa)',
+                      width:`${progressPct}%`,
+                      transition:'width 0.4s ease',
+                    }}/>
+                  </div>
+                  <div style={{fontSize:'0.72rem', color:'#7a80a0', marginTop:'0.3rem'}}>
+                    {progressPct === 100 ? '✅ All lessons watched!' : `${Math.round(progressPct / 100 * course.lessons.length)}/${course.lessons.length} lessons watched`}
+                  </div>
+                </div>
+              )}
+
+              <button onClick={() => toggleEnroll(course.id, course.title, toast)} style={{
                 width:'100%', padding:'0.85rem', borderRadius:'12px',
                 fontWeight:'700', fontSize:'0.9rem', border:'none', cursor:'pointer',
                 marginBottom:'0.6rem',
@@ -84,7 +129,7 @@ export default function CourseDetail() {
               }}>
                 {isEnrolled ? '✓ Enrolled' : 'Enroll in Course'}
               </button>
-              <button onClick={() => toggleWishlist(course.id)} style={{
+              <button onClick={() => toggleWishlist(course.id, toast)} style={{
                 width:'100%', padding:'0.65rem', borderRadius:'12px',
                 fontSize:'0.85rem', fontWeight:'500', cursor:'pointer',
                 border:'1px solid rgba(255,255,255,0.13)', background:'transparent',
@@ -110,7 +155,7 @@ export default function CourseDetail() {
           </div>
         </div>
 
-        {/* LEFT MAIN CONTENT */}
+        {/* MAIN CONTENT */}
         <div className="detail-main">
           <div style={{fontSize:'0.73rem', fontWeight:'600', letterSpacing:'0.08em', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.6rem'}}>{course.category}</div>
           <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.4rem,4vw,2.2rem)', fontWeight:'700', lineHeight:'1.15', marginBottom:'0.9rem'}}>{course.title}</h1>
@@ -142,7 +187,7 @@ export default function CourseDetail() {
             <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
               {course.lessons.map((l, i) => (
                 <div key={i} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'12px', overflow:'hidden'}}>
-                  <div onClick={() => setOpenLesson(openLesson === i ? null : i)}
+                  <div onClick={() => handleLessonOpen(i)}
                     style={{display:'flex', alignItems:'center', gap:'0.8rem', padding:'0.8rem 1rem', cursor:'pointer'}}>
                     <div style={{
                       width:'26px', height:'26px', borderRadius:'50%',
@@ -174,6 +219,7 @@ export default function CourseDetail() {
           {/* READING TAB */}
           {activeTab === 'reading' && (
             <div style={{display:'flex', flexDirection:'column', gap:'1rem'}}>
+              <StarRating courseId={course.id} courseName={course.title} />
               {course.reading.map((r, i) => (
                 <div key={i} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1.2rem'}}>
                   <h4 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', marginBottom:'0.6rem', color:'#f0c040'}}>{r.title}</h4>
@@ -198,7 +244,7 @@ export default function CourseDetail() {
                   <span style={{fontSize:'3rem', display:'block', marginBottom:'0.8rem'}}>🔒</span>
                   <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Enroll to Take the Quiz</h3>
                   <p style={{fontSize:'0.85rem', color:'#7a80a0', marginBottom:'1.2rem'}}>Enroll in this course to unlock the quiz and earn your certificate.</p>
-                  <button onClick={() => toggleEnroll(course.id)} style={{
+                  <button onClick={() => toggleEnroll(course.id, course.title, toast)} style={{
                     fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
                     borderRadius:'12px', border:'none', cursor:'pointer',
                     background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
@@ -282,6 +328,42 @@ export default function CourseDetail() {
         </div>
       </div>
 
+      {/* RELATED COURSES */}
+      <div style={{padding:'2rem 1.2rem 3rem', maxWidth:'1100px', margin:'0 auto'}}>
+        <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
+          🎯 Related Courses
+        </h2>
+        <div style={{
+          display:'grid',
+          gridTemplateColumns:'repeat(auto-fill, minmax(min(260px, 100%), 1fr))',
+          gap:'1rem',
+        }}>
+          {displayRelated.map(c => (
+            <div key={c.id}
+              onClick={() => router.push(`/courses/${c.id}`)}
+              style={{
+                background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+                borderRadius:'14px', overflow:'hidden', cursor:'pointer',
+                transition:'all 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(68,136,255,0.22)'; e.currentTarget.style.transform='translateY(-3px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
+            >
+              <img src={c.img} alt={c.title} style={{width:'100%', height:'140px', objectFit:'cover', display:'block'}}/>
+              <div style={{padding:'0.9rem'}}>
+                <div style={{fontSize:'0.68rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.3rem'}}>{c.category}</div>
+                <div style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', lineHeight:'1.3', marginBottom:'0.3rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
+                <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'0.5rem'}}>by {c.instructor}</div>
+                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                  <span style={{fontSize:'0.76rem'}}><span style={{color:'#fbbf24'}}>★</span> {c.rating}</span>
+                  <span style={{fontSize:'0.76rem', color:'#00d4aa', fontWeight:'700'}}>Free</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* CERTIFICATE MODAL */}
       {showCert && (
         <div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', backdropFilter:'blur(12px)', zIndex:500, display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem', overflowY:'auto'}}>
@@ -321,7 +403,6 @@ export default function CourseDetail() {
         </div>
       )}
 
-      {/* RESPONSIVE STYLES */}
       <style>{`
         .detail-layout {
           display: grid;
@@ -333,9 +414,7 @@ export default function CourseDetail() {
         .detail-main { order: 1; }
         .mobile-hero-img { display: none; }
         @media (max-width: 768px) {
-          .detail-layout {
-            grid-template-columns: 1fr;
-          }
+          .detail-layout { grid-template-columns: 1fr; }
           .detail-sidebar { order: 1; position: static; }
           .detail-main { order: 2; }
           .sidebar-img { display: none; }

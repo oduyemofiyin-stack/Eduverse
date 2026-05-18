@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AppProvider, useApp } from '../context/AppContext';
+import { ToastProvider } from '../components/Toast';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/globals.css';
@@ -43,7 +44,9 @@ function AuthGuard({ Component, pageProps }) {
 export default function MyApp({ Component, pageProps }) {
   return (
     <AppProvider>
-      <AuthGuard Component={Component} pageProps={pageProps} />
+      <ToastProvider>
+        <AuthGuard Component={Component} pageProps={pageProps} />
+      </ToastProvider>
     </AppProvider>
   );
 }

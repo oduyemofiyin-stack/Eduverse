@@ -9,7 +9,6 @@ export function AppProvider({ children }) {
   const [progress, setProgress] = useState({});
   const [completed, setCompleted] = useState([]);
   const [ratings, setRatings] = useState({});
-  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     try {
@@ -19,14 +18,12 @@ export function AppProvider({ children }) {
       const savedProgress = localStorage.getItem('eduverse_progress');
       const savedCompleted = localStorage.getItem('eduverse_completed');
       const savedRatings = localStorage.getItem('eduverse_ratings');
-      const savedTheme = localStorage.getItem('eduverse_theme');
       if (savedUser) setCurrentUser(JSON.parse(savedUser));
       if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
       if (savedEnrolled) setEnrolled(JSON.parse(savedEnrolled));
       if (savedProgress) setProgress(JSON.parse(savedProgress));
       if (savedCompleted) setCompleted(JSON.parse(savedCompleted));
       if (savedRatings) setRatings(JSON.parse(savedRatings));
-      if (savedTheme) setTheme(savedTheme);
     } catch(e) {}
   }, []);
 
@@ -53,11 +50,6 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('eduverse_ratings', JSON.stringify(ratings));
   }, [ratings]);
-
-  useEffect(() => {
-    localStorage.setItem('eduverse_theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
 
   function login(user) {
     setCurrentUser(user);
@@ -121,10 +113,6 @@ export function AppProvider({ children }) {
     return ratings[courseId] || 0;
   }
 
-  function toggleTheme() {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  }
-
   return (
     <AppContext.Provider value={{
       currentUser, login, logout,
@@ -133,7 +121,6 @@ export function AppProvider({ children }) {
       progress, markLesson, getCourseProgress,
       completed, markCompleted,
       ratings, rateCourse, getUserRating,
-      theme, toggleTheme,
     }}>
       {children}
     </AppContext.Provider>

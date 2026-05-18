@@ -3,13 +3,14 @@ import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/router';
 
 export default function Header() {
-  const { currentUser, logout, wishlist, enrolled } = useApp();
+  const { currentUser, logout, wishlist, enrolled, theme, toggleTheme } = useApp();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     {label:'Courses', path:'/'},
+    {label:'🔍 Search', path:'/search'},
     {label:`♡ Wishlist${wishlist.length > 0 ? ` (${wishlist.length})` : ''}`, path:'/wishlist'},
     {label:`✓ My Learning${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
     {label:'About', path:'/about'},
@@ -19,7 +20,7 @@ export default function Header() {
   return (
     <header style={{
       position:'sticky', top:0, zIndex:200,
-      background:'rgba(6,8,15,0.95)', backdropFilter:'blur(24px)',
+      background:'rgba(6,8,15,0.92)', backdropFilter:'blur(24px)',
       borderBottom:'1px solid rgba(255,255,255,0.06)',
     }}>
       {/* MAIN ROW */}
@@ -53,9 +54,8 @@ export default function Header() {
         {/* RIGHT SIDE */}
         <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
 
-          {/* DESKTOP NAV — hidden on mobile */}
-          <nav style={{display:'flex', alignItems:'center', gap:'2px'}}
-            className="desktop-nav">
+          {/* DESKTOP NAV */}
+          <nav style={{display:'flex', alignItems:'center', gap:'2px'}} className="desktop-nav">
             {navItems.map(item => (
               <button key={item.path} onClick={() => router.push(item.path)} style={{
                 fontFamily:'inherit', fontSize:'0.76rem', fontWeight:'500',
@@ -68,6 +68,18 @@ export default function Header() {
               </button>
             ))}
           </nav>
+
+          {/* THEME TOGGLE */}
+          <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            style={{
+              background:'#161b26', border:'1px solid rgba(255,255,255,0.13)',
+              borderRadius:'9px', padding:'0.38rem 0.6rem',
+              cursor:'pointer', fontSize:'0.95rem',
+            }}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
 
           {/* USER AVATAR */}
           {currentUser && (
@@ -114,9 +126,11 @@ export default function Header() {
                     <div style={{fontSize:'0.75rem', color:'#7a80a0'}}>{currentUser.email}</div>
                   </div>
                   {[
+                    {ico:'👤', label:'My Profile', path:'/profile'},
                     {ico:'📚', label:'My Learning', path:'/enrolled'},
                     {ico:'♡', label:'Wishlist', path:'/wishlist'},
-                    {ico:'👤', label:'About', path:'/about'},
+                    {ico:'🔍', label:'Search', path:'/search'},
+                    {ico:'👥', label:'About', path:'/about'},
                     {ico:'📞', label:'Contact', path:'/contact'},
                   ].map(item => (
                     <button key={item.path}
@@ -153,7 +167,7 @@ export default function Header() {
             </div>
           )}
 
-          {/* HAMBURGER MENU — mobile only */}
+          {/* HAMBURGER */}
           <button
             onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setDropdownOpen(false); }}
             className="hamburger"
@@ -188,22 +202,22 @@ export default function Header() {
             </button>
           ))}
           {currentUser && (
-            <button
-              onClick={() => { logout(); setMobileMenuOpen(false); router.push('/login'); }}
-              style={{
-                fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500',
-                padding:'0.7rem 1rem', borderRadius:'10px', border:'none',
-                cursor:'pointer', textAlign:'left',
-                background:'transparent', color:'#ff6b6b', marginTop:'0.3rem',
-                borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.9rem',
-              }}>
-              ↩ Sign Out
-            </button>
+            <>
+              <button
+                onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }}
+                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'#7a80a0'}}>
+                👤 My Profile
+              </button>
+              <button
+                onClick={() => { logout(); setMobileMenuOpen(false); router.push('/login'); }}
+                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'#ff6b6b', marginTop:'0.3rem', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.9rem'}}>
+                ↩ Sign Out
+              </button>
+            </>
           )}
         </div>
       )}
 
-      {/* CSS for desktop/mobile nav visibility */}
       <style>{`
         .desktop-nav { display: flex; }
         .hamburger { display: none; }
