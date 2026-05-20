@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
+import { CourseSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Home() {
-  const { wishlist, toggleWishlist, enrolled, getCourseProgress } = useApp();
+  const { wishlist, toggleWishlist, enrolled, getCourseProgress, theme } = useApp();
   const toast = useToast();
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState('All');
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const categories = ['All', ...new Set(courses.map(c => c.category))];
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filtered = courses.filter(c => {
     const catMatch = activeCat === 'All' || c.category === activeCat;
@@ -24,6 +31,8 @@ export default function Home() {
     return catMatch && searchMatch;
   });
 
+  const isLight = theme === 'light';
+
   return (
     <div>
       {/* HERO */}
@@ -33,6 +42,7 @@ export default function Home() {
           fontSize:'clamp(1.9rem, 6vw, 4.2rem)',
           fontWeight:'700', lineHeight:'1.1',
           letterSpacing:'-0.02em', marginBottom:'1rem',
+          color:'var(--text)',
         }}>
           Learn Without{' '}
           <span style={{
@@ -44,7 +54,7 @@ export default function Home() {
         </h1>
         <p style={{
           fontSize:'clamp(0.9rem, 2.5vw, 1.05rem)',
-          color:'#7a80a0', lineHeight:'1.75',
+          color:'var(--muted)', lineHeight:'1.75',
           maxWidth:'520px', margin:'0 auto 1.8rem',
         }}>
           World-class courses, real video lessons, reading materials, and free certificates — completely free, forever.
@@ -62,8 +72,8 @@ export default function Home() {
           <button onClick={() => router.push('/enrolled')} style={{
             fontSize:'0.9rem', fontWeight:'600',
             padding:'0.75rem 1.5rem',
-            borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)',
-            cursor:'pointer', background:'transparent', color:'#eef0f8',
+            borderRadius:'12px', border:'1px solid var(--border2)',
+            cursor:'pointer', background:'transparent', color:'var(--text)',
           }}>
             My Learning
           </button>
@@ -72,10 +82,8 @@ export default function Home() {
 
       {/* STATS */}
       <div style={{
-        display:'grid',
-        gridTemplateColumns:'repeat(2, 1fr)',
-        gap:'1rem',
-        padding:'1rem 1.2rem 2rem',
+        display:'grid', gridTemplateColumns:'repeat(2, 1fr)',
+        gap:'1rem', padding:'1rem 1.2rem 2rem',
         maxWidth:'500px', margin:'0 auto',
       }}>
         {[
@@ -86,12 +94,12 @@ export default function Home() {
         ].map(s => (
           <div key={s.l} style={{
             textAlign:'center',
-            background:'#0d1117',
-            border:'1px solid rgba(255,255,255,0.06)',
+            background:'var(--surface)',
+            border:'1px solid var(--border)',
             borderRadius:'12px', padding:'1rem',
           }}>
-            <div style={{fontFamily:'Georgia, serif', fontSize:'1.8rem', fontWeight:'700', color:'#eef0f8'}}>{s.n}</div>
-            <div style={{fontSize:'0.75rem', color:'#7a80a0', marginTop:'2px'}}>{s.l}</div>
+            <div style={{fontFamily:'Georgia, serif', fontSize:'1.8rem', fontWeight:'700', color:'var(--text)'}}>{s.n}</div>
+            <div style={{fontSize:'0.75rem', color:'var(--muted)', marginTop:'2px'}}>{s.l}</div>
           </div>
         ))}
       </div>
@@ -99,7 +107,7 @@ export default function Home() {
       {/* SEARCH & FILTERS */}
       <div style={{maxWidth:'1240px', margin:'0 auto', padding:'0 1.2rem 1.2rem'}}>
         <div style={{position:'relative', marginBottom:'0.9rem'}}>
-          <span style={{position:'absolute', left:'1rem', top:'50%', transform:'translateY(-50%)', color:'#7a80a0'}}>⌕</span>
+          <span style={{position:'absolute', left:'1rem', top:'50%', transform:'translateY(-50%)', color:'var(--muted)'}}>⌕</span>
           <input
             id="searchInput"
             type="text"
@@ -107,10 +115,11 @@ export default function Home() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{
-              width:'100%', background:'#0d1117',
-              border:'1px solid rgba(255,255,255,0.06)',
+              width:'100%', background:'var(--surface)',
+              border:'1px solid var(--border)',
               borderRadius:'13px', padding:'0.85rem 1rem 0.85rem 2.7rem',
-              fontSize:'0.93rem', color:'#eef0f8', outline:'none',
+              fontSize:'0.93rem', color:'var(--text)', outline:'none',
+              transition:'border 0.2s',
             }}
           />
         </div>
@@ -121,14 +130,14 @@ export default function Home() {
           overflowX:'auto', paddingBottom:'0.3rem',
           scrollbarWidth:'none',
         }}>
-          <span style={{fontSize:'0.76rem', color:'#7a80a0', marginRight:'0.2rem', whiteSpace:'nowrap', alignSelf:'center'}}>Filter:</span>
+          <span style={{fontSize:'0.76rem', color:'var(--muted)', marginRight:'0.2rem', whiteSpace:'nowrap', alignSelf:'center'}}>Filter:</span>
           {categories.map(cat => (
             <button key={cat} onClick={() => setActiveCat(cat)} style={{
               fontSize:'0.76rem', fontWeight:'500',
               padding:'0.35rem 0.85rem', borderRadius:'100px',
-              border: activeCat === cat ? 'none' : '1px solid rgba(255,255,255,0.06)',
+              border: activeCat === cat ? 'none' : '1px solid var(--border)',
               background: activeCat === cat ? '#4488ff' : 'transparent',
-              color: activeCat === cat ? '#fff' : '#7a80a0',
+              color: activeCat === cat ? '#fff' : 'var(--muted)',
               cursor:'pointer', whiteSpace:'nowrap', flexShrink:0,
             }}>
               {cat}
@@ -138,7 +147,7 @@ export default function Home() {
       </div>
 
       {/* RESULTS INFO */}
-      <div style={{fontSize:'0.8rem', color:'#7a80a0', padding:'0 1.2rem', maxWidth:'1240px', margin:'0 auto 0.6rem'}}>
+      <div style={{fontSize:'0.8rem', color:'var(--muted)', padding:'0 1.2rem', maxWidth:'1240px', margin:'0 auto 0.6rem'}}>
         {search || activeCat !== 'All'
           ? `${filtered.length} course${filtered.length !== 1 ? 's' : ''} found`
           : `${courses.length} courses available`}
@@ -151,34 +160,39 @@ export default function Home() {
         gap:'1rem', padding:'0 1.2rem 4rem',
         maxWidth:'1240px', margin:'0 auto',
       }}>
-        {filtered.length === 0 ? (
-          <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem', color:'#7a80a0'}}>
+        {loading ? (
+          Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
+        ) : filtered.length === 0 ? (
+          <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem', color:'var(--muted)'}}>
             <div style={{fontSize:'3rem', marginBottom:'1rem'}}>🔍</div>
-            <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses found</h3>
+            <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'var(--text)', marginBottom:'0.4rem'}}>No courses found</h3>
             <p>Try a different keyword or category</p>
           </div>
         ) : filtered.map((c, i) => (
           <div key={c.id}
             onClick={() => router.push(`/courses/${c.id}`)}
             style={{
-              background:'#0d1117',
-              border:'1px solid rgba(255,255,255,0.06)',
+              background:'var(--card-bg)',
+              border:'1px solid var(--border)',
               borderRadius:'16px', overflow:'hidden', cursor:'pointer',
               transition:'all 0.3s',
+              boxShadow: isLight ? '0 2px 12px rgba(0,0,0,0.06)' : 'none',
             }}
             onMouseEnter={e => {
               e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = 'rgba(68,136,255,0.22)';
-              e.currentTarget.style.background = '#161b26';
+              e.currentTarget.style.borderColor = 'rgba(68,136,255,0.4)';
+              e.currentTarget.style.background = 'var(--card-hover)';
+              e.currentTarget.style.boxShadow = isLight ? '0 8px 30px rgba(0,0,0,0.12)' : '0 22px 55px rgba(0,0,0,0.5)';
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-              e.currentTarget.style.background = '#0d1117';
+              e.currentTarget.style.borderColor = 'var(--border)';
+              e.currentTarget.style.background = 'var(--card-bg)';
+              e.currentTarget.style.boxShadow = isLight ? '0 2px 12px rgba(0,0,0,0.06)' : 'none';
             }}
           >
             {/* THUMBNAIL */}
-            <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'#161b26'}}>
+            <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'var(--surface2)'}}>
               <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}}/>
               <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(6,8,15,0.65) 0%, transparent 55%)'}}/>
               {enrolled.includes(c.id) ? (
@@ -219,30 +233,30 @@ export default function Home() {
               <div style={{fontSize:'0.7rem', fontWeight:'600', letterSpacing:'0.07em', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.4rem'}}>{c.category}</div>
               <div style={{
                 fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700',
-                lineHeight:'1.35', marginBottom:'0.4rem',
+                lineHeight:'1.35', marginBottom:'0.4rem', color:'var(--text)',
                 display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden',
               }}>{c.title}</div>
-              <div style={{fontSize:'0.78rem', color:'#7a80a0', marginBottom:'0.7rem'}}>by {c.instructor}</div>
+              <div style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.7rem'}}>by {c.instructor}</div>
               <div style={{
                 display:'flex', alignItems:'center', justifyContent:'space-between',
-                borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.65rem',
+                borderTop:'1px solid var(--border)', paddingTop:'0.65rem',
                 flexWrap:'wrap', gap:'0.3rem',
               }}>
-                <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.78rem'}}>
+                <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.78rem', color:'var(--text)'}}>
                   <span style={{color:'#fbbf24', fontSize:'0.7rem'}}>★★★★★</span> {c.rating}
                 </span>
-                <span style={{fontSize:'0.76rem', color:'#7a80a0'}}>⏱ {c.duration}</span>
+                <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>⏱ {c.duration}</span>
                 <span style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', color:'#00d4aa'}}>Free</span>
               </div>
 
-              {/* PROGRESS BAR — only for enrolled courses */}
+              {/* PROGRESS BAR */}
               {enrolled.includes(c.id) && (
                 <div style={{marginTop:'0.7rem'}}>
-                  <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'#7a80a0', marginBottom:'0.3rem'}}>
+                  <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'var(--muted)', marginBottom:'0.3rem'}}>
                     <span>Progress</span>
                     <span>{getCourseProgress(c.id, c.lessons.length)}%</span>
                   </div>
-                  <div style={{width:'100%', height:'4px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
+                  <div style={{width:'100%', height:'4px', background:'var(--surface3)', borderRadius:'100px'}}>
                     <div style={{
                       height:'100%', borderRadius:'100px',
                       background:'linear-gradient(135deg,#4488ff,#00d4aa)',

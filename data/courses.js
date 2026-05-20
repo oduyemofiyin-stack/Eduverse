@@ -1,7 +1,7 @@
 const courses = [
   {
     id:1, title:"React for Beginners", instructor:"Jane Doe",
-    category:"Web Development", duration:"5 hours",
+    category:"Web Development", duration:"1.5 hours",
     description:"Master React from scratch. Learn components, hooks, props, state management, and build real-world applications. Perfect for anyone starting their frontend journey.",
     img:"https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80",
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks"],
@@ -25,7 +25,7 @@ const courses = [
   },
   {
     id:2, title:"Python Data Science Bootcamp", instructor:"Mark Chen",
-    category:"Data Science", duration:"18 hours",
+    category:"Data Science", duration:"1.5 hours",
     description:"Master Python for data analysis and visualization. Covers NumPy, Pandas, Matplotlib, and ML fundamentals with real-world projects.",
     img:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
@@ -49,7 +49,7 @@ const courses = [
   },
   {
     id:3, title:"UI/UX Design Fundamentals", instructor:"Sofia Ramirez",
-    category:"Design", duration:"8 hours",
+    category:"Design", duration:"1.5 hours",
     description:"Learn user-centered design principles. Master Figma, wireframing, prototyping, and design systems.",
     img:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
@@ -68,13 +68,13 @@ const courses = [
       {q:"What is a wireframe?", opts:["A final design","A low-fidelity layout sketch","A color palette","A font choice"], ans:1},
       {q:"Which tool is most popular for UI design?", opts:["Photoshop","Sketch","Figma","Canva"], ans:2},
       {q:"What is a design system?", opts:["A color wheel","A collection of reusable components and guidelines","A prototype","A user interview"], ans:1},
-      {q:"What does 'affordance' mean in UX?", opts:["A pricing model","A visual cue that hints at how something is used","A type of animation","A user persona"], ans:1},
+      {q:"What does affordance mean in UX?", opts:["A pricing model","A visual cue that hints at how something is used","A type of animation","A user persona"], ans:1},
     ]
   },
   {
     id:4, title:"Flutter Mobile Development", instructor:"Akira Tanaka",
-    category:"Mobile Development", duration:"14 hours",
-    description:"Build beautiful cross-platform apps using Flutter and Dart for iOS & Android from one codebase.",
+    category:"Mobile Development", duration:"1.5 hours",
+    description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
     img:"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
     lessons:[
@@ -85,7 +85,7 @@ const courses = [
     ],
     reading:[
       {title:"Why Flutter?", body:"Flutter is Google's UI toolkit for building natively compiled apps from a single codebase.", points:["One codebase for iOS and Android","Hot reload for fast development","Rich pre-built widgets","Compiles to native code"]},
-      {title:"Core Concepts", body:"Everything in Flutter is a widget.", points:["Stateless widgets don't change","Stateful widgets manage dynamic data","BuildContext locates widgets","Keys help Flutter identify widgets"]},
+      {title:"Core Concepts", body:"Everything in Flutter is a widget.", points:["Stateless widgets do not change","Stateful widgets manage dynamic data","BuildContext locates widgets","Keys help Flutter identify widgets"]},
     ],
     quiz:[
       {q:"What language does Flutter use?", opts:["Java","Kotlin","Dart","Swift"], ans:2},
@@ -97,7 +97,7 @@ const courses = [
   },
   {
     id:5, title:"Machine Learning with TensorFlow", instructor:"Dr. Priya Nair",
-    category:"AI & Machine Learning", duration:"22 hours",
+    category:"AI & Machine Learning", duration:"1.8 hours",
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
     img:"https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80",
     rating:4.9, keywords:["tensorflow","neural networks","deep learning","keras","nlp"],
@@ -121,7 +121,7 @@ const courses = [
   },
   {
     id:6, title:"Digital Marketing Masterclass", instructor:"Emma Williams",
-    category:"Marketing", duration:"10 hours",
+    category:"Marketing", duration:"1.3 hours",
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
     img:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
@@ -132,12 +132,12 @@ const courses = [
       {title:"Email Marketing & Analytics", dur:"16 min", yt:"6TAAiWtjl4w"},
     ],
     reading:[
-      {title:"The Digital Marketing Funnel", body:"Customers go through: Awareness→Interest→Consideration→Intent→Purchase→Loyalty.", points:["SEO drives organic awareness","Social media builds community","Email converts and retains","Paid ads accelerate reach"]},
+      {title:"The Digital Marketing Funnel", body:"Customers go through: Awareness to Interest to Consideration to Intent to Purchase to Loyalty.", points:["SEO drives organic awareness","Social media builds community","Email converts and retains","Paid ads accelerate reach"]},
       {title:"SEO Basics", body:"SEO improves your Google visibility organically.", points:["Use keywords naturally in content","Build quality backlinks","Page speed is a ranking factor","Mobile-first indexing is standard"]},
     ],
     quiz:[
       {q:"What does SEO stand for?", opts:["Social Engine Optimization","Search Engine Optimization","Site Engagement Ops","Search Engagement Output"], ans:1},
-      {q:"What is a 'conversion'?", opts:["A page view","When a visitor completes a desired action","A social share","An email open"], ans:1},
+      {q:"What is a conversion?", opts:["A page view","When a visitor completes a desired action","A social share","An email open"], ans:1},
       {q:"What does CPC stand for?", opts:["Cost Per Click","Content Per Channel","Customer Per Campaign","Click Per Conversion"], ans:0},
       {q:"Which metrics measure email success?", opts:["Bounce rate","Open rate and click-through rate","Page load time","Social shares"], ans:1},
       {q:"What is A/B testing?", opts:["Testing two audiences","Testing two versions to see which performs better","Testing server speed","Testing budgets"], ans:1},
@@ -145,7 +145,7 @@ const courses = [
   },
   {
     id:7, title:"Node.js & Express Backend", instructor:"Carlos Rivera",
-    category:"Web Development", duration:"12 hours",
+    category:"Web Development", duration:"1.5 hours",
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
     img:"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&q=80",
     rating:4.8, keywords:["nodejs","express","rest api","mongodb","backend"],
@@ -169,7 +169,7 @@ const courses = [
   },
   {
     id:8, title:"Ethical Hacking & Cybersecurity", instructor:"James O'Brien",
-    category:"Cybersecurity", duration:"16 hours",
+    category:"Cybersecurity", duration:"1.5 hours",
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
     img:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80",
     rating:4.7, keywords:["hacking","penetration testing","kali linux","security","networking"],
@@ -193,7 +193,7 @@ const courses = [
   },
   {
     id:9, title:"Advanced TypeScript Patterns", instructor:"Anna Kowalski",
-    category:"Web Development", duration:"7 hours",
+    category:"Web Development", duration:"1.4 hours",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
     img:"https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&q=80",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
@@ -210,14 +210,14 @@ const courses = [
     quiz:[
       {q:"What does TypeScript add to JavaScript?", opts:["Faster execution","Static type checking","New runtime features","Server-side rendering"], ans:1},
       {q:"What is a generic?", opts:["A base class","A placeholder type filled in later","A default value","A module import"], ans:1},
-      {q:"What does '?' mean in TypeScript types?", opts:["Required property","Optional property","Null value","Generic type"], ans:1},
+      {q:"What does ? mean in TypeScript types?", opts:["Required property","Optional property","Null value","Generic type"], ans:1},
       {q:"What is a union type?", opts:["Two merged classes","A type that can be one of several using |","A type intersection","An array type"], ans:1},
-      {q:"What does 'as const' do?", opts:["Makes a constant variable","Makes types readonly and literal","Casts to constructor","Defines an enum"], ans:1},
+      {q:"What does as const do?", opts:["Makes a constant variable","Makes types readonly and literal","Casts to constructor","Defines an enum"], ans:1},
     ]
   },
   {
     id:10, title:"Business Analytics with Excel & Power BI", instructor:"David Park",
-    category:"Business", duration:"9 hours",
+    category:"Business", duration:"1.5 hours",
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
     img:"https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
@@ -241,7 +241,7 @@ const courses = [
   },
   {
     id:11, title:"Vue.js 3 – The Complete Guide", instructor:"Lena Müller",
-    category:"Web Development", duration:"11 hours",
+    category:"Web Development", duration:"1.4 hours",
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
     img:"https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80",
     rating:4.7, keywords:["vuejs","vue 3","composition api","pinia","frontend"],
@@ -265,7 +265,7 @@ const courses = [
   },
   {
     id:12, title:"Data Structures & Algorithms in Python", instructor:"Raj Patel",
-    category:"Data Science", duration:"15 hours",
+    category:"Data Science", duration:"1.6 hours",
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
     img:"https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=600&q=80",
     rating:4.9, keywords:["algorithms","data structures","python","leetcode","interviews"],
@@ -276,7 +276,7 @@ const courses = [
       {title:"Dynamic Programming Explained", dur:"26 min", yt:"oBt53YbR9Kk"},
     ],
     reading:[
-      {title:"Why Algorithms Matter", body:"Algorithms are step-by-step procedures. Big O notation describes how runtime grows with input size.", points:["O(1) = constant best","O(log n) = logarithmic great","O(n) = linear acceptable","O(n²) = quadratic avoid for large inputs"]},
+      {title:"Why Algorithms Matter", body:"Algorithms are step-by-step procedures. Big O notation describes how runtime grows with input size.", points:["O(1) = constant best","O(log n) = logarithmic great","O(n) = linear acceptable","O(n2) = quadratic avoid for large inputs"]},
       {title:"Essential Data Structures", body:"Choosing the right structure is the difference between efficient and inefficient code.", points:["Arrays: O(1) access O(n) search","Hash Maps: O(1) average lookup","Binary Trees: O(log n) balanced search","Graphs: model networks and relationships"]},
     ],
     quiz:[

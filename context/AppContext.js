@@ -1,4 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from '../lib/firebase';
 
 const AppContext = createContext();
 
@@ -62,6 +65,15 @@ export function AppProvider({ children }) {
   function login(user) {
     setCurrentUser(user);
     localStorage.setItem('eduverse_user', JSON.stringify(user));
+    // Save user activity to Firestore
+    if (user.uid) {
+      setDoc(doc(db, 'users', user.uid), {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        lastLogin: new Date().toISOString(),
+      }, { merge: true });
+    }
   }
 
   function logout() {
@@ -83,7 +95,12 @@ export function AppProvider({ children }) {
     setWishlist(prev => {
       const exists = prev.includes(id);
       if (toast) toast(exists ? 'Removed from wishlist' : 'Added to wishlist ♥', exists ? 'error' : 'success');
-      return exists ? prev.filter(x => x !== id) : [...prev, id];
+      const updated = exists ? prev.filter(x => x !== id) : [...prev, id];
+      // Save to Firestore
+      if (currentUser?.uid) {
+        setDoc(doc(db, 'users', currentUser.uid), { wishlist: updated }, { merge: true });
+      }
+      return updated;
     });
   }
 
@@ -91,7 +108,12 @@ export function AppProvider({ children }) {
     setEnrolled(prev => {
       const exists = prev.includes(id);
       if (toast) toast(exists ? 'Unenrolled from course' : `Enrolled in "${courseName}" 🎉`, exists ? 'error' : 'success');
-      return exists ? prev.filter(x => x !== id) : [...prev, id];
+      const updated = exists ? prev.filter(x => x !== id) : [...prev, id];
+      // Save to Firestore
+      if (currentUser?.uid) {
+        setDoc(doc(db, 'users', currentUser.uid), { enrolled: updated }, { merge: true });
+      }
+      return updated;
     });
   }
 
