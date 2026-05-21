@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../lib/firebase';
+import { sanitize, isValidEmail, isValidPassword, isValidName, checkRateLimit } from '../lib/sanitize';
 
 export default function Login() {
   const { login } = useApp();
@@ -23,21 +24,23 @@ export default function Login() {
     setErrors({});
     setForm({ firstName:'', lastName:'', email:'', password:'' });
   }
-
   function validate() {
     const errs = {};
     if (tab === 'signup') {
-      if (!form.firstName.trim()) errs.firstName = 'First name is required';
-      if (!form.lastName.trim()) errs.lastName = 'Last name is required';
+      if (!isValidName(form.firstName)) errs.firstName = 'First name must be 1-50 letters only';
+      if (!isValidName(form.lastName)) errs.lastName = 'Last name must be 1-50 letters only';
     }
-    if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email';
-    if (form.password.length < 6) errs.password = 'Password must be at least 6 characters';
+    if (!isValidEmail(form.email)) errs.email = 'Please enter a valid email address';
+    if (!isValidPassword(form.password)) errs.password = 'Password must be 6-128 characters';
     return errs;
   }
 
   async function handleLogin() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    // Rate limiting — max 5 attempts per 10 minutes
+    const rate = checkRateLimit('login_attempts', 5, 10 * 60 * 1000);
+    if (!rate.allowed) { setErrors({ general: rate.message }); return; }
     setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, form.email, form.password);
@@ -65,6 +68,9 @@ export default function Login() {
   async function handleSignup() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    // Rate limiting — max 5 attempts per 10 minutes
+    const rate = checkRateLimit('signup_attempts', 5, 10 * 60 * 1000);
+    if (!rate.allowed) { setErrors({ general: rate.message }); return; }
     setLoading(true);
     try {
       const result = await createUserWithEmailAndPassword(auth, form.email, form.password);

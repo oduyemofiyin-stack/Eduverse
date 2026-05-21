@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import courses from '../data/courses';
 
-const ADMIN_USER = 'EMMANUEL';
-const ADMIN_PASS = 'Emmanuel@007';
+const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || 'EMMANUEL';
+const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || 'Emmanuel@007';
 
 export default function Admin() {
   const router = useRouter();
