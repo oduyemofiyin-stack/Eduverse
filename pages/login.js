@@ -68,27 +68,27 @@ export default function Login() {
   async function handleSignup() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    // Rate limiting — max 5 attempts per 10 minutes
     const rate = checkRateLimit('signup_attempts', 5, 10 * 60 * 1000);
     if (!rate.allowed) { setErrors({ general: rate.message }); return; }
     setLoading(true);
     try {
       const result = await createUserWithEmailAndPassword(auth, form.email, form.password);
       const user = result.user;
-      const fullName = `${form.firstName} ${form.lastName}`;
-      await updateProfile(user, { displayName: fullName });
-      // Save to Firestore
-      await setDoc(doc(db, 'users', user.uid), {
-        firstName: form.firstName,
-        lastName: form.lastName,
-        email: form.email,
-        provider: 'email',
-        createdAt: new Date().toISOString(),
-      });
+      // Run these in parallel for speed
+      await Promise.all([
+        updateProfile(user, { displayName: `${form.firstName} ${form.lastName}` }),
+        setDoc(doc(db, 'users', user.uid), {
+          firstName: sanitize(form.firstName),
+          lastName: sanitize(form.lastName),
+          email: form.email,
+          provider: 'email',
+          createdAt: new Date().toISOString(),
+        }),
+      ]);
       login({
         uid: user.uid,
-        firstName: form.firstName,
-        lastName: form.lastName,
+        firstName: sanitize(form.firstName),
+        lastName: sanitize(form.lastName),
         email: form.email,
         picture: '',
         provider: 'email',
