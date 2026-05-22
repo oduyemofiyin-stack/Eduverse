@@ -10,9 +10,9 @@ export default function Header() {
 
   const navItems = [
     {label:'Courses', path:'/'},
-    {label:'🔍 Search', path:'/search'},
-    {label:`♡ Wishlist${wishlist.length > 0 ? ` (${wishlist.length})` : ''}`, path:'/wishlist'},
-    {label:`✓ My Learning${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
+    {label:'Search', path:'/search'},
+    {label:`Wishlist${wishlist.length > 0 ? ` (${wishlist.length})` : ''}`, path:'/wishlist'},
+    {label:`My Learning${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
     {label:'About', path:'/about'},
     {label:'Contact', path:'/contact'},
   ];
@@ -126,12 +126,12 @@ export default function Header() {
                     <div style={{fontSize:'0.75rem', color:'#7a80a0'}}>{currentUser.email}</div>
                   </div>
                   {[
-                    {ico:'👤', label:'My Profile', path:'/profile'},
-                    {ico:'📚', label:'My Learning', path:'/enrolled'},
-                    {ico:'♡', label:'Wishlist', path:'/wishlist'},
-                    {ico:'🔍', label:'Search', path:'/search'},
-                    {ico:'👥', label:'About', path:'/about'},
-                    {ico:'📞', label:'Contact', path:'/contact'},
+                    {ico:'', label:'My Profile', path:'/profile'},
+                    {ico:'', label:'My Learning', path:'/enrolled'},
+                    {ico:'', label:'Wishlist', path:'/wishlist'},
+                    {ico:'', label:'Search', path:'/search'},
+                    {ico:'', label:'About', path:'/about'},
+                    {ico:'', label:'Contact', path:'/contact'},
                   ].map(item => (
                     <button key={item.path}
                       onClick={() => { router.push(item.path); setDropdownOpen(false); }}
@@ -206,7 +206,7 @@ export default function Header() {
               <button
                 onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }}
                 style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'#7a80a0'}}>
-                👤 My Profile
+                My Profile
               </button>
               <button
                 onClick={() => { logout(); setMobileMenuOpen(false); router.push('/login'); }}
