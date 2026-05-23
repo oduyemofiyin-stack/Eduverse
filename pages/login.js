@@ -7,6 +7,7 @@ import {
   signInWithRedirect,
   getRedirectResult,
   updateProfile,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../lib/firebase';
@@ -19,19 +20,26 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [resetSent, setResetSent] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [showReset, setShowReset] = useState(false);
 
   // Check if returning from Google redirect
   useEffect(() => {
+    // Only check redirect if we came back from Google
+    const isRedirect = sessionStorage.getItem('googleRedirect');
+    if (!isRedirect) { setChecking(false); return; }
+    sessionStorage.removeItem('googleRedirect');
     getRedirectResult(auth)
       .then(async result => {
-        if (result?.user) {
-          await processGoogleUser(result.user);
-        }
+        if (result?.user) await processGoogleUser(result.user);
+        else setChecking(false);
       })
       .catch(e => {
-        console.error('Redirect result error:', e);
-      })
-      .finally(() => setChecking(false));
+        console.error('Redirect error:', e);
+        setChecking(false);
+      });
   }, []);
 
   async function processGoogleUser(user) {
@@ -62,9 +70,10 @@ export default function Login() {
   async function handleGoogle() {
     setErrors({});
     try {
+      sessionStorage.setItem('googleRedirect', 'true');
       await signInWithRedirect(auth, googleProvider);
-      // Page will redirect to Google then come back
     } catch(e) {
+      sessionStorage.removeItem('googleRedirect');
       setErrors({ general: 'Could not start Google sign-in. Check your connection.' });
     }
   }
@@ -391,6 +400,79 @@ export default function Login() {
           </button>
         </div>
 
+        {/* FORGOT PASSWORD */}
+        {tab === 'login' && !showReset && (
+          <div style={{textAlign:'right', marginTop:'-0.3rem', marginBottom:'0.5rem'}}>
+            <span
+              onClick={() => setShowReset(true)}
+              style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer', fontWeight:'500'}}
+            >
+              Forgot password?
+            </span>
+          </div>
+        )}
+
+        {/* FORGOT PASSWORD PANEL */}
+        {showReset && (
+          <div style={{
+            background:'var(--surface2)', border:'1px solid var(--border2)',
+            borderRadius:'12px', padding:'1.2rem', marginBottom:'1rem',
+          }}>
+            {resetSent ? (
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>&#9993;</div>
+                <p style={{fontSize:'0.85rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.3rem'}}>Reset email sent!</p>
+                <p style={{fontSize:'0.8rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Check your inbox and follow the link to reset your password.</p>
+                <span onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Back to sign in</span>
+              </div>
+            ) : (
+              <>
+                <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.7rem'}}>Reset your password</p>
+                <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Enter your email and we will send you a reset link.</p>
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  value={resetEmail}
+                  onChange={e => setResetEmail(e.target.value)}
+                  style={{
+                    width:'100%', background:'var(--surface)',
+                    border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`,
+                    borderRadius:'9px', padding:'0.65rem 0.9rem',
+                    fontSize:'0.88rem', color:'var(--text)',
+                    outline:'none', fontFamily:'inherit', marginBottom:'0.6rem',
+                  }}
+                />
+                {errors.reset && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.reset}</div>}
+                <div style={{display:'flex', gap:'0.6rem'}}>
+                  <button
+                    onClick={handleForgotPassword}
+                    disabled={resetLoading}
+                    style={{
+                      flex:1, padding:'0.65rem', borderRadius:'9px', border:'none',
+                      background:'linear-gradient(135deg,#4488ff,#3366dd)',
+                      color:'#fff', fontFamily:'inherit', fontSize:'0.85rem',
+                      fontWeight:'600', cursor:'pointer', opacity: resetLoading ? 0.7 : 1,
+                    }}
+                  >
+                    {resetLoading ? 'Sending...' : 'Send Reset Link'}
+                  </button>
+                  <button
+                    onClick={() => { setShowReset(false); setErrors({}); setResetEmail(''); }}
+                    style={{
+                      padding:'0.65rem 1rem', borderRadius:'9px',
+                      border:'1px solid var(--border2)', background:'transparent',
+                      color:'var(--muted)', fontFamily:'inherit',
+                      fontSize:'0.85rem', cursor:'pointer',
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         <div style={{fontSize:'0.77rem', color:'var(--muted)', textAlign:'center', marginTop:'1rem'}}>
           {tab === 'login' ? (
             <>Don&apos;t have an account?{' '}
@@ -411,7 +493,25 @@ export default function Login() {
       </div>
     </div>
   );
-
+  async function handleForgotPassword() {
+    if (!resetEmail || !/\S+@\S+\.\S+/.test(resetEmail)) {
+      setErrors({ reset: 'Please enter a valid email address' });
+      return;
+    }
+    setResetLoading(true);
+    setErrors({});
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      setResetSent(true);
+    } catch(e) {
+      setErrors({ reset:
+        e.code === 'auth/user-not-found'
+          ? 'No account found with this email'
+          : 'Could not send reset email. Try again.'
+      });
+    }
+    setResetLoading(false);
+  }
   function switchTab(t) {
     setTab(t);
     setErrors({});
