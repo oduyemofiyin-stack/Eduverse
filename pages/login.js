@@ -4,14 +4,12 @@ import { useApp } from '../context/AppContext';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../lib/firebase';
-import { sanitize, isValidEmail, isValidPassword, isValidName, checkRateLimit } from '../lib/sanitize';
 
 export default function Login() {
   const { login } = useApp();
@@ -20,124 +18,97 @@ export default function Login() {
   const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [checkingRedirect, setCheckingRedirect] = useState(true);
+  const [checking, setChecking] = useState(true);
 
-  // Handle redirect result from Google sign-in
+  // Check if returning from Google redirect
   useEffect(() => {
     getRedirectResult(auth)
       .then(async result => {
-        if (result && result.user) {
-          await handleGoogleUser(result.user);
+        if (result?.user) {
+          await processGoogleUser(result.user);
         }
       })
       .catch(e => {
-        console.error('Redirect error:', e);
+        console.error('Redirect result error:', e);
       })
-      .finally(() => {
-        setCheckingRedirect(false);
-      });
+      .finally(() => setChecking(false));
   }, []);
 
-  async function handleGoogleUser(user) {
+  async function processGoogleUser(user) {
     const firstName = user.displayName?.split(' ')[0] || 'User';
     const lastName = user.displayName?.split(' ').slice(1).join(' ') || '';
-    try {
-      const docSnap = await getDoc(doc(db, 'users', user.uid));
-      if (!docSnap.exists()) {
-        await setDoc(doc(db, 'users', user.uid), {
-          firstName,
-          lastName,
-          email: user.email,
-          picture: user.photoURL || '',
-          provider: 'Google',
-          createdAt: new Date().toISOString(),
-        });
-      }
-      login({
-        uid: user.uid,
-        firstName,
-        lastName,
+    const docSnap = await getDoc(doc(db, 'users', user.uid));
+    if (!docSnap.exists()) {
+      await setDoc(doc(db, 'users', user.uid), {
+        firstName, lastName,
         email: user.email,
         picture: user.photoURL || '',
         provider: 'Google',
+        createdAt: new Date().toISOString(),
       });
-      router.push('/');
-    } catch(e) {
-      setErrors({ general: 'Google sign-in failed. Please try email login.' });
     }
+    login({
+      uid: user.uid,
+      firstName,
+      lastName,
+      email: user.email,
+      picture: user.photoURL || '',
+      provider: 'Google',
+    });
+    router.push('/');
   }
 
+  // Google uses REDIRECT (most reliable — no popup blocking issues)
   async function handleGoogle() {
-    setLoading(true);
     setErrors({});
     try {
-      // Try popup first, fall back to redirect
-      const result = await signInWithPopup(auth, googleProvider);
-      await handleGoogleUser(result.user);
+      await signInWithRedirect(auth, googleProvider);
+      // Page will redirect to Google then come back
     } catch(e) {
-      if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
-        // Fall back to redirect method
-        try {
-          await signInWithRedirect(auth, googleProvider);
-        } catch(redirectErr) {
-          setErrors({ general: 'Google sign-in failed. Please try email login.' });
-          setLoading(false);
-        }
-      } else {
-        setErrors({ general: `Google sign-in failed: ${e.message || 'Please try email login.'}` });
-        setLoading(false);
-      }
+      setErrors({ general: 'Could not start Google sign-in. Check your connection.' });
     }
-  }
-
-  function switchTab(t) {
-    setTab(t);
-    setErrors({});
-    setForm({ firstName:'', lastName:'', email:'', password:'' });
   }
 
   function validate() {
     const errs = {};
     if (tab === 'signup') {
-      if (!isValidName(form.firstName)) errs.firstName = 'First name must be 1-50 letters only';
-      if (!isValidName(form.lastName)) errs.lastName = 'Last name must be 1-50 letters only';
+      if (!form.firstName.trim() || form.firstName.trim().length < 1) errs.firstName = 'First name is required';
+      if (!form.lastName.trim() || form.lastName.trim().length < 1) errs.lastName = 'Last name is required';
     }
-    if (!isValidEmail(form.email)) errs.email = 'Please enter a valid email address';
-    if (!isValidPassword(form.password)) errs.password = 'Password must be 6-128 characters';
+    if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email';
+    if (!form.password || form.password.length < 6) errs.password = 'Password must be at least 6 characters';
     return errs;
   }
 
   async function handleLogin() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    const rate = checkRateLimit('login_attempts', 5, 10 * 60 * 1000);
-    if (!rate.allowed) { setErrors({ general: rate.message }); return; }
     setLoading(true);
     setErrors({});
     try {
       const result = await signInWithEmailAndPassword(auth, form.email, form.password);
       const user = result.user;
       const docSnap = await getDoc(doc(db, 'users', user.uid));
-      const userData = docSnap.exists() ? docSnap.data() : {};
+      const data = docSnap.exists() ? docSnap.data() : {};
       login({
         uid: user.uid,
-        firstName: userData.firstName || user.displayName?.split(' ')[0] || 'User',
-        lastName: userData.lastName || user.displayName?.split(' ').slice(1).join(' ') || '',
+        firstName: data.firstName || user.displayName?.split(' ')[0] || 'User',
+        lastName: data.lastName || user.displayName?.split(' ').slice(1).join(' ') || '',
         email: user.email,
         picture: user.photoURL || '',
         provider: 'email',
       });
       router.push('/');
     } catch(e) {
-      const msg =
-        e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential'
-          ? 'Incorrect email or password'
+      setErrors({ general:
+        e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential'
+          ? 'Incorrect email or password. Please try again.'
           : e.code === 'auth/too-many-requests'
-          ? 'Too many attempts. Please wait a few minutes.'
+          ? 'Too many failed attempts. Please wait a few minutes.'
           : e.code === 'auth/network-request-failed'
-          ? 'Network error. Check your internet connection.'
-          : 'Sign in failed. Please try again.';
-      setErrors({ general: msg });
+          ? 'Network error. Please check your internet.'
+          : `Sign in failed. (${e.code})`
+      });
     }
     setLoading(false);
   }
@@ -145,18 +116,16 @@ export default function Login() {
   async function handleSignup() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    const rate = checkRateLimit('signup_attempts', 5, 10 * 60 * 1000);
-    if (!rate.allowed) { setErrors({ general: rate.message }); return; }
     setLoading(true);
     setErrors({});
     try {
       const result = await createUserWithEmailAndPassword(auth, form.email, form.password);
       const user = result.user;
       await Promise.all([
-        updateProfile(user, { displayName: `${sanitize(form.firstName)} ${sanitize(form.lastName)}` }),
+        updateProfile(user, { displayName: `${form.firstName.trim()} ${form.lastName.trim()}` }),
         setDoc(doc(db, 'users', user.uid), {
-          firstName: sanitize(form.firstName),
-          lastName: sanitize(form.lastName),
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
           email: form.email,
           provider: 'email',
           createdAt: new Date().toISOString(),
@@ -164,39 +133,55 @@ export default function Login() {
       ]);
       login({
         uid: user.uid,
-        firstName: sanitize(form.firstName),
-        lastName: sanitize(form.lastName),
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
         email: form.email,
         picture: '',
         provider: 'email',
       });
       router.push('/');
     } catch(e) {
-      const msg =
+      setErrors({ general:
         e.code === 'auth/email-already-in-use'
-          ? 'An account with this email already exists'
+          ? 'An account with this email already exists. Please sign in.'
           : e.code === 'auth/weak-password'
           ? 'Password is too weak. Use at least 6 characters.'
           : e.code === 'auth/network-request-failed'
-          ? 'Network error. Check your internet connection.'
-          : 'Sign up failed. Please try again.';
-      setErrors({ general: msg });
+          ? 'Network error. Please check your internet.'
+          : `Sign up failed. (${e.code})`
+      });
     }
     setLoading(false);
   }
 
   const inp = (hasErr) => ({
-    width:'100%', background:'var(--surface2)',
-    border:`1px solid ${hasErr ? 'rgba(255,107,157,0.6)' : 'var(--border2)'}`,
-    borderRadius:'11px', padding:'0.78rem 1rem',
-    fontSize:'0.9rem', color:'var(--text)', outline:'none', fontFamily:'inherit',
+    width:'100%',
+    background:'var(--surface2)',
+    border:`1px solid ${hasErr ? '#ff6b9d' : 'var(--border2)'}`,
+    borderRadius:'11px',
+    padding:'0.78rem 1rem',
+    fontSize:'0.9rem',
+    color:'var(--text)',
+    outline:'none',
+    fontFamily:'inherit',
     transition:'border 0.2s',
   });
 
-  if (checkingRedirect) {
+  // Show spinner while checking Google redirect result
+  if (checking) {
     return (
-      <div style={{minHeight:'100vh', background:'var(--bg)', display:'flex', alignItems:'center', justifyContent:'center'}}>
-        <div style={{width:'40px', height:'40px', borderRadius:'50%', border:'3px solid rgba(68,136,255,0.2)', borderTop:'3px solid #4488ff', animation:'spin 0.8s linear infinite'}}/>
+      <div style={{
+        minHeight:'100vh', background:'var(--bg)',
+        display:'flex', flexDirection:'column',
+        alignItems:'center', justifyContent:'center', gap:'1rem',
+      }}>
+        <div style={{
+          width:'44px', height:'44px', borderRadius:'50%',
+          border:'3px solid rgba(68,136,255,0.2)',
+          borderTop:'3px solid #4488ff',
+          animation:'spin 0.8s linear infinite',
+        }}/>
+        <p style={{fontSize:'0.85rem', color:'var(--muted)'}}>Checking sign-in status...</p>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
@@ -204,13 +189,19 @@ export default function Login() {
 
   return (
     <div style={{
-      minHeight:'100vh', background:'var(--bg)',
-      display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
+      minHeight:'100vh',
+      background:'var(--bg)',
+      display:'flex', alignItems:'center', justifyContent:'center',
+      padding:'1rem',
       backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.08) 0%, transparent 60%)',
     }}>
       <div style={{
-        background:'var(--surface)', border:'1px solid var(--border2)',
-        borderRadius:'24px', padding:'2rem', width:'100%', maxWidth:'420px',
+        background:'var(--surface)',
+        border:'1px solid var(--border2)',
+        borderRadius:'24px',
+        padding:'2rem',
+        width:'100%',
+        maxWidth:'420px',
         boxShadow:'0 20px 60px rgba(0,0,0,0.3)',
       }}>
 
@@ -228,18 +219,25 @@ export default function Login() {
               <linearGradient id="lg3" x1="14" y1="14" x2="22" y2="22"><stop stopColor="#f0c040"/><stop offset="1" stopColor="#4488ff"/></linearGradient>
             </defs>
           </svg>
-          <span style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>Eduverse</span>
+          <span style={{
+            fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700',
+            background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)',
+            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
+          }}>Eduverse</span>
         </div>
 
         {/* TABS */}
-        <div style={{display:'flex', background:'var(--surface2)', borderRadius:'12px', padding:'4px', marginBottom:'1.6rem'}}>
+        <div style={{
+          display:'flex', background:'var(--surface2)',
+          borderRadius:'12px', padding:'4px', marginBottom:'1.6rem',
+        }}>
           {['login','signup'].map(t => (
             <button key={t} onClick={() => switchTab(t)} style={{
               flex:1, padding:'0.5rem', borderRadius:'9px', border:'none',
               background: tab === t ? 'var(--surface3)' : 'transparent',
               color: tab === t ? 'var(--text)' : 'var(--muted)',
-              fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer',
-              transition:'all 0.2s',
+              fontFamily:'inherit', fontSize:'0.85rem',
+              fontWeight:'600', cursor:'pointer', transition:'all 0.2s',
             }}>
               {t === 'login' ? 'Sign In' : 'Create Account'}
             </button>
@@ -247,11 +245,20 @@ export default function Login() {
         </div>
 
         {/* TITLE */}
-        <div style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700', textAlign:'center', marginBottom:'0.3rem', color:'var(--text)'}}>
+        <div style={{
+          fontFamily:'Georgia, serif', fontSize:'1.3rem',
+          fontWeight:'700', textAlign:'center',
+          marginBottom:'0.3rem', color:'var(--text)',
+        }}>
           {tab === 'login' ? 'Welcome back' : 'Create your account'}
         </div>
-        <div style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', marginBottom:'1.4rem'}}>
-          {tab === 'login' ? 'Sign in to continue your learning journey' : 'Join 50,000+ learners. Completely free.'}
+        <div style={{
+          fontSize:'0.82rem', color:'var(--muted)',
+          textAlign:'center', marginBottom:'1.4rem',
+        }}>
+          {tab === 'login'
+            ? 'Sign in to continue your learning journey'
+            : 'Join 50,000+ learners. Completely free.'}
         </div>
 
         {/* GOOGLE BUTTON */}
@@ -259,15 +266,26 @@ export default function Login() {
           onClick={handleGoogle}
           disabled={loading}
           style={{
-            width:'100%', padding:'0.78rem', borderRadius:'12px',
-            border:'1px solid var(--border2)', background:'var(--surface2)',
-            color:'var(--text)', fontFamily:'inherit', fontSize:'0.9rem',
-            fontWeight:'600', cursor:'pointer', marginBottom:'1.2rem',
-            display:'flex', alignItems:'center', justifyContent:'center', gap:'0.7rem',
-            transition:'all 0.2s', opacity: loading ? 0.7 : 1,
+            width:'100%', padding:'0.8rem',
+            borderRadius:'12px',
+            border:'1px solid var(--border2)',
+            background:'var(--surface2)',
+            color:'var(--text)',
+            fontFamily:'inherit', fontSize:'0.9rem',
+            fontWeight:'600', cursor:'pointer',
+            marginBottom:'1.2rem',
+            display:'flex', alignItems:'center',
+            justifyContent:'center', gap:'0.7rem',
+            transition:'all 0.2s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background='var(--surface3)'; e.currentTarget.style.borderColor='rgba(68,136,255,0.4)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background='var(--surface2)'; e.currentTarget.style.borderColor='var(--border2)'; }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'var(--surface3)';
+            e.currentTarget.style.borderColor = 'rgba(68,136,255,0.4)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'var(--surface2)';
+            e.currentTarget.style.borderColor = 'var(--border2)';
+          }}
         >
           <svg width="18" height="18" viewBox="0 0 18 18">
             <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
@@ -275,7 +293,7 @@ export default function Login() {
             <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
             <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
           </svg>
-          {loading ? 'Connecting...' : tab === 'login' ? 'Continue with Google' : 'Sign up with Google'}
+          {tab === 'login' ? 'Continue with Google' : 'Sign up with Google'}
         </button>
 
         {/* DIVIDER */}
@@ -287,12 +305,14 @@ export default function Login() {
           <div style={{flex:1, height:'1px', background:'var(--border2)'}}/>
         </div>
 
-        {/* GENERAL ERROR */}
+        {/* ERROR */}
         {errors.general && (
           <div style={{
-            background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)',
-            borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem',
-            color:'#ff6b9d', marginBottom:'1rem', lineHeight:'1.5',
+            background:'rgba(255,107,157,0.1)',
+            border:'1px solid rgba(255,107,157,0.3)',
+            borderRadius:'10px', padding:'0.65rem 1rem',
+            fontSize:'0.82rem', color:'#ff6b9d',
+            marginBottom:'1rem', lineHeight:'1.5',
           }}>
             {errors.general}
           </div>
@@ -300,20 +320,27 @@ export default function Login() {
 
         {/* FORM */}
         <div style={{display:'flex', flexDirection:'column', gap:'0.85rem'}}>
+
           {tab === 'signup' && (
             <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.7rem'}}>
               <div>
                 <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>First Name</label>
-                <input type="text" placeholder="John" value={form.firstName}
+                <input
+                  type="text" placeholder="John"
+                  value={form.firstName}
                   onChange={e => setForm(p => ({...p, firstName: e.target.value}))}
-                  style={inp(errors.firstName)}/>
+                  style={inp(errors.firstName)}
+                />
                 {errors.firstName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.firstName}</div>}
               </div>
               <div>
                 <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Last Name</label>
-                <input type="text" placeholder="Doe" value={form.lastName}
+                <input
+                  type="text" placeholder="Doe"
+                  value={form.lastName}
                   onChange={e => setForm(p => ({...p, lastName: e.target.value}))}
-                  style={inp(errors.lastName)}/>
+                  style={inp(errors.lastName)}
+                />
                 {errors.lastName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.lastName}</div>}
               </div>
             </div>
@@ -321,19 +348,25 @@ export default function Login() {
 
           <div>
             <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email</label>
-            <input type="email" placeholder="you@example.com" value={form.email}
+            <input
+              type="email" placeholder="you@example.com"
+              value={form.email}
               onChange={e => setForm(p => ({...p, email: e.target.value}))}
               onKeyDown={e => e.key === 'Enter' && tab === 'login' && handleLogin()}
-              style={inp(errors.email)}/>
+              style={inp(errors.email)}
+            />
             {errors.email && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.email}</div>}
           </div>
 
           <div>
             <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
-            <input type="password" placeholder="At least 6 characters" value={form.password}
+            <input
+              type="password" placeholder="At least 6 characters"
+              value={form.password}
               onChange={e => setForm(p => ({...p, password: e.target.value}))}
               onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
-              style={inp(errors.password)}/>
+              style={inp(errors.password)}
+            />
             {errors.password && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
           </div>
 
@@ -341,31 +374,47 @@ export default function Login() {
             onClick={tab === 'login' ? handleLogin : handleSignup}
             disabled={loading}
             style={{
-              width:'100%', padding:'0.88rem', borderRadius:'12px',
-              border:'none', cursor: loading ? 'not-allowed' : 'pointer',
+              width:'100%', padding:'0.88rem',
+              borderRadius:'12px', border:'none',
+              cursor: loading ? 'not-allowed' : 'pointer',
               background:'linear-gradient(135deg,#4488ff,#3366dd)',
-              color:'#fff', fontFamily:'inherit', fontSize:'0.92rem',
-              fontWeight:'700', marginTop:'0.2rem',
-              opacity: loading ? 0.7 : 1,
+              color:'#fff', fontFamily:'inherit',
+              fontSize:'0.92rem', fontWeight:'700',
+              marginTop:'0.2rem', opacity: loading ? 0.7 : 1,
               boxShadow: loading ? 'none' : '0 8px 22px rgba(68,136,255,0.35)',
               transition:'all 0.2s',
-            }}>
-            {loading ? 'Please wait...' : tab === 'login' ? 'Sign In' : 'Create Free Account'}
+            }}
+          >
+            {loading
+              ? 'Please wait...'
+              : tab === 'login' ? 'Sign In' : 'Create Free Account'}
           </button>
         </div>
 
         <div style={{fontSize:'0.77rem', color:'var(--muted)', textAlign:'center', marginTop:'1rem'}}>
           {tab === 'login' ? (
             <>Don&apos;t have an account?{' '}
-              <span onClick={() => switchTab('signup')} style={{color:'#4488ff', cursor:'pointer', fontWeight:'600'}}>Create one free</span>
+              <span
+                onClick={() => switchTab('signup')}
+                style={{color:'#4488ff', cursor:'pointer', fontWeight:'600'}}
+              >Create one free</span>
             </>
           ) : (
             <>Already have an account?{' '}
-              <span onClick={() => switchTab('login')} style={{color:'#4488ff', cursor:'pointer', fontWeight:'600'}}>Sign in</span>
+              <span
+                onClick={() => switchTab('login')}
+                style={{color:'#4488ff', cursor:'pointer', fontWeight:'600'}}
+              >Sign in</span>
             </>
           )}
         </div>
       </div>
     </div>
   );
+
+  function switchTab(t) {
+    setTab(t);
+    setErrors({});
+    setForm({ firstName:'', lastName:'', email:'', password:'' });
+  }
 }

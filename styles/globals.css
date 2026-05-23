@@ -173,7 +173,7 @@ button { font-family: inherit; }
 /* ── SPIN ── */
 @keyframes spin { to { transform: rotate(360deg); } }
 /* ── CUSTOM CURSOR ── */
-* { cursor: none !important; }
+* { cursor: auto; }
 @media (max-width: 768px) {
   * { cursor: auto !important; }
   #custom-cursor, #cursor-ring { display: none !important; }
