@@ -1,7 +1,4 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from '../lib/firebase';
 
 const AppContext = createContext();
 
@@ -13,6 +10,7 @@ export function AppProvider({ children }) {
   const [completed, setCompleted] = useState([]);
   const [ratings, setRatings] = useState({});
   const [theme, setTheme] = useState('dark');
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     try {
@@ -28,8 +26,10 @@ export function AppProvider({ children }) {
       if (savedEnrolled) setEnrolled(JSON.parse(savedEnrolled));
       if (savedProgress) setProgress(JSON.parse(savedProgress));
       if (savedCompleted) setCompleted(JSON.parse(savedCompleted));
-      if (savedRatings) setRatings(JSON.parse(savedRatings));
+        if (savedRatings) setRatings(JSON.parse(savedRatings));
       if (savedTheme) setTheme(savedTheme);
+      const savedUsers = localStorage.getItem('eduverse_users');
+      if (savedUsers) setUsers(JSON.parse(savedUsers));
     } catch(e) {}
   }, []);
 
@@ -62,18 +62,13 @@ export function AppProvider({ children }) {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    localStorage.setItem('eduverse_users', JSON.stringify(users));
+  }, [users]);
+
   function login(user) {
     setCurrentUser(user);
     localStorage.setItem('eduverse_user', JSON.stringify(user));
-    // Save user activity to Firestore
-    if (user.uid) {
-      setDoc(doc(db, 'users', user.uid), {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        lastLogin: new Date().toISOString(),
-      }, { merge: true });
-    }
   }
 
   function logout() {
@@ -96,10 +91,6 @@ export function AppProvider({ children }) {
       const exists = prev.includes(id);
       if (toast) toast(exists ? 'Removed from wishlist' : 'Added to wishlist ♥', exists ? 'error' : 'success');
       const updated = exists ? prev.filter(x => x !== id) : [...prev, id];
-      // Save to Firestore
-      if (currentUser?.uid) {
-        setDoc(doc(db, 'users', currentUser.uid), { wishlist: updated }, { merge: true });
-      }
       return updated;
     });
   }
@@ -109,10 +100,6 @@ export function AppProvider({ children }) {
       const exists = prev.includes(id);
       if (toast) toast(exists ? 'Unenrolled from course' : `Enrolled in "${courseName}" 🎉`, exists ? 'error' : 'success');
       const updated = exists ? prev.filter(x => x !== id) : [...prev, id];
-      // Save to Firestore
-      if (currentUser?.uid) {
-        setDoc(doc(db, 'users', currentUser.uid), { enrolled: updated }, { merge: true });
-      }
       return updated;
     });
   }
@@ -147,6 +134,18 @@ export function AppProvider({ children }) {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   }
 
+  function addUser(user) {
+    setUsers(prev => {
+      const exists = prev.findIndex(u => u.email === user.email);
+      if (exists > -1) {
+        const updated = [...prev];
+        updated[exists] = user;
+        return updated;
+      }
+      return [...prev, user];
+    });
+  }
+
   return (
     <AppContext.Provider value={{
       currentUser, login, logout,
@@ -156,6 +155,7 @@ export function AppProvider({ children }) {
       completed, markCompleted,
       ratings, rateCourse, getUserRating,
       theme, toggleTheme,
+      users, addUser,
     }}>
       {children}
     </AppContext.Provider>
