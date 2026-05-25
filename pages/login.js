@@ -75,16 +75,11 @@ export default function Login() {
   }
 
   function handleGoogle() {
-    const googleUser = {
-      id: Date.now().toString(),
-      firstName: 'Google',
-      lastName: 'User',
-      email: 'google@user.com',
-      picture: '',
-      provider: 'Google',
-    };
-    login(googleUser);
-    router.push('/');
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    const redirectUri = encodeURIComponent(window.location.origin + '/auth/callback');
+    const scope = encodeURIComponent('openid email profile');
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
+    window.location.href = url;
   }
 
   async function handleForgotPassword() {
@@ -111,7 +106,7 @@ export default function Login() {
           to_email: resetEmail,
           temp_password: tempPassword,
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
       );
       setResetSent(true);
     } catch(e) {
