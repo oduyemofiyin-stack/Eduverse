@@ -11,24 +11,23 @@ function AuthGuard({ Component, pageProps }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
 
+  const publicPaths = ['/login', '/admin', '/auth/callback'];
+
   useEffect(() => {
-    // Give localStorage time to load before checking auth
     const timer = setTimeout(() => setChecking(false), 300);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (!checking && !currentUser && router.pathname !== '/login' && router.pathname !== '/admin') {
+    if (!checking && !currentUser && !publicPaths.includes(router.pathname)) {
       router.push('/login');
     }
   }, [checking, currentUser, router.pathname]);
 
-  // Apply theme to document
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Show nothing while checking auth
   if (checking) return (
     <div style={{
       minHeight:'100vh',
@@ -45,9 +44,9 @@ function AuthGuard({ Component, pageProps }) {
     </div>
   );
 
-  if (!currentUser && router.pathname !== '/login' && router.pathname !== '/admin') return null;
+  if (!currentUser && !publicPaths.includes(router.pathname)) return null;
 
-  if (router.pathname === '/login' || router.pathname === '/admin') {
+  if (publicPaths.includes(router.pathname)) {
     return <Component {...pageProps} />;
   }
 

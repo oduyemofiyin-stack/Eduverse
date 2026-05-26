@@ -69,9 +69,7 @@ export function AppProvider({ children }) {
   }, [theme]);
 
   useEffect(() => {
-    if (users.length > 0) {
-      localStorage.setItem('eduverse_users', JSON.stringify(users));
-    }
+    localStorage.setItem('eduverse_users', JSON.stringify(users));
   }, [users]);
 
   function login(user) {
@@ -145,12 +143,15 @@ export function AppProvider({ children }) {
   function addUser(user) {
     setUsers(prev => {
       const exists = prev.findIndex(u => u.email === user.email);
+      let updated;
       if (exists > -1) {
-        const updated = [...prev];
+        updated = [...prev];
         updated[exists] = user;
-        return updated;
+      } else {
+        updated = [...prev, user];
       }
-      return [...prev, user];
+      localStorage.setItem('eduverse_users', JSON.stringify(updated));
+      return updated;
     });
   }
 

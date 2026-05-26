@@ -37,13 +37,7 @@ export default function Login() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setLoading(true);
     setErrors({});
-    // Get fresh users from localStorage every time
-    let allUsers = [];
-    try {
-      const saved = localStorage.getItem('eduverse_users');
-      allUsers = saved ? JSON.parse(saved) : [];
-    } catch { allUsers = []; }
-    const user = allUsers.find(u =>
+    const user = users.find(u =>
       u.email.toLowerCase() === form.email.toLowerCase() &&
       u.password === form.password
     );
@@ -53,8 +47,8 @@ export default function Login() {
       return;
     }
     login(user);
-    setTimeout(() => router.push('/'), 100);
     setLoading(false);
+    router.push('/');
   }
 
   function handleSignup() {
@@ -79,8 +73,8 @@ export default function Login() {
     };
     addUser(newUser);
     login(newUser);
-    router.push('/');
     setLoading(false);
+    router.push('/');
   }
 
   function handleGoogle() {
