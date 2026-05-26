@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/router';
 
@@ -8,10 +8,19 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [headerHidden, setHeaderHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 20);
+      const sy = window.scrollY;
+      setScrolled(sy > 20);
+      if (sy > 100) {
+        setHeaderHidden(sy > lastScrollY.current);
+      } else {
+        setHeaderHidden(false);
+      }
+      lastScrollY.current = sy;
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -28,7 +37,7 @@ export default function Header() {
   ];
 
   return (
-    <header style={{
+    <header className={`header-collapsible ${headerHidden ? 'header-hidden' : ''}`} style={{
       position:'sticky', top:0, zIndex:200,
       background: scrolled ? 'var(--header-bg)' : 'transparent',
       backdropFilter: scrolled ? 'blur(24px)' : 'none',

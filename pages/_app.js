@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AppProvider, useApp } from '../context/AppContext';
 import { ToastProvider } from '../components/Toast';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomNav from '../components/BottomNav';
+import ScrollToTop from '../components/ScrollToTop';
+import OfflineBanner from '../components/OfflineBanner';
 import '../styles/globals.css';
 
 function AuthGuard({ Component, pageProps }) {
@@ -11,8 +14,27 @@ function AuthGuard({ Component, pageProps }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
   const [transitioning, setTransitioning] = useState(false);
+  const touchStartX = useRef(0);
 
   const publicPaths = ['/login', '/admin', '/auth/callback'];
+  const noFramePaths = ['/login', '/admin', '/auth/callback'];
+
+  // Back-swipe gesture
+  useEffect(() => {
+    function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
+    function onTouchEnd(e) {
+      const dx = e.changedTouches[0].clientX - touchStartX.current;
+      if (dx > 80 && touchStartX.current < 30 && window.history.length > 1) {
+        router.back();
+      }
+    }
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchend', onTouchEnd);
+    };
+  }, []);
 
   useEffect(() => {
     function onStart() { setTransitioning(true); }
@@ -78,11 +100,15 @@ function AuthGuard({ Component, pageProps }) {
           : 'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.05) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.04) 0%, transparent 60%)',
         pointerEvents:'none', zIndex:0,
       }}/>
+      <OfflineBanner />
       <Header />
       <main style={{flex:1, position:'relative', zIndex:1, transition:'opacity 0.2s, transform 0.2s', opacity: transitioning ? 0.7 : 1, transform: transitioning ? 'scale(0.98)' : 'scale(1)'}}>
         <Component {...pageProps} />
       </main>
       <Footer />
+      <BottomNav />
+      <ScrollToTop />
+      <div className="back-swipe-area"/>
     </div>
   );
 }

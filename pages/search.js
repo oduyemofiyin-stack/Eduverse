@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
+import BottomSheet from '../components/BottomSheet';
 import { CourseSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
@@ -17,6 +18,9 @@ export default function Search() {
   const [duration, setDuration] = useState('All');
   const [minRating, setMinRating] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
+  const sentinelRef = useRef(null);
 
   useEffect(() => {
     if (q) setSearch(q);
@@ -53,17 +57,44 @@ export default function Search() {
     return 0;
   });
 
+  // Infinite scroll
+  useEffect(() => {
+    if (!sentinelRef.current) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setVisibleCount(prev => Math.min(prev + 8, filtered.length));
+      }
+    }, { rootMargin:'200px' });
+    obs.observe(sentinelRef.current);
+    return () => obs.disconnect();
+  }, [filtered.length]);
+
+  const visibleCourses = filtered.slice(0, visibleCount);
+
   return (
     <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
 
       {/* HEADER */}
-      <div style={{marginBottom:'1.5rem'}}>
-        <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>
-          🔍 Search Courses
-        </h1>
-        <p style={{color:'#7a80a0', fontSize:'0.88rem'}}>
-          Find your perfect course from our library
-        </p>
+      <div style={{marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+        <div>
+          <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>
+            🔍 Search Courses
+          </h1>
+          <p style={{color:'#7a80a0', fontSize:'0.88rem'}}>
+            Find your perfect course from our library
+          </p>
+        </div>
+        <button onClick={() => setShowFilters(true)}
+          className="min-touch filter-btn-mobile"
+          style={{
+            background:'var(--surface2)', border:'1px solid var(--border2)',
+            borderRadius:'10px', padding:'0.5rem 1rem', cursor:'pointer',
+            fontSize:'0.8rem', fontWeight:'600', color:'var(--text)',
+            display:'flex', alignItems:'center', gap:'0.4rem',
+          }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+          Filters
+        </button>
       </div>
 
       {/* SEARCH BAR */}
@@ -75,6 +106,7 @@ export default function Search() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           autoFocus
+          inputMode="search"
           style={{
             width:'100%', background:'#0d1117',
             border:'1px solid rgba(255,255,255,0.1)',
@@ -93,8 +125,8 @@ export default function Search() {
         )}
       </div>
 
-      {/* FILTERS ROW */}
-      <div style={{
+      {/* FILTERS — desktop */}
+      <div className="filters-desktop" style={{
         background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
         borderRadius:'14px', padding:'1.2rem', marginBottom:'1.5rem',
       }}>
@@ -212,9 +244,10 @@ export default function Search() {
               }}
             >Clear Search</button>
           </div>
-        ) : filtered.map(c => (
+        ) : visibleCourses.map((c, i) => (
           <div key={c.id}
             onClick={() => router.push(`/courses/${c.id}`)}
+            className="list-item"
             style={{
               background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
               borderRadius:'16px', overflow:'hidden', cursor:'pointer', transition:'all 0.3s',
@@ -223,7 +256,7 @@ export default function Search() {
             onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.background='#0d1117'; }}
           >
             <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'#161b26'}}>
-              <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}}/>
+              <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}}/>
               <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(6,8,15,0.65) 0%, transparent 55%)'}}/>
               {enrolled.includes(c.id) ? (
                 <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(68,136,255,0.2)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>✓ Enrolled</span>
@@ -269,6 +302,63 @@ export default function Search() {
           </div>
         ))}
       </div>
+
+      {/* INFINITE SCROLL SENTINEL */}
+      {visibleCount < filtered.length && (
+        <div ref={sentinelRef} style={{textAlign:'center', padding:'2rem', color:'var(--muted)', fontSize:'0.85rem'}}>
+          Loading more…
+        </div>
+      )}
+
+      {/* FILTERS BOTTOM SHEET (mobile) */}
+      <BottomSheet open={showFilters} onClose={() => setShowFilters(false)} title="Filter Courses">
+        <div style={{display:'flex', flexDirection:'column', gap:'1rem'}}>
+          <div>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Category</label>
+            <select value={activeCat} onChange={e => setActiveCat(e.target.value)}
+              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
+              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Sort By</label>
+            <select value={sortBy} onChange={e => setSortBy(e.target.value)}
+              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
+              <option value="relevance">Relevance</option>
+              <option value="rating">Highest Rated</option>
+              <option value="duration_asc">Shortest First</option>
+              <option value="duration_desc">Longest First</option>
+            </select>
+          </div>
+          <div>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Duration</label>
+            <select value={duration} onChange={e => setDuration(e.target.value)}
+              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
+              {durations.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Min Rating</label>
+            <select value={minRating} onChange={e => setMinRating(parseFloat(e.target.value))}
+              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
+              <option value={0}>Any Rating</option>
+              <option value={4}>4.0+</option>
+              <option value={4.5}>4.5+</option>
+              <option value={4.8}>4.8+</option>
+            </select>
+          </div>
+          <button onClick={() => setShowFilters(false)}
+            style={{padding:'0.8rem', borderRadius:'12px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff', fontWeight:'700', fontSize:'0.9rem'}}>
+            Apply Filters
+          </button>
+          {(activeCat !== 'All' || sortBy !== 'relevance' || duration !== 'All' || minRating > 0) && (
+            <button onClick={() => { setActiveCat('All'); setSortBy('relevance'); setDuration('All'); setMinRating(0); }}
+              style={{padding:'0.6rem', borderRadius:'12px', border:'1px solid var(--border2)', background:'transparent', color:'var(--muted)', cursor:'pointer', fontFamily:'inherit', fontSize:'0.85rem'}}>
+              Reset All
+            </button>
+          )}
+        </div>
+      </BottomSheet>
     </div>
   );
 }

@@ -219,6 +219,7 @@ export default function Login() {
                 <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>First Name</label>
                 <input type="text" placeholder="John" value={form.firstName}
                   onChange={e => setForm(p => ({...p, firstName: e.target.value}))}
+                  inputMode="text" autoComplete="given-name"
                   style={inp(errors.firstName)}/>
                 {errors.firstName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.firstName}</div>}
               </div>
@@ -226,6 +227,7 @@ export default function Login() {
                 <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Last Name</label>
                 <input type="text" placeholder="Doe" value={form.lastName}
                   onChange={e => setForm(p => ({...p, lastName: e.target.value}))}
+                  inputMode="text" autoComplete="family-name"
                   style={inp(errors.lastName)}/>
                 {errors.lastName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.lastName}</div>}
               </div>
@@ -237,6 +239,7 @@ export default function Login() {
             <input type="email" placeholder="you@example.com" value={form.email}
               onChange={e => setForm(p => ({...p, email: e.target.value}))}
               onKeyDown={e => e.key === 'Enter' && tab === 'login' && handleLogin()}
+              inputMode="email" autoComplete="email"
               style={inp(errors.email)}/>
             {errors.email && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.email}</div>}
           </div>
@@ -246,6 +249,7 @@ export default function Login() {
             <input type="password" placeholder="At least 6 characters" value={form.password}
               onChange={e => setForm(p => ({...p, password: e.target.value}))}
               onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
+              inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
               style={inp(errors.password)}/>
             {errors.password && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
           </div>
@@ -274,6 +278,7 @@ export default function Login() {
                   <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Enter your email and we will send you a temporary password.</p>
                   <input type="email" placeholder="your@email.com" value={resetEmail}
                     onChange={e => setResetEmail(e.target.value)}
+                    inputMode="email" autoComplete="email"
                     style={{width:'100%', background:'var(--surface)', border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.6rem'}}/>
                   {errors.reset && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.reset}</div>}
                   <div style={{display:'flex', gap:'0.6rem'}}>

@@ -1,12 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
+import CelebrationModal from '../components/CelebrationModal';
 import courses from '../data/courses';
 
 export default function Dashboard() {
   const { enrolled, completed, progress, getCourseProgress, xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS, currentUser } = useApp();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [celebration, setCelebration] = useState(null);
+
+  // Show celebration when a new badge is earned (first load)
+  useEffect(() => {
+    if (!loading && badges.length > 0) {
+      const lastBadge = badges[badges.length - 1];
+      const def = BADGE_DEFS[lastBadge];
+      if (def) {
+        setCelebration({ icon: def.icon, title: `Badge Earned: ${def.label}`, desc: def.desc });
+      }
+    }
+  }, [loading]);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 400);
@@ -210,6 +223,9 @@ export default function Dashboard() {
           .dash-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
+
+      <CelebrationModal open={!!celebration} onClose={() => setCelebration(null)}
+        icon={celebration?.icon} title={celebration?.title} desc={celebration?.desc} />
     </div>
   );
 }

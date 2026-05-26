@@ -390,13 +390,13 @@ export default function Home() {
           : `${courses.length} courses available`}
       </div>
 
-      {/* COURSE GRID */}
+      {/* COURSE GRID — desktop */}
       <div style={{
         display:'grid',
         gridTemplateColumns:'repeat(auto-fill, minmax(min(300px, 100%), 1fr))',
-        gap:'1.3rem', padding:'0 1.2rem 5rem',
+        gap:'1.3rem', padding:'0 1.2rem 2rem',
         maxWidth:'1240px', margin:'0 auto',
-      }}>
+      }} className="course-grid-desktop">
         {loading ? (
           Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
         ) : filtered.length === 0 ? (
@@ -415,9 +415,8 @@ export default function Home() {
           return (
           <div
             key={c.id}
-            className="tilt-card reveal"
+            className="tilt-card reveal list-item"
             style={{
-              animationDelay:`${Math.min(i * 0.06, 0.4)}s`,
               borderRadius:'18px', overflow:'hidden',
               cursor:'none', position:'relative',
             }}
@@ -446,13 +445,13 @@ export default function Home() {
               }}
             >
               {/* THUMBNAIL */}
-              <div style={{
+              <div className="blur-load loaded" style={{
                 width:'100%', height:'180px',
                 position:'relative', overflow:'hidden',
                 background:'var(--surface2)',
               }}>
                 <img
-                  src={c.img} alt={c.title}
+                  src={c.img} alt={c.title} loading="lazy"
                   style={{
                     width:'100%', height:'100%', objectFit:'cover',
                     display:'block', transition:'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -497,79 +496,41 @@ export default function Home() {
                     color: wishlist.includes(c.id) ? '#ff6b9d' : 'rgba(255,255,255,0.8)',
                     transition:'all 0.25s',
                   }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.transform='scale(1.2)';
-                    e.currentTarget.style.background='rgba(255,107,157,0.3)';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.transform='scale(1)';
-                    e.currentTarget.style.background='rgba(6,8,15,0.55)';
-                  }}
+
+                  onMouseEnter={e => { e.currentTarget.style.transform='scale(1.15)'; e.currentTarget.style.background='rgba(6,8,15,0.7)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.background='rgba(6,8,15,0.55)'; }}
                 >
                   {wishlist.includes(c.id) ? '♥' : '♡'}
                 </div>
               </div>
 
-              {/* CARD BODY */}
-              <div style={{padding:'1.1rem'}}>
+              {/* BODY */}
+              <div style={{padding:'1.1rem 1.2rem 1.2rem'}}>
                 <div style={{
-                  fontSize:'0.68rem', fontWeight:'700',
-                  letterSpacing:'0.09em', textTransform:'uppercase',
-                  color:'#4488ff', marginBottom:'0.45rem',
+                  fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase',
+                  letterSpacing:'0.07em', color:'var(--blue)', marginBottom:'0.35rem',
                 }}>{c.category}</div>
                 <div style={{
-                  fontFamily:'Georgia, serif', fontSize:'1rem',
-                  fontWeight:'700', lineHeight:'1.35', marginBottom:'0.4rem',
-                  color:'var(--text)',
-                  display:'-webkit-box', WebkitLineClamp:2,
-                  WebkitBoxOrient:'vertical', overflow:'hidden',
+                  fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700',
+                  lineHeight:'1.35', marginBottom:'0.4rem',
+                  display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden',
                 }}>{c.title}</div>
+                <div style={{fontSize:'0.8rem', color:'var(--muted)', marginBottom:'0.7rem'}}>by {c.instructor}</div>
                 <div style={{
-                  fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.75rem',
-                }}>by {c.instructor}</div>
-
-                {/* META ROW */}
-                <div style={{
-                  display:'flex', alignItems:'center',
-                  justifyContent:'space-between',
+                  display:'flex', alignItems:'center', justifyContent:'space-between',
                   borderTop:'1px solid var(--border)', paddingTop:'0.7rem',
                   flexWrap:'wrap', gap:'0.3rem',
                 }}>
-                  <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.78rem', color:'var(--text)'}}>
-                    <span style={{color:'#fbbf24', fontSize:'0.72rem'}}>{'★'.repeat(Math.floor(c.rating))}{'☆'.repeat(5-Math.floor(c.rating))}</span> {c.rating}
-                  </span>
+                  <span style={{fontSize:'0.78rem', color:'var(--gold)'}}>{'★'.repeat(Math.round(c.rating))}{'☆'.repeat(5 - Math.round(c.rating))} <span style={{color:'var(--muted)'}}>{c.rating}</span></span>
                   <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>⏱ {c.duration}</span>
-                  <span style={{
-                    fontFamily:'Georgia, serif', fontSize:'0.9rem',
-                    fontWeight:'700', color:'var(--teal)',
-                    textShadow:'0 0 12px rgba(0,212,170,0.4)',
-                  }}>Free</span>
+                  <span style={{fontFamily:'Georgia, serif', fontWeight:'700', color:'var(--teal)', fontSize:'0.92rem'}}>Free</span>
                 </div>
-
-                {/* PROGRESS BAR */}
-                {enrolled.includes(c.id) && (
-                  <div style={{marginTop:'0.75rem'}}>
-                    <div style={{
-                      display:'flex', justifyContent:'space-between',
-                      fontSize:'0.72rem', color:'var(--muted)', marginBottom:'0.35rem',
-                    }}>
-                      <span>Progress</span>
-                      <span style={{color:'var(--blue)', fontWeight:'600'}}>
-                        {prog}%
-                      </span>
+                {prog > 0 && (
+                  <div style={{marginTop:'0.7rem', display:'flex', alignItems:'center', gap:'0.5rem'}}>
+                    <div style={{flex:1, height:'4px', background:'var(--surface3)', borderRadius:'100px', overflow:'hidden'}}>
+                      <div style={{width:`${prog}%`, height:'100%', borderRadius:'100px', background:'linear-gradient(90deg,var(--blue),var(--teal))', transition:'width 0.6s'}}/>
                     </div>
-                    <div style={{
-                      width:'100%', height:'4px',
-                      background:'var(--surface3)', borderRadius:'100px', overflow:'hidden',
-                    }}>
-                      <div className={prog > 0 ? 'progress-fill' : ''} style={{
-                        height:'100%', borderRadius:'100px',
-                        background:'linear-gradient(90deg,var(--blue),var(--teal))',
-                        width:`${prog}%`,
-                        transition:'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-                        boxShadow:'0 0 8px rgba(68,136,255,0.6)',
-                      }}/>
-                    </div>
+                    <span style={{fontSize:'0.7rem', color:'var(--muted)', fontWeight:'600'}}>{prog}%</span>
                   </div>
                 )}
               </div>
@@ -577,6 +538,43 @@ export default function Home() {
           </div>
           );
         })}
+      </div>
+
+      {/* COURSE CAROUSEL — mobile */}
+      <div style={{padding:'0 0 3rem'}} className="carousel-section-mobile">
+        <div style={{padding:'0 1.2rem', marginBottom:'0.8rem'}}>
+          <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700'}}>
+            {search || activeCat !== 'All' ? 'Search Results' : 'Browse Courses'}
+          </h2>
+        </div>
+        <div className="carousel">
+          {filtered.length === 0 ? (
+            <div style={{padding:'2rem 1.2rem', color:'var(--muted)', fontSize:'0.88rem', width:'100%', textAlign:'center'}}>No courses found</div>
+          ) : filtered.map((c, i) => {
+            const prog = enrolled.includes(c.id) ? getCourseProgress(c.id, c.lessons.length) : 0;
+            return (
+              <div key={c.id} onClick={() => router.push(`/courses/${c.id}`)}
+                className="list-item"
+                style={{background:'var(--card-bg)', borderRadius:'16px', overflow:'hidden', border:'1px solid var(--border)', cursor:'pointer'}}
+              >
+                <div style={{width:'100%', height:'150px', overflow:'hidden', position:'relative', background:'var(--surface2)'}}>
+                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                  <span style={{position:'absolute', top:'8px', left:'8px', fontSize:'0.6rem', fontWeight:'700', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.2)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.35)'}}>Free</span>
+                </div>
+                <div style={{padding:'0.8rem'}}>
+                  <div style={{fontSize:'0.65rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)', marginBottom:'0.2rem'}}>{c.category}</div>
+                  <div style={{fontWeight:'700', fontSize:'0.9rem', lineHeight:'1.3', marginBottom:'0.2rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
+                  <div style={{fontSize:'0.75rem', color:'var(--muted)'}}>{c.duration}</div>
+                  {prog > 0 && (
+                    <div style={{marginTop:'0.5rem', height:'3px', background:'var(--surface3)', borderRadius:'100px', overflow:'hidden'}}>
+                      <div style={{width:`${prog}%`, height:'100%', borderRadius:'100px', background:'linear-gradient(90deg,var(--blue),var(--teal))'}}/>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
