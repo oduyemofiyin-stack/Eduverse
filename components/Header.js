@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/router';
 
@@ -7,6 +7,15 @@ export default function Header() {
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 20);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const navItems = [
     {label:'Courses', path:'/'},
@@ -20,13 +29,16 @@ export default function Header() {
   return (
     <header style={{
       position:'sticky', top:0, zIndex:200,
-      background:'rgba(6,8,15,0.92)', backdropFilter:'blur(24px)',
-      borderBottom:'1px solid rgba(255,255,255,0.06)',
+      background: scrolled ? 'var(--header-bg)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(24px)' : 'none',
+      borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+      transition:'background 0.3s, backdrop-filter 0.3s, border-color 0.3s, box-shadow 0.3s',
+      boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.2)' : 'none',
     }}>
-      {/* MAIN ROW */}
       <div style={{
         height:'66px', padding:'0 1.2rem',
         display:'flex', alignItems:'center', justifyContent:'space-between',
+        maxWidth:'1280px', margin:'0 auto',
       }}>
 
         {/* LOGO */}
@@ -52,31 +64,49 @@ export default function Header() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+        <div style={{display:'flex', alignItems:'center', gap:'6px'}}>
 
           {/* DESKTOP NAV */}
           <nav style={{display:'flex', alignItems:'center', gap:'2px'}} className="desktop-nav">
-            {navItems.map(item => (
-              <button key={item.path} onClick={() => router.push(item.path)} style={{
-                fontFamily:'inherit', fontSize:'0.76rem', fontWeight:'500',
-                padding:'0.32rem 0.7rem', borderRadius:'9px', border:'none',
-                cursor:'pointer',
-                background: router.pathname === item.path ? '#161b26' : 'transparent',
-                color: router.pathname === item.path ? '#eef0f8' : '#7a80a0',
-              }}>
-                {item.label}
-              </button>
-            ))}
+            {navItems.map(item => {
+              const isActive = router.pathname === item.path;
+              return (
+                <button key={item.path} onClick={() => router.push(item.path)} style={{
+                  fontFamily:'inherit', fontSize:'0.76rem', fontWeight:'500',
+                  padding:'0.32rem 0.7rem', borderRadius:'9px', border:'none',
+                  cursor:'pointer', position:'relative',
+                  background: isActive ? 'var(--surface2)' : 'transparent',
+                  color: isActive ? 'var(--text)' : 'var(--muted)',
+                  transition:'background 0.2s, color 0.2s',
+                }}>
+                  {item.label}
+                  {isActive && (
+                    <span style={{
+                      position:'absolute', bottom:'2px', left:'50%',
+                      transform:'translateX(-50%)',
+                      width:'16px', height:'3px',
+                      borderRadius:'100px',
+                      background:'linear-gradient(90deg,var(--blue),var(--teal))',
+                    }}/>
+                  )}
+                </button>
+              );
+            })}
           </nav>
 
           {/* THEME TOGGLE */}
           <button
-            onClick={toggleTheme}
+            onClick={() => {
+              toggleTheme();
+              const btn = document.getElementById('themeBtn');
+              if (btn) { btn.classList.remove('theme-spin'); void btn.offsetWidth; btn.classList.add('theme-spin'); }
+            }}
+            id="themeBtn"
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             style={{
-              background:'#161b26', border:'1px solid rgba(255,255,255,0.13)',
+              background:'var(--surface2)', border:'1px solid var(--border2)',
               borderRadius:'9px', padding:'0.38rem 0.6rem',
-              cursor:'pointer', fontSize:'0.95rem',
+              cursor:'pointer', fontSize:'0.95rem', lineHeight:'1',
             }}>
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
@@ -87,9 +117,9 @@ export default function Header() {
               <div onClick={() => { setDropdownOpen(!dropdownOpen); setMobileMenuOpen(false); }}
                 style={{
                   display:'flex', alignItems:'center', gap:'6px',
-                  background:'#161b26', border:'1px solid rgba(255,255,255,0.13)',
+                  background:'var(--surface2)', border:'1px solid var(--border2)',
                   borderRadius:'100px', padding:'0.25rem 0.7rem 0.25rem 0.3rem',
-                  cursor:'pointer',
+                  cursor:'pointer', transition:'background 0.2s',
                 }}>
                 {currentUser.picture ? (
                   <img src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
@@ -97,41 +127,41 @@ export default function Header() {
                 ) : (
                   <div style={{
                     width:'26px', height:'26px', borderRadius:'50%',
-                    background:'linear-gradient(135deg,#4488ff,#00d4aa)',
+                    background:'linear-gradient(135deg,var(--blue),var(--teal))',
                     display:'flex', alignItems:'center', justifyContent:'center',
                     fontSize:'0.68rem', fontWeight:'700', color:'#fff',
                   }}>
                     {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
                   </div>
                 )}
-                <span style={{fontSize:'0.76rem', fontWeight:'600', color:'#eef0f8', maxWidth:'80px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                <span style={{fontSize:'0.76rem', fontWeight:'600', color:'var(--text)', maxWidth:'80px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
                   {currentUser.firstName}
                 </span>
-                <span style={{fontSize:'0.6rem', color:'#7a80a0'}}>▾</span>
+                <span style={{fontSize:'0.6rem', color:'var(--muted)'}}>▾</span>
               </div>
 
               {/* DROPDOWN */}
               {dropdownOpen && (
-                <div style={{
+                <div className="dropdown-enter" style={{
                   position:'absolute', top:'calc(100% + 8px)', right:0,
-                  background:'#0d1117', border:'1px solid rgba(255,255,255,0.13)',
+                  background:'var(--surface)', border:'1px solid var(--border2)',
                   borderRadius:'14px', padding:'0.5rem',
                   minWidth:'200px', zIndex:300,
-                  boxShadow:'0 20px 50px rgba(0,0,0,0.6)',
+                  boxShadow:'var(--shadow-lg)',
                 }}>
-                  <div style={{padding:'0.6rem 0.8rem 0.8rem', borderBottom:'1px solid rgba(255,255,255,0.06)', marginBottom:'0.4rem'}}>
-                    <div style={{fontSize:'0.85rem', fontWeight:'700', color:'#eef0f8', marginBottom:'0.15rem'}}>
+                  <div style={{padding:'0.6rem 0.8rem 0.8rem', borderBottom:'1px solid var(--border)', marginBottom:'0.4rem'}}>
+                    <div style={{fontSize:'0.85rem', fontWeight:'700', color:'var(--text)', marginBottom:'0.15rem'}}>
                       {currentUser.firstName} {currentUser.lastName}
                     </div>
-                    <div style={{fontSize:'0.75rem', color:'#7a80a0'}}>{currentUser.email}</div>
+                    <div style={{fontSize:'0.75rem', color:'var(--muted)'}}>{currentUser.email}</div>
                   </div>
                   {[
-                    {ico:'', label:'My Profile', path:'/profile'},
-                    {ico:'', label:'My Learning', path:'/enrolled'},
-                    {ico:'', label:'Wishlist', path:'/wishlist'},
-                    {ico:'', label:'Search', path:'/search'},
-                    {ico:'', label:'About', path:'/about'},
-                    {ico:'', label:'Contact', path:'/contact'},
+                    {ico:'👤', label:'My Profile', path:'/profile'},
+                    {ico:'📚', label:'My Learning', path:'/enrolled'},
+                    {ico:'♡', label:'Wishlist', path:'/wishlist'},
+                    {ico:'🔍', label:'Search', path:'/search'},
+                    {ico:'ℹ️', label:'About', path:'/about'},
+                    {ico:'✉️', label:'Contact', path:'/contact'},
                   ].map(item => (
                     <button key={item.path}
                       onClick={() => { router.push(item.path); setDropdownOpen(false); }}
@@ -139,11 +169,12 @@ export default function Header() {
                         display:'flex', alignItems:'center', gap:'0.6rem',
                         padding:'0.55rem 0.8rem', borderRadius:'9px',
                         fontSize:'0.82rem', cursor:'pointer',
-                        color:'#7a80a0', border:'none',
+                        color:'var(--muted)', border:'none',
                         background:'none', width:'100%', textAlign:'left',
+                        transition:'background 0.15s, color 0.15s',
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.background='#161b26'; e.currentTarget.style.color='#eef0f8'; }}
-                      onMouseLeave={e => { e.currentTarget.style.background='none'; e.currentTarget.style.color='#7a80a0'; }}
+                      onMouseEnter={e => { e.currentTarget.style.background='var(--surface2)'; e.currentTarget.style.color='var(--text)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background='none'; e.currentTarget.style.color='var(--muted)'; }}
                     >
                       {item.ico} {item.label}
                     </button>
@@ -153,9 +184,10 @@ export default function Header() {
                     style={{
                       display:'flex', alignItems:'center', gap:'0.6rem',
                       padding:'0.65rem 0.8rem', borderRadius:'9px',
-                      fontSize:'0.82rem', cursor:'pointer', color:'#ff6b6b',
+                      fontSize:'0.82rem', cursor:'pointer', color:'var(--red)',
                       border:'none', background:'none', width:'100%', textAlign:'left',
-                      marginTop:'0.2rem', borderTop:'1px solid rgba(255,255,255,0.06)',
+                      marginTop:'0.2rem', borderTop:'1px solid var(--border)',
+                      transition:'background 0.15s',
                     }}
                     onMouseEnter={e => e.currentTarget.style.background='rgba(255,107,107,0.1)'}
                     onMouseLeave={e => e.currentTarget.style.background='none'}
@@ -172,21 +204,31 @@ export default function Header() {
             onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setDropdownOpen(false); }}
             className="hamburger"
             style={{
-              background:'#161b26', border:'1px solid rgba(255,255,255,0.13)',
+              background:'var(--surface2)', border:'1px solid var(--border2)',
               borderRadius:'9px', padding:'0.4rem 0.6rem',
-              cursor:'pointer', color:'#eef0f8', fontSize:'1.1rem',
+              cursor:'pointer', color:'var(--text)', fontSize:'1.1rem', lineHeight:'1',
+              transition:'background 0.2s',
             }}>
-            {mobileMenuOpen ? '✕' : '☰'}
+            {mobileMenuOpen ? (
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/>
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="2" y1="4" x2="16" y2="4"/><line x1="2" y1="9" x2="16" y2="9"/><line x1="2" y1="14" x2="16" y2="14"/>
+              </svg>
+            )}
           </button>
         </div>
       </div>
 
       {/* MOBILE MENU */}
       {mobileMenuOpen && (
-        <div style={{
-          background:'#0d1117', borderTop:'1px solid rgba(255,255,255,0.06)',
+        <div className="mobile-enter" style={{
+          background:'var(--surface)', borderTop:'1px solid var(--border)',
           padding:'0.8rem 1.2rem 1rem',
           display:'flex', flexDirection:'column', gap:'0.3rem',
+          maxHeight:'70vh', overflowY:'auto',
         }}>
           {navItems.map(item => (
             <button key={item.path}
@@ -195,8 +237,9 @@ export default function Header() {
                 fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500',
                 padding:'0.7rem 1rem', borderRadius:'10px', border:'none',
                 cursor:'pointer', textAlign:'left',
-                background: router.pathname === item.path ? '#161b26' : 'transparent',
-                color: router.pathname === item.path ? '#eef0f8' : '#7a80a0',
+                background: router.pathname === item.path ? 'var(--surface2)' : 'transparent',
+                color: router.pathname === item.path ? 'var(--text)' : 'var(--muted)',
+                transition:'background 0.2s',
               }}>
               {item.label}
             </button>
@@ -205,12 +248,12 @@ export default function Header() {
             <>
               <button
                 onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }}
-                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'#7a80a0'}}>
+                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--muted)'}}>
                 My Profile
               </button>
               <button
                 onClick={() => { logout(); setMobileMenuOpen(false); router.push('/login'); }}
-                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'#ff6b6b', marginTop:'0.3rem', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.9rem'}}>
+                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--red)', marginTop:'0.3rem', borderTop:'1px solid var(--border)', paddingTop:'0.9rem'}}>
                 ↩ Sign Out
               </button>
             </>

@@ -10,8 +10,20 @@ function AuthGuard({ Component, pageProps }) {
   const { currentUser, theme } = useApp();
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const [transitioning, setTransitioning] = useState(false);
 
   const publicPaths = ['/login', '/admin', '/auth/callback'];
+
+  useEffect(() => {
+    function onStart() { setTransitioning(true); }
+    function onComplete() { setTransitioning(false); }
+    router.events.on('routeChangeStart', onStart);
+    router.events.on('routeChangeComplete', onComplete);
+    return () => {
+      router.events.off('routeChangeStart', onStart);
+      router.events.off('routeChangeComplete', onComplete);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setChecking(false), 300);
@@ -67,7 +79,7 @@ function AuthGuard({ Component, pageProps }) {
         pointerEvents:'none', zIndex:0,
       }}/>
       <Header />
-      <main style={{flex:1, position:'relative', zIndex:1}}>
+      <main style={{flex:1, position:'relative', zIndex:1, transition:'opacity 0.2s, transform 0.2s', opacity: transitioning ? 0.7 : 1, transform: transitioning ? 'scale(0.98)' : 'scale(1)'}}>
         <Component {...pageProps} />
       </main>
       <Footer />

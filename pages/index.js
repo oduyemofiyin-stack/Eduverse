@@ -6,6 +6,41 @@ import { CourseSkeleton } from '../components/Skeleton';
 import { initScrollReveal, initCardTilt, initParallax, initMagneticButtons, initCustomCursor, initFlowingLines } from '../lib/animations';
 import courses from '../data/courses';
 
+function AnimatedNumber({ value, color }) {
+  const [displayed, setDisplayed] = useState(0);
+  const ref = useRef(null);
+  const revealed = useRef(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !revealed.current) {
+        revealed.current = true;
+        let start = 0;
+        const end = parseInt(value);
+        const duration = 1500;
+        const step = Math.max(1, Math.floor(end / (duration / 16)));
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= end) { start = end; clearInterval(timer); }
+          setDisplayed(start);
+        }, 16);
+      }
+    }, { threshold: 0.3 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <span ref={ref} style={{ color, textShadow: `0 0 20px ${color}66` }}>
+      {value.includes('%') || value.includes('K') || value.includes('+')
+        ? value.replace(/[\d]/g, '').split('').reduce((acc, c) => /\d/.test(c) ? acc + c : acc, '')
+          ? displayed + value.replace(/[\d,]/g, '')
+          : value
+        : displayed}
+    </span>
+  );
+}
+
 export default function Home() {
   const { wishlist, toggleWishlist, enrolled, getCourseProgress, theme } = useApp();
   const toast = useToast();
@@ -15,6 +50,8 @@ export default function Home() {
   const router = useRouter();
   const canvasRef = useRef(null);
   const isLight = theme === 'light';
+  const [typewriter, setTypewriter] = useState('');
+  const typewriterRef = useRef(null);
 
   const categories = ['All', ...new Set(courses.map(c => c.category))];
 
@@ -23,7 +60,6 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Init animations after loading
   useEffect(() => {
     if (!loading) {
       initScrollReveal();
@@ -37,12 +73,40 @@ export default function Home() {
     }
   }, [loading]);
 
-  // Flowing lines canvas — the air effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const cleanup = initFlowingLines(canvas);
     return cleanup;
+  }, []);
+
+  // Typewriter effect
+  useEffect(() => {
+    const phrases = ['your pace.', 'zero cost.', 'anywhere.', 'your potential.'];
+    let pi = 0, ci = 0;
+    typewriterRef.current = setInterval(() => {
+      const phrase = phrases[pi];
+      if (ci <= phrase.length) {
+        setTypewriter(phrase.slice(0, ci));
+        ci++;
+      } else {
+        clearInterval(typewriterRef.current);
+        setTimeout(() => {
+          ci = 0;
+          pi = (pi + 1) % phrases.length;
+          typewriterRef.current = setInterval(() => {
+            const p = phrases[pi];
+            if (ci <= p.length) {
+              setTypewriter(p.slice(0, ci));
+              ci++;
+            } else {
+              clearInterval(typewriterRef.current);
+            }
+          }, 60);
+        }, 2000);
+      }
+    }, 60);
+    return () => clearInterval(typewriterRef.current);
   }, []);
 
   const filtered = courses.filter(c => {
@@ -62,86 +126,115 @@ export default function Home() {
       {/* HERO */}
       <div style={{
         position:'relative', overflow:'hidden',
-        padding:'5rem 1.2rem 4rem', textAlign:'center',
-        minHeight:'520px', display:'flex', flexDirection:'column',
+        padding:'6rem 1.2rem 4rem', textAlign:'center',
+        minHeight:'560px', display:'flex', flexDirection:'column',
         alignItems:'center', justifyContent:'center',
       }}>
-        {/* FLOWING LINES CANVAS */}
         <canvas
           ref={canvasRef}
           id="flow-canvas"
           style={{position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none'}}
         />
 
-        {/* FLOATING ORBS — depth layers */}
+        {/* FLOATING ORBS */}
         <div className="hero-layer-1" style={{
-          position:'absolute', width:'400px', height:'400px', borderRadius:'50%',
+          position:'absolute', width:'500px', height:'500px', borderRadius:'50%',
           background:'radial-gradient(circle, rgba(68,136,255,0.12) 0%, transparent 70%)',
-          top:'-80px', left:'-80px', pointerEvents:'none',
+          top:'-120px', left:'-120px', pointerEvents:'none',
         }}/>
         <div className="hero-layer-2" style={{
-          position:'absolute', width:'300px', height:'300px', borderRadius:'50%',
+          position:'absolute', width:'350px', height:'350px', borderRadius:'50%',
           background:'radial-gradient(circle, rgba(0,212,170,0.1) 0%, transparent 70%)',
-          bottom:'-40px', right:'-40px', pointerEvents:'none',
+          bottom:'-60px', right:'-60px', pointerEvents:'none',
         }}/>
         <div className="hero-layer-3" style={{
-          position:'absolute', width:'200px', height:'200px', borderRadius:'50%',
+          position:'absolute', width:'250px', height:'250px', borderRadius:'50%',
           background:'radial-gradient(circle, rgba(240,192,64,0.08) 0%, transparent 70%)',
-          top:'40%', right:'15%', pointerEvents:'none',
+          top:'35%', right:'12%', pointerEvents:'none',
         }}/>
         <div className="breathe" style={{
-          position:'absolute', width:'500px', height:'500px', borderRadius:'50%',
+          position:'absolute', width:'600px', height:'600px', borderRadius:'50%',
           background:'radial-gradient(circle, rgba(68,136,255,0.06) 0%, transparent 60%)',
           top:'50%', left:'50%', transform:'translate(-50%,-50%)',
           pointerEvents:'none',
         }}/>
 
-        {/* 3D FLOATING OBJECT */}
+        {/* 3D OBJECTS */}
         <div style={{
-          position:'absolute', top:'12%', right:'8%',
-          width:'80px', height:'80px',
-          pointerEvents:'none', opacity:0.6,
+          position:'absolute', top:'10%', right:'6%',
+          width:'90px', height:'90px',
+          pointerEvents:'none', opacity:0.5,
         }} className="orbit-3d">
           <svg viewBox="0 0 80 80" fill="none">
-            <polygon points="40,5 75,65 5,65" stroke="#4488ff" strokeWidth="1.5" fill="rgba(68,136,255,0.08)"/>
-            <polygon points="40,20 65,60 15,60" stroke="#00d4aa" strokeWidth="1" fill="rgba(0,212,170,0.05)"/>
+            <polygon points="40,5 75,65 5,65" stroke="#4488ff" strokeWidth="1.5" fill="rgba(68,136,255,0.06)"/>
+            <polygon points="40,20 65,60 15,60" stroke="#00d4aa" strokeWidth="1" fill="rgba(0,212,170,0.04)"/>
           </svg>
         </div>
         <div style={{
-          position:'absolute', bottom:'15%', left:'8%',
-          width:'60px', height:'60px',
-          pointerEvents:'none', opacity:0.5,
+          position:'absolute', bottom:'18%', left:'5%',
+          width:'70px', height:'70px',
+          pointerEvents:'none', opacity:0.4,
         }} className="hero-layer-2">
           <svg viewBox="0 0 60 60" fill="none">
-            <rect x="10" y="10" width="40" height="40" rx="8" stroke="#f0c040" strokeWidth="1.5" fill="rgba(240,192,64,0.06)" transform="rotate(20 30 30)"/>
+            <rect x="10" y="10" width="40" height="40" rx="10" stroke="#f0c040" strokeWidth="1.5" fill="rgba(240,192,64,0.05)" transform="rotate(25 30 30)"/>
           </svg>
         </div>
 
         {/* HERO CONTENT */}
-        <div style={{position:'relative', zIndex:1, maxWidth:'860px', margin:'0 auto'}} data-parallax-text>
+        <div style={{position:'relative', zIndex:1, maxWidth:'900px', margin:'0 auto'}} data-parallax-text>
+          <div className="reveal delay-1" style={{
+            display:'inline-flex', alignItems:'center', gap:'0.5rem',
+            background:'rgba(68,136,255,0.1)', border:'1px solid rgba(68,136,255,0.2)',
+            borderRadius:'100px', padding:'0.3rem 1rem 0.3rem 0.6rem',
+            marginBottom:'1.5rem', fontSize:'0.78rem', color:'var(--blue)',
+            fontWeight:'500',
+          }}>
+            <span className="dot-pulse"/>
+            Now enrolling 50,000+ learners worldwide
+          </div>
 
-          <h1 className="reveal delay-1" style={{
+          <h1 className="reveal delay-2" style={{
             fontFamily:'Georgia, serif',
-            fontSize:'clamp(2.4rem, 7.5vw, 5.5rem)',
+            fontSize:'clamp(2.6rem, 8vw, 5.8rem)',
             fontWeight:'700', lineHeight:'1.02',
-            letterSpacing:'-0.03em', marginBottom:'1.2rem',
+            letterSpacing:'-0.03em', marginBottom:'0.8rem',
             color:'var(--text)',
           }}>
             Learn Without{' '}
             <span className="shimmer-text">Limits.</span>
           </h1>
 
-          <p className="reveal delay-2" style={{
-            fontSize:'clamp(0.95rem, 2.5vw, 1.18rem)',
+          <div className="reveal delay-3" style={{
+            fontSize:'clamp(1.1rem, 2.5vw, 1.3rem)',
+            color:'var(--muted)', lineHeight:'1.8',
+            marginBottom:'0.4rem', fontWeight:'400',
+            minHeight:'2.2rem',
+          }}>
+            At{' '}
+            <span style={{
+              fontFamily:'Georgia, serif', fontStyle:'italic',
+              background:'linear-gradient(135deg,var(--gold),var(--blue))',
+              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
+            }}>your</span>{' '}
+            pace. At{' '}
+            <span style={{
+              fontFamily:'Georgia, serif', fontStyle:'italic',
+              background:'linear-gradient(135deg,var(--gold),var(--blue))',
+              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
+            }}>zero</span>{' '}
+            cost.
+          </div>
+
+          <p className="reveal delay-3" style={{
+            fontSize:'clamp(0.9rem, 2vw, 1.05rem)',
             color:'var(--muted)', lineHeight:'1.85',
-            maxWidth:'560px', margin:'0 auto 2.5rem',
+            maxWidth:'580px', margin:'0.5rem auto 2.2rem',
             fontWeight:'400',
           }}>
-            World-class courses, real video lessons, reading materials,
-            and free certificates — completely free, forever.
+            World-class courses with real video lessons, reading materials, quizzes, and certificates — completely free, forever.
           </p>
 
-          <div className="reveal delay-3" style={{
+          <div className="reveal delay-4" style={{
             display:'flex', gap:'1rem',
             justifyContent:'center', flexWrap:'wrap',
           }}>
@@ -150,7 +243,7 @@ export default function Home() {
               onClick={() => document.getElementById('searchInput').focus()}
               style={{
                 fontSize:'0.95rem', fontWeight:'700',
-                padding:'0.9rem 2.2rem', borderRadius:'14px',
+                padding:'0.9rem 2.4rem', borderRadius:'14px',
                 border:'none', cursor:'none',
                 background:'linear-gradient(135deg,#f0c040,#c8960a)',
                 color:'#000',
@@ -175,19 +268,29 @@ export default function Home() {
             </button>
           </div>
         </div>
+
+        {/* SCROLL INDICATOR */}
+        <div style={{
+          position:'absolute', bottom:'1.5rem', left:'50%',
+          transform:'translateX(-50%)', color:'var(--muted2)',
+          fontSize:'0.7rem', display:'flex', flexDirection:'column',
+          alignItems:'center', gap:'0.2rem', zIndex:1,
+        }}>
+          <span className="scroll-indicator">↓</span>
+        </div>
       </div>
 
       {/* STATS */}
       <div style={{
-        display:'grid', gridTemplateColumns:'repeat(2, 1fr)',
+        display:'grid', gridTemplateColumns:'repeat(4, 1fr)',
         gap:'1rem', padding:'0 1.2rem 3rem',
-        maxWidth:'600px', margin:'0 auto',
+        maxWidth:'680px', margin:'0 auto',
       }}>
         {[
-          {n:'12', l:'Expert Courses', color:'#4488ff'},
-          {n:'100%', l:'Free Forever', color:'#f0c040'},
-          {n:'50K+', l:'Learners', color:'#00d4aa'},
-          {n:'7', l:'Categories', color:'#ff6b9d'},
+          {n:'12', l:'Expert Courses', color:'#4488ff', suffix:''},
+          {n:'100', l:'Free Forever', color:'#f0c040', suffix:'%'},
+          {n:'50000', l:'Learners', color:'#00d4aa', suffix:'+'},
+          {n:'7', l:'Categories', color:'#ff6b9d', suffix:''},
         ].map((s, i) => (
           <div key={s.l}
             className={`reveal-scale delay-${i+1} glass`}
@@ -198,8 +301,8 @@ export default function Home() {
               cursor:'none',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.transform='translateY(-6px)';
-              e.currentTarget.style.boxShadow=`0 16px 40px ${s.color}33`;
+              e.currentTarget.style.transform='translateY(-8px)';
+              e.currentTarget.style.boxShadow=`0 20px 50px ${s.color}22`;
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform='translateY(0)';
@@ -207,22 +310,33 @@ export default function Home() {
             }}
           >
             <div style={{
-              fontFamily:'Georgia, serif', fontSize:'2.2rem',
+              fontFamily:'Georgia, serif', fontSize:'2.4rem',
               fontWeight:'700', color:s.color,
-              textShadow:`0 0 20px ${s.color}66`,
-            }}>{s.n}</div>
-            <div style={{fontSize:'0.76rem', color:'var(--muted)', marginTop:'4px', letterSpacing:'0.05em', textTransform:'uppercase'}}>{s.l}</div>
+              textShadow:`0 0 20px ${s.color}44`,
+              lineHeight:'1',
+            }}>
+              <AnimatedNumber value={s.n + s.suffix} color={s.color} />
+              {s.suffix && !s.n.includes(s.suffix) ? s.suffix : ''}
+            </div>
+            <div style={{
+              fontSize:'0.72rem', color:'var(--muted)', marginTop:'6px',
+              letterSpacing:'0.06em', textTransform:'uppercase',
+              fontWeight:'500',
+            }}>{s.l}</div>
           </div>
         ))}
       </div>
 
-      {/* SEARCH & FILTERS */}
+      {/* SEARCH */}
       <div className="reveal" style={{maxWidth:'1240px', margin:'0 auto', padding:'0 1.2rem 1.2rem'}}>
         <div style={{position:'relative', marginBottom:'0.9rem'}}>
-          <span style={{
-            position:'absolute', left:'1.1rem', top:'50%',
-            transform:'translateY(-50%)', color:'var(--muted)', fontSize:'1.1rem',
-          }}>&#9906;</span>
+          <svg style={{
+            position:'absolute', left:'1.2rem', top:'50%',
+            transform:'translateY(-50%)', color:'var(--muted)',
+            pointerEvents:'none',
+          }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
           <input
             id="searchInput"
             type="text"
@@ -232,7 +346,7 @@ export default function Home() {
             style={{
               width:'100%', background:'var(--surface)',
               border:'1px solid var(--border)',
-              borderRadius:'14px', padding:'0.95rem 1rem 0.95rem 3rem',
+              borderRadius:'14px', padding:'0.95rem 1rem 0.95rem 3.2rem',
               fontSize:'0.95rem', color:'var(--text)', outline:'none',
               transition:'border 0.2s, box-shadow 0.2s',
               backdropFilter:'blur(10px)',
@@ -258,7 +372,7 @@ export default function Home() {
             fontSize:'0.76rem', color:'var(--muted)',
             marginRight:'0.2rem', whiteSpace:'nowrap',
             alignSelf:'center', letterSpacing:'0.05em',
-            textTransform:'uppercase',
+            textTransform:'uppercase', fontWeight:'500',
           }}>Filter:</span>
           {categories.map(cat => (
             <button key={cat} onClick={() => setActiveCat(cat)} style={{
@@ -302,12 +416,19 @@ export default function Home() {
         {loading ? (
           Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
         ) : filtered.length === 0 ? (
-          <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem', color:'var(--muted)'}}>
-            <div style={{fontSize:'3rem', marginBottom:'1rem', filter:'grayscale(0.3)'}}>&#128269;</div>
-            <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'var(--text)', marginBottom:'0.4rem'}}>No courses found</h3>
-            <p>Try a different keyword or category</p>
+          <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem 2rem', color:'var(--muted)'}}>
+            <div style={{fontSize:'4rem', marginBottom:'1rem', lineHeight:'1'}}>🔍</div>
+            <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', color:'var(--text)', marginBottom:'0.4rem'}}>No courses found</h3>
+            <p style={{marginBottom:'1.2rem'}}>Try a different keyword or category</p>
+            <button onClick={() => { setSearch(''); setActiveCat('All'); }} style={{
+              fontSize:'0.85rem', fontWeight:'600', padding:'0.6rem 1.4rem',
+              borderRadius:'10px', border:'none', cursor:'pointer',
+              background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff',
+            }}>Reset Filters</button>
           </div>
-        ) : filtered.map((c, i) => (
+        ) : filtered.map((c, i) => {
+          const prog = enrolled.includes(c.id) ? getCourseProgress(c.id, c.lessons.length) : 0;
+          return (
           <div
             key={c.id}
             className="tilt-card reveal"
@@ -318,7 +439,6 @@ export default function Home() {
             }}
             onClick={() => router.push(`/courses/${c.id}`)}
           >
-            {/* TILT LIGHT REFLECTION */}
             <div data-tilt-inner style={{
               position:'absolute', inset:0, borderRadius:'18px',
               pointerEvents:'none', zIndex:2, transition:'background 0.1s',
@@ -328,10 +448,19 @@ export default function Home() {
               background:'var(--card-bg)',
               border:'1px solid var(--border)',
               borderRadius:'18px', overflow:'hidden',
-              transition:'border-color 0.3s',
-              boxShadow: isLight ? '0 4px 20px rgba(0,0,0,0.08)' : '0 4px 20px rgba(0,0,0,0.2)',
-              height:'100%',
-            }}>
+              transition:'border-color 0.3s, box-shadow 0.3s',
+              boxShadow: isLight ? '0 4px 20px rgba(0,0,0,0.06)' : '0 4px 20px rgba(0,0,0,0.2)',
+              height:'100%', position:'relative',
+            }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor='rgba(68,136,255,0.25)';
+                e.currentTarget.style.boxShadow='0 12px 40px rgba(68,136,255,0.12)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor='var(--border)';
+                e.currentTarget.style.boxShadow= isLight ? '0 4px 20px rgba(0,0,0,0.06)' : '0 4px 20px rgba(0,0,0,0.2)';
+              }}
+            >
               {/* THUMBNAIL */}
               <div style={{
                 width:'100%', height:'180px',
@@ -344,35 +473,34 @@ export default function Home() {
                     width:'100%', height:'100%', objectFit:'cover',
                     display:'block', transition:'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
-                  onMouseEnter={e => e.target.style.transform='scale(1.1)'}
+                  onMouseEnter={e => e.target.style.transform='scale(1.12)'}
                   onMouseLeave={e => e.target.style.transform='scale(1)'}
                 />
-                {/* GRADIENT OVERLAY */}
                 <div style={{
                   position:'absolute', inset:0,
-                  background:'linear-gradient(to top, rgba(6,8,15,0.75) 0%, rgba(6,8,15,0.1) 50%, transparent 100%)',
+                  background:'linear-gradient(to top, rgba(6,8,15,0.8) 0%, rgba(6,8,15,0.15) 45%, transparent 100%)',
                 }}/>
                 {/* BADGE */}
                 {enrolled.includes(c.id) ? (
                   <span style={{
                     position:'absolute', top:'10px', left:'10px',
-                    fontSize:'0.67rem', fontWeight:'700', letterSpacing:'0.08em',
+                    fontSize:'0.65rem', fontWeight:'700', letterSpacing:'0.08em',
                     textTransform:'uppercase', padding:'0.25rem 0.7rem',
                     borderRadius:'100px', background:'rgba(68,136,255,0.25)',
                     color:'#4488ff', border:'1px solid rgba(68,136,255,0.4)',
                     backdropFilter:'blur(10px)',
-                  }}>Enrolled</span>
+                  }} className="badge-pulse">Enrolled</span>
                 ) : (
                   <span style={{
                     position:'absolute', top:'10px', left:'10px',
-                    fontSize:'0.67rem', fontWeight:'700', letterSpacing:'0.08em',
+                    fontSize:'0.65rem', fontWeight:'700', letterSpacing:'0.08em',
                     textTransform:'uppercase', padding:'0.25rem 0.7rem',
                     borderRadius:'100px', background:'rgba(0,212,170,0.2)',
                     color:'#00d4aa', border:'1px solid rgba(0,212,170,0.35)',
                     backdropFilter:'blur(10px)',
                   }}>Free</span>
                 )}
-                {/* WISHLIST */}
+                {/* WISHLIST HEART */}
                 <div
                   onClick={e => { e.stopPropagation(); toggleWishlist(c.id, toast); }}
                   style={{
@@ -424,12 +552,12 @@ export default function Home() {
                   flexWrap:'wrap', gap:'0.3rem',
                 }}>
                   <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.78rem', color:'var(--text)'}}>
-                    <span style={{color:'#fbbf24', fontSize:'0.72rem'}}>&#9733;&#9733;&#9733;&#9733;&#9733;</span> {c.rating}
+                    <span style={{color:'#fbbf24', fontSize:'0.72rem'}}>{'★'.repeat(Math.floor(c.rating))}{'☆'.repeat(5-Math.floor(c.rating))}</span> {c.rating}
                   </span>
-                  <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>&#9201; {c.duration}</span>
+                  <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>⏱ {c.duration}</span>
                   <span style={{
                     fontFamily:'Georgia, serif', fontSize:'0.9rem',
-                    fontWeight:'700', color:'#00d4aa',
+                    fontWeight:'700', color:'var(--teal)',
                     textShadow:'0 0 12px rgba(0,212,170,0.4)',
                   }}>Free</span>
                 </div>
@@ -442,18 +570,18 @@ export default function Home() {
                       fontSize:'0.72rem', color:'var(--muted)', marginBottom:'0.35rem',
                     }}>
                       <span>Progress</span>
-                      <span style={{color:'#4488ff', fontWeight:'600'}}>
-                        {getCourseProgress(c.id, c.lessons.length)}%
+                      <span style={{color:'var(--blue)', fontWeight:'600'}}>
+                        {prog}%
                       </span>
                     </div>
                     <div style={{
-                      width:'100%', height:'3px',
+                      width:'100%', height:'4px',
                       background:'var(--surface3)', borderRadius:'100px', overflow:'hidden',
                     }}>
-                      <div style={{
+                      <div className={prog > 0 ? 'progress-fill' : ''} style={{
                         height:'100%', borderRadius:'100px',
-                        background:'linear-gradient(90deg,#4488ff,#00d4aa)',
-                        width:`${getCourseProgress(c.id, c.lessons.length)}%`,
+                        background:'linear-gradient(90deg,var(--blue),var(--teal))',
+                        width:`${prog}%`,
                         transition:'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                         boxShadow:'0 0 8px rgba(68,136,255,0.6)',
                       }}/>
@@ -463,7 +591,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -206,7 +206,7 @@ export default function Login() {
 
         {/* ERROR */}
         {errors.general && (
-          <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
+          <div className="shake" style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
             {errors.general}
           </div>
         )}
@@ -297,8 +297,11 @@ export default function Login() {
             marginTop:'0.2rem', opacity: loading ? 0.7 : 1,
             boxShadow: loading ? 'none' : '0 8px 22px rgba(68,136,255,0.35)',
             transition:'all 0.2s',
+            display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem',
           }}>
-            {loading ? 'Please wait...' : tab === 'login' ? 'Sign In' : 'Create Free Account'}
+            {loading ? (
+              <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> Signing in...</>
+            ) : tab === 'login' ? 'Sign In' : 'Create Free Account'}
           </button>
         </div>
 
