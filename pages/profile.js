@@ -5,9 +5,10 @@ import { ProfileSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Profile() {
-  const { currentUser, enrolled, wishlist, completed, getCourseProgress, logout, xp, streak, badges, getLevelInfo, BADGE_DEFS, certificates } = useApp();
+  const { currentUser, enrolled, wishlist, completed, getCourseProgress, logout, xp, streak, badges, getLevelInfo, BADGE_DEFS, certificates, syncToFirestore } = useApp();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
@@ -97,6 +98,22 @@ export default function Profile() {
             <div style={{fontSize:'0.6rem', color:'#7a80a0', letterSpacing:'0.04em', textTransform:'uppercase'}}>{levelInfo.title}</div>
           </div>
         </div>
+
+        {/* SYNC */}
+        <button
+          onClick={() => { setSyncing(true); syncToFirestore(); setTimeout(() => setSyncing(false), 1200); }}
+          style={{
+            fontSize:'0.82rem', fontWeight:'600',
+            padding:'0.6rem 1.2rem', borderRadius:'10px',
+            border:'1px solid rgba(68,136,255,0.3)',
+            background:'rgba(68,136,255,0.08)', color:'#4488ff',
+            cursor:'pointer',
+            opacity: syncing ? 0.5 : 1,
+          }}
+          disabled={syncing}
+        >
+          {syncing ? '⏳ Syncing...' : '☁️ Sync to Cloud'}
+        </button>
 
         {/* SIGN OUT */}
         <button

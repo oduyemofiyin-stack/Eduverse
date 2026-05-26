@@ -4,6 +4,7 @@ import { useApp } from '../../context/AppContext';
 import { useToast } from '../../components/Toast';
 import courses from '../../data/courses';
 import StarRating from '../../components/StarRating';
+import { CourseDetailSkeleton } from '../../components/Skeleton';
 
 export default function CourseDetail() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function CourseDetail() {
   const [commentName, setCommentName] = useState({});
 
   const course = courses.find(c => c.id === parseInt(id));
-  if (!course) return <div style={{padding:'2rem', color:'#7a80a0'}}>Loading...</div>;
+  if (!course) return <CourseDetailSkeleton/>;
 
   const isEnrolled = enrolled.includes(course.id);
   const isWishlisted = wishlist.includes(course.id);

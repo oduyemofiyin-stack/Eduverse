@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import CelebrationModal from '../components/CelebrationModal';
+import { DashboardSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Dashboard() {
@@ -27,15 +28,7 @@ export default function Dashboard() {
   }, []);
 
   if (!currentUser) return null;
-  if (loading) return (
-    <div style={{maxWidth:'1100px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
-      <div style={{height:'120px', background:'var(--surface)', borderRadius:'20px', marginBottom:'1.5rem'}} className="shimmer-block"/>
-      <div className="dash-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem'}}>
-        <div style={{height:'300px', background:'var(--surface)', borderRadius:'16px'}} className="shimmer-block"/>
-        <div style={{height:'300px', background:'var(--surface)', borderRadius:'16px'}} className="shimmer-block"/>
-      </div>
-    </div>
-  );
+  if (loading) return <DashboardSkeleton/>;
 
   const levelInfo = getLevelInfo(xp);
   const enrolledCourses = courses.filter(c => enrolled.includes(c.id));

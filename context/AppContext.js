@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { saveUserData, loadUserData } from '../lib/firestore';
 
 const AppContext = createContext();
 
@@ -105,24 +106,61 @@ export function AppProvider({ children }) {
     } catch(e) {}
   }, []);
 
-  // Persist new state
-  useEffect(() => { if (currentUser) localStorage.setItem('eduverse_user', JSON.stringify(currentUser)); }, [currentUser]);
-  useEffect(() => { localStorage.setItem('eduverse_wishlist', JSON.stringify(wishlist)); }, [wishlist]);
-  useEffect(() => { localStorage.setItem('eduverse_enrolled', JSON.stringify(enrolled)); }, [enrolled]);
-  useEffect(() => { localStorage.setItem('eduverse_progress', JSON.stringify(progress)); }, [progress]);
-  useEffect(() => { localStorage.setItem('eduverse_completed', JSON.stringify(completed)); }, [completed]);
-  useEffect(() => { localStorage.setItem('eduverse_ratings', JSON.stringify(ratings)); }, [ratings]);
+  // Firestore: load cloud data after localStorage
+  useEffect(() => {
+    if (!currentUser) return;
+    loadUserData(currentUser.id).then(cloud => {
+      if (!cloud) return;
+      if (cloud.wishlist) setWishlist(cloud.wishlist);
+      if (cloud.enrolled) setEnrolled(cloud.enrolled);
+      if (cloud.progress) setProgress(cloud.progress);
+      if (cloud.completed) setCompleted(cloud.completed);
+      if (cloud.ratings) setRatings(cloud.ratings);
+      if (cloud.xp !== undefined) setXp(cloud.xp);
+      if (cloud.streak !== undefined) setStreak(cloud.streak);
+      if (cloud.lastActiveDate) setLastActiveDate(cloud.lastActiveDate);
+      if (cloud.badges) setBadges(cloud.badges);
+      if (cloud.activityLog) setActivityLog(cloud.activityLog);
+      if (cloud.notes) setNotes(cloud.notes);
+      if (cloud.bookmarks) setBookmarks(cloud.bookmarks);
+      if (cloud.comments) setComments(cloud.comments);
+      if (cloud.certificates) setCertificates(cloud.certificates);
+    });
+  }, [currentUser?.id]);
+
+  // Firestore sync helper
+  const syncToFirestore = useCallback(() => {
+    if (!currentUser) return;
+    saveUserData(currentUser.id, {
+      email: currentUser.email,
+      firstName: currentUser.firstName,
+      lastName: currentUser.lastName,
+      picture: currentUser.picture,
+      provider: currentUser.provider,
+      wishlist, enrolled, progress, completed, ratings,
+      xp, streak, lastActiveDate, badges, activityLog,
+      notes, bookmarks, comments, certificates,
+    });
+  }, [currentUser, wishlist, enrolled, progress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates]);
+
+  // Persist new state (localStorage + Firestore)
+  useEffect(() => { if (currentUser) { localStorage.setItem('eduverse_user', JSON.stringify(currentUser)); syncToFirestore(); } }, [currentUser]);
+  useEffect(() => { localStorage.setItem('eduverse_wishlist', JSON.stringify(wishlist)); if (currentUser) syncToFirestore(); }, [wishlist]);
+  useEffect(() => { localStorage.setItem('eduverse_enrolled', JSON.stringify(enrolled)); if (currentUser) syncToFirestore(); }, [enrolled]);
+  useEffect(() => { localStorage.setItem('eduverse_progress', JSON.stringify(progress)); if (currentUser) syncToFirestore(); }, [progress]);
+  useEffect(() => { localStorage.setItem('eduverse_completed', JSON.stringify(completed)); if (currentUser) syncToFirestore(); }, [completed]);
+  useEffect(() => { localStorage.setItem('eduverse_ratings', JSON.stringify(ratings)); if (currentUser) syncToFirestore(); }, [ratings]);
   useEffect(() => { localStorage.setItem('eduverse_theme', theme); document.documentElement.setAttribute('data-theme', theme); }, [theme]);
-  useEffect(() => { localStorage.setItem('eduverse_users', JSON.stringify(users)); }, [users]);
-  useEffect(() => { localStorage.setItem('eduverse_xp', xp.toString()); }, [xp]);
-  useEffect(() => { localStorage.setItem('eduverse_streak', streak.toString()); }, [streak]);
-  useEffect(() => { localStorage.setItem('eduverse_last_active', lastActiveDate || ''); }, [lastActiveDate]);
-  useEffect(() => { localStorage.setItem('eduverse_badges', JSON.stringify(badges)); }, [badges]);
-  useEffect(() => { localStorage.setItem('eduverse_activity', JSON.stringify(activityLog)); }, [activityLog]);
-  useEffect(() => { localStorage.setItem('eduverse_notes', JSON.stringify(notes)); }, [notes]);
-  useEffect(() => { localStorage.setItem('eduverse_bookmarks', JSON.stringify(bookmarks)); }, [bookmarks]);
-  useEffect(() => { localStorage.setItem('eduverse_comments', JSON.stringify(comments)); }, [comments]);
-  useEffect(() => { localStorage.setItem('eduverse_certificates', JSON.stringify(certificates)); }, [certificates]);
+  useEffect(() => { localStorage.setItem('eduverse_users', JSON.stringify(users)); if (currentUser) saveUserData(currentUser.id, { users }).catch(() => {}); }, [users]);
+  useEffect(() => { localStorage.setItem('eduverse_xp', xp.toString()); if (currentUser) syncToFirestore(); }, [xp]);
+  useEffect(() => { localStorage.setItem('eduverse_streak', streak.toString()); if (currentUser) syncToFirestore(); }, [streak]);
+  useEffect(() => { localStorage.setItem('eduverse_last_active', lastActiveDate || ''); if (currentUser) syncToFirestore(); }, [lastActiveDate]);
+  useEffect(() => { localStorage.setItem('eduverse_badges', JSON.stringify(badges)); if (currentUser) syncToFirestore(); }, [badges]);
+  useEffect(() => { localStorage.setItem('eduverse_activity', JSON.stringify(activityLog)); if (currentUser) syncToFirestore(); }, [activityLog]);
+  useEffect(() => { localStorage.setItem('eduverse_notes', JSON.stringify(notes)); if (currentUser) syncToFirestore(); }, [notes]);
+  useEffect(() => { localStorage.setItem('eduverse_bookmarks', JSON.stringify(bookmarks)); if (currentUser) syncToFirestore(); }, [bookmarks]);
+  useEffect(() => { localStorage.setItem('eduverse_comments', JSON.stringify(comments)); if (currentUser) syncToFirestore(); }, [comments]);
+  useEffect(() => { localStorage.setItem('eduverse_certificates', JSON.stringify(certificates)); if (currentUser) syncToFirestore(); }, [certificates]);
 
   // Streak check on mount
   useEffect(() => {
@@ -347,7 +385,7 @@ export function AppProvider({ children }) {
       completed, markCompleted,
       ratings, rateCourse, getUserRating,
       theme, toggleTheme,
-      users, addUser,
+      users, addUser, syncToFirestore,
       xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS,
       notes, addNote, removeNote,
       bookmarks, toggleBookmark, isBookmarked,

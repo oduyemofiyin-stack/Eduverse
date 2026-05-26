@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import courses from '../data/courses';
+import { getAllUsers, deleteUser } from '../lib/firestore';
+import { AdminSkeleton } from '../components/Skeleton';
 
 const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || 'EMMANUEL';
 const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || 'Emmanuel@007';
@@ -19,6 +21,15 @@ export default function Admin() {
   const [newCourse, setNewCourse] = useState({
     title:'', instructor:'', category:'', duration:'', description:'', img:'', rating:4.5,
   });
+  const [allUsers, setAllUsers] = useState([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+
+  useEffect(() => {
+    if (loggedIn && activeTab === 'users') {
+      setUsersLoading(true);
+      getAllUsers().then(u => { setAllUsers(u); setUsersLoading(false); });
+    }
+  }, [loggedIn, activeTab]);
 
   function handleLogin() {
     if (username === ADMIN_USER && password === ADMIN_PASS) {
@@ -154,6 +165,7 @@ export default function Admin() {
         <div style={{display:'flex', gap:'0.5rem', marginBottom:'2rem', flexWrap:'wrap'}}>
           {[
             {id:'overview', label:'📊 Overview'},
+            {id:'users', label:'👥 Users'},
             {id:'courses', label:'📚 Courses'},
             {id:'add', label:'➕ Add Course'},
           ].map(tab => (
@@ -206,6 +218,61 @@ export default function Admin() {
                 );
               })}
             </div>
+          </div>
+        )}
+
+        {/* USERS TAB */}
+        {activeTab === 'users' && (
+          <div>
+            <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>
+              👥 Registered Users (from Firestore)
+            </h2>
+            <button onClick={() => { setUsersLoading(true); getAllUsers().then(u => { setAllUsers(u); setUsersLoading(false); }); }}
+              style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.5rem 1rem', borderRadius:'9px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', marginBottom:'1rem'}}>
+              🔄 Refresh
+            </button>
+            {usersLoading ? (
+              <AdminSkeleton/>
+            ) : allUsers.length === 0 ? (
+              <div style={{textAlign:'center', padding:'3rem', color:'#7a80a0'}}>
+                <div style={{fontSize:'2.5rem', marginBottom:'0.5rem'}}>👥</div>
+                <p>No users found in Firestore yet.</p>
+                <p style={{fontSize:'0.82rem', marginTop:'0.5rem'}}>Users appear here after they sign in and their data syncs to the cloud.</p>
+              </div>
+            ) : (
+              <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
+                {allUsers.map(u => (
+                  <div key={u.id} style={{
+                    background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1rem',
+                  }}>
+                    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.5rem'}}>
+                      <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
+                        {u.picture ? (
+                          <img src={u.picture} alt="" style={{width:'40px', height:'40px', borderRadius:'50%', objectFit:'cover'}}/>
+                        ) : (
+                          <div style={{width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg,#4488ff,#00d4aa)', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'700', fontSize:'0.85rem', color:'#fff'}}>
+                            {(u.firstName?.[0]||'')+(u.lastName?.[0]||'')}
+                          </div>
+                        )}
+                        <div>
+                          <div style={{fontWeight:'600', fontSize:'0.9rem'}}>{u.firstName} {u.lastName}</div>
+                          <div style={{fontSize:'0.76rem', color:'#7a80a0'}}>{u.email} · {u.provider || 'email'}</div>
+                        </div>
+                      </div>
+                      <div style={{display:'flex', gap:'0.5rem', alignItems:'center', flexWrap:'wrap'}}>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'#f0c040', border:'1px solid rgba(240,192,64,0.3)'}}>⚡{u.xp || 0} XP</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>📚 {(u.enrolled||[]).length} enrolled</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.15)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.3)'}}>🏆 {(u.completed||[]).length} completed</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(255,107,157,0.15)', color:'#ff6b9d', border:'1px solid rgba(255,107,157,0.3)'}}>🏅 {(u.badges||[]).length} badges</span>
+                      </div>
+                    </div>
+                    {u.updatedAt && (
+                      <div style={{fontSize:'0.7rem', color:'#3a4060', marginTop:'0.5rem'}}>Last synced: {new Date(u.updatedAt).toLocaleString()}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

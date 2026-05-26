@@ -21,6 +21,71 @@ export function CourseSkeleton() {
   );
 }
 
+export function DashboardSkeleton() {
+  return (
+    <div style={{maxWidth:'1100px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
+      <div style={{height:'120px', background:'var(--surface)', borderRadius:'20px', marginBottom:'1.5rem'}} className="shimmer-block"/>
+      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginBottom:'1.5rem'}}>
+        {[1,2].map(i => (
+          <div key={i} style={{height:'200px', background:'var(--surface)', borderRadius:'16px'}} className="shimmer-block"/>
+        ))}
+      </div>
+      <div style={{height:'300px', background:'var(--surface)', borderRadius:'16px'}} className="shimmer-block"/>
+    </div>
+  );
+}
+
+export function CourseGridSkeleton({ count = 6 }) {
+  return (
+    <div style={{
+      display:'grid',
+      gridTemplateColumns:'repeat(auto-fill, minmax(min(295px, 100%), 1fr))',
+      gap:'1rem',
+    }}>
+      {Array.from({ length: count }, (_, i) => i).map(i => (
+        <div key={i} style={{
+          background:'var(--card-bg)', border:'1px solid var(--border)',
+          borderRadius:'16px', overflow:'hidden',
+        }}>
+          <div style={{width:'100%', height:'170px', background:'var(--surface2)'}} className="shimmer-block"/>
+          <div style={{padding:'1rem'}}>
+            <div style={{width:'80px', height:'10px', background:'var(--surface2)', borderRadius:'100px', marginBottom:'0.5rem'}} className="shimmer-block"/>
+            <div style={{width:'100%', height:'14px', background:'var(--surface2)', borderRadius:'100px', marginBottom:'0.3rem'}} className="shimmer-block"/>
+            <div style={{width:'60%', height:'14px', background:'var(--surface2)', borderRadius:'100px', marginBottom:'0.7rem'}} className="shimmer-block"/>
+            <div style={{width:'40%', height:'11px', background:'var(--surface2)', borderRadius:'100px'}} className="shimmer-block"/>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function CourseDetailSkeleton() {
+  return (
+    <div className="page-container" style={{maxWidth:'1000px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
+      <div style={{width:'60%', height:'28px', background:'var(--surface2)', borderRadius:'100px', marginBottom:'1rem'}} className="shimmer-block"/>
+      <div style={{width:'40%', height:'16px', background:'var(--surface2)', borderRadius:'100px', marginBottom:'1.5rem'}} className="shimmer-block"/>
+      <div style={{width:'100%', height:'400px', background:'var(--surface2)', borderRadius:'16px', marginBottom:'1.5rem'}} className="shimmer-block"/>
+      <div style={{display:'flex', gap:'0.5rem', marginBottom:'1.5rem'}}>
+        {[1,2,3,4].map(i => (
+          <div key={i} style={{width:'80px', height:'30px', background:'var(--surface2)', borderRadius:'100px'}} className="shimmer-block"/>
+        ))}
+      </div>
+      <div style={{width:'100%', height:'200px', background:'var(--surface2)', borderRadius:'16px'}} className="shimmer-block"/>
+    </div>
+  );
+}
+
+export function AdminSkeleton() {
+  return (
+    <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
+      {[1,2,3,4].map(i => (
+        <div key={i} style={{height:'80px', background:'var(--surface)', borderRadius:'14px', padding:'1rem'}} className="shimmer-block"/>
+      ))}
+    </div>
+  );
+}
+
 export function ProfileSkeleton() {
   return (
     <div style={{maxWidth:'900px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>

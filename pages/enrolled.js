@@ -1,11 +1,30 @@
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
+import { CourseGridSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Enrolled() {
   const { enrolled } = useApp();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
   const enrolledCourses = courses.filter(c => enrolled.includes(c.id));
+
+  if (loading) return (
+    <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
+      <div style={{marginBottom:'1.8rem'}}>
+        <div style={{width:'200px', height:'28px', background:'var(--surface2)', borderRadius:'100px', marginBottom:'0.5rem'}} className="shimmer-block"/>
+        <div style={{width:'140px', height:'14px', background:'var(--surface2)', borderRadius:'100px'}} className="shimmer-block"/>
+      </div>
+      <CourseGridSkeleton count={6}/>
+    </div>
+  );
 
   return (
     <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
