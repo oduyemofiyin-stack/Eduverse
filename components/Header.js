@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/router';
 
 export default function Header() {
-  const { currentUser, logout, wishlist, enrolled, theme, toggleTheme, xp, streak } = useApp();
+  const { currentUser, logout, wishlist, enrolled, theme, toggleTheme } = useApp();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,26 +42,48 @@ export default function Header() {
         maxWidth:'1280px', margin:'0 auto',
       }}>
 
-        {/* LOGO */}
-        <div onClick={() => { router.push('/'); setMobileMenuOpen(false); }}
-          style={{display:'flex', alignItems:'center', gap:'8px', cursor:'pointer'}}>
-          <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
-            <circle cx="18" cy="18" r="17" stroke="url(#g1)" strokeWidth="1.5"/>
-            <ellipse cx="18" cy="18" rx="17" ry="6.5" stroke="url(#g2)" strokeWidth="1" strokeDasharray="2.5 2" transform="rotate(-22 18 18)"/>
-            <circle cx="18" cy="18" r="4" fill="url(#g3)"/>
-            <circle cx="29" cy="10" r="1.8" fill="#f0c040" opacity="0.85"/>
-            <circle cx="7" cy="26" r="1.4" fill="#4488ff" opacity="0.75"/>
-            <defs>
-              <linearGradient id="g1" x1="1" y1="1" x2="35" y2="35"><stop stopColor="#f0c040"/><stop offset="1" stopColor="#4488ff"/></linearGradient>
-              <linearGradient id="g2" x1="1" y1="18" x2="35" y2="18"><stop stopColor="#4488ff"/><stop offset="1" stopColor="#00d4aa"/></linearGradient>
-              <linearGradient id="g3" x1="14" y1="14" x2="22" y2="22"><stop stopColor="#f0c040"/><stop offset="1" stopColor="#4488ff"/></linearGradient>
-            </defs>
-          </svg>
-          <span style={{
-            fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700',
-            background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)',
-            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
-          }}>Eduverse</span>
+        {/* LEFT: HAMBURGER (mobile) + LOGO (desktop) */}
+        <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+          <button
+            onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setDropdownOpen(false); }}
+            className="hamburger"
+            aria-label="Menu"
+            style={{
+              background:'var(--surface2)', border:'1px solid var(--border2)',
+              borderRadius:'9px', padding:'0.4rem 0.6rem',
+              cursor:'pointer', color:'var(--text)', fontSize:'1.1rem', lineHeight:'1',
+              transition:'background 0.2s',
+            }}>
+            {mobileMenuOpen ? (
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/>
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="2" y1="4" x2="16" y2="4"/><line x1="2" y1="9" x2="16" y2="9"/><line x1="2" y1="14" x2="16" y2="14"/>
+              </svg>
+            )}
+          </button>
+          <div onClick={() => { router.push('/'); setMobileMenuOpen(false); }}
+            style={{display:'flex', alignItems:'center', gap:'8px', cursor:'pointer'}}>
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="17" stroke="url(#g1)" strokeWidth="1.5"/>
+              <ellipse cx="18" cy="18" rx="17" ry="6.5" stroke="url(#g2)" strokeWidth="1" strokeDasharray="2.5 2" transform="rotate(-22 18 18)"/>
+              <circle cx="18" cy="18" r="4" fill="url(#g3)"/>
+              <circle cx="29" cy="10" r="1.8" fill="#f0c040" opacity="0.85"/>
+              <circle cx="7" cy="26" r="1.4" fill="#4488ff" opacity="0.75"/>
+              <defs>
+                <linearGradient id="g1" x1="1" y1="1" x2="35" y2="35"><stop stopColor="#f0c040"/><stop offset="1" stopColor="#4488ff"/></linearGradient>
+                <linearGradient id="g2" x1="1" y1="18" x2="35" y2="18"><stop stopColor="#4488ff"/><stop offset="1" stopColor="#00d4aa"/></linearGradient>
+                <linearGradient id="g3" x1="14" y1="14" x2="22" y2="22"><stop stopColor="#f0c040"/><stop offset="1" stopColor="#4488ff"/></linearGradient>
+              </defs>
+            </svg>
+            <span style={{
+              fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700',
+              background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)',
+              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
+            }}>Eduverse</span>
+          </div>
         </div>
 
         {/* RIGHT SIDE */}
@@ -95,15 +117,6 @@ export default function Header() {
             })}
           </nav>
 
-          {/* XP + STREAK */}
-          {currentUser && (
-            <div style={{display:'flex', alignItems:'center', gap:'4px', background:'var(--surface2)', borderRadius:'9px', padding:'0.2rem 0.6rem', border:'1px solid var(--border2)', fontSize:'0.72rem', fontWeight:'600'}}>
-              <span style={{color:'var(--gold)'}}>⚡{xp}</span>
-              <span style={{color:'var(--muted2)', margin:'0 2px'}}>·</span>
-              <span style={{color: streak >= 7 ? 'var(--gold)' : 'var(--teal)'}}>🔥{streak}</span>
-            </div>
-          )}
-
           {/* THEME TOGGLE */}
           <button
             onClick={() => {
@@ -121,8 +134,8 @@ export default function Header() {
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
 
-          {/* USER AVATAR */}
-          {currentUser && (
+          {/* USER AVATAR / GOOGLE SIGN-IN */}
+          {currentUser ? (
             <div style={{position:'relative'}}>
               <div onClick={() => { setDropdownOpen(!dropdownOpen); setMobileMenuOpen(false); }}
                 style={{
@@ -144,7 +157,7 @@ export default function Header() {
                     {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
                   </div>
                 )}
-                <span style={{fontSize:'0.76rem', fontWeight:'600', color:'var(--text)', maxWidth:'80px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                <span className="user-name-desktop" style={{fontSize:'0.76rem', fontWeight:'600', color:'var(--text)', maxWidth:'80px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
                   {currentUser.firstName}
                 </span>
                 <span style={{fontSize:'0.6rem', color:'var(--muted)'}}>▾</span>
@@ -208,49 +221,37 @@ export default function Header() {
                 </div>
               )}
             </div>
+          ) : (
+            <button onClick={() => router.push('/login')}
+              style={{
+                background:'linear-gradient(135deg,var(--blue),#3366dd)', border:'none',
+                borderRadius:'9px', padding:'0.38rem 0.75rem',
+                color:'#fff', fontFamily:'inherit', fontSize:'0.76rem', fontWeight:'600',
+                cursor:'pointer', whiteSpace:'nowrap', lineHeight:'1',
+              }}>
+              Sign In
+            </button>
           )}
-
-          {/* HAMBURGER */}
-          <button
-            onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setDropdownOpen(false); }}
-            className="hamburger"
-            style={{
-              background:'var(--surface2)', border:'1px solid var(--border2)',
-              borderRadius:'9px', padding:'0.4rem 0.6rem',
-              cursor:'pointer', color:'var(--text)', fontSize:'1.1rem', lineHeight:'1',
-              transition:'background 0.2s',
-            }}>
-            {mobileMenuOpen ? (
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/>
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <line x1="2" y1="4" x2="16" y2="4"/><line x1="2" y1="9" x2="16" y2="9"/><line x1="2" y1="14" x2="16" y2="14"/>
-              </svg>
-            )}
-          </button>
         </div>
       </div>
 
       {/* MOBILE MENU */}
-      {mobileMenuOpen && (
-        <div className="mobile-enter" style={{
-          background:'var(--surface)', borderTop:'1px solid var(--border)',
-          padding:'0.8rem 1.2rem 1rem',
-          display:'flex', flexDirection:'column', gap:'0.3rem',
-          maxHeight:'70vh', overflowY:'auto',
-        }}>
+      <div className={`mobile-menu ${mobileMenuOpen ? 'mobile-open' : ''}`} style={{
+        background:'var(--surface)', borderTop:'1px solid var(--border)',
+        overflow:'hidden',
+        maxHeight: mobileMenuOpen ? '70vh' : '0',
+        transition:'max-height 0.3s var(--ease-out)',
+      }}>
+        <div style={{padding:'0.5rem 1.2rem 1rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
           {navItems.map(item => (
             <button key={item.path}
               onClick={() => { router.push(item.path); setMobileMenuOpen(false); }}
               style={{
                 fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500',
-                padding:'0.7rem 1rem', borderRadius:'10px', border:'none',
+                padding:'0.65rem 1rem', borderRadius:'10px', border:'none',
                 cursor:'pointer', textAlign:'left',
                 background: router.pathname === item.path ? 'var(--surface2)' : 'transparent',
                 color: router.pathname === item.path ? 'var(--text)' : 'var(--muted)',
-                transition:'background 0.2s',
               }}>
               {item.label}
             </button>
@@ -259,18 +260,18 @@ export default function Header() {
             <>
               <button
                 onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }}
-                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--muted)'}}>
-                My Profile
+                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.65rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--muted)'}}>
+                👤 My Profile
               </button>
               <button
                 onClick={() => { logout(); setMobileMenuOpen(false); router.push('/login'); }}
-                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.7rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--red)', marginTop:'0.3rem', borderTop:'1px solid var(--border)', paddingTop:'0.9rem'}}>
+                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.65rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--red)', marginTop:'0.2rem', borderTop:'1px solid var(--border)', paddingTop:'0.8rem'}}>
                 ↩ Sign Out
               </button>
             </>
           )}
         </div>
-      )}
+      </div>
 
       <style>{`
         .desktop-nav { display: flex; }
@@ -278,6 +279,7 @@ export default function Header() {
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .hamburger { display: block !important; }
+          .user-name-desktop { display: none !important; }
         }
       `}</style>
     </header>

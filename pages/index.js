@@ -179,17 +179,6 @@ export default function Home() {
 
         {/* HERO CONTENT */}
         <div style={{position:'relative', zIndex:1, maxWidth:'900px', margin:'0 auto'}} data-parallax-text>
-          <div className="reveal delay-1" style={{
-            display:'inline-flex', alignItems:'center', gap:'0.5rem',
-            background:'rgba(68,136,255,0.1)', border:'1px solid rgba(68,136,255,0.2)',
-            borderRadius:'100px', padding:'0.3rem 1rem 0.3rem 0.6rem',
-            marginBottom:'1.5rem', fontSize:'0.78rem', color:'var(--blue)',
-            fontWeight:'500',
-          }}>
-            <span className="dot-pulse"/>
-            Now enrolling 50,000+ learners worldwide
-          </div>
-
           <h1 className="reveal delay-2" style={{
             fontFamily:'Georgia, serif',
             fontSize:'clamp(2.6rem, 8vw, 5.8rem)',

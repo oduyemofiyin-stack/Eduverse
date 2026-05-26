@@ -174,7 +174,7 @@ export default function Login() {
           {tab === 'login' ? 'Welcome back' : 'Create your account'}
         </div>
         <div style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', marginBottom:'1.4rem'}}>
-          {tab === 'login' ? 'Sign in to continue your learning journey' : 'Join 50,000+ learners. Completely free.'}
+          {tab === 'login' ? 'Sign in to continue your learning journey' : 'Create your free account and start learning'}
         </div>
 
         {/* GOOGLE BUTTON */}
