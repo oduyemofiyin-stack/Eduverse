@@ -10,33 +10,30 @@ function AnimatedNumber({ value, color }) {
   const [displayed, setDisplayed] = useState(0);
   const ref = useRef(null);
   const revealed = useRef(false);
+  const suffix = value.replace(/[\d]/g, '');
+  const target = parseInt(value) || 0;
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !revealed.current) {
         revealed.current = true;
         let start = 0;
-        const end = parseInt(value);
         const duration = 1500;
-        const step = Math.max(1, Math.floor(end / (duration / 16)));
+        const step = Math.max(1, Math.floor(target / (duration / 16)));
         const timer = setInterval(() => {
           start += step;
-          if (start >= end) { start = end; clearInterval(timer); }
+          if (start >= target) { start = target; clearInterval(timer); }
           setDisplayed(start);
         }, 16);
       }
     }, { threshold: 0.3 });
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [value]);
+  }, [value, target]);
 
   return (
     <span ref={ref} style={{ color, textShadow: `0 0 20px ${color}66` }}>
-      {value.includes('%') || value.includes('K') || value.includes('+')
-        ? value.replace(/[\d]/g, '').split('').reduce((acc, c) => /\d/.test(c) ? acc + c : acc, '')
-          ? displayed + value.replace(/[\d,]/g, '')
-          : value
-        : displayed}
+      {displayed}{suffix}
     </span>
   );
 }
@@ -282,15 +279,14 @@ export default function Home() {
 
       {/* STATS */}
       <div style={{
-        display:'grid', gridTemplateColumns:'repeat(4, 1fr)',
+        display:'grid', gridTemplateColumns:'repeat(3, 1fr)',
         gap:'1rem', padding:'0 1.2rem 3rem',
-        maxWidth:'680px', margin:'0 auto',
+        maxWidth:'520px', margin:'0 auto',
       }}>
         {[
-          {n:'12', l:'Expert Courses', color:'#4488ff', suffix:''},
-          {n:'100', l:'Free Forever', color:'#f0c040', suffix:'%'},
-          {n:'50000', l:'Learners', color:'#00d4aa', suffix:'+'},
-          {n:'7', l:'Categories', color:'#ff6b9d', suffix:''},
+          {n:'12', l:'Expert Courses', color:'#4488ff'},
+          {n:'100%', l:'Free', color:'#f0c040'},
+          {n:'7', l:'Categories', color:'#ff6b9d'},
         ].map((s, i) => (
           <div key={s.l}
             className={`reveal-scale delay-${i+1} glass`}
@@ -315,8 +311,7 @@ export default function Home() {
               textShadow:`0 0 20px ${s.color}44`,
               lineHeight:'1',
             }}>
-              <AnimatedNumber value={s.n + s.suffix} color={s.color} />
-              {s.suffix && !s.n.includes(s.suffix) ? s.suffix : ''}
+              <AnimatedNumber value={s.n} color={s.color} />
             </div>
             <div style={{
               fontSize:'0.72rem', color:'var(--muted)', marginTop:'6px',
