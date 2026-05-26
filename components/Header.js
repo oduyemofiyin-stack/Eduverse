@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/router';
 
 export default function Header() {
-  const { currentUser, logout, wishlist, enrolled, theme, toggleTheme } = useApp();
+  const { currentUser, logout, wishlist, enrolled, theme, toggleTheme, xp, streak } = useApp();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,6 +20,7 @@ export default function Header() {
   const navItems = [
     {label:'Courses', path:'/'},
     {label:'Search', path:'/search'},
+    {label:'Dashboard', path:'/dashboard'},
     {label:`Wishlist${wishlist.length > 0 ? ` (${wishlist.length})` : ''}`, path:'/wishlist'},
     {label:`My Learning${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
     {label:'About', path:'/about'},
@@ -94,6 +95,15 @@ export default function Header() {
             })}
           </nav>
 
+          {/* XP + STREAK */}
+          {currentUser && (
+            <div style={{display:'flex', alignItems:'center', gap:'4px', background:'var(--surface2)', borderRadius:'9px', padding:'0.2rem 0.6rem', border:'1px solid var(--border2)', fontSize:'0.72rem', fontWeight:'600'}}>
+              <span style={{color:'var(--gold)'}}>⚡{xp}</span>
+              <span style={{color:'var(--muted2)', margin:'0 2px'}}>·</span>
+              <span style={{color: streak >= 7 ? 'var(--gold)' : 'var(--teal)'}}>🔥{streak}</span>
+            </div>
+          )}
+
           {/* THEME TOGGLE */}
           <button
             onClick={() => {
@@ -157,6 +167,7 @@ export default function Header() {
                   </div>
                   {[
                     {ico:'👤', label:'My Profile', path:'/profile'},
+                    {ico:'📊', label:'Dashboard', path:'/dashboard'},
                     {ico:'📚', label:'My Learning', path:'/enrolled'},
                     {ico:'♡', label:'Wishlist', path:'/wishlist'},
                     {ico:'🔍', label:'Search', path:'/search'},

@@ -8,12 +8,15 @@ import StarRating from '../../components/StarRating';
 export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, markQuizPassed, certificates } = useApp();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
   const [quizState, setQuizState] = useState(null);
   const [showCert, setShowCert] = useState(false);
+  const [noteText, setNoteText] = useState({});
+  const [commentText, setCommentText] = useState({});
+  const [commentName, setCommentName] = useState({});
 
   const course = courses.find(c => c.id === parseInt(id));
   if (!course) return <div style={{padding:'2rem', color:'#7a80a0'}}>Loading...</div>;
@@ -64,7 +67,10 @@ export default function CourseDetail() {
   const passed = pct >= 60;
 
   useEffect(() => {
-    if (finished && passed) markCompleted(course.id);
+    if (finished && passed) {
+      markCompleted(course.id, course.title);
+      markQuizPassed(course.id);
+    }
   }, [finished, passed]);
 
   return (
@@ -191,14 +197,20 @@ export default function CourseDetail() {
                     style={{display:'flex', alignItems:'center', gap:'0.8rem', padding:'0.8rem 1rem', cursor:'pointer'}}>
                     <div style={{
                       width:'26px', height:'26px', borderRadius:'50%',
-                      background:'#161b26', border:'1px solid rgba(255,255,255,0.13)',
+                      background: isBookmarked(course.id, i) ? 'rgba(240,192,64,0.2)' : '#161b26',
+                      border: `1px solid ${isBookmarked(course.id, i) ? 'rgba(240,192,64,0.4)' : 'rgba(255,255,255,0.13)'}`,
                       display:'flex', alignItems:'center', justifyContent:'center',
-                      fontSize:'0.7rem', fontWeight:'700', color:'#7a80a0', flexShrink:0,
-                    }}>{i + 1}</div>
+                      fontSize:'0.7rem', fontWeight:'700',
+                      color: isBookmarked(course.id, i) ? '#f0c040' : '#7a80a0', flexShrink:0,
+                    }}>{isBookmarked(course.id, i) ? '★' : i + 1}</div>
                     <div style={{flex:1, minWidth:0}}>
                       <div style={{fontSize:'0.86rem', fontWeight:'600', marginBottom:'0.1rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{l.title}</div>
                       <div style={{fontSize:'0.72rem', color:'#7a80a0'}}>▶ {l.dur}</div>
                     </div>
+                    <button onClick={e => { e.stopPropagation(); toggleBookmark(course.id, i); }}
+                      style={{background:'none', border:'none', cursor:'pointer', fontSize:'1rem', color: isBookmarked(course.id, i) ? 'var(--gold)' : 'var(--muted2)', padding:'0 0.2rem'}}
+                      title={isBookmarked(course.id, i) ? 'Remove bookmark' : 'Bookmark this lesson'}
+                    >{isBookmarked(course.id, i) ? '★' : '☆'}</button>
                     <span style={{fontSize:'0.78rem', color:'#4488ff', transform: openLesson === i ? 'rotate(90deg)' : 'none', transition:'transform 0.25s', flexShrink:0}}>▶</span>
                   </div>
                   {openLesson === i && (
@@ -209,6 +221,48 @@ export default function CourseDetail() {
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen loading="lazy"
                       />
+                      {/* NOTES */}
+                      <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
+                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>📝 Notes</div>
+                        <div style={{display:'flex', gap:'0.4rem', marginBottom:'0.5rem'}}>
+                          <input value={noteText[i] || ''} onChange={e => setNoteText(p => ({...p, [i]: e.target.value}))}
+                            placeholder="Write a note..."
+                            style={{flex:1, padding:'0.4rem 0.6rem', borderRadius:'6px', border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)', fontSize:'0.78rem', outline:'none'}}
+                            onKeyDown={e => { if (e.key === 'Enter' && noteText[i]?.trim()) { addNote(course.id, i, noteText[i].trim()); setNoteText(p => ({...p, [i]: ''})); } }}/>
+                          <button onClick={() => { if (noteText[i]?.trim()) { addNote(course.id, i, noteText[i].trim()); setNoteText(p => ({...p, [i]: ''})); } }}
+                            style={{padding:'0.4rem 0.7rem', borderRadius:'6px', border:'none', background:'var(--blue)', color:'#fff', fontSize:'0.78rem', cursor:'pointer', fontWeight:'600'}}>Add</button>
+                        </div>
+                        {(notes[`${course.id}_${i}`] || []).slice().reverse().map(n => (
+                          <div key={n.id} style={{display:'flex', alignItems:'flex-start', gap:'0.4rem', padding:'0.4rem 0', borderBottom:'1px solid var(--border)'}}>
+                            <span style={{flex:1, fontSize:'0.78rem', color:'var(--text2)', lineHeight:'1.4'}}>{n.text}</span>
+                            <button onClick={() => removeNote(course.id, i, n.id)} style={{background:'none', border:'none', cursor:'pointer', color:'var(--muted2)', fontSize:'0.7rem', padding:'0.1rem'}}>✕</button>
+                          </div>
+                        ))}
+                      </div>
+                      {/* COMMENTS */}
+                      <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
+                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>💬 Discussion</div>
+                        <div style={{display:'flex', gap:'0.4rem', marginBottom:'0.5rem', flexWrap:'wrap'}}>
+                          <input value={commentName[i] || ''} onChange={e => setCommentName(p => ({...p, [i]: e.target.value}))}
+                            placeholder="Your name"
+                            style={{width:'100px', padding:'0.4rem 0.6rem', borderRadius:'6px', border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)', fontSize:'0.78rem', outline:'none', flex:1}}/>
+                          <input value={commentText[i] || ''} onChange={e => setCommentText(p => ({...p, [i]: e.target.value}))}
+                            placeholder="Share your thoughts..."
+                            style={{flex:'2', minWidth:'120px', padding:'0.4rem 0.6rem', borderRadius:'6px', border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)', fontSize:'0.78rem', outline:'none'}}
+                            onKeyDown={e => { if (e.key === 'Enter' && commentText[i]?.trim()) { addComment(course.id, i, commentName[i]?.trim() || 'Anonymous', commentText[i].trim()); setCommentText(p => ({...p, [i]: ''})); } }}/>
+                          <button onClick={() => { if (commentText[i]?.trim()) { addComment(course.id, i, commentName[i]?.trim() || 'Anonymous', commentText[i].trim()); setCommentText(p => ({...p, [i]: ''})); } }}
+                            style={{padding:'0.4rem 0.7rem', borderRadius:'6px', border:'none', background:'var(--teal)', color:'#fff', fontSize:'0.78rem', cursor:'pointer', fontWeight:'600'}}>Post</button>
+                        </div>
+                        {(comments[`${course.id}_${i}`] || []).slice().reverse().map(c => (
+                          <div key={c.id} style={{padding:'0.4rem 0', borderBottom:'1px solid var(--border)'}}>
+                            <div style={{display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.15rem'}}>
+                              <span style={{fontWeight:'600', fontSize:'0.78rem', color:'var(--blue)'}}>{c.userName}</span>
+                              <span style={{fontSize:'0.62rem', color:'var(--muted2)'}}>{new Date(c.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
+                            </div>
+                            <div style={{fontSize:'0.8rem', color:'var(--text2)', lineHeight:'1.5'}}>{c.text}</div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -393,6 +447,9 @@ export default function CourseDetail() {
               </div>
               <div style={{fontSize:'0.74rem', color:'#3a4060', marginTop:'0.8rem'}}>
                 Issued on {new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}
+              </div>
+              <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.5rem', fontFamily:'monospace', letterSpacing:'0.05em'}}>
+                {certificates.filter(c => c.courseId === course.id).slice(-1)[0]?.code ? `Code: ${certificates.filter(c => c.courseId === course.id).slice(-1)[0].code}` : ''}
               </div>
             </div>
             <div style={{display:'flex', gap:'0.8rem', justifyContent:'center', marginTop:'1.2rem', flexWrap:'wrap'}}>

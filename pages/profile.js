@@ -5,7 +5,7 @@ import { ProfileSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Profile() {
-  const { currentUser, enrolled, wishlist, completed, getCourseProgress, logout } = useApp();
+  const { currentUser, enrolled, wishlist, completed, getCourseProgress, logout, xp, streak, badges, getLevelInfo, BADGE_DEFS, certificates } = useApp();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -23,6 +23,7 @@ export default function Profile() {
   const totalProgress = enrolledCourses.length > 0
     ? Math.round(enrolledCourses.reduce((sum, c) => sum + getCourseProgress(c.id, c.lessons.length), 0) / enrolledCourses.length)
     : 0;
+  const levelInfo = getLevelInfo(xp);
 
   return (
     <div style={{maxWidth:'900px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
@@ -81,6 +82,22 @@ export default function Profile() {
           </div>
         </div>
 
+        {/* XP & STREAK */}
+        <div style={{display:'flex', gap:'0.6rem'}}>
+          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'#0d1117', borderRadius:'10px', border:'1px solid rgba(255,255,255,0.06)'}}>
+            <div style={{fontSize:'1rem', fontWeight:'700', color:'#f0c040'}}>⚡{xp}</div>
+            <div style={{fontSize:'0.6rem', color:'#7a80a0', letterSpacing:'0.04em', textTransform:'uppercase'}}>XP</div>
+          </div>
+          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'#0d1117', borderRadius:'10px', border:'1px solid rgba(255,255,255,0.06)'}}>
+            <div style={{fontSize:'1rem', fontWeight:'700', color: streak >= 7 ? '#f0c040' : '#00d4aa'}}>🔥{streak}</div>
+            <div style={{fontSize:'0.6rem', color:'#7a80a0', letterSpacing:'0.04em', textTransform:'uppercase'}}>Streak</div>
+          </div>
+          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'#0d1117', borderRadius:'10px', border:'1px solid rgba(255,255,255,0.06)'}}>
+            <div style={{fontSize:'1rem', fontWeight:'700', color:'#4488ff'}}>Lv.{levelInfo.level}</div>
+            <div style={{fontSize:'0.6rem', color:'#7a80a0', letterSpacing:'0.04em', textTransform:'uppercase'}}>{levelInfo.title}</div>
+          </div>
+        </div>
+
         {/* SIGN OUT */}
         <button
           onClick={() => { logout(); router.push('/login'); }}
@@ -117,6 +134,32 @@ export default function Profile() {
             <div style={{fontSize:'0.75rem', color:'#7a80a0', marginTop:'0.2rem'}}>{s.label}</div>
           </div>
         ))}
+      </div>
+
+      {/* BADGES */}
+      <div style={{marginBottom:'1.5rem'}}>
+        <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
+          🏅 Badges ({badges.length}/{Object.keys(BADGE_DEFS).length})
+        </h2>
+        <div style={{display:'flex', gap:'0.7rem', flexWrap:'wrap'}}>
+          {Object.entries(BADGE_DEFS).map(([id, def]) => {
+            const earned = badges.includes(id);
+            return (
+              <div key={id} title={def.desc} style={{
+                padding:'0.5rem 0.8rem', borderRadius:'100px',
+                background: earned ? 'rgba(68,136,255,0.12)' : '#0d1117',
+                border: `1px solid ${earned ? 'rgba(68,136,255,0.3)' : 'rgba(255,255,255,0.06)'}`,
+                color: earned ? '#eef0f8' : '#3a4060',
+                fontSize:'0.82rem', fontWeight:'500',
+                opacity: earned ? 1 : 0.5,
+                display:'flex', alignItems:'center', gap:'0.4rem',
+              }}>
+                <span>{earned ? def.icon : '🔒'}</span>
+                {def.label}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* ENROLLED COURSES */}
@@ -170,26 +213,34 @@ export default function Profile() {
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
             🏆 My Certificates
           </h2>
-          <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(260px,100%), 1fr))', gap:'1rem'}}>
-            {completedCourses.map(c => (
-              <div key={c.id} style={{
-                background:'linear-gradient(135deg,#0a0e1a,#0f1528)',
-                border:'1px solid rgba(240,192,64,0.3)',
-                borderRadius:'14px', padding:'1.2rem', textAlign:'center',
-              }}>
-                <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>🎓</div>
-                <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.3rem'}}>{c.title}</div>
-                <div style={{fontSize:'0.75rem', color:'#7a80a0', marginBottom:'0.8rem'}}>by {c.instructor}</div>
-                <button
-                  onClick={() => router.push(`/courses/${c.id}`)}
-                  style={{
-                    fontSize:'0.8rem', fontWeight:'600', padding:'0.5rem 1rem',
-                    borderRadius:'8px', border:'none', cursor:'pointer',
-                    background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                  }}
-                >View Certificate</button>
-              </div>
-            ))}
+          <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap:'1rem'}}>
+            {completedCourses.map(c => {
+              const cert = certificates.filter(cert => cert.courseId === c.id).slice(-1)[0];
+              return (
+                <div key={c.id} style={{
+                  background:'linear-gradient(135deg,#0a0e1a,#0f1528)',
+                  border:'1px solid rgba(240,192,64,0.3)',
+                  borderRadius:'14px', padding:'1.2rem', textAlign:'center',
+                }}>
+                  <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>🎓</div>
+                  <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.3rem'}}>{c.title}</div>
+                  <div style={{fontSize:'0.75rem', color:'#7a80a0', marginBottom:'0.3rem'}}>by {c.instructor}</div>
+                  {cert && (
+                    <div style={{fontSize:'0.65rem', color:'#3a4060', fontFamily:'monospace', letterSpacing:'0.05em', marginBottom:'0.8rem', wordBreak:'break-all'}}>
+                      {cert.code}
+                    </div>
+                  )}
+                  <button
+                    onClick={() => router.push(`/courses/${c.id}`)}
+                    style={{
+                      fontSize:'0.8rem', fontWeight:'600', padding:'0.5rem 1rem',
+                      borderRadius:'8px', border:'none', cursor:'pointer',
+                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                    }}
+                  >View Certificate</button>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
