@@ -26,7 +26,7 @@ export default function Profile() {
   const levelInfo = getLevelInfo(xp);
 
   return (
-    <div style={{maxWidth:'900px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
+    <div className="page-container" style={{maxWidth:'900px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
 
       {/* PROFILE HEADER */}
       <div style={{
@@ -114,7 +114,7 @@ export default function Profile() {
       </div>
 
       {/* STATS ROW */}
-      <div style={{
+      <div className="profile-stats" style={{
         display:'grid',
         gridTemplateColumns:'repeat(auto-fill, minmax(min(160px,100%), 1fr))',
         gap:'1rem', marginBottom:'1.5rem',

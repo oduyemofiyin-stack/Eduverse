@@ -54,7 +54,7 @@ export default function Search() {
   });
 
   return (
-    <div style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
+    <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
 
       {/* HEADER */}
       <div style={{marginBottom:'1.5rem'}}>
@@ -98,7 +98,7 @@ export default function Search() {
         background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
         borderRadius:'14px', padding:'1.2rem', marginBottom:'1.5rem',
       }}>
-        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem'}}>
+        <div className="filter-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem'}}>
 
           {/* CATEGORY */}
           <div>
@@ -191,7 +191,7 @@ export default function Search() {
       </div>
 
       {/* RESULTS GRID */}
-      <div style={{
+      <div className="course-card-grid" style={{
         display:'grid',
         gridTemplateColumns:'repeat(auto-fill, minmax(min(295px, 100%), 1fr))',
         gap:'1rem',

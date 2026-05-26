@@ -412,3 +412,132 @@ button { font-family: inherit; }
   animation: ripple 0.6s ease-out forwards;
   pointer-events: none;
 }
+
+/* ════════════════════════════════════════════
+   RESPONSIVE / MOBILE OVERRIDES
+   ════════════════════════════════════════════ */
+
+/* ── Safe area for notched phones ── */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: min(0px, env(safe-area-inset-left));
+    padding-right: min(0px, env(safe-area-inset-right));
+  }
+}
+
+/* ── Fix horizontal overflow on ALL containers ── */
+img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
+
+/* ── Tablet & below ── */
+@media (max-width: 900px) {
+  .hide-tablet { display: none !important; }
+}
+
+/* ── Phone: medium & small ── */
+@media (max-width: 640px) {
+  html { font-size: 15px; }
+
+  /* Responsive padding helper for page containers */
+  .page-container {
+    padding: 1.2rem 1rem 3rem !important;
+  }
+
+  /* Force all grid-template-columns: 1fr 1fr to stack at 500px */
+  .mobile-stack {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mobile-full {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 500px) {
+  html { font-size: 14px; }
+
+  .page-container {
+    padding: 1rem 0.85rem 2.5rem !important;
+  }
+
+  /* Login signup name grid → stack */
+  .name-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Dashboard overview stats (2×2 inner) → stack */
+  .overview-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Profile stats grid (4 across) → 2×2 */
+  .profile-stats {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Hero stats row (3 across) → wrap */
+  .hero-stats {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+  }
+}
+
+@media (max-width: 400px) {
+  html { font-size: 13px; }
+
+  .page-container {
+    padding: 0.8rem 0.65rem 2rem !important;
+  }
+
+  /* Badge pills stack vertically or half-width */
+  .badge-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .profile-stats {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Course card min-width fix for tiny screens */
+  .course-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Admin form grids → single column */
+  .admin-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Search filter controls → single column */
+  .filter-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Login form card removes outer padding */
+  .login-card {
+    padding: 1.2rem !important;
+  }
+}
+
+/* ── Smoother scrolling on iOS ── */
+.ios-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* ── Touch-friendly tap targets ── */
+.touch-target {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Force card grids to not overflow ── */
+@media (max-width: 340px) {
+  [style*="minmax(min(300px"] {
+    grid-template-columns: 1fr !important;
+  }
+}

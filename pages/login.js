@@ -127,16 +127,16 @@ export default function Login() {
   });
 
   return (
-    <div style={{
-      minHeight:'100vh', background:'var(--bg)',
-      display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
-      backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.08) 0%, transparent 60%)',
-    }}>
       <div style={{
-        background:'var(--surface)', border:'1px solid var(--border2)',
-        borderRadius:'24px', padding:'2rem', width:'100%', maxWidth:'420px',
-        boxShadow:'0 20px 60px rgba(0,0,0,0.3)',
+        minHeight:'100vh', background:'var(--bg)',
+        display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
+        backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.08) 0%, transparent 60%)',
       }}>
+        <div className="login-card" style={{
+          background:'var(--surface)', border:'1px solid var(--border2)',
+          borderRadius:'24px', padding:'2rem', width:'100%', maxWidth:'420px',
+          boxShadow:'0 20px 60px rgba(0,0,0,0.3)',
+        }}>
 
         {/* LOGO */}
         <div style={{display:'flex', alignItems:'center', gap:'10px', justifyContent:'center', marginBottom:'1.6rem'}}>
@@ -214,7 +214,7 @@ export default function Login() {
         {/* FORM */}
         <div style={{display:'flex', flexDirection:'column', gap:'0.85rem'}}>
           {tab === 'signup' && (
-            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.7rem'}}>
+            <div className="name-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.7rem'}}>
               <div>
                 <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>First Name</label>
                 <input type="text" placeholder="John" value={form.firstName}

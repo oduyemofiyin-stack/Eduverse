@@ -14,7 +14,7 @@ export default function Verify() {
   }
 
   return (
-    <div style={{maxWidth:'640px', margin:'0 auto', padding:'3rem 1.2rem 4rem'}} className="page-transition">
+    <div className="page-container" style={{maxWidth:'640px', margin:'0 auto', padding:'3rem 1.2rem 4rem'}}>
       <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.5rem,5vw,2rem)', fontWeight:'700', textAlign:'center', marginBottom:'0.4rem'}}>
         Verify a Certificate
       </h1>

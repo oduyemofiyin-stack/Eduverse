@@ -8,7 +8,7 @@ export default function Enrolled() {
   const enrolledCourses = courses.filter(c => enrolled.includes(c.id));
 
   return (
-    <div style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
+    <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
       <div style={{marginBottom:'1.8rem'}}>
         <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>✓ My Learning</h1>
         <p style={{color:'#7a80a0', fontSize:'0.88rem'}}>Your enrolled courses</p>
@@ -26,7 +26,7 @@ export default function Enrolled() {
           }}>Find a Course</button>
         </div>
       ) : (
-        <div style={{
+        <div className="course-card-grid" style={{
           display:'grid',
           gridTemplateColumns:'repeat(auto-fill, minmax(min(295px, 100%), 1fr))',
           gap:'1rem',

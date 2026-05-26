@@ -1,6 +1,6 @@
 export default function Terms() {
   return (
-    <div style={{maxWidth:'800px', margin:'0 auto', padding:'3rem 1.2rem 5rem'}}>
+    <div className="page-container" style={{maxWidth:'800px', margin:'0 auto', padding:'3rem 1.2rem 5rem'}}>
       <div style={{marginBottom:'2rem'}}>
         <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.8rem,4vw,2.5rem)', fontWeight:'700', marginBottom:'0.5rem', color:'var(--text)'}}>
           Terms of Use

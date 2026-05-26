@@ -172,7 +172,7 @@ export default function Admin() {
         {activeTab === 'overview' && (
           <div>
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>Dashboard Overview</h2>
-            <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem', marginBottom:'2rem'}}>
+            <div className="admin-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem', marginBottom:'2rem'}}>
               {[
                 {ico:'📚', label:'Total Courses', value:totalCourses, color:'#4488ff'},
                 {ico:'🗂️', label:'Categories', value:categories.length, color:'#f0c040'},
@@ -226,7 +226,7 @@ export default function Admin() {
                   {editingId === c.id ? (
                     // EDIT MODE
                     <div style={{display:'flex', flexDirection:'column', gap:'0.8rem'}}>
-                      <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'0.8rem'}}>
+                      <div className="admin-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'0.8rem'}}>
                         {[
                           {key:'title', label:'Title', type:'text'},
                           {key:'instructor', label:'Instructor', type:'text'},
@@ -282,7 +282,7 @@ export default function Admin() {
               </div>
             )}
             <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', padding:'1.5rem'}}>
-              <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(220px,100%), 1fr))', gap:'1rem', marginBottom:'1rem'}}>
+              <div className="admin-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(220px,100%), 1fr))', gap:'1rem', marginBottom:'1rem'}}>
                 {[
                   {key:'title', label:'Course Title', placeholder:'e.g. React for Beginners'},
                   {key:'instructor', label:'Instructor Name', placeholder:'e.g. Jane Doe'},

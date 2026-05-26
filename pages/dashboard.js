@@ -17,7 +17,7 @@ export default function Dashboard() {
   if (loading) return (
     <div style={{maxWidth:'1100px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
       <div style={{height:'120px', background:'var(--surface)', borderRadius:'20px', marginBottom:'1.5rem'}} className="shimmer-block"/>
-      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem'}}>
+      <div className="dash-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem'}}>
         <div style={{height:'300px', background:'var(--surface)', borderRadius:'16px'}} className="shimmer-block"/>
         <div style={{height:'300px', background:'var(--surface)', borderRadius:'16px'}} className="shimmer-block"/>
       </div>
@@ -57,7 +57,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={{maxWidth:'1100px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}} className="page-transition">
+    <div className="page-container page-transition" style={{maxWidth:'1100px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
 
       {/* XP & STREAK HEADER */}
       <div style={{
@@ -111,7 +111,7 @@ export default function Dashboard() {
         {/* STATS OVERVIEW */}
         <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', padding:'1.3rem'}}>
           <h3 style={{fontSize:'0.82rem', fontWeight:'700', marginBottom:'0.8rem'}}>Overview</h3>
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem'}}>
+          <div className="overview-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem'}}>
             {[
               {label:'Enrolled', value:enrolledCourses.length, color:'var(--blue)'},
               {label:'Completed', value:completedCourses.length, color:'var(--gold)'},

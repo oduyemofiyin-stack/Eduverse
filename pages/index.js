@@ -278,7 +278,7 @@ export default function Home() {
       </div>
 
       {/* STATS */}
-      <div style={{
+      <div className="hero-stats" style={{
         display:'grid', gridTemplateColumns:'repeat(3, 1fr)',
         gap:'1rem', padding:'0 1.2rem 3rem',
         maxWidth:'520px', margin:'0 auto',
