@@ -81,7 +81,6 @@ export default function Contact() {
             onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.13)'; e.currentTarget.style.transform='translateY(-2px)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
           >
-            <div style={{width:'28px', height:'3px', borderRadius:'100px', background:'var(--blue)', marginBottom:'0.8rem'}}/>
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700', marginBottom:'0.55rem'}}>{card.title}</h3>
             {card.content}
           </div>

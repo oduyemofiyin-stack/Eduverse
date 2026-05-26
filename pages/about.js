@@ -56,7 +56,7 @@ export default function About() {
             onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.13)'; e.currentTarget.style.transform='translateY(-3px)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
           >
-            <span style={{width:'32px', height:'3px', borderRadius:'100px', background:v.color, marginBottom:'0.8rem', display:'block'}}/>
+
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700', marginBottom:'0.35rem'}}>{v.title}</h3>
             <p style={{fontSize:'0.82rem', color:'#7a80a0', lineHeight:'1.6'}}>{v.body}</p>
           </div>
