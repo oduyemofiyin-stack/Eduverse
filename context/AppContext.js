@@ -10,7 +10,13 @@ export function AppProvider({ children }) {
   const [completed, setCompleted] = useState([]);
   const [ratings, setRatings] = useState({});
   const [theme, setTheme] = useState('dark');
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = localStorage.getItem('eduverse_users');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
 
   useEffect(() => {
     try {
@@ -63,7 +69,9 @@ export function AppProvider({ children }) {
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem('eduverse_users', JSON.stringify(users));
+    if (users.length > 0) {
+      localStorage.setItem('eduverse_users', JSON.stringify(users));
+    }
   }, [users]);
 
   function login(user) {

@@ -37,14 +37,23 @@ export default function Login() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setLoading(true);
     setErrors({});
-    const user = users.find(u => u.email === form.email && u.password === form.password);
+    // Get fresh users from localStorage every time
+    let allUsers = [];
+    try {
+      const saved = localStorage.getItem('eduverse_users');
+      allUsers = saved ? JSON.parse(saved) : [];
+    } catch { allUsers = []; }
+    const user = allUsers.find(u =>
+      u.email.toLowerCase() === form.email.toLowerCase() &&
+      u.password === form.password
+    );
     if (!user) {
       setErrors({ general: 'Incorrect email or password. Please try again.' });
       setLoading(false);
       return;
     }
     login(user);
-    router.push('/');
+    setTimeout(() => router.push('/'), 100);
     setLoading(false);
   }
 
