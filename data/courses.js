@@ -7,7 +7,7 @@ const courses = [
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks"],
     lessons:[
       {title:"Introduction to React & JSX", dur:"18 min", yt:"Tn6-PIqc4UM"},
-      {title:"Components, Props & State", dur:"22 min", yt:"35lXWvCuM8o"},
+      {title:"Components, Props & State", dur:"22 min", yt:"1yTYmuXn6NQ"},
       {title:"React Hooks — useState & useEffect", dur:"25 min", yt:"O6P86uwfdR0"},
       {title:"Building a Real Project", dur:"30 min", yt:"hQAHSlTtcmY"},
     ],
@@ -80,8 +80,8 @@ const courses = [
     lessons:[
       {title:"Flutter & Dart Crash Course", dur:"22 min", yt:"1ukSR1GRtMU"},
       {title:"Widgets & Layouts", dur:"25 min", yt:"b_sQ9bMltGU"},
-      {title:"State Management with Provider", dur:"28 min", yt:"d9VSoFJSrD4"},
-      {title:"REST API Integration", dur:"20 min", yt:"9WnOXQwHxcA"},
+      {title:"State Management with Provider", dur:"28 min", yt:"3m7iycuiXCs"},
+      {title:"REST API Integration", dur:"20 min", yt:"jbOgULYBxyc"},
     ],
     reading:[
       {title:"Why Flutter?", body:"Flutter is Google's UI toolkit for building natively compiled apps from a single codebase.", points:["One codebase for iOS and Android","Hot reload for fast development","Rich pre-built widgets","Compiles to native code"]},
@@ -126,10 +126,10 @@ const courses = [
     img:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
     lessons:[
-      {title:"Digital Marketing Strategy Overview", dur:"18 min", yt:"bixR-KZQLRU"},
+      {title:"Digital Marketing Strategy Overview", dur:"18 min", yt:"Mf6PcbGDiO4"},
       {title:"SEO Fundamentals", dur:"22 min", yt:"DvwS7cV9GmQ"},
-      {title:"Social Media Marketing", dur:"20 min", yt:"PVhMcHmCHvg"},
-      {title:"Email Marketing & Analytics", dur:"16 min", yt:"6TAAiWtjl4w"},
+      {title:"Social Media Marketing", dur:"20 min", yt:"uRma-bTM-EE"},
+      {title:"Email Marketing & Analytics", dur:"16 min", yt:"yn6L7q4V1xg"},
     ],
     reading:[
       {title:"The Digital Marketing Funnel", body:"Customers go through: Awareness to Interest to Consideration to Intent to Purchase to Loyalty.", points:["SEO drives organic awareness","Social media builds community","Email converts and retains","Paid ads accelerate reach"]},
@@ -199,7 +199,7 @@ const courses = [
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
     lessons:[
       {title:"TypeScript Generics Deep Dive", dur:"20 min", yt:"nePDL5lQSE4"},
-      {title:"Advanced Types & Utility Types", dur:"22 min", yt:"EV4XiCEkFMQ"},
+      {title:"Advanced Types & Utility Types", dur:"22 min", yt:"4ugy-WuO1eg"},
       {title:"Decorators & Metadata", dur:"18 min", yt:"O6A-u_FoEX8"},
       {title:"Design Patterns in TypeScript", dur:"24 min", yt:"tv-_1er1mWI"},
     ],
@@ -222,8 +222,8 @@ const courses = [
     img:"https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
     lessons:[
-      {title:"Excel for Business Analysis", dur:"20 min", yt:"V0_0KatRhVo"},
-      {title:"Pivot Tables & Power Query", dur:"22 min", yt:"lu6Hjuqgt-I"},
+      {title:"Excel for Business Analysis", dur:"20 min", yt:"Vl0H-qTclOg"},
+      {title:"Pivot Tables & Power Query", dur:"22 min", yt:"m0wI61ahfLc"},
       {title:"Introduction to Power BI", dur:"24 min", yt:"yKTSLffVGbk"},
       {title:"Building Interactive Dashboards", dur:"26 min", yt:"AGrl-H87pRU"},
     ],
@@ -248,8 +248,8 @@ const courses = [
     lessons:[
       {title:"Vue 3 Core Concepts", dur:"20 min", yt:"FXpIoQ_rT_c"},
       {title:"Composition API Deep Dive", dur:"24 min", yt:"bwItFdPt-6M"},
-      {title:"Vue Router & Navigation", dur:"18 min", yt:"GD9nkmBEFkc"},
-      {title:"State Management with Pinia", dur:"22 min", yt:"Ok0_H0WeHyU"},
+      {title:"Vue Router & Navigation", dur:"18 min", yt:"I7pRp1Bwysw"},
+      {title:"State Management with Pinia", dur:"22 min", yt:"VeNfHj6MhgA"},
     ],
     reading:[
       {title:"Why Vue.js?", body:"Vue.js is a progressive JavaScript framework known for its gentle learning curve.", points:["Progressive adopt as much as needed","Composition API improves code reuse","Excellent tooling with Vite","Great virtual DOM performance"]},
