@@ -42,10 +42,10 @@ export default function About() {
         padding:'0 1.2rem',
       }}>
         {[
-          {ico:'🌍', title:'Accessibility', body:'Every course on Eduverse is completely free. No paywalls, no hidden fees, no subscriptions — ever.'},
-          {ico:'🏆', title:'Excellence', body:'We curate only the best content from world-class instructors and trusted educational sources.'},
-          {ico:'🔥', title:'Passion', body:'Learning should be exciting. Every experience is designed to ignite curiosity and keep you motivated.'},
-          {ico:'🤝', title:'Community', body:'We are building a global community of learners who inspire, support, and grow together.'},
+          {ico:null, title:'Accessibility', body:'Every course on Eduverse is completely free. No paywalls, no hidden fees, no subscriptions — ever.', color:'#4488ff'},
+          {ico:null, title:'Excellence', body:'We curate only the best content from world-class instructors and trusted educational sources.', color:'#f0c040'},
+          {ico:null, title:'Passion', body:'Learning should be exciting. Every experience is designed to ignite curiosity and keep you motivated.', color:'#ff6b9d'},
+          {ico:null, title:'Community', body:'We are building a global community of learners who inspire, support, and grow together.', color:'#00d4aa'},
         ].map(v => (
           <div key={v.title} style={{
             background:'#0d1117',
@@ -56,7 +56,7 @@ export default function About() {
             onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.13)'; e.currentTarget.style.transform='translateY(-3px)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
           >
-            <span style={{fontSize:'1.8rem', marginBottom:'0.6rem', display:'block'}}>{v.ico}</span>
+            <span style={{width:'32px', height:'3px', borderRadius:'100px', background:v.color, marginBottom:'0.8rem', display:'block'}}/>
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700', marginBottom:'0.35rem'}}>{v.title}</h3>
             <p style={{fontSize:'0.82rem', color:'#7a80a0', lineHeight:'1.6'}}>{v.body}</p>
           </div>
