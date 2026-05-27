@@ -5,11 +5,12 @@ import { useToast } from '../../components/Toast';
 import courses from '../../data/courses';
 import StarRating from '../../components/StarRating';
 import { CourseDetailSkeleton } from '../../components/Skeleton';
+import CourseRecommendations from '../../components/CourseRecommendations';
 
 export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, markQuizPassed, certificates } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime } = useApp();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
@@ -18,6 +19,10 @@ export default function CourseDetail() {
   const [noteText, setNoteText] = useState({});
   const [commentText, setCommentText] = useState({});
   const [commentName, setCommentName] = useState({});
+  const [replyText, setReplyText] = useState({});
+  const [showReply, setShowReply] = useState({});
+  const [playlistIdx, setPlaylistIdx] = useState(null);
+  const [timer, setTimer] = useState(null);
 
   const course = courses.find(c => c.id === parseInt(id));
   if (!course) return <CourseDetailSkeleton/>;
@@ -26,23 +31,40 @@ export default function CourseDetail() {
   const isWishlisted = wishlist.includes(course.id);
   const progressPct = getCourseProgress(course.id, course.lessons.length);
 
-  const relatedCourses = courses
-    .filter(c => c.id !== course.id && c.category === course.category)
-    .slice(0, 3);
-
-  const fallbackCourses = courses
-    .filter(c => c.id !== course.id)
-    .slice(0, 3);
-
-  const displayRelated = relatedCourses.length > 0 ? relatedCourses : fallbackCourses;
-
   function handleLessonOpen(i) {
     setOpenLesson(openLesson === i ? null : i);
-    if (openLesson !== i) markLesson(course.id, i, course.lessons.length);
+    if (openLesson !== i) {
+      markLesson(course.id, i, course.lessons.length);
+      setPlaylistIdx(i);
+    } else {
+      setPlaylistIdx(null);
+    }
   }
+
+  useEffect(() => {
+    function onMessage(e) {
+      if (!e.origin || !e.origin.includes('youtube.com')) return;
+      try {
+        const data = JSON.parse(e.data);
+        if (data.event === 'onStateChange' && data.info === 0 && playlistIdx !== null) {
+          const next = playlistIdx + 1;
+          if (next < course.lessons.length) {
+            setPlaylistIdx(next);
+            setOpenLesson(next);
+            markLesson(course.id, next, course.lessons.length);
+          } else {
+            setPlaylistIdx(null);
+          }
+        }
+      } catch {}
+    }
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, [playlistIdx, course, markLesson]);
 
   function startQuiz() {
     setQuizState({ idx: 0, score: 0, answered: false, answers: new Array(course.quiz.length).fill(null) });
+    setTimer(course.quiz.length * 60);
   }
   function answerQ(chosen) {
     if (quizState.answered) return;
@@ -61,18 +83,61 @@ export default function CourseDetail() {
   }
   function retake() {
     setQuizState({ idx: 0, score: 0, answered: false, answers: new Array(course.quiz.length).fill(null) });
+    setTimer(course.quiz.length * 60);
+  }
+
+  function downloadNotes() {
+    const slug = course.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const lines = [];
+    course.lessons.forEach((l, i) => {
+      const lessonNotes = notes[`${course.id}_${i}`] || [];
+      if (lessonNotes.length > 0) {
+        lines.push(`Lesson ${i + 1}:\n` + lessonNotes.map(n => n.text).join('\n'));
+      }
+    });
+    if (!lines.length) return;
+    const blob = new Blob([lines.join('\n\n')], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${slug}-notes.txt`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
   }
 
   const pct = quizState ? Math.round((quizState.score / course.quiz.length) * 100) : 0;
   const finished = quizState && quizState.idx === course.quiz.length - 1 && quizState.answered;
   const passed = pct >= 60;
+  const timerRunning = timer !== null && timer > 0 && !finished;
+  const fmtTime = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  const timerColor = timer <= 30 ? '#ff6b9d' : timer <= 60 ? '#f0c040' : '#eef0f8';
+  const courseLeaderboard = leaderboard.filter(e => e.courseId === course.id).sort((a, b) => b.score - a.score || new Date(a.date) - new Date(b.date)).slice(0, 10);
+
+  // Timer countdown
+  useEffect(() => {
+    if (!timerRunning) return;
+    const id = setInterval(() => setTimer(prev => Math.max(0, prev - 1)), 1000);
+    return () => clearInterval(id);
+  }, [timerRunning]);
+
+  // Time-up auto-submit
+  useEffect(() => {
+    if (timer !== 0 || finished || !quizState) return;
+    setQuizState(prev => ({ ...prev, idx: course.quiz.length - 1, answered: true }));
+  }, [timer, finished, quizState]);
 
   useEffect(() => {
     if (finished && passed) {
       markCompleted(course.id, course.title);
       markQuizPassed(course.id);
+      addScore(currentUser?.firstName || 'Anonymous', course.id, quizState.score, course.quiz.length);
     }
   }, [finished, passed]);
+
+  // Study time tracking
+  useEffect(() => {
+    startTracking(course.id);
+    return () => stopTracking();
+  }, [course.id]);
 
   return (
     <div style={{maxWidth:'1100px', margin:'0 auto', padding:'0 0 4rem'}}>
@@ -157,6 +222,9 @@ export default function CourseDetail() {
                     {item.i} <span>{item.l}: <strong style={{color:'#eef0f8'}}>{item.v}</strong></span>
                   </div>
                 ))}
+                <div key="study-time" style={{display:'flex', alignItems:'center', gap:'0.5rem', fontSize:'0.79rem', color:'#7a80a0'}}>
+                  ⏰ <span>Study Time: <strong style={{color:'#eef0f8'}}>{getStudyTime(course.id) >= 60 ? `${Math.floor(getStudyTime(course.id) / 60)}h ${getStudyTime(course.id) % 60}m` : `${getStudyTime(course.id)}m`}</strong></span>
+                </div>
               </div>
             </div>
           </div>
@@ -216,15 +284,26 @@ export default function CourseDetail() {
                   </div>
                   {openLesson === i && (
                     <div style={{padding:'0 0.8rem 0.8rem'}}>
+                      {playlistIdx === i && (
+                        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0.5rem 0.75rem', marginBottom:'0.5rem', background:'rgba(240,192,64,0.08)', borderRadius:'8px', border:'1px solid rgba(240,192,64,0.15)'}}>
+                          <div style={{display:'flex', alignItems:'center', gap:'0.5rem', fontSize:'0.78rem', fontWeight:'600', color:'#f0c040'}}>
+                            <span>▶ Now Playing:</span>
+                            <span style={{color:'var(--text)'}}>{l.title}</span>
+                          </div>
+                          <span style={{fontSize:'0.72rem', color:'var(--muted2)', fontWeight:'500'}}>{i + 1} / {course.lessons.length}</span>
+                        </div>
+                      )}
                       <iframe
                         style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', border:'none', background:'#000'}}
-                        src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1`}
+                        src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1&enablejsapi=1`}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen loading="lazy"
                       />
                       {/* NOTES */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
-                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>📝 Notes</div>
+                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>📝 Notes<button onClick={downloadNotes}
+                            style={{marginLeft:'auto', fontSize:'0.68rem', fontWeight:'600', padding:'0.2rem 0.6rem', borderRadius:'6px', border:'1px solid rgba(255,255,255,0.13)', background:'transparent', color:'#7a80a0', cursor:'pointer', whiteSpace:'nowrap'}}
+                            title="Download all notes">⬇ Download</button></div>
                         <div style={{display:'flex', gap:'0.4rem', marginBottom:'0.5rem'}}>
                           <input value={noteText[i] || ''} onChange={e => setNoteText(p => ({...p, [i]: e.target.value}))}
                             placeholder="Write a note..."
@@ -254,15 +333,41 @@ export default function CourseDetail() {
                           <button onClick={() => { if (commentText[i]?.trim()) { addComment(course.id, i, commentName[i]?.trim() || 'Anonymous', commentText[i].trim()); setCommentText(p => ({...p, [i]: ''})); } }}
                             style={{padding:'0.4rem 0.7rem', borderRadius:'6px', border:'none', background:'var(--teal)', color:'#fff', fontSize:'0.78rem', cursor:'pointer', fontWeight:'600'}}>Post</button>
                         </div>
-                        {(comments[`${course.id}_${i}`] || []).slice().reverse().map(c => (
+                        {(comments[`${course.id}_${i}`] || []).filter(c => !c.parentId).slice().reverse().map(c => {
+                          const replies = (comments[`${course.id}_${i}`] || []).filter(r => r.parentId === c.id);
+                          return (
                           <div key={c.id} style={{padding:'0.4rem 0', borderBottom:'1px solid var(--border)'}}>
                             <div style={{display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.15rem'}}>
                               <span style={{fontWeight:'600', fontSize:'0.78rem', color:'var(--blue)'}}>{c.userName}</span>
                               <span style={{fontSize:'0.62rem', color:'var(--muted2)'}}>{new Date(c.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
                             </div>
-                            <div style={{fontSize:'0.8rem', color:'var(--text2)', lineHeight:'1.5'}}>{c.text}</div>
+                            <div style={{fontSize:'0.8rem', color:'var(--text2)', lineHeight:'1.5', marginBottom:'0.3rem'}}>{c.text}</div>
+                            <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
+                              {replies.length > 0 && <span style={{fontSize:'0.68rem', color:'var(--muted2)'}}>{replies.length} {replies.length === 1 ? 'reply' : 'replies'}</span>}
+                              <button onClick={() => setShowReply(p => ({...p, [`${i}_${c.id}`]: !p[`${i}_${c.id}`]}))} style={{background:'none', border:'none', cursor:'pointer', fontSize:'0.7rem', color:'#4488ff', padding:'0'}}>Reply</button>
+                            </div>
+                            {showReply[`${i}_${c.id}`] && (
+                              <div style={{display:'flex', gap:'0.4rem', marginTop:'0.4rem', marginBottom:'0.4rem'}}>
+                                <input value={replyText[`${i}_${c.id}`] || ''} onChange={e => setReplyText(p => ({...p, [`${i}_${c.id}`]: e.target.value}))}
+                                  placeholder="Write a reply..."
+                                  style={{flex:1, padding:'0.3rem 0.5rem', borderRadius:'6px', border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)', fontSize:'0.7rem', outline:'none'}}
+                                  onKeyDown={e => { if (e.key === 'Enter' && replyText[`${i}_${c.id}`]?.trim()) { addComment(course.id, i, commentName[i]?.trim() || 'Anonymous', replyText[`${i}_${c.id}`].trim(), c.id); setReplyText(p => ({...p, [`${i}_${c.id}`]: ''})); setShowReply(p => ({...p, [`${i}_${c.id}`]: false})); } }}/>
+                                <button onClick={() => { if (replyText[`${i}_${c.id}`]?.trim()) { addComment(course.id, i, commentName[i]?.trim() || 'Anonymous', replyText[`${i}_${c.id}`].trim(), c.id); setReplyText(p => ({...p, [`${i}_${c.id}`]: ''})); setShowReply(p => ({...p, [`${i}_${c.id}`]: false})); } }}
+                                  style={{padding:'0.3rem 0.6rem', borderRadius:'6px', border:'none', background:'var(--teal)', color:'#fff', fontSize:'0.7rem', cursor:'pointer', fontWeight:'600'}}>Reply</button>
+                              </div>
+                            )}
+                            {replies.map(r => (
+                              <div key={r.id} style={{padding:'0.35rem 0 0.35rem 1.2rem', borderLeft:'2px solid rgba(255,255,255,0.08)', marginLeft:'0.3rem', marginTop:'0.2rem'}}>
+                                <div style={{display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.1rem'}}>
+                                  <span style={{fontWeight:'600', fontSize:'0.72rem', color:'var(--teal)'}}>{r.userName}</span>
+                                  <span style={{fontSize:'0.6rem', color:'var(--muted2)'}}>{new Date(r.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
+                                </div>
+                                <div style={{fontSize:'0.74rem', color:'var(--text2)', lineHeight:'1.4'}}>{r.text}</div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -342,8 +447,9 @@ export default function CourseDetail() {
                 </div>
               ) : (
                 <div>
-                  <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'1rem'}}>
-                    Question {quizState.idx + 1} of {course.quiz.length} · Score: {quizState.score}/{quizState.idx + (quizState.answered ? 1 : 0)}
+                  <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                    <span>Question {quizState.idx + 1} of {course.quiz.length} · Score: {quizState.score}/{quizState.idx + (quizState.answered ? 1 : 0)}</span>
+                    <span style={{fontWeight:'700', fontFamily:'monospace', fontSize:'0.9rem', color:timerColor}}>{fmtTime(timer)}</span>
                   </div>
                   <p style={{fontSize:'0.9rem', fontWeight:'600', marginBottom:'0.85rem', lineHeight:'1.5'}}>
                     {quizState.idx + 1}. {course.quiz[quizState.idx].q}
@@ -378,46 +484,36 @@ export default function CourseDetail() {
                   </div>
                 </div>
               )}
+              {isEnrolled && (
+                <div style={{marginTop:'1.5rem', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'1.2rem'}}>
+                  <h4 style={{fontSize:'0.9rem', fontWeight:'700', marginBottom:'0.8rem', color:'#eef0f8'}}>🏆 Leaderboard</h4>
+                  {courseLeaderboard.length === 0 ? (
+                    <p style={{fontSize:'0.8rem', color:'#7a80a0'}}>No scores yet. Be the first to take the quiz!</p>
+                  ) : (
+                    <div style={{display:'flex', flexDirection:'column', gap:'0.4rem'}}>
+                      {courseLeaderboard.map((entry, i) => (
+                        <div key={entry.date + entry.userName} style={{
+                          display:'flex', alignItems:'center', gap:'0.6rem',
+                          padding:'0.5rem 0.7rem', borderRadius:'8px',
+                          background: i === 0 ? 'rgba(240,192,64,0.08)' : 'transparent',
+                          border: i === 0 ? '1px solid rgba(240,192,64,0.15)' : 'none',
+                        }}>
+                          <span style={{fontSize:'0.85rem', fontWeight:'700', color: i === 0 ? '#f0c040' : '#7a80a0', width:'20px'}}>#{i + 1}</span>
+                          <span style={{flex:1, fontSize:'0.82rem', fontWeight:'600', color:'#eef0f8'}}>{entry.userName}</span>
+                          <span style={{fontSize:'0.82rem', fontWeight:'700', color:'#00d4aa'}}>{entry.score}/{entry.total}</span>
+                          <span style={{fontSize:'0.68rem', color:'#5a6080'}}>{new Date(entry.date).toLocaleDateString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
       </div>
 
-      {/* RELATED COURSES */}
-      <div style={{padding:'2rem 1.2rem 3rem', maxWidth:'1100px', margin:'0 auto'}}>
-        <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-          🎯 Related Courses
-        </h2>
-        <div style={{
-          display:'grid',
-          gridTemplateColumns:'repeat(auto-fill, minmax(min(260px, 100%), 1fr))',
-          gap:'1rem',
-        }}>
-          {displayRelated.map(c => (
-            <div key={c.id}
-              onClick={() => router.push(`/courses/${c.id}`)}
-              style={{
-                background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
-                borderRadius:'14px', overflow:'hidden', cursor:'pointer',
-                transition:'all 0.2s',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(68,136,255,0.22)'; e.currentTarget.style.transform='translateY(-3px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
-            >
-              <img src={c.img} alt={c.title} style={{width:'100%', height:'140px', objectFit:'cover', display:'block'}}/>
-              <div style={{padding:'0.9rem'}}>
-                <div style={{fontSize:'0.68rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.3rem'}}>{c.category}</div>
-                <div style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', lineHeight:'1.3', marginBottom:'0.3rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
-                <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'0.5rem'}}>by {c.instructor}</div>
-                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                  <span style={{fontSize:'0.76rem'}}><span style={{color:'#fbbf24'}}>★</span> {c.rating}</span>
-                  <span style={{fontSize:'0.76rem', color:'#00d4aa', fontWeight:'700'}}>Free</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <CourseRecommendations currentCourseId={course.id} />
 
       {/* CERTIFICATE MODAL */}
       {showCert && (

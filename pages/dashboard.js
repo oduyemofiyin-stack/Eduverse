@@ -6,7 +6,7 @@ import { DashboardSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Dashboard() {
-  const { enrolled, completed, progress, getCourseProgress, xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS, currentUser } = useApp();
+  const { enrolled, completed, progress, getCourseProgress, xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS, currentUser, studyTime } = useApp();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [celebration, setCelebration] = useState(null);
@@ -34,6 +34,8 @@ export default function Dashboard() {
   const enrolledCourses = courses.filter(c => enrolled.includes(c.id));
   const completedCourses = courses.filter(c => completed.includes(c.id));
   const totalLessonsWatched = Object.values(progress).reduce((sum, arr) => sum + arr.length, 0);
+  const totalStudySeconds = Object.values(studyTime).reduce((sum, s) => sum + s, 0);
+  const totalStudyMinutes = Math.floor(totalStudySeconds / 60);
 
   // Activity heatmap data (last 12 weeks)
   const today = new Date();
@@ -123,6 +125,7 @@ export default function Dashboard() {
               {label:'Completed', value:completedCourses.length, color:'var(--gold)'},
               {label:'Lessons Done', value:totalLessonsWatched, color:'var(--teal)'},
               {label:'Badges', value:badges.length, color:'var(--pink)'},
+              {label:'Study Time', value: totalStudyMinutes >= 60 ? `${Math.floor(totalStudyMinutes / 60)}h ${totalStudyMinutes % 60}m` : `${totalStudyMinutes}m`, color:'var(--blue)'},
             ].map(s => (
               <div key={s.label} style={{background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem', textAlign:'center'}}>
                 <div style={{fontSize:'1.4rem', fontWeight:'700', color:s.color}}>{s.value}</div>

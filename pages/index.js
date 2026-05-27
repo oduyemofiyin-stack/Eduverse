@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
 import { CourseSkeleton } from '../components/Skeleton';
-import { initScrollReveal, initCardTilt, initParallax, initMagneticButtons, initCustomCursor, initStarfield } from '../lib/animations';
+import { initScrollReveal, initCardTilt, initParallax, initMagneticButtons, initCustomCursor } from '../lib/animations';
+import CourseImage from '../components/CourseImage';
 import courses from '../data/courses';
+
+const HeroScene = dynamic(() => import('../components/HeroScene'), { ssr: false });
 
 function AnimatedNumber({ value, color }) {
   const [displayed, setDisplayed] = useState(0);
@@ -45,7 +49,6 @@ export default function Home() {
   const [activeCat, setActiveCat] = useState('All');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const canvasRef = useRef(null);
   const heroRef = useRef(null);
   const isLight = theme === 'light';
   const [typewriter, setTypewriter] = useState('');
@@ -70,13 +73,6 @@ export default function Home() {
       };
     }
   }, [loading]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const cleanup = initStarfield(canvas);
-    return cleanup;
-  }, []);
 
   // Typewriter effect
   useEffect(() => {
@@ -129,44 +125,7 @@ export default function Home() {
         display:'flex', flexDirection:'column',
         alignItems:'center', justifyContent:'center',
       }}>
-        <canvas
-          ref={canvasRef}
-          id="starfield-canvas"
-          style={{position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none'}}
-        />
-
-        {/* NEBULA GLOWS */}
-        <div style={{
-          position:'absolute', width:'700px', height:'700px', borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(68,136,255,0.08) 0%, transparent 70%)',
-          top:'-200px', right:'-200px', pointerEvents:'none',
-        }}/>
-        <div style={{
-          position:'absolute', width:'500px', height:'500px', borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(240,192,64,0.05) 0%, transparent 70%)',
-          bottom:'-150px', left:'-150px', pointerEvents:'none',
-        }}/>
-
-        {/* ORBITING RING DECORATION */}
-        <div style={{
-          position:'absolute', top:'15%', left:'8%',
-          width:'100px', height:'100px', pointerEvents:'none', opacity:0.3,
-        }} className="orbit-3d">
-          <svg viewBox="0 0 80 80" fill="none">
-            <ellipse cx="40" cy="40" rx="38" ry="15" stroke="#4488ff" strokeWidth="1" strokeDasharray="3 3" transform="rotate(-25 40 40)"/>
-            <circle cx="40" cy="25" r="3" fill="#4488ff"/>
-            <circle cx="68" cy="48" r="2" fill="#00d4aa"/>
-          </svg>
-        </div>
-        <div style={{
-          position:'absolute', bottom:'20%', right:'6%',
-          width:'80px', height:'80px', pointerEvents:'none', opacity:0.25,
-        }} className="orbit-3d">
-          <svg viewBox="0 0 60 60" fill="none">
-            <ellipse cx="30" cy="30" rx="28" ry="10" stroke="#f0c040" strokeWidth="1" strokeDasharray="2.5 2.5" transform="rotate(30 30 30)"/>
-            <circle cx="30" cy="20" r="2.5" fill="#f0c040"/>
-          </svg>
-        </div>
+        <HeroScene />
 
         {/* HERO CONTENT */}
         <div style={{position:'relative', zIndex:1, maxWidth:'900px', margin:'0 auto', padding:'2rem 1.2rem'}} data-parallax-text>
@@ -456,8 +415,8 @@ export default function Home() {
                 position:'relative', overflow:'hidden',
                 background:'var(--surface2)',
               }}>
-                <img
-                  src={c.img} alt={c.title} loading="lazy"
+                <CourseImage
+                  src={c.img} alt={c.title} courseId={c.id}
                   style={{
                     width:'100%', height:'100%', objectFit:'cover',
                     display:'block', transition:'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -564,7 +523,7 @@ export default function Home() {
                 style={{background:'var(--card-bg)', borderRadius:'16px', overflow:'hidden', border:'1px solid var(--border)', cursor:'pointer'}}
               >
                 <div style={{width:'100%', height:'150px', overflow:'hidden', position:'relative', background:'var(--surface2)'}}>
-                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                  <CourseImage src={c.img} alt={c.title} courseId={c.id} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
                   <span style={{position:'absolute', top:'8px', left:'8px', fontSize:'0.6rem', fontWeight:'700', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.2)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.35)'}}>Free</span>
                 </div>
                 <div style={{padding:'0.8rem'}}>

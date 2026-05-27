@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import ScrollToTop from '../components/ScrollToTop';
 import OfflineBanner from '../components/OfflineBanner';
+import PwaRegister from '../components/PwaRegister';
 import '../styles/globals.css';
 
 function AuthGuard({ Component, pageProps }) {
@@ -117,6 +118,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <AppProvider>
       <ToastProvider>
+        <PwaRegister />
         <AuthGuard Component={Component} pageProps={pageProps} />
       </ToastProvider>
     </AppProvider>

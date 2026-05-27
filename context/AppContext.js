@@ -66,6 +66,14 @@ export function AppProvider({ children }) {
   const [bookmarks, setBookmarks] = useState({});
   const [comments, setComments] = useState({});
   const [certificates, setCertificates] = useState([]);
+  const [studyTime, setStudyTime] = useState(() => {
+    if (typeof window === 'undefined') return {};
+    try {
+      const saved = localStorage.getItem('eduverse_study_time');
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
+  const trackingRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -139,9 +147,9 @@ export function AppProvider({ children }) {
       provider: currentUser.provider,
       wishlist, enrolled, progress, completed, ratings,
       xp, streak, lastActiveDate, badges, activityLog,
-      notes, bookmarks, comments, certificates,
+      notes, bookmarks, comments, certificates, studyTime,
     });
-  }, [currentUser, wishlist, enrolled, progress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates]);
+  }, [currentUser, wishlist, enrolled, progress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
 
   // Persist new state (localStorage + Firestore)
   useEffect(() => { if (currentUser) { localStorage.setItem('eduverse_user', JSON.stringify(currentUser)); syncToFirestore(); } }, [currentUser]);
@@ -161,6 +169,7 @@ export function AppProvider({ children }) {
   useEffect(() => { localStorage.setItem('eduverse_bookmarks', JSON.stringify(bookmarks)); if (currentUser) syncToFirestore(); }, [bookmarks]);
   useEffect(() => { localStorage.setItem('eduverse_comments', JSON.stringify(comments)); if (currentUser) syncToFirestore(); }, [comments]);
   useEffect(() => { localStorage.setItem('eduverse_certificates', JSON.stringify(certificates)); if (currentUser) syncToFirestore(); }, [certificates]);
+  useEffect(() => { localStorage.setItem('eduverse_study_time', JSON.stringify(studyTime)); if (currentUser) syncToFirestore(); }, [studyTime]);
 
   // Streak check on mount
   useEffect(() => {
@@ -194,7 +203,7 @@ export function AppProvider({ children }) {
     setCurrentUser(null);
     setWishlist([]); setEnrolled([]); setProgress({}); setCompleted([]); setRatings({});
     setXp(0); setStreak(0); setLastActiveDate(null); setBadges([]); setActivityLog([]);
-    setNotes({}); setBookmarks({}); setComments({}); setCertificates([]);
+    setNotes({}); setBookmarks({}); setComments({}); setCertificates([]); setStudyTime({});
     localStorage.removeItem('eduverse_user'); localStorage.removeItem('eduverse_wishlist');
     localStorage.removeItem('eduverse_enrolled'); localStorage.removeItem('eduverse_progress');
     localStorage.removeItem('eduverse_completed'); localStorage.removeItem('eduverse_ratings');
@@ -202,7 +211,7 @@ export function AppProvider({ children }) {
     localStorage.removeItem('eduverse_last_active'); localStorage.removeItem('eduverse_badges');
     localStorage.removeItem('eduverse_activity'); localStorage.removeItem('eduverse_notes');
     localStorage.removeItem('eduverse_bookmarks'); localStorage.removeItem('eduverse_comments');
-    localStorage.removeItem('eduverse_certificates');
+    localStorage.removeItem('eduverse_certificates'); localStorage.removeItem('eduverse_study_time');
   }
 
   function addXp(amount, reason) {
@@ -350,15 +359,19 @@ export function AppProvider({ children }) {
   }
 
   // ─── Comments ───
-  function addComment(courseId, lessonIdx, userName, text) {
+  function addComment(courseId, lessonIdx, userName, text, parentId = null) {
     const key = `${courseId}_${lessonIdx}`;
-    const comment = { id: Date.now() + Math.random(), userName, text, createdAt: new Date().toISOString() };
+    const comment = { id: Date.now() + Math.random(), userName, text, parentId, createdAt: new Date().toISOString() };
     setComments(prev => ({ ...prev, [key]: [...(prev[key] || []), comment] }));
     addActivity('comment', `${userName} commented on course #${courseId}, lesson ${lessonIdx + 1}`);
   }
 
   function getCommentsData(courseId, lessonIdx) {
     return comments[`${courseId}_${lessonIdx}`] || [];
+  }
+
+  function getReplies(courseId, lessonIdx, parentId) {
+    return (comments[`${courseId}_${lessonIdx}`] || []).filter(c => c.parentId === parentId);
   }
 
   // ─── Quiz ───
@@ -368,12 +381,58 @@ export function AppProvider({ children }) {
     addActivity('quiz', `Passed quiz in course #${courseId}`);
   }
 
+  // ─── Study Time Tracking ───
+  function startTracking(courseId) {
+    if (trackingRef.current) clearInterval(trackingRef.current);
+    trackingRef.current = setInterval(() => {
+      setStudyTime(prev => ({ ...prev, [courseId]: (prev[courseId] || 0) + 30 }));
+    }, 30000);
+  }
+
+  function stopTracking() {
+    if (trackingRef.current) {
+      clearInterval(trackingRef.current);
+      trackingRef.current = null;
+    }
+  }
+
+  function getStudyTime(courseId) {
+    const seconds = studyTime[courseId] || 0;
+    return Math.floor(seconds / 60);
+  }
+
   // ─── Bookworm badge ───
   function checkBookworm(courseId, totalLessons) {
     const watched = (progress[courseId] || []).length;
     if (watched >= totalLessons && !badges.includes('bookworm')) {
       addBadgeIfMissing('bookworm');
     }
+  }
+
+  // ─── Leaderboard ───
+  const [leaderboard, setLeaderboard] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = localStorage.getItem('eduverse_leaderboard');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('eduverse_leaderboard', JSON.stringify(leaderboard));
+  }, [leaderboard]);
+
+  function addScore(userName, courseId, score, total) {
+    const entry = { userName, courseId, score, total, date: new Date().toISOString() };
+    setLeaderboard(prev => [...prev, entry]);
+    addActivity('leaderboard', `${userName} scored ${score}/${total} in course #${courseId}`);
+  }
+
+  function getLeaderboard(courseId) {
+    return leaderboard
+      .filter(e => e.courseId === courseId)
+      .sort((a, b) => b.score - a.score || new Date(a.date) - new Date(b.date))
+      .slice(0, 10);
   }
 
   return (
@@ -389,8 +448,10 @@ export function AppProvider({ children }) {
       xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS,
       notes, addNote, removeNote,
       bookmarks, toggleBookmark, isBookmarked,
-      comments, addComment, getCommentsData,
+      comments, addComment, getCommentsData, getReplies,
       certificates, addXp, addActivity, markQuizPassed, checkBookworm,
+      studyTime, startTracking, stopTracking, getStudyTime,
+      leaderboard, addScore, getLeaderboard,
     }}>
       {children}
     </AppContext.Provider>

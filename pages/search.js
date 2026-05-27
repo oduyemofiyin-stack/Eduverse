@@ -20,7 +20,13 @@ export default function Search() {
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(12);
+  const [recentSearches, setRecentSearches] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try { return JSON.parse(localStorage.getItem('eduverse_recent_searches')) || []; } catch { return []; }
+  });
+  const [focused, setFocused] = useState(false);
   const sentinelRef = useRef(null);
+  const searchRef = useRef(null);
 
   useEffect(() => {
     if (q) setSearch(q);
@@ -30,6 +36,10 @@ export default function Search() {
     const timer = setTimeout(() => setLoading(false), 600);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('eduverse_recent_searches', JSON.stringify(recentSearches));
+  }, [recentSearches]);
 
   const categories = ['All', ...new Set(courses.map(c => c.category))];
   const durations = ['All', 'Under 5 hrs', '5–10 hrs', '10–20 hrs', '20+ hrs'];
@@ -104,7 +114,15 @@ export default function Search() {
           type="text"
           placeholder="Search by title, instructor, or keyword…"
           value={search}
+          ref={searchRef}
           onChange={e => setSearch(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setTimeout(() => setFocused(false), 200)}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && search.trim()) {
+              setRecentSearches(prev => [search.trim(), ...prev.filter(s => s !== search.trim())].slice(0, 5));
+            }
+          }}
           autoFocus
           inputMode="search"
           style={{
@@ -122,6 +140,34 @@ export default function Search() {
               background:'none', border:'none', color:'#7a80a0', cursor:'pointer', fontSize:'1.1rem',
             }}
           >✕</button>
+        )}
+        {focused && recentSearches.length > 0 && (
+          <div style={{
+            position:'absolute', top:'100%', left:0, right:0, zIndex:50,
+            background:'#0d1117', border:'1px solid rgba(255,255,255,0.1)',
+            borderRadius:'12px', marginTop:'0.3rem', overflow:'hidden',
+            boxShadow:'0 8px 30px rgba(0,0,0,0.5)',
+          }}>
+            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0.55rem 0.85rem', borderBottom:'1px solid rgba(255,255,255,0.06)'}}>
+              <span style={{fontSize:'0.72rem', fontWeight:'600', color:'#7a80a0', textTransform:'uppercase', letterSpacing:'0.05em'}}>Recent Searches</span>
+              <button onClick={() => { setRecentSearches([]); setFocused(false); }}
+                style={{fontSize:'0.68rem', color:'#ff6b9d', background:'none', border:'none', cursor:'pointer', fontWeight:'600', padding:'0.2rem'}}>Clear</button>
+            </div>
+            {recentSearches.map((term, i) => (
+              <div key={i} onClick={() => { setSearch(term); setFocused(false); }}
+                style={{
+                  padding:'0.6rem 0.85rem', cursor:'pointer', fontSize:'0.85rem', color:'#eef0f8',
+                  borderBottom: i < recentSearches.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  display:'flex', alignItems:'center', gap:'0.5rem',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.04)'}
+                onMouseLeave={e => e.currentTarget.style.background='transparent'}
+              >
+                <span style={{color:'#7a80a0', fontSize:'0.8rem'}}>⌕</span>
+                {term}
+              </div>
+            ))}
+          </div>
         )}
       </div>
 
