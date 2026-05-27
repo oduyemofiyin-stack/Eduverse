@@ -33,13 +33,13 @@ function getLevelInfo(xp) {
 }
 
 const BADGE_DEFS = {
-  first_lesson: { label: 'First Steps', desc: 'Complete your first lesson', icon: '' },
-  quiz_whiz: { label: 'Quiz Whiz', desc: 'Pass your first quiz', icon: '' },
-  streak_7: { label: 'Streak Master', desc: 'Maintain a 7-day streak', icon: '' },
-  graduate: { label: 'Course Graduate', desc: 'Complete your first course', icon: '' },
-  explorer: { label: 'Knowledge Seeker', desc: 'Enroll in 5 courses', icon: '' },
-  centurion: { label: 'Centurion', desc: 'Reach 1,000 XP', icon: '' },
-  bookworm: { label: 'Bookworm', desc: 'Read all materials in a course', icon: '' },
+  first_lesson: { label: 'First Steps', desc: 'Complete your first lesson', icon: '👣' },
+  quiz_whiz: { label: 'Quiz Whiz', desc: 'Pass your first quiz', icon: '🧠' },
+  streak_7: { label: 'Streak Master', desc: 'Maintain a 7-day streak', icon: '🔥' },
+  graduate: { label: 'Course Graduate', desc: 'Complete your first course', icon: '🎓' },
+  explorer: { label: 'Knowledge Seeker', desc: 'Enroll in 5 courses', icon: '📖' },
+  centurion: { label: 'Centurion', desc: 'Reach 1,000 XP', icon: '⚡' },
+  bookworm: { label: 'Bookworm', desc: 'Read all materials in a course', icon: '📚' },
 };
 
 export function AppProvider({ children }) {

@@ -35,6 +35,7 @@ export default function Enrolled() {
 
       {enrolledCourses.length === 0 ? (
         <div style={{textAlign:'center', padding:'4rem 1rem', color:'#7a80a0'}}>
+          <span style={{fontSize:'4rem', display:'block', marginBottom:'0.8rem'}}>📚</span>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses yet</h2>
           <p style={{marginBottom:'1.4rem'}}>Enroll in a course to start learning</p>
           <button onClick={() => router.push('/')} style={{
