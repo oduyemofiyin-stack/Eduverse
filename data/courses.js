@@ -344,8 +344,8 @@ const courses = [
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"150 min", yt:"eIrMbAQSU34"},
       {title:"Object-Oriented Programming Deep Dive", dur:"572 min", yt:"grEKMHGYyns"},
-      {title:"Collections Framework & Generics", dur:"251 min", yt:"A74TOX803D0"},
-      {title:"Exception Handling & File I/O", dur:"251 min", yt:"A74TOX803D0"},
+      {title:"Collections Framework & Generics", dur:"251 min", yt:"GdAon80-0KA"},
+      {title:"Exception Handling & File I/O", dur:"251 min", yt:"_nmm0nZqIIY"},
     ],
     reading:[
       {title:"Why Java?", body:"Java is a mature, platform-independent language used everywhere from enterprise to Android.", points:["Write once, run anywhere via JVM","Strongly typed catches errors early","Rich standard library","Massive ecosystem and community"]},
@@ -367,7 +367,7 @@ const courses = [
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
     lessons:[
       {title:"Flexbox Complete Guide", dur:"27 min", yt:"jV8B24rSN5o"},
-      {title:"CSS Grid Complete Guide", dur:"85 min", yt:"yfoY53QXEnI"},
+      {title:"CSS Grid Complete Guide", dur:"85 min", yt:"0xMQfnTU6oo"},
       {title:"Advanced Positioning & Z-Index", dur:"154 min", yt:"TzuWIHGFKCQ"},
       {title:"Building a Responsive Dashboard Layout", dur:"242 min", yt:"HGTJBPNC-Gw"},
     ],
@@ -392,8 +392,8 @@ const courses = [
     lessons:[
       {title:"Git Basics: Init, Add, Commit", dur:"68 min", yt:"RGOj5yH7evk"},
       {title:"Branching & Merging Strategies", dur:"81 min", yt:"mAFoROnOfHs"},
-      {title:"GitHub: Pull Requests & Collaboration", dur:"68 min", yt:"RGOj5yH7evk"},
-      {title:"Undoing Changes & Git Reset", dur:"81 min", yt:"mAFoROnOfHs"},
+      {title:"GitHub: Pull Requests & Collaboration", dur:"68 min", yt:"oFYyTZwMyAg"},
+      {title:"Undoing Changes & Git Reset", dur:"81 min", yt:"GytsxgB4-HU"},
     ],
     reading:[
       {title:"Why Version Control?", body:"Git tracks every change to your code, enabling collaboration and history.", points:["Never lose work with commits","Branch to experiment safely","Merge to combine changes","Rebase keeps history linear"]},
@@ -415,9 +415,9 @@ const courses = [
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
     lessons:[
       {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"260 min", yt:"HXV3zeQKqGY"},
-      {title:"Joins & Relationships", dur:"260 min", yt:"HXV3zeQKqGY"},
-      {title:"Subqueries & Aggregation", dur:"260 min", yt:"HXV3zeQKqGY"},
-      {title:"Normalization & Indexing", dur:"260 min", yt:"HXV3zeQKqGY"},
+      {title:"Joins & Relationships", dur:"260 min", yt:"7S_tz1z_5bA"},
+      {title:"Subqueries & Aggregation", dur:"260 min", yt:"nJIEIzF7tDw"},
+      {title:"Normalization & Indexing", dur:"260 min", yt:"26ls5lNiijk"},
     ],
     reading:[
       {title:"Database Fundamentals", body:"A database is an organized collection of data. Relational databases store data in tables.", points:["Each table represents one entity type","Rows are records, columns are fields","Primary keys uniquely identify rows","Foreign keys link tables together"]},
@@ -440,8 +440,8 @@ const courses = [
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"266 min", yt:"rfscVS0vtbw"},
       {title:"Functions & Modules", dur:"280 min", yt:"eWRfhZUzrAc"},
-      {title:"Working with Files & Data", dur:"266 min", yt:"rfscVS0vtbw"},
-      {title:"Building CLI Applications", dur:"280 min", yt:"eWRfhZUzrAc"},
+      {title:"Working with Files & Data", dur:"266 min", yt:"Uh2ebFW8OYM"},
+      {title:"Building CLI Applications", dur:"280 min", yt:"7TcVbc5R88g"},
     ],
     reading:[
       {title:"Why Python?", body:"Python is the most beginner-friendly language and the most versatile.", points:["Readable syntax feels like pseudocode","Dynamically typed reduces boilerplate","Huge standard library 'batteries included'","Used in web, data science, automation, AI"]},
@@ -464,8 +464,8 @@ const courses = [
     lessons:[
       {title:"Responsive Design Principles & Strategy", dur:"247 min", yt:"kUMe1FH4CHE"},
       {title:"Fluid Layouts & Relative Units", dur:"60 min", yt:"UB1O30fR-EE"},
-      {title:"Responsive Images & Media", dur:"122 min", yt:"pQN-pnXPaVg"},
-      {title:"Mobile UX Patterns & Best Practices", dur:"321 min", yt:"a_iQb1lnAEQ"},
+      {title:"Responsive Images & Media", dur:"122 min", yt:"-X7on-aDkvo"},
+      {title:"Mobile UX Patterns & Best Practices", dur:"321 min", yt:"q6qA_609UOE"},
     ],
     reading:[
       {title:"The Responsive Mindset", body:"Responsive design is not just about making things fit — it's about creating great experiences on every device.", points:["Content decides breakpoints, not devices","Touch targets should be at least 44px","Test on real mobile hardware","Performance matters more on mobile"]},

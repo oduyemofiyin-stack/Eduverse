@@ -696,7 +696,6 @@ img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
   overflow: hidden;
 }
 .blur-load img {
-  opacity: 0;
   transition: opacity 0.4s;
 }
 .blur-load.loaded img {
@@ -708,6 +707,7 @@ img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
   inset: 0;
   background: var(--surface2);
   animation: shimmerSlide 1.8s ease-in-out infinite;
+  pointer-events: none;
 }
 .blur-load.loaded::before {
   opacity: 0;
