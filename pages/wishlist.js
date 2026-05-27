@@ -71,7 +71,15 @@ export default function Wishlist() {
                 ></div>
               </div>
               <div style={{padding:'1rem'}}>
-                <div style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.4rem'}}>{c.category}</div>
+                <div style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.4rem', display:'flex', alignItems:'center', gap:'0.5rem'}}>
+                    <span>{c.category}</span>
+                    <span style={{
+                      fontSize:'0.6rem', fontWeight:'700', textTransform:'uppercase',
+                      padding:'0.15rem 0.5rem', borderRadius:'100px',
+                      color: c.level === 'beginner' ? '#00d4aa' : c.level === 'intermediate' ? '#f0c040' : '#ff6b9d',
+                      background: c.level === 'beginner' ? 'rgba(0,212,170,0.15)' : c.level === 'intermediate' ? 'rgba(240,192,64,0.15)' : 'rgba(255,107,157,0.15)',
+                    }}>{c.level}</span>
+                  </div>
                 <div style={{fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700', lineHeight:'1.35', marginBottom:'0.4rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
                 <div style={{fontSize:'0.78rem', color:'#7a80a0', marginBottom:'0.7rem'}}>by {c.instructor}</div>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.65rem', flexWrap:'wrap', gap:'0.3rem'}}>

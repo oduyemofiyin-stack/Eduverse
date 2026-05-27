@@ -228,6 +228,7 @@ export default function CourseDetail() {
                 {[
                   {i:'🎓', l:'Instructor', v:course.instructor},
                   {i:'📂', l:'Category', v:course.category},
+                  {i:'📊', l:'Level', v:course.level},
                   {i:'⏱', l:'Duration', v:course.duration},
                   {i:'📹', l:'Lessons', v:`${course.lessons.length} videos`},
                   {i:'🌍', l:'Language', v:'English'},
