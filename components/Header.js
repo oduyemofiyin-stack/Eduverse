@@ -156,7 +156,6 @@ export default function Header() {
                 }}>
                 {currentUser.picture && !avatarError ? (
                   <img src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
-                    crossOrigin="anonymous"
                     onError={() => setAvatarError(true)}
                     style={{width:'26px', height:'26px', borderRadius:'50%', objectFit:'cover'}}/>
                 ) : (
@@ -273,7 +272,6 @@ export default function Header() {
               <div style={{display:'flex', alignItems:'center', gap:'0.7rem', padding:'0.8rem 1rem', borderBottom:'1px solid var(--border)', marginBottom:'0.3rem'}}>
                 {currentUser.picture && !avatarError ? (
                   <img src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
-                    crossOrigin="anonymous"
                     onError={() => setAvatarError(true)}
                     style={{width:'34px', height:'34px', borderRadius:'50%', objectFit:'cover'}}/>
                 ) : (

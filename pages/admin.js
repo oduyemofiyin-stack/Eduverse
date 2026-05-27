@@ -318,8 +318,7 @@ export default function Admin() {
                   ) : (
                     // VIEW MODE
                     <div style={{display:'flex', alignItems:'center', gap:'1rem', flexWrap:'wrap'}}>
-                      <img src={c.img} alt={c.title} style={{width:'70px', height:'50px', borderRadius:'8px', objectFit:'cover', flexShrink:0}}
-                        onError={e => { e.target.style.display='none'; }}/>
+                      <img src={c.img} alt={c.title} style={{width:'70px', height:'50px', borderRadius:'8px', objectFit:'cover', flexShrink:0}}/>
                       <div style={{flex:1, minWidth:'150px'}}>
                         <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
                          <div style={{fontSize:'0.78rem', color:'#7a80a0'}}>by {c.instructor} · {c.category} · {c.duration} · {c.rating}</div>

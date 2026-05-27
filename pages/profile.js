@@ -45,7 +45,6 @@ export default function Profile() {
               src={currentUser.picture}
               alt="avatar"
               referrerPolicy="no-referrer"
-              crossOrigin="anonymous"
               onError={() => setPfpError(true)}
               style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover', border:'3px solid #f0c040'}}
             />

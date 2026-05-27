@@ -421,7 +421,6 @@ export default function Home() {
                     width:'100%', height:'100%', objectFit:'cover',
                     display:'block', transition:'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
-                  onError={e => { e.target.style.display='none' }}
                   onMouseEnter={e => e.target.style.transform='scale(1.12)'}
                   onMouseLeave={e => e.target.style.transform='scale(1)'}
                 />
@@ -524,7 +523,7 @@ export default function Home() {
                 style={{background:'var(--card-bg)', borderRadius:'16px', overflow:'hidden', border:'1px solid var(--border)', cursor:'pointer'}}
               >
                 <div style={{width:'100%', height:'150px', overflow:'hidden', position:'relative', background:'var(--surface2)'}}>
-                  <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover'}} onError={e => { e.target.style.display='none' }}/>
+                  <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
                   <span style={{position:'absolute', top:'8px', left:'8px', fontSize:'0.6rem', fontWeight:'700', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.2)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.35)'}}>Free</span>
                 </div>
                 <div style={{padding:'0.8rem'}}>
