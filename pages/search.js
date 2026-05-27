@@ -79,6 +79,16 @@ export default function Search() {
 
   const visibleCourses = filtered.slice(0, visibleCount);
 
+  const tagStyle = {
+    display:'inline-flex', alignItems:'center', gap:'0.15rem',
+    padding:'0.3rem 0.7rem', borderRadius:'100px',
+    border:'1px solid rgba(68,136,255,0.2)',
+    background:'rgba(68,136,255,0.08)',
+    color:'var(--blue)', fontSize:'0.76rem', fontWeight:'600',
+    cursor:'pointer', fontFamily:'inherit',
+    transition:'all 0.2s',
+  };
+
   return (
     <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
 
@@ -158,28 +168,38 @@ export default function Search() {
         )}
       </div>
 
-      {/* FILTERS — desktop */}
+      {/* CATEGORY PILLS */}
+      <div style={{
+        display:'flex', gap:'0.5rem', marginBottom:'1.2rem',
+        overflowX:'auto', paddingBottom:'0.3rem',
+        WebkitOverflowScrolling:'touch', scrollbarWidth:'none',
+      }}
+        className="category-pills"
+      >
+        {categories.map(cat => {
+          const active = activeCat === cat;
+          return (
+            <button key={cat} onClick={() => setActiveCat(cat)}
+              style={{
+                flexShrink:0, padding:'0.45rem 1rem', borderRadius:'100px',
+                border: active ? '1px solid var(--blue)' : '1px solid var(--border2)',
+                background: active ? 'rgba(68,136,255,0.15)' : 'var(--surface2)',
+                color: active ? 'var(--blue)' : 'var(--muted)',
+                fontSize:'0.8rem', fontWeight: active ? '700' : '500',
+                cursor:'pointer', fontFamily:'inherit',
+                transition:'all 0.2s',
+              }}
+            >{cat}</button>
+          );
+        })}
+      </div>
+
+      {/* FILTERS */}
       <div className="filters-desktop" style={{
         background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
         borderRadius:'14px', padding:'1.2rem', marginBottom:'1.5rem',
       }}>
         <div className="filter-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem'}}>
-
-          {/* CATEGORY */}
-          <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Category</label>
-            <select
-              value={activeCat}
-              onChange={e => setActiveCat(e.target.value)}
-              style={{
-                width:'100%', background:'#161b26', border:'1px solid rgba(255,255,255,0.1)',
-                borderRadius:'9px', padding:'0.55rem 0.8rem',
-                fontSize:'0.85rem', color:'#eef0f8', outline:'none', cursor:'pointer',
-              }}
-            >
-              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-            </select>
-          </div>
 
           {/* SORT BY */}
           <div>
@@ -249,6 +269,37 @@ export default function Search() {
           </button>
         )}
       </div>
+
+      {/* ACTIVE FILTER TAGS */}
+      {(activeCat !== 'All' || sortBy !== 'relevance' || duration !== 'All' || minRating > 0) && (
+        <div style={{display:'flex', flexWrap:'wrap', gap:'0.45rem', marginBottom:'1rem', alignItems:'center'}}>
+          <span style={{fontSize:'0.74rem', color:'var(--muted)', fontWeight:'600', textTransform:'uppercase', letterSpacing:'0.04em'}}>Active:</span>
+          {activeCat !== 'All' && (
+            <button onClick={() => setActiveCat('All')}
+              style={tagStyle}>
+              {activeCat} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+            </button>
+          )}
+          {sortBy !== 'relevance' && (
+            <button onClick={() => setSortBy('relevance')}
+              style={tagStyle}>
+              {sortBy === 'rating' ? 'Highest Rated' : sortBy === 'duration_asc' ? 'Shortest' : 'Longest'} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+            </button>
+          )}
+          {duration !== 'All' && (
+            <button onClick={() => setDuration('All')}
+              style={tagStyle}>
+              {duration} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+            </button>
+          )}
+          {minRating > 0 && (
+            <button onClick={() => setMinRating(0)}
+              style={tagStyle}>
+              {minRating}+ ⭐ <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+            </button>
+          )}
+        </div>
+      )}
 
       {/* RESULTS COUNT */}
       <div style={{fontSize:'0.82rem', color:'#7a80a0', marginBottom:'1rem'}}>

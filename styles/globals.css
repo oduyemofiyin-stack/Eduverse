@@ -226,7 +226,10 @@ button { font-family: inherit; }
 .glow-border:hover::before { opacity: 1; }
 
 /* ── SPIN ── */
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin { to { transform: rotate(360deg);   }
+}
+
+.category-pills::-webkit-scrollbar { display: none; }
 /* ── CUSTOM CURSOR ── */
 * { cursor: auto; }
 @media (max-width: 768px) {
