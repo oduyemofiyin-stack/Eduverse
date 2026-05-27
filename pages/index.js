@@ -276,6 +276,59 @@ export default function Home() {
         ))}
       </div>
 
+      {/* RESUME LEARNING */}
+      {(() => {
+        const inProgress = enrolled.filter(id => {
+          const p = getCourseProgress(id, courses.find(c => c.id === id)?.lessons.length || 1);
+          return p > 0 && p < 100;
+        });
+        if (inProgress.length === 0) return null;
+        const resumeId = inProgress[0];
+        const course = courses.find(c => c.id === resumeId);
+        if (!course) return null;
+        const prog = getCourseProgress(resumeId, course.lessons.length);
+        return (
+          <div className="reveal" style={{maxWidth:'1240px', margin:'0 auto', padding:'0 1.2rem 1.5rem'}}>
+            <div className="glass" style={{
+              borderRadius:'16px', padding:'1.2rem 1.5rem',
+              border:'1px solid var(--border)',
+              display:'flex', alignItems:'center', justifyContent:'space-between',
+              flexWrap:'wrap', gap:'1rem',
+            }}>
+              <div style={{display:'flex', alignItems:'center', gap:'1rem', flex:1, minWidth:'200px'}}>
+                <div style={{
+                  width:'48px', height:'48px', borderRadius:'12px', overflow:'hidden', flexShrink:0,
+                  background:'var(--surface2)',
+                }}>
+                  <img src={course.img} alt="" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                </div>
+                <div>
+                  <div style={{fontSize:'0.72rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)', letterSpacing:'0.06em', marginBottom:'0.15rem'}}>Continue Learning</div>
+                  <div style={{fontWeight:'700', fontSize:'0.9rem', lineHeight:'1.3'}}>{course.title}</div>
+                  <div style={{display:'flex', alignItems:'center', gap:'0.5rem', marginTop:'0.3rem'}}>
+                    <div style={{flex:1, maxWidth:'200px', height:'4px', background:'var(--surface3)', borderRadius:'100px', overflow:'hidden'}}>
+                      <div style={{width:`${prog}%`, height:'100%', borderRadius:'100px', background:'linear-gradient(90deg,var(--blue),var(--teal))', transition:'width 0.6s'}}/>
+                    </div>
+                    <span style={{fontSize:'0.72rem', color:'var(--muted)', fontWeight:'600'}}>{prog}%</span>
+                  </div>
+                </div>
+              </div>
+              <button onClick={() => router.push(`/courses/${resumeId}`)}
+                style={{
+                  fontSize:'0.85rem', fontWeight:'700', padding:'0.6rem 1.4rem',
+                  borderRadius:'10px', border:'none', cursor:'pointer',
+                  background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff',
+                  whiteSpace:'nowrap', transition:'transform 0.2s',
+                  fontFamily:'inherit',
+                }}
+                onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+                onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+              >Continue →</button>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* SEARCH */}
       <div className="reveal" style={{maxWidth:'1240px', margin:'0 auto', padding:'0 1.2rem 1.2rem'}}>
         <div style={{position:'relative', marginBottom:'0.9rem'}}>
@@ -472,9 +525,20 @@ export default function Home() {
               {/* BODY */}
               <div style={{padding:'1.1rem 1.2rem 1.2rem'}}>
                 <div style={{
-                  fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase',
-                  letterSpacing:'0.07em', color:'var(--blue)', marginBottom:'0.35rem',
-                }}>{c.category}</div>
+                  display:'flex', alignItems:'center', gap:'0.4rem', flexWrap:'wrap',
+                  marginBottom:'0.35rem',
+                }}>
+                  <span style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', letterSpacing:'0.07em', color:'var(--blue)'}}>{c.category}</span>
+                  {c.level && (
+                    <span style={{
+                      fontSize:'0.6rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.05em',
+                      padding:'0.12rem 0.45rem', borderRadius:'100px',
+                      background: c.level === 'beginner' ? 'rgba(0,212,170,0.15)' : c.level === 'intermediate' ? 'rgba(240,192,64,0.15)' : 'rgba(255,107,157,0.15)',
+                      color: c.level === 'beginner' ? '#00d4aa' : c.level === 'intermediate' ? '#f0c040' : '#ff6b9d',
+                      border: c.level === 'beginner' ? '1px solid rgba(0,212,170,0.25)' : c.level === 'intermediate' ? '1px solid rgba(240,192,64,0.25)' : '1px solid rgba(255,107,157,0.25)',
+                    }}>{c.level}</span>
+                  )}
+                </div>
                 <div style={{
                   fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700',
                   lineHeight:'1.35', marginBottom:'0.4rem',
@@ -527,7 +591,18 @@ export default function Home() {
                   <span style={{position:'absolute', top:'8px', left:'8px', fontSize:'0.6rem', fontWeight:'700', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.2)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.35)'}}>Free</span>
                 </div>
                 <div style={{padding:'0.8rem'}}>
-                  <div style={{fontSize:'0.65rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)', marginBottom:'0.2rem'}}>{c.category}</div>
+                  <div style={{display:'flex', alignItems:'center', gap:'0.3rem', flexWrap:'wrap', marginBottom:'0.2rem'}}>
+                    <span style={{fontSize:'0.65rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)'}}>{c.category}</span>
+                    {c.level && (
+                      <span style={{
+                        fontSize:'0.55rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.04em',
+                        padding:'0.1rem 0.4rem', borderRadius:'100px',
+                        background: c.level === 'beginner' ? 'rgba(0,212,170,0.15)' : c.level === 'intermediate' ? 'rgba(240,192,64,0.15)' : 'rgba(255,107,157,0.15)',
+                        color: c.level === 'beginner' ? '#00d4aa' : c.level === 'intermediate' ? '#f0c040' : '#ff6b9d',
+                        border: c.level === 'beginner' ? '1px solid rgba(0,212,170,0.25)' : c.level === 'intermediate' ? '1px solid rgba(240,192,64,0.25)' : '1px solid rgba(255,107,157,0.25)',
+                      }}>{c.level}</span>
+                    )}
+                  </div>
                   <div style={{fontWeight:'700', fontSize:'0.9rem', lineHeight:'1.3', marginBottom:'0.2rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
                   <div style={{fontSize:'0.75rem', color:'var(--muted)'}}>{c.duration}</div>
                   {prog > 0 && (
