@@ -47,6 +47,7 @@ export function AppProvider({ children }) {
   const [wishlist, setWishlist] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
   const [progress, setProgress] = useState({});
+  const [readingProgress, setReadingProgress] = useState({});
   const [completed, setCompleted] = useState([]);
   const [ratings, setRatings] = useState({});
   const [theme, setTheme] = useState('dark');
@@ -88,6 +89,8 @@ export function AppProvider({ children }) {
       if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
       if (savedEnrolled) setEnrolled(JSON.parse(savedEnrolled));
       if (savedProgress) setProgress(JSON.parse(savedProgress));
+      const savedReading = localStorage.getItem('eduverse_reading_progress');
+      if (savedReading) setReadingProgress(JSON.parse(savedReading));
       if (savedCompleted) setCompleted(JSON.parse(savedCompleted));
       if (savedRatings) setRatings(JSON.parse(savedRatings));
       if (savedTheme) setTheme(savedTheme);
@@ -122,6 +125,7 @@ export function AppProvider({ children }) {
       if (cloud.wishlist) setWishlist(cloud.wishlist);
       if (cloud.enrolled) setEnrolled(cloud.enrolled);
       if (cloud.progress) setProgress(cloud.progress);
+      if (cloud.readingProgress) setReadingProgress(cloud.readingProgress);
       if (cloud.completed) setCompleted(cloud.completed);
       if (cloud.ratings) setRatings(cloud.ratings);
       if (cloud.xp !== undefined) setXp(cloud.xp);
@@ -145,17 +149,18 @@ export function AppProvider({ children }) {
       lastName: currentUser.lastName,
       picture: currentUser.picture,
       provider: currentUser.provider,
-      wishlist, enrolled, progress, completed, ratings,
+      wishlist, enrolled, progress, readingProgress, completed, ratings,
       xp, streak, lastActiveDate, badges, activityLog,
       notes, bookmarks, comments, certificates, studyTime,
     });
-  }, [currentUser, wishlist, enrolled, progress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
+  }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
 
   // Persist new state (localStorage + Firestore)
   useEffect(() => { if (currentUser) { localStorage.setItem('eduverse_user', JSON.stringify(currentUser)); syncToFirestore(); } }, [currentUser]);
   useEffect(() => { localStorage.setItem('eduverse_wishlist', JSON.stringify(wishlist)); if (currentUser) syncToFirestore(); }, [wishlist]);
   useEffect(() => { localStorage.setItem('eduverse_enrolled', JSON.stringify(enrolled)); if (currentUser) syncToFirestore(); }, [enrolled]);
   useEffect(() => { localStorage.setItem('eduverse_progress', JSON.stringify(progress)); if (currentUser) syncToFirestore(); }, [progress]);
+  useEffect(() => { localStorage.setItem('eduverse_reading_progress', JSON.stringify(readingProgress)); if (currentUser) syncToFirestore(); }, [readingProgress]);
   useEffect(() => { localStorage.setItem('eduverse_completed', JSON.stringify(completed)); if (currentUser) syncToFirestore(); }, [completed]);
   useEffect(() => { localStorage.setItem('eduverse_ratings', JSON.stringify(ratings)); if (currentUser) syncToFirestore(); }, [ratings]);
   useEffect(() => { localStorage.setItem('eduverse_theme', theme); document.documentElement.setAttribute('data-theme', theme); }, [theme]);
@@ -205,7 +210,7 @@ export function AppProvider({ children }) {
     setXp(0); setStreak(0); setLastActiveDate(null); setBadges([]); setActivityLog([]);
     setNotes({}); setBookmarks({}); setComments({}); setCertificates([]); setStudyTime({});
     localStorage.removeItem('eduverse_user'); localStorage.removeItem('eduverse_wishlist');
-    localStorage.removeItem('eduverse_enrolled'); localStorage.removeItem('eduverse_progress');
+    localStorage.removeItem('eduverse_enrolled'); localStorage.removeItem('eduverse_progress'); localStorage.removeItem('eduverse_reading_progress');
     localStorage.removeItem('eduverse_completed'); localStorage.removeItem('eduverse_ratings');
     localStorage.removeItem('eduverse_xp'); localStorage.removeItem('eduverse_streak');
     localStorage.removeItem('eduverse_last_active'); localStorage.removeItem('eduverse_badges');
@@ -280,9 +285,29 @@ export function AppProvider({ children }) {
     });
   }
 
+  function markReading(courseId, sectionIndex) {
+    setReadingProgress(prev => {
+      const courseReading = prev[courseId] || [];
+      if (courseReading.includes(sectionIndex)) return prev;
+      return { ...prev, [courseId]: [...courseReading, sectionIndex] };
+    });
+  }
+
   function getCourseProgress(courseId, totalLessons) {
     const watched = (progress[courseId] || []).length;
     return totalLessons > 0 ? Math.round((watched / totalLessons) * 100) : 0;
+  }
+
+  function getReadingProgress(courseId, totalReading) {
+    const read = (readingProgress[courseId] || []).length;
+    return totalReading > 0 ? Math.round((read / totalReading) * 100) : 0;
+  }
+
+  function getCombinedProgress(courseId, totalLessons, totalReading) {
+    const watched = (progress[courseId] || []).length;
+    const read = (readingProgress[courseId] || []).length;
+    const total = totalLessons + totalReading;
+    return total > 0 ? Math.round(((watched + read) / total) * 100) : 0;
   }
 
   function markCompleted(courseId, courseName) {
@@ -441,6 +466,7 @@ export function AppProvider({ children }) {
       wishlist, toggleWishlist,
       enrolled, toggleEnroll,
       progress, markLesson, getCourseProgress,
+      readingProgress, markReading, getReadingProgress, getCombinedProgress,
       completed, markCompleted,
       ratings, rateCourse, getUserRating,
       theme, toggleTheme,

@@ -10,7 +10,7 @@ import CourseRecommendations from '../../components/CourseRecommendations';
 export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress } = useApp();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
@@ -209,6 +209,21 @@ export default function CourseDetail() {
               }}>
                 {isWishlisted ? '♥ In Wishlist' : '♡ Add to Wishlist'}
               </button>
+              <button onClick={() => {
+                const url = window.location.href;
+                if (navigator.share) {
+                  navigator.share({ title: course.title, url });
+                } else {
+                  navigator.clipboard.writeText(url).then(() => toast?.('Link copied!', 'success'));
+                }
+              }} style={{
+                width:'100%', padding:'0.65rem', borderRadius:'12px',
+                fontSize:'0.85rem', fontWeight:'500', cursor:'pointer',
+                border:'1px solid rgba(255,255,255,0.13)', background:'transparent',
+                color:'var(--muted)',
+              }}>
+                ↗ Share Course
+              </button>
               <div style={{marginTop:'1rem', display:'flex', flexDirection:'column', gap:'0.45rem'}}>
                 {[
                   {i:'🎓', l:'Instructor', v:course.instructor},
@@ -380,9 +395,43 @@ export default function CourseDetail() {
           {activeTab === 'reading' && (
             <div style={{display:'flex', flexDirection:'column', gap:'1rem'}}>
               <StarRating courseId={course.id} courseName={course.title} />
-              {course.reading.map((r, i) => (
-                <div key={i} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1.2rem'}}>
-                  <h4 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', marginBottom:'0.6rem', color:'#f0c040'}}>{r.title}</h4>
+              {course.reading.length > 0 && (
+                <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1rem 1.2rem', marginBottom:'0.5rem'}}>
+                  <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.5rem'}}>
+                    <span style={{fontSize:'0.75rem', fontWeight:'700', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em'}}>Reading Progress</span>
+                    <span style={{fontSize:'0.8rem', color:'var(--blue)', fontWeight:'600'}}>{readingProgress[course.id]?.length || 0}/{course.reading.length} read</span>
+                  </div>
+                  <div style={{width:'100%', height:'5px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
+                    <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,#4488ff,#00d4aa)', width:`${getReadingProgress(course.id, course.reading.length)}%`, transition:'width 0.4s ease'}}/>
+                  </div>
+                </div>
+              )}
+              {course.reading.map((r, i) => {
+                const isRead = readingProgress[course.id]?.includes(i);
+                return (
+                <div key={i} style={{
+                  background:'#0d1117', border:`1px solid ${isRead ? 'rgba(0,212,170,0.2)' : 'rgba(255,255,255,0.06)'}`,
+                  borderRadius:'14px', padding:'1.2rem', transition:'border 0.3s',
+                }}>
+                  <div style={{display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'0.5rem', marginBottom:'0.6rem'}}>
+                    <h4 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', color:'#f0c040'}}>{r.title}</h4>
+                    {isEnrolled && (
+                      <button onClick={() => markReading(course.id, i)}
+                        style={{
+                          flexShrink:0, fontSize:'0.7rem', fontWeight:'700', textTransform:'uppercase',
+                          padding:'0.3rem 0.7rem', borderRadius:'100px', border:'none', cursor:'pointer',
+                          background: isRead ? 'rgba(0,212,170,0.15)' : 'rgba(255,255,255,0.06)',
+                          color: isRead ? '#00d4aa' : 'var(--muted)',
+                          fontFamily:'inherit', letterSpacing:'0.04em',
+                          transition:'all 0.2s',
+                        }}
+                        onMouseEnter={e => { if (!isRead) { e.currentTarget.style.background='rgba(68,136,255,0.15)'; e.currentTarget.style.color='var(--blue)'; } }}
+                        onMouseLeave={e => { if (!isRead) { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.color='var(--muted)'; } }}
+                      >
+                        {isRead ? '✓ Read' : 'Mark Read'}
+                      </button>
+                    )}
+                  </div>
                   <p style={{fontSize:'0.85rem', lineHeight:'1.75', color:'#b0acd0', marginBottom:'0.6rem'}}>{r.body}</p>
                   {r.points && (
                     <ul style={{paddingLeft:'1.2rem', display:'flex', flexDirection:'column', gap:'0.35rem'}}>
@@ -392,7 +441,8 @@ export default function CourseDetail() {
                     </ul>
                   )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
 
