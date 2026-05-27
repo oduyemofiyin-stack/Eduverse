@@ -155,17 +155,18 @@ export default function Header() {
                 }}>
                 {currentUser.picture ? (
                   <img src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
+                    onError={e => { e.target.style.display='none'; e.target.parentElement.querySelector('.avatar-fallback')?.classList.remove('hidden'); }}
                     style={{width:'26px', height:'26px', borderRadius:'50%', objectFit:'cover'}}/>
-                ) : (
-                  <div style={{
-                    width:'26px', height:'26px', borderRadius:'50%',
-                    background:'linear-gradient(135deg,var(--blue),var(--teal))',
-                    display:'flex', alignItems:'center', justifyContent:'center',
-                    fontSize:'0.68rem', fontWeight:'700', color:'#fff',
-                  }}>
-                    {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
-                  </div>
-                )}
+                ) : null}
+                <div className="avatar-fallback" style={{
+                  width:'26px', height:'26px', borderRadius:'50%',
+                  background:'linear-gradient(135deg,var(--blue),var(--teal))',
+                  display: currentUser.picture ? 'none' : 'flex',
+                  alignItems:'center', justifyContent:'center',
+                  fontSize:'0.68rem', fontWeight:'700', color:'#fff',
+                }}>
+                  {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
+                </div>
                 <span className="user-name-desktop" style={{fontSize:'0.76rem', fontWeight:'600', color:'var(--text)', maxWidth:'80px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
                   {currentUser.firstName}
                 </span>
@@ -267,11 +268,26 @@ export default function Header() {
           ))}
           {currentUser && (
             <>
-              <button
-                onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }}
-                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.65rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--muted)'}}>
-                👤 My Profile
-              </button>
+              <div style={{display:'flex', alignItems:'center', gap:'0.7rem', padding:'0.8rem 1rem', borderBottom:'1px solid var(--border)', marginBottom:'0.3rem'}}>
+                {currentUser.picture ? (
+                  <img src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
+                    onError={e => { e.target.style.display='none'; e.target.parentElement.querySelector('.mob-avatar-fallback')?.classList.remove('hidden'); }}
+                    style={{width:'34px', height:'34px', borderRadius:'50%', objectFit:'cover'}}/>
+                ) : null}
+                <div className="mob-avatar-fallback" style={{
+                  width:'34px', height:'34px', borderRadius:'50%',
+                  background:'linear-gradient(135deg,var(--blue),var(--teal))',
+                  display: currentUser.picture ? 'none' : 'flex',
+                  alignItems:'center', justifyContent:'center',
+                  fontSize:'0.75rem', fontWeight:'700', color:'#fff', flexShrink:0,
+                }}>
+                  {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
+                </div>
+                <div>
+                  <div style={{fontSize:'0.88rem', fontWeight:'700', color:'var(--text)'}}>{currentUser.firstName} {currentUser.lastName}</div>
+                  <div style={{fontSize:'0.72rem', color:'var(--muted)'}}>{currentUser.email}</div>
+                </div>
+              </div>
               <button
                 onClick={() => { logout(); setMobileMenuOpen(false); router.push('/login'); }}
                 style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.65rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--red)', marginTop:'0.2rem', borderTop:'1px solid var(--border)', paddingTop:'0.8rem'}}>

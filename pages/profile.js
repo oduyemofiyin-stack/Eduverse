@@ -44,19 +44,20 @@ export default function Profile() {
               src={currentUser.picture}
               alt="avatar"
               referrerPolicy="no-referrer"
+              onError={e => { e.target.style.display='none'; document.getElementById('pfp-fallback').style.display='flex'; }}
               style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover', border:'3px solid #f0c040'}}
             />
-          ) : (
-            <div style={{
-              width:'90px', height:'90px', borderRadius:'50%',
-              background:'linear-gradient(135deg,#4488ff,#00d4aa)',
-              display:'flex', alignItems:'center', justifyContent:'center',
-              fontFamily:'Georgia, serif', fontSize:'2.2rem', fontWeight:'700',
-              color:'#fff', border:'3px solid #f0c040',
-            }}>
-              {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
-            </div>
-          )}
+          ) : null}
+          <div id="pfp-fallback" style={{
+            display: currentUser.picture ? 'none' : 'flex',
+            width:'90px', height:'90px', borderRadius:'50%',
+            background:'linear-gradient(135deg,#4488ff,#00d4aa)',
+            alignItems:'center', justifyContent:'center',
+            fontFamily:'Georgia, serif', fontSize:'2.2rem', fontWeight:'700',
+            color:'#fff', border:'3px solid #f0c040',
+          }}>
+            {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
+          </div>
           {/* ONLINE DOT */}
           <div style={{
             position:'absolute', bottom:'4px', right:'4px',

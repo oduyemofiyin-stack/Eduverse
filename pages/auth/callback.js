@@ -18,7 +18,7 @@ export default function AuthCallback() {
             firstName: data.given_name || data.name?.split(' ')[0] || 'User',
             lastName: data.family_name || data.name?.split(' ').slice(1).join(' ') || '',
             email: data.email,
-            picture: data.picture || '',
+            picture: data.picture ? `${data.picture}?sz=200` : '',
             provider: 'Google',
           };
           addUser(user);
