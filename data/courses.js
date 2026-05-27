@@ -295,9 +295,9 @@ const courses = [
     rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
     lessons:[
       {title:"HTML5 Semantics & Structure", dur:"20 min", yt:"pQN-pnXPaVg"},
-      {title:"CSS Fundamentals & Selectors", dur:"22 min", yt:"1Rs2ND1ryYc"},
-      {title:"Flexbox & CSS Grid Layouts", dur:"26 min", yt:"JJSoEo8OcU4"},
-      {title:"Building a Complete Landing Page", dur:"24 min", yt:"a_iQb1Y1iYI"},
+      {title:"CSS Fundamentals & Selectors", dur:"22 min", yt:"a_iQb1lnAEQ"},
+      {title:"Flexbox & CSS Grid Layouts", dur:"26 min", yt:"yfoY53QXEnI"},
+      {title:"Building a Complete Landing Page", dur:"24 min", yt:"G3e-cpL7ofc"},
     ],
     reading:[
       {title:"HTML Foundations", body:"HTML is the backbone of every web page. It structures content with semantic tags.", points:["<header>, <nav>, <main> give meaning","<section> groups related content","<article> represents standalone content","<img> must always include alt text"]},
@@ -321,7 +321,7 @@ const courses = [
       {title:"JS Basics: Variables & Data Types", dur:"20 min", yt:"PkZNo7MFNFg"},
       {title:"Functions, Scope & Closures", dur:"24 min", yt:"hdI2bqOjy3c"},
       {title:"DOM Manipulation & Events", dur:"26 min", yt:"0ik6X4DJKCc"},
-      {title:"Async JavaScript: Promises & Fetch", dur:"22 min", yt:"PoRJizFHWK8"},
+      {title:"Async JavaScript: Promises & Fetch", dur:"22 min", yt:"Oive66jrwBs"},
     ],
     reading:[
       {title:"JavaScript Core Concepts", body:"JavaScript is the language of the web. It powers interactivity on nearly every site.", points:["var, let, const — use const by default","Functions are first-class citizens","Closures remember their lexical scope","The event loop handles async operations"]},
@@ -344,8 +344,8 @@ const courses = [
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"22 min", yt:"eIrMbAQSU34"},
       {title:"Object-Oriented Programming Deep Dive", dur:"28 min", yt:"grEKMHGYyns"},
-      {title:"Collections Framework & Generics", dur:"24 min", yt:"rz3qBh7wG4M"},
-      {title:"Exception Handling & File I/O", dur:"20 min", yt:"2xTytMqXz4c"},
+      {title:"Collections Framework & Generics", dur:"24 min", yt:"A74TOX803D0"},
+      {title:"Exception Handling & File I/O", dur:"20 min", yt:"A74TOX803D0"},
     ],
     reading:[
       {title:"Why Java?", body:"Java is a mature, platform-independent language used everywhere from enterprise to Android.", points:["Write once, run anywhere via JVM","Strongly typed catches errors early","Rich standard library","Massive ecosystem and community"]},
@@ -366,10 +366,10 @@ const courses = [
     img:"https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=600&q=80",
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
     lessons:[
-      {title:"Flexbox Complete Guide", dur:"20 min", yt:"phW6D0VgWTw"},
-      {title:"CSS Grid Complete Guide", dur:"22 min", yt:"9zBsd3qE3aA"},
-      {title:"Advanced Positioning & Z-Index", dur:"18 min", yt:"-0Y8h4KoBP0"},
-      {title:"Building a Responsive Dashboard Layout", dur:"20 min", yt:"p3y9NtlT1qQ"},
+      {title:"Flexbox Complete Guide", dur:"20 min", yt:"jV8B24rSN5o"},
+      {title:"CSS Grid Complete Guide", dur:"22 min", yt:"yfoY53QXEnI"},
+      {title:"Advanced Positioning & Z-Index", dur:"18 min", yt:"TzuWIHGFKCQ"},
+      {title:"Building a Responsive Dashboard Layout", dur:"20 min", yt:"HGTJBPNC-Gw"},
     ],
     reading:[
       {title:"Flexbox vs Grid", body:"Flexbox is 1D (row or column). Grid is 2D (rows and columns simultaneously).", points:["Flexbox: content-first, distributes space along one axis","Grid: layout-first, places items in cells","Use Flexbox for navigation bars and centering","Use Grid for page-level layouts and galleries"]},
@@ -391,9 +391,9 @@ const courses = [
     rating:4.5, keywords:["git","github","version control","branching","collaboration"],
     lessons:[
       {title:"Git Basics: Init, Add, Commit", dur:"16 min", yt:"RGOj5yH7evk"},
-      {title:"Branching & Merging Strategies", dur:"20 min", yt:"9GKbRj8Z4X8"},
-      {title:"GitHub: Pull Requests & Collaboration", dur:"18 min", yt:"8lDnE8i0H50"},
-      {title:"Undoing Changes & Git Reset", dur:"14 min", yt:"f1wnYd0kG7o"},
+      {title:"Branching & Merging Strategies", dur:"20 min", yt:"mAFoROnOfHs"},
+      {title:"GitHub: Pull Requests & Collaboration", dur:"18 min", yt:"RGOj5yH7evk"},
+      {title:"Undoing Changes & Git Reset", dur:"14 min", yt:"mAFoROnOfHs"},
     ],
     reading:[
       {title:"Why Version Control?", body:"Git tracks every change to your code, enabling collaboration and history.", points:["Never lose work with commits","Branch to experiment safely","Merge to combine changes","Rebase keeps history linear"]},
@@ -415,9 +415,9 @@ const courses = [
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
     lessons:[
       {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"20 min", yt:"HXV3zeQKqGY"},
-      {title:"Joins & Relationships", dur:"24 min", yt:"9yeOJ0ZMUYw"},
-      {title:"Subqueries & Aggregation", dur:"22 min", yt:"hT1oH3Qn7lY"},
-      {title:"Normalization & Indexing", dur:"18 min", yt:"GFQa2Y7vcgc"},
+      {title:"Joins & Relationships", dur:"24 min", yt:"HXV3zeQKqGY"},
+      {title:"Subqueries & Aggregation", dur:"22 min", yt:"HXV3zeQKqGY"},
+      {title:"Normalization & Indexing", dur:"18 min", yt:"HXV3zeQKqGY"},
     ],
     reading:[
       {title:"Database Fundamentals", body:"A database is an organized collection of data. Relational databases store data in tables.", points:["Each table represents one entity type","Rows are records, columns are fields","Primary keys uniquely identify rows","Foreign keys link tables together"]},
@@ -439,9 +439,9 @@ const courses = [
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"20 min", yt:"rfscVS0vtbw"},
-      {title:"Functions & Modules", dur:"18 min", yt:"N4mEzFDj__A"},
-      {title:"Working with Files & Data", dur:"22 min", yt:"H5Z3N-DgvuA"},
-      {title:"Building CLI Applications", dur:"20 min", yt:"kLZuut1fYzQ"},
+      {title:"Functions & Modules", dur:"18 min", yt:"eWRfhZUzrAc"},
+      {title:"Working with Files & Data", dur:"22 min", yt:"rfscVS0vtbw"},
+      {title:"Building CLI Applications", dur:"20 min", yt:"eWRfhZUzrAc"},
     ],
     reading:[
       {title:"Why Python?", body:"Python is the most beginner-friendly language and the most versatile.", points:["Readable syntax feels like pseudocode","Dynamically typed reduces boilerplate","Huge standard library 'batteries included'","Used in web, data science, automation, AI"]},
@@ -462,10 +462,10 @@ const courses = [
     img:"https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&q=80",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
     lessons:[
-      {title:"Responsive Design Principles & Strategy", dur:"18 min", yt:"VQraviuw5G4"},
-      {title:"Fluid Layouts & Relative Units", dur:"20 min", yt:"et9NM4yCmy8"},
-      {title:"Responsive Images & Media", dur:"18 min", yt:"q18eO2FJ-3E"},
-      {title:"Mobile UX Patterns & Best Practices", dur:"22 min", yt:"5rC1I0Yf39g"},
+      {title:"Responsive Design Principles & Strategy", dur:"18 min", yt:"kUMe1FH4CHE"},
+      {title:"Fluid Layouts & Relative Units", dur:"20 min", yt:"UB1O30fR-EE"},
+      {title:"Responsive Images & Media", dur:"18 min", yt:"pQN-pnXPaVg"},
+      {title:"Mobile UX Patterns & Best Practices", dur:"22 min", yt:"a_iQb1lnAEQ"},
     ],
     reading:[
       {title:"The Responsive Mindset", body:"Responsive design is not just about making things fit — it's about creating great experiences on every device.", points:["Content decides breakpoints, not devices","Touch targets should be at least 44px","Test on real mobile hardware","Performance matters more on mobile"]},
