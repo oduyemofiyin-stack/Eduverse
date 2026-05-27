@@ -16,6 +16,7 @@ export default function Search() {
   const [sortBy, setSortBy] = useState('relevance');
   const [duration, setDuration] = useState('All');
   const [minRating, setMinRating] = useState(0);
+  const [level, setLevel] = useState('All');
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(12);
   const [recentSearches, setRecentSearches] = useState(() => {
@@ -40,10 +41,12 @@ export default function Search() {
   }, [recentSearches]);
 
   const categories = ['All', ...new Set(courses.map(c => c.category))];
+  const levels = ['All', 'beginner', 'intermediate', 'advanced'];
   const durations = ['All', 'Under 5 hrs', '5–10 hrs', '10–20 hrs', '20+ hrs'];
 
   const filtered = courses.filter(c => {
     const catMatch = activeCat === 'All' || c.category === activeCat;
+    const levelMatch = level === 'All' || c.level === level;
     const q2 = search.toLowerCase();
     const searchMatch = !q2 ||
       c.title.toLowerCase().includes(q2) ||
@@ -57,7 +60,7 @@ export default function Search() {
       (duration === '5–10 hrs' && hrs >= 5 && hrs <= 10) ||
       (duration === '10–20 hrs' && hrs > 10 && hrs <= 20) ||
       (duration === '20+ hrs' && hrs > 20);
-    return catMatch && searchMatch && ratingMatch && durMatch;
+    return catMatch && levelMatch && searchMatch && ratingMatch && durMatch;
   }).sort((a, b) => {
     if (sortBy === 'rating') return b.rating - a.rating;
     if (sortBy === 'duration_asc') return parseFloat(a.duration) - parseFloat(b.duration);
@@ -78,6 +81,13 @@ export default function Search() {
   }, [filtered.length]);
 
   const visibleCourses = filtered.slice(0, visibleCount);
+
+  const suggestions = search.trim()
+    ? courses.filter(c =>
+        c.title.toLowerCase().includes(search.toLowerCase()) &&
+        !recentSearches.includes(c.title)
+      ).slice(0, 6)
+    : [];
 
   const tagStyle = {
     display:'inline-flex', alignItems:'center', gap:'0.15rem',
@@ -162,6 +172,35 @@ export default function Search() {
               >
                 <span style={{color:'#7a80a0', fontSize:'0.8rem'}}>⌕</span>
                 {term}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* SEARCH SUGGESTIONS */}
+        {search.trim() && suggestions.length > 0 && (
+          <div style={{
+            position:'absolute', top:'100%', left:0, right:0, zIndex:50,
+            background:'#0d1117', border:'1px solid rgba(255,255,255,0.1)',
+            borderRadius:'12px', marginTop:'0.3rem', overflow:'hidden',
+            boxShadow:'0 8px 30px rgba(0,0,0,0.5)',
+          }}>
+            <div style={{padding:'0.55rem 0.85rem', borderBottom:'1px solid rgba(255,255,255,0.06)', fontSize:'0.72rem', fontWeight:'600', color:'#7a80a0', textTransform:'uppercase', letterSpacing:'0.05em'}}>
+              Course Suggestions
+            </div>
+            {suggestions.map((c, i) => (
+              <div key={c.id} onClick={() => { setSearch(c.title); setFocused(false); }}
+                style={{
+                  padding:'0.6rem 0.85rem', cursor:'pointer', fontSize:'0.85rem', color:'#eef0f8',
+                  borderBottom: i < suggestions.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  display:'flex', alignItems:'center', gap:'0.5rem',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.04)'}
+                onMouseLeave={e => e.currentTarget.style.background='transparent'}
+              >
+                <span style={{color:'#4488ff', fontSize:'0.75rem'}}>▸</span>
+                <span style={{flex:1}}>{c.title}</span>
+                <span style={{fontSize:'0.7rem', color:'var(--muted)', background:'var(--surface2)', padding:'0.15rem 0.5rem', borderRadius:'100px'}}>{c.category}</span>
               </div>
             ))}
           </div>
@@ -254,12 +293,28 @@ export default function Search() {
               <option value={4.8}>4.8+</option>
             </select>
           </div>
+
+          {/* LEVEL */}
+          <div>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Level</label>
+            <select
+              value={level}
+              onChange={e => setLevel(e.target.value)}
+              style={{
+                width:'100%', background:'#161b26', border:'1px solid rgba(255,255,255,0.1)',
+                borderRadius:'9px', padding:'0.55rem 0.8rem',
+                fontSize:'0.85rem', color:'#eef0f8', outline:'none', cursor:'pointer',
+              }}
+            >
+              {levels.map(l => <option key={l} value={l}>{l.charAt(0).toUpperCase() + l.slice(1)}</option>)}
+            </select>
+          </div>
         </div>
 
         {/* RESET FILTERS */}
-        {(activeCat !== 'All' || sortBy !== 'relevance' || duration !== 'All' || minRating > 0) && (
+        {(activeCat !== 'All' || sortBy !== 'relevance' || duration !== 'All' || minRating > 0 || level !== 'All') && (
           <button
-            onClick={() => { setActiveCat('All'); setSortBy('relevance'); setDuration('All'); setMinRating(0); }}
+            onClick={() => { setActiveCat('All'); setSortBy('relevance'); setDuration('All'); setMinRating(0); setLevel('All'); }}
             style={{
               marginTop:'0.8rem', fontSize:'0.78rem', color:'#ff6b9d',
               background:'none', border:'none', cursor:'pointer', textDecoration:'underline',
@@ -271,7 +326,7 @@ export default function Search() {
       </div>
 
       {/* ACTIVE FILTER TAGS */}
-      {(activeCat !== 'All' || sortBy !== 'relevance' || duration !== 'All' || minRating > 0) && (
+      {(activeCat !== 'All' || sortBy !== 'relevance' || duration !== 'All' || minRating > 0 || level !== 'All') && (
         <div style={{display:'flex', flexWrap:'wrap', gap:'0.45rem', marginBottom:'1rem', alignItems:'center'}}>
           <span style={{fontSize:'0.74rem', color:'var(--muted)', fontWeight:'600', textTransform:'uppercase', letterSpacing:'0.04em'}}>Active:</span>
           {activeCat !== 'All' && (
@@ -298,6 +353,12 @@ export default function Search() {
               {minRating}+ ⭐ <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
             </button>
           )}
+          {level !== 'All' && (
+            <button onClick={() => setLevel('All')}
+              style={tagStyle}>
+              {level.charAt(0).toUpperCase() + level.slice(1)} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+            </button>
+          )}
         </div>
       )}
 
@@ -319,7 +380,7 @@ export default function Search() {
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses found</h3>
             <p style={{marginBottom:'1rem'}}>Try different keywords or reset your filters</p>
             <button
-              onClick={() => { setSearch(''); setActiveCat('All'); setSortBy('relevance'); setDuration('All'); setMinRating(0); }}
+              onClick={() => { setSearch(''); setActiveCat('All'); setSortBy('relevance'); setDuration('All'); setMinRating(0); setLevel('All'); }}
               style={{
                 fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
                 borderRadius:'12px', border:'none', cursor:'pointer',
@@ -360,7 +421,18 @@ export default function Search() {
               </div>
             </div>
             <div style={{padding:'1rem'}}>
-              <div style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.4rem'}}>{c.category}</div>
+              <div style={{display:'flex', alignItems:'center', gap:'0.5rem', marginBottom:'0.4rem', flexWrap:'wrap'}}>
+                <span style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff'}}>{c.category}</span>
+                {c.level && (
+                  <span style={{
+                    fontSize:'0.62rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.05em',
+                    padding:'0.15rem 0.5rem', borderRadius:'100px',
+                    background: c.level === 'beginner' ? 'rgba(0,212,170,0.15)' : c.level === 'intermediate' ? 'rgba(240,192,64,0.15)' : 'rgba(255,107,157,0.15)',
+                    color: c.level === 'beginner' ? '#00d4aa' : c.level === 'intermediate' ? '#f0c040' : '#ff6b9d',
+                    border: c.level === 'beginner' ? '1px solid rgba(0,212,170,0.25)' : c.level === 'intermediate' ? '1px solid rgba(240,192,64,0.25)' : '1px solid rgba(255,107,157,0.25)',
+                  }}>{c.level}</span>
+                )}
+              </div>
               <div style={{fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700', lineHeight:'1.35', marginBottom:'0.4rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
               <div style={{fontSize:'0.78rem', color:'#7a80a0', marginBottom:'0.7rem'}}>by {c.instructor}</div>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.65rem', flexWrap:'wrap', gap:'0.3rem'}}>

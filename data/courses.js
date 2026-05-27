@@ -2,6 +2,7 @@ const courses = [
   {
     id:1, title:"React for Beginners",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"0.9 hours",
+    level:"beginner",
     description:"Master React from scratch. Learn components, hooks, props, state management, and build real-world applications. Perfect for anyone starting their frontend journey.",
     img:"https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80",
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks"],
@@ -26,6 +27,7 @@ const courses = [
   {
     id:2, title:"Python Data Science Bootcamp",     instructor:"Oduye Emmanuel",
     category:"Data Science", duration:"9.7 hours",
+    level:"intermediate",
     description:"Master Python for data analysis and visualization. Covers NumPy, Pandas, Matplotlib, and ML fundamentals with real-world projects.",
     img:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
@@ -50,6 +52,7 @@ const courses = [
   {
     id:3, title:"UI/UX Design Fundamentals",     instructor:"Oduye Emmanuel",
     category:"Design", duration:"0.8 hours",
+    level:"beginner",
     description:"Learn user-centered design principles. Master Figma, wireframing, prototyping, and design systems.",
     img:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
@@ -74,6 +77,7 @@ const courses = [
   {
     id:4, title:"Flutter Mobile Development",     instructor:"Oduye Emmanuel",
     category:"Mobile Development", duration:"4.5 hours",
+    level:"intermediate",
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
     img:"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
@@ -98,6 +102,7 @@ const courses = [
   {
     id:5, title:"Machine Learning with TensorFlow",     instructor:"Oduye Emmanuel",
     category:"AI & Machine Learning", duration:"8.7 hours",
+    level:"advanced",
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
     img:"https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80",
     rating:4.9, keywords:["tensorflow","neural networks","deep learning","keras","nlp"],
@@ -122,6 +127,7 @@ const courses = [
   {
     id:6, title:"Digital Marketing Masterclass",     instructor:"Oduye Emmanuel",
     category:"Marketing", duration:"17.6 hours",
+    level:"beginner",
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
     img:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
@@ -146,6 +152,7 @@ const courses = [
   {
     id:7, title:"Node.js & Express Backend",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"3.2 hours",
+    level:"intermediate",
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
     img:"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&q=80",
     rating:4.8, keywords:["nodejs","express","rest api","mongodb","backend"],
@@ -170,6 +177,7 @@ const courses = [
   {
     id:8, title:"Ethical Hacking & Cybersecurity",     instructor:"Oduye Emmanuel",
     category:"Cybersecurity", duration:"24.6 hours",
+    level:"intermediate",
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
     img:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80",
     rating:4.7, keywords:["hacking","penetration testing","kali linux","security","networking"],
@@ -194,6 +202,7 @@ const courses = [
   {
     id:9, title:"Advanced TypeScript Patterns",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"0.6 hours",
+    level:"advanced",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
     img:"https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&q=80",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
@@ -218,6 +227,7 @@ const courses = [
   {
     id:10, title:"Business Analytics with Excel & Power BI",     instructor:"Oduye Emmanuel",
     category:"Business", duration:"3.7 hours",
+    level:"beginner",
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
     img:"https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
@@ -242,6 +252,7 @@ const courses = [
   {
     id:11, title:"Vue.js 3 – The Complete Guide",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"7.2 hours",
+    level:"intermediate",
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
     img:"https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80",
     rating:4.7, keywords:["vuejs","vue 3","composition api","pinia","frontend"],
@@ -266,6 +277,7 @@ const courses = [
   {
     id:12, title:"Data Structures & Algorithms in Python", instructor:"Oduye Emmanuel",
     category:"Data Science", duration:"13.5 hours",
+    level:"intermediate",
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
     img:"https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=600&q=80",
     rating:4.9, keywords:["algorithms","data structures","python","leetcode","interviews"],
@@ -290,6 +302,7 @@ const courses = [
   {
     id:13, title:"HTML & CSS Masterclass", instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"15.3 hours",
+    level:"beginner",
     description:"Build beautiful websites from scratch. Master HTML5, CSS3, Flexbox, CSS Grid, and responsive design principles.",
     img:"https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=600&q=80",
     rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
@@ -314,6 +327,7 @@ const courses = [
   {
     id:14, title:"JavaScript Fundamentals", instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"6.3 hours",
+    level:"beginner",
     description:"Learn JavaScript from the ground up. Covers variables, functions, DOM manipulation, ES6+, and async programming.",
     img:"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&q=80",
     rating:4.7, keywords:["javascript","es6","dom","async","web"],
@@ -338,6 +352,7 @@ const courses = [
   {
     id:15, title:"Java Programming for Beginners", instructor:"Oduye Emmanuel",
     category:"Programming", duration:"20.4 hours",
+    level:"beginner",
     description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
     img:"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80",
     rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
@@ -362,6 +377,7 @@ const courses = [
   {
     id:16, title:"CSS Grid, Flexbox & Modern Layouts", instructor:"Oduye Emmanuel",
     category:"Design", duration:"8.5 hours",
+    level:"intermediate",
     description:"Master modern CSS layout techniques. Build complex responsive designs with Flexbox, Grid, and advanced positioning.",
     img:"https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=600&q=80",
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
@@ -386,6 +402,7 @@ const courses = [
   {
     id:17, title:"Git & GitHub Essentials", instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"5 hours",
+    level:"beginner",
     description:"Learn version control with Git and collaborate effectively on GitHub. Branching, merging, pull requests, and workflows.",
     img:"https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=600&q=80",
     rating:4.5, keywords:["git","github","version control","branching","collaboration"],
@@ -410,6 +427,7 @@ const courses = [
   {
     id:18, title:"SQL & Database Design", instructor:"Oduye Emmanuel",
     category:"Data Science", duration:"17.3 hours",
+    level:"intermediate",
     description:"Master SQL queries and relational database design. Covers joins, subqueries, indexing, normalization, and performance tuning.",
     img:"https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&q=80",
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
@@ -434,6 +452,7 @@ const courses = [
   {
     id:19, title:"Python Programming for Beginners", instructor:"Oduye Emmanuel",
     category:"Programming", duration:"18.2 hours",
+    level:"beginner",
     description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
     img:"https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=600&q=80",
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
@@ -458,6 +477,7 @@ const courses = [
   {
     id:20, title:"Responsive Web Design Bootcamp", instructor:"Oduye Emmanuel",
     category:"Design", duration:"12.5 hours",
+    level:"beginner",
     description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
     img:"https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&q=80",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
