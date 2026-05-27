@@ -534,12 +534,9 @@ img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
 }
 
 .carousel-section-mobile { display: none; }
-.filter-btn-mobile { display: none !important; }
 @media (max-width: 640px) {
   .course-grid-desktop { display: none !important; }
   .carousel-section-mobile { display: block !important; }
-  .filters-desktop { display: none !important; }
-  .filter-btn-mobile { display: flex !important; }
 }
 
 /* ── Desktop only grid ── */

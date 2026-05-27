@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
-import BottomSheet from '../components/BottomSheet';
 import { CourseSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
@@ -18,7 +17,6 @@ export default function Search() {
   const [duration, setDuration] = useState('All');
   const [minRating, setMinRating] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [showFilters, setShowFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(12);
   const [recentSearches, setRecentSearches] = useState(() => {
     if (typeof window === 'undefined') return [];
@@ -94,17 +92,6 @@ export default function Search() {
             Find your perfect course from our library
           </p>
         </div>
-        <button onClick={() => setShowFilters(true)}
-          className="min-touch filter-btn-mobile"
-          style={{
-            background:'var(--surface2)', border:'1px solid var(--border2)',
-            borderRadius:'10px', padding:'0.5rem 1rem', cursor:'pointer',
-            fontSize:'0.8rem', fontWeight:'600', color:'var(--text)',
-            display:'flex', alignItems:'center', gap:'0.4rem',
-          }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
-          Filters
-        </button>
       </div>
 
       {/* SEARCH BAR */}
@@ -355,55 +342,6 @@ export default function Search() {
         </div>
       )}
 
-      {/* FILTERS BOTTOM SHEET (mobile) */}
-      <BottomSheet open={showFilters} onClose={() => setShowFilters(false)} title="Filter Courses">
-        <div style={{display:'flex', flexDirection:'column', gap:'1rem'}}>
-          <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Category</label>
-            <select value={activeCat} onChange={e => setActiveCat(e.target.value)}
-              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
-              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-            </select>
-          </div>
-          <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Sort By</label>
-            <select value={sortBy} onChange={e => setSortBy(e.target.value)}
-              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
-              <option value="relevance">Relevance</option>
-              <option value="rating">Highest Rated</option>
-              <option value="duration_asc">Shortest First</option>
-              <option value="duration_desc">Longest First</option>
-            </select>
-          </div>
-          <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Duration</label>
-            <select value={duration} onChange={e => setDuration(e.target.value)}
-              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
-              {durations.map(d => <option key={d} value={d}>{d}</option>)}
-            </select>
-          </div>
-          <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase'}}>Min Rating</label>
-            <select value={minRating} onChange={e => setMinRating(parseFloat(e.target.value))}
-              style={{width:'100%', background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'9px', padding:'0.6rem 0.8rem', fontSize:'0.88rem', color:'var(--text)', outline:'none'}}>
-              <option value={0}>Any Rating</option>
-              <option value={4}>4.0+</option>
-              <option value={4.5}>4.5+</option>
-              <option value={4.8}>4.8+</option>
-            </select>
-          </div>
-          <button onClick={() => setShowFilters(false)}
-            style={{padding:'0.8rem', borderRadius:'12px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff', fontWeight:'700', fontSize:'0.9rem'}}>
-            Apply Filters
-          </button>
-          {(activeCat !== 'All' || sortBy !== 'relevance' || duration !== 'All' || minRating > 0) && (
-            <button onClick={() => { setActiveCat('All'); setSortBy('relevance'); setDuration('All'); setMinRating(0); }}
-              style={{padding:'0.6rem', borderRadius:'12px', border:'1px solid var(--border2)', background:'transparent', color:'var(--muted)', cursor:'pointer', fontFamily:'inherit', fontSize:'0.85rem'}}>
-              Reset All
-            </button>
-          )}
-        </div>
-      </BottomSheet>
     </div>
   );
 }
