@@ -1,4 +1,4 @@
-const CACHE = 'eduuverse-v1';
+const CACHE = 'eduuverse-v2';
 const STATIC_ASSETS = [
   '/',
   '/favicon.ico',
@@ -24,6 +24,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
+
+  // Skip cross-origin requests (service worker can't safely cache opaque responses)
+  if (url.origin !== location.origin) return;
 
   // CacheFirst for static assets (styles, scripts, images, fonts, etc.)
   if (
