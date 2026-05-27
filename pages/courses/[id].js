@@ -122,7 +122,7 @@ export default function CourseDetail() {
                     }}/>
                   </div>
                   <div style={{fontSize:'0.72rem', color:'#7a80a0', marginTop:'0.3rem'}}>
-                    {progressPct === 100 ? '✅ All lessons watched!' : `${Math.round(progressPct / 100 * course.lessons.length)}/${course.lessons.length} lessons watched`}
+                    {progressPct === 100 ? 'All lessons watched!' : `${Math.round(progressPct / 100 * course.lessons.length)}/${course.lessons.length} lessons watched`}
                   </div>
                 </div>
               )}
@@ -142,19 +142,19 @@ export default function CourseDetail() {
                 border:'1px solid rgba(255,255,255,0.13)', background:'transparent',
                 color: isWishlisted ? '#ff6b9d' : '#eef0f8',
               }}>
-                {isWishlisted ? '♥ In Wishlist' : '♡ Add to Wishlist'}
+                {isWishlisted ? 'In Wishlist' : 'Add to Wishlist'}
               </button>
               <div style={{marginTop:'1rem', display:'flex', flexDirection:'column', gap:'0.45rem'}}>
                 {[
-                  {i:'🎓', l:'Instructor', v:course.instructor},
-                  {i:'📂', l:'Category', v:course.category},
-                  {i:'⏱', l:'Duration', v:course.duration},
-                  {i:'📹', l:'Lessons', v:`${course.lessons.length} videos`},
-                  {i:'🌍', l:'Language', v:'English'},
-                  {i:'🏆', l:'Certificate', v:'On completion'},
+                  {l:'Instructor', v:course.instructor},
+                  {l:'Category', v:course.category},
+                  {l:'Duration', v:course.duration},
+                  {l:'Lessons', v:`${course.lessons.length} videos`},
+                  {l:'Language', v:'English'},
+                  {l:'Certificate', v:'On completion'},
                 ].map(item => (
                   <div key={item.l} style={{display:'flex', alignItems:'center', gap:'0.5rem', fontSize:'0.79rem', color:'#7a80a0'}}>
-                    {item.i} <span>{item.l}: <strong style={{color:'#eef0f8'}}>{item.v}</strong></span>
+                    <span>{item.l}: <strong style={{color:'#eef0f8'}}>{item.v}</strong></span>
                   </div>
                 ))}
               </div>
@@ -167,10 +167,10 @@ export default function CourseDetail() {
           <div style={{fontSize:'0.73rem', fontWeight:'600', letterSpacing:'0.08em', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.6rem'}}>{course.category}</div>
           <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.4rem,4vw,2.2rem)', fontWeight:'700', lineHeight:'1.15', marginBottom:'0.9rem'}}>{course.title}</h1>
           <div style={{display:'flex', alignItems:'center', gap:'1rem', flexWrap:'wrap', marginBottom:'1.3rem'}}>
-            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}>⭐ <strong style={{color:'#eef0f8'}}>{course.rating}</strong></span>
-            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}>👤 <strong style={{color:'#eef0f8'}}>{course.instructor}</strong></span>
-            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}>⏱ <strong style={{color:'#eef0f8'}}>{course.duration}</strong></span>
-            <span style={{fontSize:'0.84rem', color:'#00d4aa'}}>🆓 Free</span>
+            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}><strong style={{color:'#eef0f8'}}>{course.rating}</strong></span>
+            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}><strong style={{color:'#eef0f8'}}>{course.instructor}</strong></span>
+            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}><strong style={{color:'#eef0f8'}}>{course.duration}</strong></span>
+            <span style={{fontSize:'0.84rem', color:'#00d4aa'}}>Free</span>
           </div>
           <p style={{fontSize:'0.95rem', lineHeight:'1.75', color:'#c0bce0', marginBottom:'1.5rem'}}>{course.description}</p>
 
@@ -184,7 +184,7 @@ export default function CourseDetail() {
                 borderBottom: activeTab === tab ? '2px solid #f0c040' : '2px solid transparent',
                 cursor:'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
               }}>
-                {tab === 'videos' ? '📹 Videos' : tab === 'reading' ? '📄 Reading' : '📝 Quiz'}
+                {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : 'Quiz'}
               </button>
             ))}
           </div>
@@ -224,7 +224,7 @@ export default function CourseDetail() {
                       />
                       {/* NOTES */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
-                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>📝 Notes</div>
+                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>Notes</div>
                         <div style={{display:'flex', gap:'0.4rem', marginBottom:'0.5rem'}}>
                           <input value={noteText[i] || ''} onChange={e => setNoteText(p => ({...p, [i]: e.target.value}))}
                             placeholder="Write a note..."
@@ -242,7 +242,7 @@ export default function CourseDetail() {
                       </div>
                       {/* COMMENTS */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
-                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>💬 Discussion</div>
+                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>Discussion</div>
                         <div style={{display:'flex', gap:'0.4rem', marginBottom:'0.5rem', flexWrap:'wrap'}}>
                           <input value={commentName[i] || ''} onChange={e => setCommentName(p => ({...p, [i]: e.target.value}))}
                             placeholder="Your name"
@@ -296,7 +296,6 @@ export default function CourseDetail() {
             <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1.2rem'}}>
               {!isEnrolled ? (
                 <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                  <span style={{fontSize:'3rem', display:'block', marginBottom:'0.8rem'}}>🔒</span>
                   <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Enroll to Take the Quiz</h3>
                   <p style={{fontSize:'0.85rem', color:'#7a80a0', marginBottom:'1.2rem'}}>Enroll in this course to unlock the quiz and earn your certificate.</p>
                   <button onClick={() => toggleEnroll(course.id, course.title, toast)} style={{
@@ -307,7 +306,6 @@ export default function CourseDetail() {
                 </div>
               ) : !quizState ? (
                 <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                  <span style={{fontSize:'3rem', display:'block', marginBottom:'0.8rem'}}>📝</span>
                   <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Ready for the Quiz?</h3>
                   <p style={{fontSize:'0.85rem', color:'#7a80a0', marginBottom:'1.2rem'}}>{course.quiz.length} questions · Pass with 60% to earn your certificate</p>
                   <button onClick={startQuiz} style={{
@@ -318,19 +316,17 @@ export default function CourseDetail() {
                 </div>
               ) : finished && passed ? (
                 <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                  <span style={{fontSize:'3.5rem', display:'block', marginBottom:'0.8rem'}}>🏆</span>
                   <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
-                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed! 🎉</h3>
+                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed!</h3>
                   <p style={{fontSize:'0.86rem', color:'#7a80a0', marginBottom:'1.2rem'}}>Your certificate is ready!</p>
                   <button onClick={() => setShowCert(true)} style={{
                     fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
                     borderRadius:'12px', border:'none', cursor:'pointer',
                     background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                  }}>🎓 Get Your Certificate</button>
+                  }}>Get Your Certificate</button>
                 </div>
               ) : finished && !passed ? (
                 <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                  <span style={{fontSize:'3.5rem', display:'block', marginBottom:'0.8rem'}}>📚</span>
                   <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
                   <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>Keep Learning!</h3>
                   <p style={{fontSize:'0.86rem', color:'#7a80a0', marginBottom:'1.2rem'}}>You need 60% to pass. Review and try again!</p>
@@ -373,7 +369,7 @@ export default function CourseDetail() {
                       <button onClick={nextQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'#4488ff', color:'#fff'}}>Next →</button>
                     )}
                     {quizState.answered && finished && passed && (
-                      <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>🎓 Certificate</button>
+                      <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Certificate</button>
                     )}
                   </div>
                 </div>
@@ -386,7 +382,7 @@ export default function CourseDetail() {
       {/* RELATED COURSES */}
       <div style={{padding:'2rem 1.2rem 3rem', maxWidth:'1100px', margin:'0 auto'}}>
         <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-          🎯 Related Courses
+          Related Courses
         </h2>
         <div style={{
           display:'grid',
@@ -439,10 +435,9 @@ export default function CourseDetail() {
                 Taught by <strong style={{color:'#eef0f8'}}>{course.instructor}</strong> · Duration: {course.duration}
               </div>
               <div style={{display:'flex', justifyContent:'space-around', marginTop:'1rem', paddingTop:'1rem', borderTop:'1px solid rgba(240,192,64,0.2)', flexWrap:'wrap', gap:'0.5rem'}}>
-                {[{i:'🏆',l:'Achievement Unlocked'},{i:'✦',l:'Eduverse Academy'},{i:'🎓',l:'Certified Graduate'}].map(s => (
-                  <div key={s.l} style={{textAlign:'center', fontSize:'0.66rem', color:'#7a80a0'}}>
-                    <div style={{fontSize:'1.4rem', marginBottom:'0.3rem'}}>{s.i}</div>
-                    {s.l}
+                {['Achievement Unlocked','Eduverse Academy','Certified Graduate'].map(l => (
+                  <div key={l} style={{textAlign:'center', fontSize:'0.66rem', color:'#7a80a0'}}>
+                    {l}
                   </div>
                 ))}
               </div>
@@ -454,7 +449,7 @@ export default function CourseDetail() {
               </div>
             </div>
             <div style={{display:'flex', gap:'0.8rem', justifyContent:'center', marginTop:'1.2rem', flexWrap:'wrap'}}>
-              <button onClick={() => window.print()} style={{fontSize:'0.88rem', fontWeight:'600', padding:'0.75rem 1.5rem', borderRadius:'12px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>🖨️ Print Certificate</button>
+              <button onClick={() => window.print()} style={{fontSize:'0.88rem', fontWeight:'600', padding:'0.75rem 1.5rem', borderRadius:'12px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Print Certificate</button>
               <button onClick={() => setShowCert(false)} style={{fontSize:'0.88rem', fontWeight:'600', padding:'0.75rem 1.5rem', borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)', cursor:'pointer', background:'transparent', color:'#eef0f8'}}>Done</button>
             </div>
           </div>

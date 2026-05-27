@@ -87,8 +87,7 @@ export default function Admin() {
         backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%)'}}>
         <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.13)', borderRadius:'20px', padding:'2.5rem', width:'100%', maxWidth:'400px'}}>
           <div style={{textAlign:'center', marginBottom:'1.8rem'}}>
-            <div style={{fontSize:'2.5rem', marginBottom:'0.5rem'}}>🛡️</div>
-            <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.5rem', fontWeight:'700', marginBottom:'0.3rem'}}>Admin Dashboard</h1>
+                <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.5rem', fontWeight:'700', marginBottom:'0.3rem'}}>Admin Dashboard</h1>
             <p style={{fontSize:'0.83rem', color:'#7a80a0'}}>Restricted access — Eduverse staff only</p>
           </div>
           {error && (
@@ -143,7 +142,6 @@ export default function Admin() {
         position:'sticky', top:0, zIndex:100,
       }}>
         <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
-          <span style={{fontSize:'1.3rem'}}>🛡️</span>
           <span style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>
             Eduverse Admin
           </span>
@@ -164,10 +162,10 @@ export default function Admin() {
         {/* TABS */}
         <div style={{display:'flex', gap:'0.5rem', marginBottom:'2rem', flexWrap:'wrap'}}>
           {[
-            {id:'overview', label:'📊 Overview'},
-            {id:'users', label:'👥 Users'},
-            {id:'courses', label:'📚 Courses'},
-            {id:'add', label:'➕ Add Course'},
+            {id:'overview', label:'Overview'},
+            {id:'users', label:'Users'},
+            {id:'courses', label:'Courses'},
+            {id:'add', label:'Add Course'},
           ].map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
               fontSize:'0.85rem', fontWeight:'600', padding:'0.6rem 1.2rem',
@@ -186,10 +184,10 @@ export default function Admin() {
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>Dashboard Overview</h2>
             <div className="admin-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem', marginBottom:'2rem'}}>
               {[
-                {ico:'📚', label:'Total Courses', value:totalCourses, color:'#4488ff'},
-                {ico:'🗂️', label:'Categories', value:categories.length, color:'#f0c040'},
-                {ico:'⭐', label:'Avg Rating', value:avgRating, color:'#00d4aa'},
-                {ico:'🆓', label:'Free Courses', value:totalCourses, color:'#ff6b9d'},
+                {ico:'', label:'Total Courses', value:totalCourses, color:'#4488ff'},
+                {ico:'', label:'Categories', value:categories.length, color:'#f0c040'},
+                {ico:'', label:'Avg Rating', value:avgRating, color:'#00d4aa'},
+                {ico:'', label:'Free Courses', value:totalCourses, color:'#ff6b9d'},
               ].map(s => (
                 <div key={s.label} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1.3rem', textAlign:'center'}}>
                   <div style={{fontSize:'2rem', marginBottom:'0.4rem'}}>{s.ico}</div>
@@ -225,17 +223,16 @@ export default function Admin() {
         {activeTab === 'users' && (
           <div>
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>
-              👥 Registered Users (from Firestore)
+              Registered Users (from Firestore)
             </h2>
             <button onClick={() => { setUsersLoading(true); getAllUsers().then(u => { setAllUsers(u); setUsersLoading(false); }); }}
               style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.5rem 1rem', borderRadius:'9px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', marginBottom:'1rem'}}>
-              🔄 Refresh
+              Refresh
             </button>
             {usersLoading ? (
               <AdminSkeleton/>
             ) : allUsers.length === 0 ? (
               <div style={{textAlign:'center', padding:'3rem', color:'#7a80a0'}}>
-                <div style={{fontSize:'2.5rem', marginBottom:'0.5rem'}}>👥</div>
                 <p>No users found in Firestore yet.</p>
                 <p style={{fontSize:'0.82rem', marginTop:'0.5rem'}}>Users appear here after they sign in and their data syncs to the cloud.</p>
               </div>
@@ -260,10 +257,10 @@ export default function Admin() {
                         </div>
                       </div>
                       <div style={{display:'flex', gap:'0.5rem', alignItems:'center', flexWrap:'wrap'}}>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'#f0c040', border:'1px solid rgba(240,192,64,0.3)'}}>⚡{u.xp || 0} XP</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>📚 {(u.enrolled||[]).length} enrolled</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.15)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.3)'}}>🏆 {(u.completed||[]).length} completed</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(255,107,157,0.15)', color:'#ff6b9d', border:'1px solid rgba(255,107,157,0.3)'}}>🏅 {(u.badges||[]).length} badges</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'#f0c040', border:'1px solid rgba(240,192,64,0.3)'}}>{u.xp || 0} XP</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>{(u.enrolled||[]).length} enrolled</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.15)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.3)'}}>{(u.completed||[]).length} completed</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(255,107,157,0.15)', color:'#ff6b9d', border:'1px solid rgba(255,107,157,0.3)'}}>{(u.badges||[]).length} badges</span>
                       </div>
                     </div>
                     {u.updatedAt && (
@@ -285,7 +282,7 @@ export default function Admin() {
                 fontSize:'0.85rem', fontWeight:'600', padding:'0.6rem 1.2rem',
                 borderRadius:'10px', border:'none', cursor:'pointer',
                 background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-              }}>➕ Add New Course</button>
+              }}>Add New Course</button>
             </div>
             <div style={{display:'flex', flexDirection:'column', gap:'0.8rem'}}>
               {courseList.map(c => (
@@ -314,7 +311,7 @@ export default function Admin() {
                           style={{...inp, minHeight:'80px', resize:'vertical'}}/>
                       </div>
                       <div style={{display:'flex', gap:'0.7rem'}}>
-                        <button onClick={() => saveEdit(c.id)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'#00d4aa', color:'#000'}}>✓ Save</button>
+                         <button onClick={() => saveEdit(c.id)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'#00d4aa', color:'#000'}}>Save</button>
                         <button onClick={() => setEditingId(null)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'#1e2535', color:'#eef0f8'}}>Cancel</button>
                       </div>
                     </div>
@@ -325,11 +322,11 @@ export default function Admin() {
                         onError={e => { e.target.style.display='none'; }}/>
                       <div style={{flex:1, minWidth:'150px'}}>
                         <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
-                        <div style={{fontSize:'0.78rem', color:'#7a80a0'}}>by {c.instructor} · {c.category} · {c.duration} · ⭐ {c.rating}</div>
+                         <div style={{fontSize:'0.78rem', color:'#7a80a0'}}>by {c.instructor} · {c.category} · {c.duration} · {c.rating}</div>
                       </div>
                       <div style={{display:'flex', gap:'0.5rem', flexShrink:0}}>
-                        <button onClick={() => startEdit(c)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(68,136,255,0.15)', color:'#4488ff'}}>✏️ Edit</button>
-                        <button onClick={() => deleteCourse(c.id)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(255,107,107,0.15)', color:'#ff6b6b'}}>🗑️ Delete</button>
+                         <button onClick={() => startEdit(c)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(68,136,255,0.15)', color:'#4488ff'}}>Edit</button>
+                         <button onClick={() => deleteCourse(c.id)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(255,107,107,0.15)', color:'#ff6b6b'}}>Delete</button>
                       </div>
                     </div>
                   )}
@@ -342,7 +339,7 @@ export default function Admin() {
         {/* ADD COURSE TAB */}
         {activeTab === 'add' && (
           <div>
-            <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>➕ Add New Course</h2>
+            <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>Add New Course</h2>
             {error && (
               <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
                 {error}
@@ -394,7 +391,7 @@ export default function Admin() {
                   fontSize:'0.9rem', fontWeight:'700', padding:'0.78rem 1.7rem',
                   borderRadius:'12px', border:'none', cursor:'pointer',
                   background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                }}>➕ Add Course</button>
+                 }}>Add Course</button>
                 <button onClick={() => { setNewCourse({title:'',instructor:'',category:'',duration:'',description:'',img:'',rating:4.5}); setError(''); }} style={{
                   fontSize:'0.9rem', fontWeight:'600', padding:'0.78rem 1.7rem',
                   borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)',

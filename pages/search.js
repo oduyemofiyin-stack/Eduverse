@@ -78,7 +78,7 @@ export default function Search() {
       <div style={{marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
         <div>
           <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>
-            🔍 Search Courses
+            Search Courses
           </h1>
           <p style={{color:'#7a80a0', fontSize:'0.88rem'}}>
             Find your perfect course from our library
@@ -232,7 +232,6 @@ export default function Search() {
           Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
         ) : filtered.length === 0 ? (
           <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem 1rem', color:'#7a80a0'}}>
-            <div style={{fontSize:'3rem', marginBottom:'1rem'}}>🔍</div>
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses found</h3>
             <p style={{marginBottom:'1rem'}}>Try different keywords or reset your filters</p>
             <button

@@ -29,13 +29,12 @@ export default function Enrolled() {
   return (
     <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
       <div style={{marginBottom:'1.8rem'}}>
-        <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>✓ My Learning</h1>
+        <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>My Learning</h1>
         <p style={{color:'#7a80a0', fontSize:'0.88rem'}}>Your enrolled courses</p>
       </div>
 
       {enrolledCourses.length === 0 ? (
         <div style={{textAlign:'center', padding:'4rem 1rem', color:'#7a80a0'}}>
-          <span style={{fontSize:'4rem', display:'block', marginBottom:'0.8rem'}}>📚</span>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses yet</h2>
           <p style={{marginBottom:'1.4rem'}}>Enroll in a course to start learning</p>
           <button onClick={() => router.push('/')} style={{
@@ -65,7 +64,7 @@ export default function Enrolled() {
               <div style={{width:'100%', height:'170px', position:'relative', overflow:'hidden'}}>
                 <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
                 <div style={{position:'absolute', inset:0, background:'linear-gradient(to top,rgba(6,8,15,0.65) 0%,transparent 55%)'}}/>
-                <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(68,136,255,0.2)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>✓ Enrolled</span>
+                <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(68,136,255,0.2)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>Enrolled</span>
               </div>
               <div style={{padding:'1rem'}}>
                 <div style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.4rem'}}>{c.category}</div>

@@ -29,13 +29,12 @@ export default function Wishlist() {
   return (
     <div className="page-container" style={{maxWidth:'1240px', margin:'0 auto', padding:'2rem 1.2rem 4rem'}}>
       <div style={{marginBottom:'1.8rem'}}>
-        <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>♡ My Wishlist</h1>
+        <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>My Wishlist</h1>
         <p style={{color:'#7a80a0', fontSize:'0.88rem'}}>Courses you have saved for later</p>
       </div>
 
       {wishlisted.length === 0 ? (
         <div style={{textAlign:'center', padding:'4rem 1rem', color:'#7a80a0'}}>
-          <span style={{fontSize:'4rem', display:'block', marginBottom:'0.8rem'}}>♡</span>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', color:'#eef0f8', marginBottom:'0.4rem'}}>Wishlist is empty</h2>
           <p style={{marginBottom:'1.4rem'}}>Browse and save courses you love</p>
           <button onClick={() => router.push('/')} style={{
@@ -69,7 +68,7 @@ export default function Wishlist() {
                 <div
                   onClick={e => { e.stopPropagation(); toggleWishlist(c.id); }}
                   style={{position:'absolute', top:'9px', right:'9px', width:'32px', height:'32px', borderRadius:'50%', background:'rgba(6,8,15,0.72)', border:'1px solid rgba(255,255,255,0.13)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1rem', cursor:'pointer', color:'#ff6b9d'}}
-                >♥</div>
+                ></div>
               </div>
               <div style={{padding:'1rem'}}>
                 <div style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.4rem'}}>{c.category}</div>

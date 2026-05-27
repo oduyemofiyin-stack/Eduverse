@@ -178,12 +178,6 @@ export default function Home() {
             marginBottom:'1.5rem', fontSize:'0.7rem', fontWeight:'600',
             color:'#4488ff', textTransform:'uppercase', letterSpacing:'0.12em',
           }}>
-            <span style={{
-              width:'6px', height:'6px', borderRadius:'50%',
-              background:'#4488ff', display:'inline-block',
-              animation:'pulse-dot 2s infinite',
-            }}/>
-            Eduverse — Free Education For All
           </div>
 
           <h1 className="reveal delay-2" style={{

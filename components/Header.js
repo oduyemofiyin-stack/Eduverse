@@ -140,7 +140,7 @@ export default function Header() {
               borderRadius:'9px', padding:'0.38rem 0.6rem',
               cursor:'pointer', fontSize:'0.95rem', lineHeight:'1',
             }}>
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === 'dark' ? 'Light' : 'Dark'}
           </button>
 
           {/* USER AVATAR / GOOGLE SIGN-IN */}
@@ -188,13 +188,13 @@ export default function Header() {
                     <div style={{fontSize:'0.75rem', color:'var(--muted)'}}>{currentUser.email}</div>
                   </div>
                   {[
-                    {ico:'👤', label:'My Profile', path:'/profile'},
-                    {ico:'📊', label:'Dashboard', path:'/dashboard'},
-                    {ico:'📚', label:'My Learning', path:'/enrolled'},
-                    {ico:'♡', label:'Wishlist', path:'/wishlist'},
-                    {ico:'🔍', label:'Search', path:'/search'},
-                    {ico:'ℹ️', label:'About', path:'/about'},
-                    {ico:'✉️', label:'Contact', path:'/contact'},
+                    {label:'My Profile', path:'/profile'},
+                    {label:'Dashboard', path:'/dashboard'},
+                    {label:'My Learning', path:'/enrolled'},
+                    {label:'Wishlist', path:'/wishlist'},
+                    {label:'Search', path:'/search'},
+                    {label:'About', path:'/about'},
+                    {label:'Contact', path:'/contact'},
                   ].map(item => (
                     <button key={item.path}
                       onClick={() => { router.push(item.path); setDropdownOpen(false); }}
@@ -209,7 +209,7 @@ export default function Header() {
                       onMouseEnter={e => { e.currentTarget.style.background='var(--surface2)'; e.currentTarget.style.color='var(--text)'; }}
                       onMouseLeave={e => { e.currentTarget.style.background='none'; e.currentTarget.style.color='var(--muted)'; }}
                     >
-                      {item.ico} {item.label}
+                      {item.label}
                     </button>
                   ))}
                   <button
@@ -225,7 +225,7 @@ export default function Header() {
                     onMouseEnter={e => e.currentTarget.style.background='rgba(255,107,107,0.1)'}
                     onMouseLeave={e => e.currentTarget.style.background='none'}
                   >
-                    ↩ Sign Out
+                    Sign Out
                   </button>
                 </div>
               )}
@@ -267,15 +267,15 @@ export default function Header() {
           ))}
           {currentUser && (
             <>
-              <button
-                onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }}
-                style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.65rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--muted)'}}>
-                👤 My Profile
-              </button>
+                <button
+                  onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }}
+                  style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.65rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--muted)'}}>
+                  My Profile
+                </button>
               <button
                 onClick={() => { logout(); setMobileMenuOpen(false); router.push('/login'); }}
                 style={{fontFamily:'inherit', fontSize:'0.88rem', fontWeight:'500', padding:'0.65rem 1rem', borderRadius:'10px', border:'none', cursor:'pointer', textAlign:'left', background:'transparent', color:'var(--red)', marginTop:'0.2rem', borderTop:'1px solid var(--border)', paddingTop:'0.8rem'}}>
-                ↩ Sign Out
+                Sign Out
               </button>
             </>
           )}
