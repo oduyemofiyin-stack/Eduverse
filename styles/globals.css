@@ -738,3 +738,21 @@ img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
   animation: shimmerSlide 1.8s ease-in-out infinite;
 }
+
+/* ── Footer grid ── */
+.footer-grid {
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+}
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 500px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}

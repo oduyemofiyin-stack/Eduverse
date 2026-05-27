@@ -15,10 +15,8 @@ export default function Footer() {
       padding:'3rem 1.2rem 1.5rem', position:'relative', zIndex:1,
     }}>
       <div style={{maxWidth:'1240px', margin:'0 auto'}}>
-        <div style={{
-          display:'grid',
-          gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',
-          gap:'2rem', marginBottom:'2.5rem',
+        <div className="footer-grid" style={{
+          display:'grid', gap:'2rem', marginBottom:'2.5rem',
         }}>
           {/* BRAND */}
           <div style={{minWidth:'220px'}}>
@@ -30,7 +28,7 @@ export default function Footer() {
             }}>
               Eduverse
             </div>
-            <p style={{fontSize:'0.82rem', color:'var(--muted)', lineHeight:'1.7', marginBottom:'1rem'}}>
+            <p style={{fontSize:'0.82rem', color:'var(--muted)', lineHeight:'1.7', marginBottom:'1rem', maxWidth:'320px'}}>
               World-class courses, real video lessons, reading materials, and free certificates — completely free, forever.
             </p>
             <div style={{display:'flex', gap:'0.6rem'}}>
