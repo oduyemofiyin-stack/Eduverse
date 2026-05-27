@@ -9,6 +9,7 @@ export default function Profile() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
+  const [pfpError, setPfpError] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
@@ -39,25 +40,26 @@ export default function Profile() {
       }}>
         {/* AVATAR */}
         <div style={{position:'relative', flexShrink:0}}>
-          {currentUser.picture ? (
+          {currentUser.picture && !pfpError ? (
             <img
               src={currentUser.picture}
               alt="avatar"
               referrerPolicy="no-referrer"
-              onError={e => { e.target.style.display='none'; document.getElementById('pfp-fallback').style.display='flex'; }}
+              crossOrigin="anonymous"
+              onError={() => setPfpError(true)}
               style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover', border:'3px solid #f0c040'}}
             />
-          ) : null}
-          <div id="pfp-fallback" style={{
-            display: currentUser.picture ? 'none' : 'flex',
-            width:'90px', height:'90px', borderRadius:'50%',
-            background:'linear-gradient(135deg,#4488ff,#00d4aa)',
-            alignItems:'center', justifyContent:'center',
-            fontFamily:'Georgia, serif', fontSize:'2.2rem', fontWeight:'700',
-            color:'#fff', border:'3px solid #f0c040',
-          }}>
-            {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
-          </div>
+          ) : (
+            <div style={{
+              width:'90px', height:'90px', borderRadius:'50%',
+              background:'linear-gradient(135deg,#4488ff,#00d4aa)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              fontFamily:'Georgia, serif', fontSize:'2.2rem', fontWeight:'700',
+              color:'#fff', border:'3px solid #f0c040',
+            }}>
+              {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
+            </div>
+          )}
           {/* ONLINE DOT */}
           <div style={{
             position:'absolute', bottom:'4px', right:'4px',
