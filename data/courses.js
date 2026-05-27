@@ -1,6 +1,6 @@
 const courses = [
   {
-    id:1, title:"React for Beginners", instructor:"Jane Doe",
+    id:1, title:"React for Beginners",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"1.5 hours",
     description:"Master React from scratch. Learn components, hooks, props, state management, and build real-world applications. Perfect for anyone starting their frontend journey.",
     img:"https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80",
@@ -24,7 +24,7 @@ const courses = [
     ]
   },
   {
-    id:2, title:"Python Data Science Bootcamp", instructor:"Mark Chen",
+    id:2, title:"Python Data Science Bootcamp",     instructor:"Oduye Emmanuel",
     category:"Data Science", duration:"1.5 hours",
     description:"Master Python for data analysis and visualization. Covers NumPy, Pandas, Matplotlib, and ML fundamentals with real-world projects.",
     img:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
@@ -48,7 +48,7 @@ const courses = [
     ]
   },
   {
-    id:3, title:"UI/UX Design Fundamentals", instructor:"Sofia Ramirez",
+    id:3, title:"UI/UX Design Fundamentals",     instructor:"Oduye Emmanuel",
     category:"Design", duration:"1.5 hours",
     description:"Learn user-centered design principles. Master Figma, wireframing, prototyping, and design systems.",
     img:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
@@ -72,7 +72,7 @@ const courses = [
     ]
   },
   {
-    id:4, title:"Flutter Mobile Development", instructor:"Akira Tanaka",
+    id:4, title:"Flutter Mobile Development",     instructor:"Oduye Emmanuel",
     category:"Mobile Development", duration:"1.5 hours",
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
     img:"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
@@ -96,7 +96,7 @@ const courses = [
     ]
   },
   {
-    id:5, title:"Machine Learning with TensorFlow", instructor:"Dr. Priya Nair",
+    id:5, title:"Machine Learning with TensorFlow",     instructor:"Oduye Emmanuel",
     category:"AI & Machine Learning", duration:"1.8 hours",
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
     img:"https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80",
@@ -120,7 +120,7 @@ const courses = [
     ]
   },
   {
-    id:6, title:"Digital Marketing Masterclass", instructor:"Emma Williams",
+    id:6, title:"Digital Marketing Masterclass",     instructor:"Oduye Emmanuel",
     category:"Marketing", duration:"1.3 hours",
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
     img:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
@@ -144,7 +144,7 @@ const courses = [
     ]
   },
   {
-    id:7, title:"Node.js & Express Backend", instructor:"Carlos Rivera",
+    id:7, title:"Node.js & Express Backend",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"1.5 hours",
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
     img:"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&q=80",
@@ -168,7 +168,7 @@ const courses = [
     ]
   },
   {
-    id:8, title:"Ethical Hacking & Cybersecurity", instructor:"James O'Brien",
+    id:8, title:"Ethical Hacking & Cybersecurity",     instructor:"Oduye Emmanuel",
     category:"Cybersecurity", duration:"1.5 hours",
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
     img:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80",
@@ -192,7 +192,7 @@ const courses = [
     ]
   },
   {
-    id:9, title:"Advanced TypeScript Patterns", instructor:"Anna Kowalski",
+    id:9, title:"Advanced TypeScript Patterns",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"1.4 hours",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
     img:"https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&q=80",
@@ -216,7 +216,7 @@ const courses = [
     ]
   },
   {
-    id:10, title:"Business Analytics with Excel & Power BI", instructor:"David Park",
+    id:10, title:"Business Analytics with Excel & Power BI",     instructor:"Oduye Emmanuel",
     category:"Business", duration:"1.5 hours",
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
     img:"https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80",
@@ -240,7 +240,7 @@ const courses = [
     ]
   },
   {
-    id:11, title:"Vue.js 3 – The Complete Guide", instructor:"Lena Müller",
+    id:11, title:"Vue.js 3 – The Complete Guide",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"1.4 hours",
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
     img:"https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80",
@@ -264,7 +264,7 @@ const courses = [
     ]
   },
   {
-    id:12, title:"Data Structures & Algorithms in Python", instructor:"Raj Patel",
+    id:12, title:"Data Structures & Algorithms in Python", instructor:"Oduye Emmanuel",
     category:"Data Science", duration:"1.6 hours",
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
     img:"https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=600&q=80",
@@ -285,6 +285,198 @@ const courses = [
       {q:"What is binary search?", opts:["Searching two arrays","O(log n) algorithm on sorted arrays","A recursive tree algorithm","A graph traversal"], ans:1},
       {q:"What is dynamic programming?", opts:["Dynamic typing","Solving problems by caching overlapping subproblems","A design pattern","A data structure"], ans:1},
       {q:"What does BFS stand for?", opts:["Binary File Search","Breadth-First Search","Basic Function Structure","Best-First Sort"], ans:1},
+    ]
+  },
+  {
+    id:13, title:"HTML & CSS Masterclass", instructor:"Oduye Emmanuel",
+    category:"Web Development", duration:"1.5 hours",
+    description:"Build beautiful websites from scratch. Master HTML5, CSS3, Flexbox, CSS Grid, and responsive design principles.",
+    img:"https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=600&q=80",
+    rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
+    lessons:[
+      {title:"HTML5 Semantics & Structure", dur:"20 min", yt:"pQN-pnXPaVg"},
+      {title:"CSS Fundamentals & Selectors", dur:"22 min", yt:"1Rs2ND1ryYc"},
+      {title:"Flexbox & CSS Grid Layouts", dur:"26 min", yt:"JJSoEo8OcU4"},
+      {title:"Building a Complete Landing Page", dur:"24 min", yt:"a_iQb1Y1iYI"},
+    ],
+    reading:[
+      {title:"HTML Foundations", body:"HTML is the backbone of every web page. It structures content with semantic tags.", points:["<header>, <nav>, <main> give meaning","<section> groups related content","<article> represents standalone content","<img> must always include alt text"]},
+      {title:"CSS Layout Mastery", body:"Modern CSS gives us powerful layout tools without hacks.", points:["Flexbox is great for 1D layouts (rows/columns)","Grid excels at 2D layouts","Media queries make designs responsive","CSS custom properties (variables) reduce repetition"]},
+    ],
+    quiz:[
+      {q:"What does HTML stand for?", opts:["HyperText Markup Language","High Tech Modern Language","Hyper Transfer Machine Language","Home Tool Markup Language"], ans:0},
+      {q:"Which CSS property creates a flex container?", opts:["display: block","display: flex","position: relative","float: left"], ans:1},
+      {q:"What is the correct HTML for a hyperlink?", opts:["<link url='...'>","<a href='...'>","<href>...</href>","<nav>...</nav>"], ans:1},
+      {q:"Which makes a layout responsive?", opts:["Fixed pixel widths","Media queries","Tables","Inline styles"], ans:1},
+      {q:"What does CSS Grid excel at?", opts:["1D layouts","2D layouts","Typography","Animations"], ans:1},
+    ]
+  },
+  {
+    id:14, title:"JavaScript Fundamentals", instructor:"Oduye Emmanuel",
+    category:"Web Development", duration:"1.6 hours",
+    description:"Learn JavaScript from the ground up. Covers variables, functions, DOM manipulation, ES6+, and async programming.",
+    img:"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&q=80",
+    rating:4.7, keywords:["javascript","es6","dom","async","web"],
+    lessons:[
+      {title:"JS Basics: Variables & Data Types", dur:"20 min", yt:"PkZNo7MFNFg"},
+      {title:"Functions, Scope & Closures", dur:"24 min", yt:"hdI2bqOjy3c"},
+      {title:"DOM Manipulation & Events", dur:"26 min", yt:"0ik6X4DJKCc"},
+      {title:"Async JavaScript: Promises & Fetch", dur:"22 min", yt:"PoRJizFHWK8"},
+    ],
+    reading:[
+      {title:"JavaScript Core Concepts", body:"JavaScript is the language of the web. It powers interactivity on nearly every site.", points:["var, let, const — use const by default","Functions are first-class citizens","Closures remember their lexical scope","The event loop handles async operations"]},
+      {title:"Modern ES6+ Features", body:"ES6 brought major improvements to JavaScript.", points:["Arrow functions provide concise syntax","Template literals enable string interpolation","Destructuring extracts values cleanly","Modules organize code into files"]},
+    ],
+    quiz:[
+      {q:"Which keyword declares a constant variable?", opts:["var","let","const","static"], ans:2},
+      {q:"What does typeof return for an array?", opts:["array","object","list","undefined"], ans:1},
+      {q:"Which method adds an element to the end of an array?", opts:["push()","pop()","shift()","unshift()"], ans:0},
+      {q:"What is a Promise?", opts:["A callback function","An object representing eventual completion of an async operation","A synchronous function","A data type"], ans:1},
+      {q:"What does the DOM stand for?", opts:["Document Object Model","Data Object Model","Document Oriented Module","Dynamic Object Management"], ans:0},
+    ]
+  },
+  {
+    id:15, title:"Java Programming for Beginners", instructor:"Oduye Emmanuel",
+    category:"Programming", duration:"1.7 hours",
+    description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
+    img:"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80",
+    rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
+    lessons:[
+      {title:"Java Basics: Syntax & Data Types", dur:"22 min", yt:"eIrMbAQSU34"},
+      {title:"Object-Oriented Programming Deep Dive", dur:"28 min", yt:"grEKMHGYyns"},
+      {title:"Collections Framework & Generics", dur:"24 min", yt:"rz3qBh7wG4M"},
+      {title:"Exception Handling & File I/O", dur:"20 min", yt:"2xTytMqXz4c"},
+    ],
+    reading:[
+      {title:"Why Java?", body:"Java is a mature, platform-independent language used everywhere from enterprise to Android.", points:["Write once, run anywhere via JVM","Strongly typed catches errors early","Rich standard library","Massive ecosystem and community"]},
+      {title:"OOP In Practice", body:"Object-Oriented Programming is the foundation of Java.", points:["Classes are blueprints, objects are instances","Encapsulation hides internal state","Inheritance promotes code reuse","Polymorphism enables flexible code"]},
+    ],
+    quiz:[
+      {q:"What is the JVM?", opts:["Java Virtual Machine — runs bytecode","Java Visual Manager","Java Version Manager","Java Variable Method"], ans:0},
+      {q:"Which keyword creates a new object?", opts:["new","create","object","alloc"], ans:0},
+      {q:"What does OOP stand for?", opts:["Object-Oriented Programming","Operation-Oriented Process","Online Object Protocol","Open Output Program"], ans:0},
+      {q:"Which collection stores unique elements?", opts:["List","Set","Map","Queue"], ans:1},
+      {q:"What is inheritance?", opts:["Copying code","A class deriving from another class","A method overloading","A data structure"], ans:1},
+    ]
+  },
+  {
+    id:16, title:"CSS Grid, Flexbox & Modern Layouts", instructor:"Oduye Emmanuel",
+    category:"Design", duration:"1.3 hours",
+    description:"Master modern CSS layout techniques. Build complex responsive designs with Flexbox, Grid, and advanced positioning.",
+    img:"https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=600&q=80",
+    rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
+    lessons:[
+      {title:"Flexbox Complete Guide", dur:"20 min", yt:"phW6D0VgWTw"},
+      {title:"CSS Grid Complete Guide", dur:"22 min", yt:"9zBsd3qE3aA"},
+      {title:"Advanced Positioning & Z-Index", dur:"18 min", yt:"-0Y8h4KoBP0"},
+      {title:"Building a Responsive Dashboard Layout", dur:"20 min", yt:"p3y9NtlT1qQ"},
+    ],
+    reading:[
+      {title:"Flexbox vs Grid", body:"Flexbox is 1D (row or column). Grid is 2D (rows and columns simultaneously).", points:["Flexbox: content-first, distributes space along one axis","Grid: layout-first, places items in cells","Use Flexbox for navigation bars and centering","Use Grid for page-level layouts and galleries"]},
+      {title:"Responsive Design Principles", body:"Responsive design adapts to any screen size.", points:["Start with mobile-first CSS","Use rem/em over px for accessibility","Container queries are the future","Test on real devices"]},
+    ],
+    quiz:[
+      {q:"Which property aligns items on the cross axis in Flexbox?", opts:["justify-content","align-items","gap","flex-wrap"], ans:1},
+      {q:"What does grid-template-columns define?", opts:["Number of rows","Column widths and count","Gap size","Item alignment"], ans:1},
+      {q:"Which unit is relative to the root font size?", opts:["px","em","rem","vh"], ans:2},
+      {q:"What is the mobile-first approach?", opts:["Designing for desktop first","Starting with mobile styles then adding breakpoints","Only building for mobile","Using only mobile frameworks"], ans:1},
+      {q:"Which makes an image responsive?", opts:["width: 100%; height: auto;","width: fixed;","max-width: 100%; height: auto;","min-width: 100%"], ans:2},
+    ]
+  },
+  {
+    id:17, title:"Git & GitHub Essentials", instructor:"Oduye Emmanuel",
+    category:"Web Development", duration:"1.2 hours",
+    description:"Learn version control with Git and collaborate effectively on GitHub. Branching, merging, pull requests, and workflows.",
+    img:"https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=600&q=80",
+    rating:4.5, keywords:["git","github","version control","branching","collaboration"],
+    lessons:[
+      {title:"Git Basics: Init, Add, Commit", dur:"16 min", yt:"RGOj5yH7evk"},
+      {title:"Branching & Merging Strategies", dur:"20 min", yt:"9GKbRj8Z4X8"},
+      {title:"GitHub: Pull Requests & Collaboration", dur:"18 min", yt:"8lDnE8i0H50"},
+      {title:"Undoing Changes & Git Reset", dur:"14 min", yt:"f1wnYd0kG7o"},
+    ],
+    reading:[
+      {title:"Why Version Control?", body:"Git tracks every change to your code, enabling collaboration and history.", points:["Never lose work with commits","Branch to experiment safely","Merge to combine changes","Rebase keeps history linear"]},
+      {title:"GitHub Workflows", body:"GitHub is the most popular platform for hosting Git repos.", points:["Fork & PR model for open source","GitHub Actions automates workflows","Code reviews happen on pull requests","Issues track bugs and features"]},
+    ],
+    quiz:[
+      {q:"What does git commit do?", opts:["Deletes changes","Saves a snapshot of changes","Pushes to remote","Creates a branch"], ans:1},
+      {q:"What is a branch?", opts:["A copy of the repo","An independent line of development","A commit","A remote"], ans:1},
+      {q:"What command uploads changes to GitHub?", opts:["git commit","git push","git pull","git fetch"], ans:1},
+      {q:"What does git merge do?", opts:["Deletes a branch","Combines two branches","Creates a new repo","Stashes changes"], ans:1},
+      {q:"What is a pull request?", opts:["A request to pull code from a remote","A proposal to merge changes from one branch to another","A git command","A type of merge"], ans:1},
+    ]
+  },
+  {
+    id:18, title:"SQL & Database Design", instructor:"Oduye Emmanuel",
+    category:"Data Science", duration:"1.5 hours",
+    description:"Master SQL queries and relational database design. Covers joins, subqueries, indexing, normalization, and performance tuning.",
+    img:"https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&q=80",
+    rating:4.7, keywords:["sql","database","postgresql","queries","data"],
+    lessons:[
+      {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"20 min", yt:"HXV3zeQKqGY"},
+      {title:"Joins & Relationships", dur:"24 min", yt:"9yeOJ0ZMUYw"},
+      {title:"Subqueries & Aggregation", dur:"22 min", yt:"hT1oH3Qn7lY"},
+      {title:"Normalization & Indexing", dur:"18 min", yt:"GFQa2Y7vcgc"},
+    ],
+    reading:[
+      {title:"Database Fundamentals", body:"A database is an organized collection of data. Relational databases store data in tables.", points:["Each table represents one entity type","Rows are records, columns are fields","Primary keys uniquely identify rows","Foreign keys link tables together"]},
+      {title:"Writing Great Queries", body:"Efficient queries make applications fast.", points:["SELECT only columns you need","WHERE filters before joining","JOINs combine related tables","Indexes speed up lookups"]},
+    ],
+    quiz:[
+      {q:"What does SQL stand for?", opts:["Structured Query Language","Simple Query Language","Standard Query Logic","Sequential Query Language"], ans:0},
+      {q:"Which clause filters rows?", opts:["SELECT","WHERE","HAVING","ORDER BY"], ans:1},
+      {q:"What is a primary key?", opts:["A unique identifier for each row","A foreign key","An index","A table name"], ans:0},
+      {q:"Which JOIN returns matching rows from both tables?", opts:["LEFT JOIN","RIGHT JOIN","INNER JOIN","FULL JOIN"], ans:2},
+      {q:"What does GROUP BY do?", opts:["Groups identical rows","Orders results","Filters groups","Groups rows sharing a value for aggregation"], ans:3},
+    ]
+  },
+  {
+    id:19, title:"Python Programming for Beginners", instructor:"Oduye Emmanuel",
+    category:"Programming", duration:"1.4 hours",
+    description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
+    img:"https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=600&q=80",
+    rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
+    lessons:[
+      {title:"Python Basics: Variables & Control Flow", dur:"20 min", yt:"rfscVS0vtbw"},
+      {title:"Functions & Modules", dur:"18 min", yt:"N4mEzFDj__A"},
+      {title:"Working with Files & Data", dur:"22 min", yt:"H5Z3N-DgvuA"},
+      {title:"Building CLI Applications", dur:"20 min", yt:"kLZuut1fYzQ"},
+    ],
+    reading:[
+      {title:"Why Python?", body:"Python is the most beginner-friendly language and the most versatile.", points:["Readable syntax feels like pseudocode","Dynamically typed reduces boilerplate","Huge standard library 'batteries included'","Used in web, data science, automation, AI"]},
+      {title:"Python Data Structures", body:"Python has powerful built-in data structures.", points:["Lists are ordered, mutable sequences","Tuples are immutable lists","Dictionaries store key-value pairs","Sets store unique elements"]},
+    ],
+    quiz:[
+      {q:"How do you print in Python?", opts:["console.log()","print()","echo","printf"], ans:1},
+      {q:"What type is a list?", opts:["Immutable","Mutable","Unchangeable","Constant"], ans:1},
+      {q:"Which keyword defines a function?", opts:["func","function","def","define"], ans:2},
+      {q:"What does len() return?", opts:["The length of an object","The last element","A random number","The type"], ans:0},
+      {q:"What is a dictionary?", opts:["An ordered list","A collection of key-value pairs","A function","A class"], ans:1},
+    ]
+  },
+  {
+    id:20, title:"Responsive Web Design Bootcamp", instructor:"Oduye Emmanuel",
+    category:"Design", duration:"1.3 hours",
+    description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
+    img:"https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&q=80",
+    rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
+    lessons:[
+      {title:"Responsive Design Principles & Strategy", dur:"18 min", yt:"VQraviuw5G4"},
+      {title:"Fluid Layouts & Relative Units", dur:"20 min", yt:"et9NM4yCmy8"},
+      {title:"Responsive Images & Media", dur:"18 min", yt:"q18eO2FJ-3E"},
+      {title:"Mobile UX Patterns & Best Practices", dur:"22 min", yt:"5rC1I0Yf39g"},
+    ],
+    reading:[
+      {title:"The Responsive Mindset", body:"Responsive design is not just about making things fit — it's about creating great experiences on every device.", points:["Content decides breakpoints, not devices","Touch targets should be at least 44px","Test on real mobile hardware","Performance matters more on mobile"]},
+      {title:"Modern Responsive Techniques", body:"New CSS features make responsive design easier than ever.", points:["clamp() creates fluid typography","Container queries respond to element size","min/max-width create flexible constraints","aspect-ratio prevents layout shift"]},
+    ],
+    quiz:[
+      {q:"What is a breakpoint?", opts:["A CSS property","A width where the layout changes","A JavaScript event","A design tool"], ans:1},
+      {q:"What does the viewport meta tag do?", opts:["Sets page width to device width","Adds a border","Changes font size","Enables animations"], ans:0},
+      {q:"Which is a relative length unit?", opts:["px","pt","em","cm"], ans:2},
+      {q:"What is progressive enhancement?", opts:["Building for mobile first then enhancing","Building for desktop only","Using JavaScript only","Adding more features"], ans:0},
+      {q:"What is a hamburger menu?", opts:["A food menu","A collapsed navigation icon on mobile","A dropdown","A footer link"], ans:1},
     ]
   },
 ];

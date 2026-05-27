@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
 import { CourseSkeleton } from '../components/Skeleton';
-import { initScrollReveal, initCardTilt, initParallax, initMagneticButtons, initCustomCursor, initFlowingLines } from '../lib/animations';
+import { initScrollReveal, initCardTilt, initParallax, initMagneticButtons, initCustomCursor, initStarfield } from '../lib/animations';
 import courses from '../data/courses';
 
 function AnimatedNumber({ value, color }) {
@@ -46,6 +46,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const canvasRef = useRef(null);
+  const heroRef = useRef(null);
   const isLight = theme === 'light';
   const [typewriter, setTypewriter] = useState('');
   const typewriterRef = useRef(null);
@@ -73,7 +74,7 @@ export default function Home() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const cleanup = initFlowingLines(canvas);
+    const cleanup = initStarfield(canvas);
     return cleanup;
   }, []);
 
@@ -120,68 +121,74 @@ export default function Home() {
   return (
     <div className="page-transition">
 
-      {/* HERO */}
-      <div style={{
+      {/* HERO — Full-screen universe splash */}
+      <div ref={heroRef} style={{
         position:'relative', overflow:'hidden',
-        padding:'6rem 1.2rem 4rem', textAlign:'center',
-        minHeight:'560px', display:'flex', flexDirection:'column',
+        textAlign:'center',
+        height:'100vh', minHeight:'600px',
+        display:'flex', flexDirection:'column',
         alignItems:'center', justifyContent:'center',
       }}>
         <canvas
           ref={canvasRef}
-          id="flow-canvas"
+          id="starfield-canvas"
           style={{position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none'}}
         />
 
-        {/* FLOATING ORBS */}
-        <div className="hero-layer-1" style={{
+        {/* NEBULA GLOWS */}
+        <div style={{
+          position:'absolute', width:'700px', height:'700px', borderRadius:'50%',
+          background:'radial-gradient(circle, rgba(68,136,255,0.08) 0%, transparent 70%)',
+          top:'-200px', right:'-200px', pointerEvents:'none',
+        }}/>
+        <div style={{
           position:'absolute', width:'500px', height:'500px', borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(68,136,255,0.12) 0%, transparent 70%)',
-          top:'-120px', left:'-120px', pointerEvents:'none',
-        }}/>
-        <div className="hero-layer-2" style={{
-          position:'absolute', width:'350px', height:'350px', borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(0,212,170,0.1) 0%, transparent 70%)',
-          bottom:'-60px', right:'-60px', pointerEvents:'none',
-        }}/>
-        <div className="hero-layer-3" style={{
-          position:'absolute', width:'250px', height:'250px', borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(240,192,64,0.08) 0%, transparent 70%)',
-          top:'35%', right:'12%', pointerEvents:'none',
-        }}/>
-        <div className="breathe" style={{
-          position:'absolute', width:'600px', height:'600px', borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(68,136,255,0.06) 0%, transparent 60%)',
-          top:'50%', left:'50%', transform:'translate(-50%,-50%)',
-          pointerEvents:'none',
+          background:'radial-gradient(circle, rgba(240,192,64,0.05) 0%, transparent 70%)',
+          bottom:'-150px', left:'-150px', pointerEvents:'none',
         }}/>
 
-        {/* 3D OBJECTS */}
+        {/* ORBITING RING DECORATION */}
         <div style={{
-          position:'absolute', top:'10%', right:'6%',
-          width:'90px', height:'90px',
-          pointerEvents:'none', opacity:0.5,
+          position:'absolute', top:'15%', left:'8%',
+          width:'100px', height:'100px', pointerEvents:'none', opacity:0.3,
         }} className="orbit-3d">
           <svg viewBox="0 0 80 80" fill="none">
-            <polygon points="40,5 75,65 5,65" stroke="#4488ff" strokeWidth="1.5" fill="rgba(68,136,255,0.06)"/>
-            <polygon points="40,20 65,60 15,60" stroke="#00d4aa" strokeWidth="1" fill="rgba(0,212,170,0.04)"/>
+            <ellipse cx="40" cy="40" rx="38" ry="15" stroke="#4488ff" strokeWidth="1" strokeDasharray="3 3" transform="rotate(-25 40 40)"/>
+            <circle cx="40" cy="25" r="3" fill="#4488ff"/>
+            <circle cx="68" cy="48" r="2" fill="#00d4aa"/>
           </svg>
         </div>
         <div style={{
-          position:'absolute', bottom:'18%', left:'5%',
-          width:'70px', height:'70px',
-          pointerEvents:'none', opacity:0.4,
-        }} className="hero-layer-2">
+          position:'absolute', bottom:'20%', right:'6%',
+          width:'80px', height:'80px', pointerEvents:'none', opacity:0.25,
+        }} className="orbit-3d">
           <svg viewBox="0 0 60 60" fill="none">
-            <rect x="10" y="10" width="40" height="40" rx="10" stroke="#f0c040" strokeWidth="1.5" fill="rgba(240,192,64,0.05)" transform="rotate(25 30 30)"/>
+            <ellipse cx="30" cy="30" rx="28" ry="10" stroke="#f0c040" strokeWidth="1" strokeDasharray="2.5 2.5" transform="rotate(30 30 30)"/>
+            <circle cx="30" cy="20" r="2.5" fill="#f0c040"/>
           </svg>
         </div>
 
         {/* HERO CONTENT */}
-        <div style={{position:'relative', zIndex:1, maxWidth:'900px', margin:'0 auto'}} data-parallax-text>
+        <div style={{position:'relative', zIndex:1, maxWidth:'900px', margin:'0 auto', padding:'2rem 1.2rem'}} data-parallax-text>
+          {/* BRAND BADGE */}
+          <div className="reveal delay-1" style={{
+            display:'inline-flex', alignItems:'center', gap:'6px',
+            background:'rgba(68,136,255,0.1)', border:'1px solid rgba(68,136,255,0.2)',
+            borderRadius:'100px', padding:'0.35rem 1rem 0.35rem 0.8rem',
+            marginBottom:'1.5rem', fontSize:'0.7rem', fontWeight:'600',
+            color:'#4488ff', textTransform:'uppercase', letterSpacing:'0.12em',
+          }}>
+            <span style={{
+              width:'6px', height:'6px', borderRadius:'50%',
+              background:'#4488ff', display:'inline-block',
+              animation:'pulse-dot 2s infinite',
+            }}/>
+            Eduverse — Free Education For All
+          </div>
+
           <h1 className="reveal delay-2" style={{
             fontFamily:'Georgia, serif',
-            fontSize:'clamp(2.6rem, 8vw, 5.8rem)',
+            fontSize:'clamp(2.8rem, 9vw, 6rem)',
             fontWeight:'700', lineHeight:'1.02',
             letterSpacing:'-0.03em', marginBottom:'0.8rem',
             color:'var(--text)',
@@ -226,7 +233,10 @@ export default function Home() {
           }}>
             <button
               className="magnetic glow-border"
-              onClick={() => document.getElementById('searchInput').focus()}
+              onClick={() => {
+                document.getElementById('searchInput')?.focus();
+                heroRef.current?.nextElementSibling?.scrollIntoView({ behavior: 'smooth' });
+              }}
               style={{
                 fontSize:'0.95rem', fontWeight:'700',
                 padding:'0.9rem 2.4rem', borderRadius:'14px',
@@ -261,8 +271,10 @@ export default function Home() {
           transform:'translateX(-50%)', color:'var(--muted2)',
           fontSize:'0.7rem', display:'flex', flexDirection:'column',
           alignItems:'center', gap:'0.2rem', zIndex:1,
+          animation:'bob 2s ease-in-out infinite',
         }}>
-          <span className="scroll-indicator">↓</span>
+          <span style={{fontSize:'0.65rem', letterSpacing:'0.08em', textTransform:'uppercase', opacity:0.6}}>Scroll</span>
+          <span className="scroll-indicator" style={{fontSize:'1rem'}}>↓</span>
         </div>
       </div>
 
@@ -273,9 +285,9 @@ export default function Home() {
         maxWidth:'520px', margin:'0 auto',
       }}>
         {[
-          {n:'12', l:'Expert Courses', color:'#4488ff'},
+          {n:'20', l:'Expert Courses', color:'#4488ff'},
           {n:'100%', l:'Free', color:'#f0c040'},
-          {n:'7', l:'Categories', color:'#ff6b9d'},
+          {n:'9', l:'Categories', color:'#ff6b9d'},
         ].map((s, i) => (
           <div key={s.l}
             className={`reveal-scale delay-${i+1} glass`}

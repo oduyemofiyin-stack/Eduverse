@@ -336,6 +336,18 @@ button { font-family: inherit; }
   animation: countPop 0.4s var(--ease-spring);
 }
 
+/* ── PULSE DOT ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.6); }
+}
+
+/* ── BOB ── */
+@keyframes bob {
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50% { transform: translateY(8px) translateX(-50%); }
+}
+
 /* ── SCROLL INDICATOR ── */
 @keyframes scrollIndicator {
   0% { opacity: 1; transform: translateY(0); }
