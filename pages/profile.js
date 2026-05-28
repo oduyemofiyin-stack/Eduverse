@@ -80,7 +80,7 @@ export default function Profile() {
               background:'rgba(240,192,64,0.15)', color:'var(--gold)',
               border:'1px solid rgba(240,192,64,0.3)',
             }}>
-              {currentUser.provider === 'Google' ? 'Google Account' : 'Email Account'}
+              {currentUser.provider === 'Google' ? '🔷 Google Account' : '✉️ Email Account'}
             </span>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function Profile() {
         {/* XP & STREAK */}
         <div style={{display:'flex', gap:'0.6rem'}}>
           <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'var(--surface)', borderRadius:'10px', border:'1px solid var(--border)'}}>
-            <div style={{fontSize:'1rem', fontWeight:'700', color:'var(--gold)'}}>{xp}</div>
+            <div style={{fontSize:'1rem', fontWeight:'700', color:'var(--gold)'}}>⚡{xp}</div>
             <div style={{fontSize:'0.6rem', color:'var(--muted)', letterSpacing:'0.04em', textTransform:'uppercase'}}>XP</div>
           </div>
           <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'var(--surface)', borderRadius:'10px', border:'1px solid var(--border)'}}>
@@ -114,7 +114,7 @@ export default function Profile() {
           }}
           disabled={syncing}
         >
-          {syncing ? 'Syncing...' : 'Sync to Cloud'}
+          {syncing ? '⏳ Syncing...' : '☁️ Sync to Cloud'}
         </button>
 
         {/* SIGN OUT */}
@@ -138,16 +138,17 @@ export default function Profile() {
         gridTemplateColumns:'repeat(auto-fill, minmax(min(160px,100%), 1fr))',
         gap:'1rem', marginBottom:'1.5rem',
       }}>
-        {[
-          {label:'Enrolled', value:enrolledCourses.length, color:'var(--blue)'},
-          {label:'Completed', value:completedCourses.length, color:'var(--gold)'},
-          {label:'Wishlisted', value:wishlistCourses.length, color:'var(--pink)'},
-          {label:'Avg Progress', value:`${totalProgress}%`, color:'var(--teal)'},
+          {[
+          {ico:'📚', label:'Enrolled', value:enrolledCourses.length, color:'var(--blue)'},
+          {ico:'🏆', label:'Completed', value:completedCourses.length, color:'var(--gold)'},
+          {ico:'♡', label:'Wishlisted', value:wishlistCourses.length, color:'var(--pink)'},
+          {ico:'📈', label:'Avg Progress', value:`${totalProgress}%`, color:'var(--teal)'},
         ].map(s => (
           <div key={s.label} style={{
             background:'var(--surface)', border:'1px solid var(--border)',
             borderRadius:'14px', padding:'1.2rem', textAlign:'center',
           }}>
+            <div style={{fontSize:'1.8rem', marginBottom:'0.4rem'}}>{s.ico}</div>
             <div style={{fontFamily:'Georgia, serif', fontSize:'1.6rem', fontWeight:'700', color:s.color}}>{s.value}</div>
             <div style={{fontSize:'0.75rem', color:'var(--muted)', marginTop:'0.2rem'}}>{s.label}</div>
           </div>
@@ -157,7 +158,7 @@ export default function Profile() {
       {/* BADGES */}
       <div style={{marginBottom:'1.5rem'}}>
         <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-          Badges ({badges.length}/{Object.keys(BADGE_DEFS).length})
+          🏅 Badges ({badges.length}/{Object.keys(BADGE_DEFS).length})
         </h2>
         <div style={{display:'flex', gap:'0.7rem', flexWrap:'wrap'}}>
           {Object.entries(BADGE_DEFS).map(([id, def]) => {
@@ -172,7 +173,7 @@ export default function Profile() {
                 opacity: earned ? 1 : 0.5,
                 display:'flex', alignItems:'center', gap:'0.4rem',
               }}>
-                <span>{earned ? def.icon : ''}</span>
+                <span>{earned ? def.icon : '🔒'}</span>
                 {def.label}
               </div>
             );
@@ -184,7 +185,7 @@ export default function Profile() {
       {enrolledCourses.length > 0 && (
         <div style={{marginBottom:'1.5rem'}}>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-            My Courses
+            📚 My Courses
           </h2>
           <div style={{display:'flex', flexDirection:'column', gap:'0.7rem'}}>
             {enrolledCourses.map(c => {
@@ -214,7 +215,7 @@ export default function Profile() {
                     </div>
                   </div>
                   {isDone ? (
-                    <span style={{fontSize:'0.72rem', fontWeight:'700', padding:'0.2rem 0.7rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'var(--gold)', border:'1px solid rgba(240,192,64,0.3)', flexShrink:0}}>Completed</span>
+                    <span style={{fontSize:'0.72rem', fontWeight:'700', padding:'0.2rem 0.7rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'var(--gold)', border:'1px solid rgba(240,192,64,0.3)', flexShrink:0}}>🏆 Completed</span>
                   ) : (
                     <span style={{fontSize:'0.72rem', fontWeight:'700', padding:'0.2rem 0.7rem', borderRadius:'100px', background:'rgba(var(--blue-rgb,68,136,255),0.15)', color:'var(--blue)', border:'1px solid rgba(var(--blue-rgb,68,136,255),0.3)', flexShrink:0}}>In Progress</span>
                   )}
@@ -229,7 +230,7 @@ export default function Profile() {
       {completedCourses.length > 0 && (
         <div style={{marginBottom:'1.5rem'}}>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-            My Certificates
+            🏆 My Certificates
           </h2>
           <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap:'1rem'}}>
             {completedCourses.map(c => {
@@ -265,6 +266,7 @@ export default function Profile() {
       {/* EMPTY STATE */}
       {enrolledCourses.length === 0 && (
         <div style={{textAlign:'center', padding:'3rem 1rem', color:'var(--muted)'}}>
+          <div style={{fontSize:'3.5rem', marginBottom:'0.8rem'}}>🎯</div>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'var(--text)', marginBottom:'0.4rem'}}>Start your learning journey</h2>
           <p style={{marginBottom:'1.4rem'}}>Enroll in a course to track your progress here</p>
           <button onClick={() => router.push('/')} style={{

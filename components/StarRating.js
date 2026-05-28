@@ -26,7 +26,7 @@ export default function StarRating({ courseId, courseName }) {
         fontFamily:'Georgia, serif', fontSize:'1rem',
         fontWeight:'700', marginBottom:'0.4rem', color:'#f0c040',
       }}>
-        {userRating > 0 ? 'Your Rating' : 'Rate This Course'}
+        {userRating > 0 ? '⭐ Your Rating' : '🌟 Rate This Course'}
       </h4>
       <p style={{fontSize:'0.82rem', color:'#7a80a0', marginBottom:'0.8rem'}}>
         {userRating > 0

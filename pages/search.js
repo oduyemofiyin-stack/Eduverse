@@ -415,7 +415,7 @@ export default function Search() {
                   color: wishlist.includes(c.id) ? 'var(--pink)' : 'var(--text)',
                 }}
               >
-                {''}
+                {wishlist.includes(c.id) ? '♥' : '♡'}
               </div>
             </div>
             <div style={{padding:'1rem'}}>

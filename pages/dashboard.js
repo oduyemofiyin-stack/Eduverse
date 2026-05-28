@@ -85,7 +85,7 @@ export default function Dashboard() {
             <div style={{fontSize:'0.68rem', color:'var(--muted)', letterSpacing:'0.05em', textTransform:'uppercase'}}>XP</div>
           </div>
           <div style={{textAlign:'center', padding:'0.5rem 1rem', background:'var(--surface)', borderRadius:'12px', border:'1px solid var(--border)'}}>
-            <div style={{fontSize:'1.3rem', fontWeight:'700', color: streak >= 7 ? 'var(--gold)' : 'var(--teal)'}}>{streak}</div>
+            <div style={{fontSize:'1.3rem', fontWeight:'700', color: streak >= 7 ? 'var(--gold)' : 'var(--teal)'}}>🔥 {streak}</div>
             <div style={{fontSize:'0.68rem', color:'var(--muted)', letterSpacing:'0.05em', textTransform:'uppercase'}}>Day Streak</div>
           </div>
           <div style={{textAlign:'center', padding:'0.5rem 1rem', background:'var(--surface)', borderRadius:'12px', border:'1px solid var(--border)'}}>
@@ -189,7 +189,7 @@ export default function Dashboard() {
         <h3 style={{fontSize:'0.82rem', fontWeight:'700', marginBottom:'0.8rem'}}>Recent Activity</h3>
         {activityLog.length === 0 ? (
           <div style={{textAlign:'center', padding:'2rem', color:'var(--muted)'}}>
-            <p style={{fontSize:'0.85rem'}}>Start learning to see your activity here!</p>
+            <p style={{fontSize:'0.85rem'}}>🚀 Start learning to see your activity here!</p>
           </div>
         ) : (
           <div style={{display:'flex', flexDirection:'column', gap:'0.4rem', maxHeight:'400px', overflowY:'auto'}}>

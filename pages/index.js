@@ -517,7 +517,7 @@ export default function Home() {
                   onMouseEnter={e => { e.currentTarget.style.transform='scale(1.15)'; e.currentTarget.style.background='rgba(6,8,15,0.7)'; }}
                   onMouseLeave={e => { e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.background='rgba(6,8,15,0.55)'; }}
                 >
-                  {''}
+                  {wishlist.includes(c.id) ? '♥' : '♡'}
                 </div>
               </div>
 
