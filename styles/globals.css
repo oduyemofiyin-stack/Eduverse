@@ -66,6 +66,8 @@
   --shadow-glow-teal: 0 0 20px rgba(0,212,170,0.08);
 }
 
+*, *::before, *::after { box-sizing: border-box; }
+
 html { scroll-behavior: smooth; }
 
 body {

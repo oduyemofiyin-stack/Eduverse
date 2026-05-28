@@ -135,6 +135,7 @@ export default function Login() {
         <div className="login-card" style={{
           background:'var(--surface)', border:'1px solid var(--border2)',
           borderRadius:'24px', padding:'2rem', width:'100%', maxWidth:'420px',
+          boxSizing:'border-box',
           boxShadow:'0 20px 60px rgba(0,0,0,0.3)',
         }}>
 
