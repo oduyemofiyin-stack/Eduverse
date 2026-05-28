@@ -119,7 +119,7 @@ export default function Login() {
   }
 
   const inp = (hasErr) => ({
-    width:'100%', background:'var(--surface2)',
+    width:'100%', boxSizing:'border-box', background:'var(--surface2)',
     border:`1px solid ${hasErr ? '#ff6b9d' : 'var(--border2)'}`,
     borderRadius:'11px', padding:'0.78rem 1rem',
     fontSize:'0.9rem', color:'var(--text)', outline:'none',
@@ -279,7 +279,7 @@ export default function Login() {
                   <input type="email" placeholder="your@email.com" value={resetEmail}
                     onChange={e => setResetEmail(e.target.value)}
                     inputMode="email" autoComplete="email"
-                    style={{width:'100%', background:'var(--surface)', border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.6rem'}}/>
+                    style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.6rem'}}/>
                   {errors.reset && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.reset}</div>}
                   <div style={{display:'flex', gap:'0.6rem'}}>
                     <button onClick={handleForgotPassword} disabled={resetLoading} style={{flex:1, padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer', opacity: resetLoading ? 0.7 : 1}}>
