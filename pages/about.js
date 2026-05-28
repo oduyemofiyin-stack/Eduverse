@@ -14,7 +14,7 @@ export default function About() {
             Free for Everyone
           </span>
         </h1>
-        <p style={{fontSize:'clamp(0.88rem, 2.5vw, 1rem)', color:'#7a80a0', lineHeight:'1.8', maxWidth:'580px', margin:'0 auto'}}>
+        <p style={{fontSize:'clamp(0.88rem, 2.5vw, 1rem)', color:'var(--muted)', lineHeight:'1.8', maxWidth:'580px', margin:'0 auto'}}>
           Eduverse was built on a simple belief  where you were born should never determine what you can learn. We are on a mission to democratize education, globally.
         </p>
       </div>
@@ -22,12 +22,12 @@ export default function About() {
       {/* MISSION */}
       <div style={{padding:'0 1.2rem'}}>
         <div style={{
-          background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+          background:'var(--surface)', border:'1px solid var(--border)',
           borderRadius:'20px', padding:'2rem', textAlign:'center',
           maxWidth:'860px', margin:'0 auto 2rem',
         }}>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'0.7rem', color:'#f0c040'}}>Our Mission</h2>
-          <p style={{fontSize:'0.93rem', color:'#7a80a0', lineHeight:'1.8', maxWidth:'560px', margin:'0 auto'}}>
+          <p style={{fontSize:'0.93rem', color:'var(--muted)', lineHeight:'1.8', maxWidth:'560px', margin:'0 auto'}}>
             To make world-class education accessible to everyone, everywhere — for free. We believe knowledge is a fundamental right, not a privilege.
           </p>
         </div>
@@ -48,17 +48,17 @@ export default function About() {
           {ico:null, title:'Community', body:'We are building a global community of learners who inspire, support, and grow together.', color:'#00d4aa'},
         ].map(v => (
           <div key={v.title} style={{
-            background:'#0d1117',
-            border:'1px solid rgba(255,255,255,0.06)',
+            background:'var(--surface)',
+            border:'1px solid var(--border)',
             borderRadius:'16px', padding:'1.4rem',
             transition:'all 0.2s',
           }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.13)'; e.currentTarget.style.transform='translateY(-3px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.transform='translateY(-3px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.transform='translateY(0)'; }}
           >
 
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700', marginBottom:'0.35rem'}}>{v.title}</h3>
-            <p style={{fontSize:'0.82rem', color:'#7a80a0', lineHeight:'1.6'}}>{v.body}</p>
+            <p style={{fontSize:'0.82rem', color:'var(--muted)', lineHeight:'1.6'}}>{v.body}</p>
           </div>
         ))}
       </div>
@@ -74,7 +74,7 @@ export default function About() {
         }}>OE</div>
         <div style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700', marginBottom:'0.2rem'}}>Oduye Emmanuel</div>
         <div style={{fontSize:'0.78rem', color:'#4488ff', fontWeight:'600', letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:'0.8rem'}}>Founder & CEO, Eduverse</div>
-        <p style={{fontSize:'0.87rem', color:'#7a80a0', lineHeight:'1.75'}}>
+        <p style={{fontSize:'0.87rem', color:'var(--muted)', lineHeight:'1.75'}}>
           Oduye Emmanuel founded Eduverse with a vision to eliminate educational inequality across Africa and the world. Driven by the belief that every curious mind deserves access to quality education, he built Eduverse to be the most accessible, high-quality free learning platform on the internet.
         </p>
         <div style={{display:'flex', justifyContent:'center', gap:'0.8rem', marginTop:'1.2rem'}}>
@@ -87,12 +87,12 @@ export default function About() {
             <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" title={s.label}
               style={{
                 width:'40px', height:'40px', borderRadius:'50%',
-                background:'#0d1117', border:'1px solid rgba(255,255,255,0.08)',
+                background:'var(--surface)', border:'1px solid rgba(255,255,255,0.08)',
                 display:'flex', alignItems:'center', justifyContent:'center',
-                color:'#7a80a0', textDecoration:'none', transition:'all 0.25s',
+                color:'var(--muted)', textDecoration:'none', transition:'all 0.25s',
               }}
               onMouseEnter={e => { e.currentTarget.style.background='#4488ff'; e.currentTarget.style.color='#fff'; e.currentTarget.style.transform='translateY(-3px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background='#0d1117'; e.currentTarget.style.color='#7a80a0'; e.currentTarget.style.transform='translateY(0)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background='var(--surface)'; e.currentTarget.style.color='var(--muted)'; e.currentTarget.style.transform='translateY(0)'; }}
               dangerouslySetInnerHTML={{__html: s.svg}} />
           ))}
         </div>

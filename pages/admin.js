@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
 import { getAllUsers, deleteUser } from '../lib/firestore';
 import { AdminSkeleton } from '../components/Skeleton';
@@ -8,6 +9,7 @@ const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || 'EMMANUEL';
 const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || 'Emmanuel@007';
 
 export default function Admin() {
+  const { theme } = useApp();
   const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -25,11 +27,10 @@ export default function Admin() {
   const [usersLoading, setUsersLoading] = useState(false);
 
   useEffect(() => {
-    if (loggedIn && activeTab === 'users') {
-      setUsersLoading(true);
+    if (loggedIn) {
       getAllUsers().then(u => { setAllUsers(u); setUsersLoading(false); });
     }
-  }, [loggedIn, activeTab]);
+  }, [loggedIn]);
 
   function handleLogin() {
     if (username === ADMIN_USER && password === ADMIN_PASS) {
@@ -74,35 +75,35 @@ export default function Admin() {
   }
 
   const inp = {
-    background:'#161b26', border:'1px solid rgba(255,255,255,0.13)',
+    background:'var(--surface2)', border:'1px solid var(--border2)',
     borderRadius:'9px', padding:'0.6rem 0.8rem',
-    fontSize:'0.85rem', color:'#eef0f8', outline:'none',
-    fontFamily:'inherit', width:'100%',
+    fontSize:'0.85rem', color:'var(--text)', outline:'none',
+    fontFamily:'inherit', width:'100%', boxSizing:'border-box',
   };
 
   // LOGIN PAGE
   if (!loggedIn) {
     return (
-      <div style={{minHeight:'100vh', background:'#06080f', display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
+      <div style={{minHeight:'100vh', background:'var(--bg)', display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
         backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%)'}}>
-        <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.13)', borderRadius:'20px', padding:'2.5rem', width:'100%', maxWidth:'400px'}}>
+        <div style={{background:'var(--surface)', border:'1px solid var(--border2)', borderRadius:'20px', padding:'2.5rem', width:'100%', maxWidth:'400px', boxSizing:'border-box'}}>
           <div style={{textAlign:'center', marginBottom:'1.8rem'}}>
                 <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.5rem', fontWeight:'700', marginBottom:'0.3rem'}}>Admin Dashboard</h1>
-            <p style={{fontSize:'0.83rem', color:'#7a80a0'}}>Restricted access — Eduverse staff only</p>
+            <p style={{fontSize:'0.83rem', color:'var(--muted)'}}>Restricted access — Eduverse staff only</p>
           </div>
           {error && (
-            <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
+            <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--pink)', marginBottom:'1rem'}}>
               {error}
             </div>
           )}
           <div style={{display:'flex', flexDirection:'column', gap:'0.9rem'}}>
             <div>
-              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Username</label>
+              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Username</label>
               <input type="text" placeholder="Admin username" value={username}
                 onChange={e => setUsername(e.target.value)} style={inp}/>
             </div>
             <div>
-              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
+              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
               <input type="password" placeholder="Admin password" value={password}
                 onChange={e => setPassword(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleLogin()}
@@ -110,14 +111,14 @@ export default function Admin() {
             </div>
             <button onClick={handleLogin} style={{
               width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none', cursor:'pointer',
-              background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
+              background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff',
               fontFamily:'inherit', fontSize:'0.95rem', fontWeight:'700',
               boxShadow:'0 8px 22px rgba(68,136,255,0.28)', marginTop:'0.3rem',
             }}>Sign In to Dashboard</button>
             <button onClick={() => router.push('/')} style={{
               width:'100%', padding:'0.7rem', borderRadius:'12px',
-              border:'1px solid rgba(255,255,255,0.13)', background:'transparent',
-              color:'#7a80a0', fontFamily:'inherit', fontSize:'0.85rem', cursor:'pointer',
+              border:'1px solid var(--border2)', background:'transparent',
+              color:'var(--muted)', fontFamily:'inherit', fontSize:'0.85rem', cursor:'pointer',
             }}>← Back to Eduverse</button>
           </div>
         </div>
@@ -131,24 +132,24 @@ export default function Admin() {
   const avgRating = (courseList.reduce((s, c) => s + c.rating, 0) / totalCourses).toFixed(1);
 
   return (
-    <div style={{minHeight:'100vh', background:'#06080f', color:'#eef0f8'}}>
+    <div style={{minHeight:'100vh', background:'var(--bg)', color:'var(--text)'}}>
 
       {/* ADMIN HEADER */}
       <header style={{
         height:'64px', padding:'0 1.5rem',
         display:'flex', alignItems:'center', justifyContent:'space-between',
-        background:'rgba(6,8,15,0.95)', backdropFilter:'blur(20px)',
-        borderBottom:'1px solid rgba(255,255,255,0.06)',
+        background:'var(--header-bg)', backdropFilter:'blur(20px)',
+        borderBottom:'1px solid var(--border)',
         position:'sticky', top:0, zIndex:100,
       }}>
         <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
-          <span style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>
+          <span style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700', background:'linear-gradient(135deg,var(--gold),var(--blue))', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>
             Eduverse Admin
           </span>
         </div>
         <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
-          <span style={{fontSize:'0.82rem', color:'#7a80a0'}}>Welcome, <strong style={{color:'#eef0f8'}}>Emmanuel</strong></span>
-          <button onClick={() => router.push('/')} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.4rem 0.9rem', borderRadius:'8px', border:'1px solid rgba(255,255,255,0.13)', background:'transparent', color:'#7a80a0', cursor:'pointer'}}>
+          <span style={{fontSize:'0.82rem', color:'var(--muted)'}}>Welcome, <strong style={{color:'var(--text)'}}>Emmanuel</strong></span>
+          <button onClick={() => router.push('/')} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.4rem 0.9rem', borderRadius:'8px', border:'1px solid var(--border2)', background:'transparent', color:'var(--muted)', cursor:'pointer'}}>
             ← Back to Site
           </button>
           <button onClick={() => setLoggedIn(false)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.4rem 0.9rem', borderRadius:'8px', border:'none', background:'rgba(255,107,107,0.15)', color:'#ff6b6b', cursor:'pointer'}}>
@@ -170,8 +171,8 @@ export default function Admin() {
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
               fontSize:'0.85rem', fontWeight:'600', padding:'0.6rem 1.2rem',
               borderRadius:'10px', border:'none', cursor:'pointer',
-              background: activeTab === tab.id ? '#4488ff' : '#161b26',
-              color: activeTab === tab.id ? '#fff' : '#7a80a0',
+              background: activeTab === tab.id ? 'var(--blue)' : 'var(--surface2)',
+              color: activeTab === tab.id ? '#fff' : 'var(--muted)',
             }}>
               {tab.label}
             </button>
@@ -184,15 +185,15 @@ export default function Admin() {
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>Dashboard Overview</h2>
             <div className="admin-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem', marginBottom:'2rem'}}>
               {[
-                {ico:'', label:'Total Courses', value:totalCourses, color:'#4488ff'},
-                {ico:'', label:'Categories', value:categories.length, color:'#f0c040'},
-                {ico:'', label:'Avg Rating', value:avgRating, color:'#00d4aa'},
-                {ico:'', label:'Free Courses', value:totalCourses, color:'#ff6b9d'},
+                {ico:'', label:'Total Courses', value:totalCourses, color:'var(--blue)'},
+                {ico:'', label:'Categories', value:categories.length, color:'var(--gold)'},
+                {ico:'', label:'Avg Rating', value:avgRating, color:'var(--teal)'},
+                {ico:'', label:'Free Courses', value:totalCourses, color:'var(--pink)'},
               ].map(s => (
-                <div key={s.label} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1.3rem', textAlign:'center'}}>
+                <div key={s.label} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.3rem', textAlign:'center'}}>
                   <div style={{fontSize:'2rem', marginBottom:'0.4rem'}}>{s.ico}</div>
                   <div style={{fontFamily:'Georgia, serif', fontSize:'1.8rem', fontWeight:'700', color:s.color}}>{s.value}</div>
-                  <div style={{fontSize:'0.75rem', color:'#7a80a0', marginTop:'0.2rem'}}>{s.label}</div>
+                  <div style={{fontSize:'0.75rem', color:'var(--muted)', marginTop:'0.2rem'}}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -204,13 +205,13 @@ export default function Admin() {
                 const count = courseList.filter(c => c.category === cat).length;
                 const pct = Math.round((count / totalCourses) * 100);
                 return (
-                  <div key={cat} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'12px', padding:'1rem'}}>
+                  <div key={cat} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', padding:'1rem'}}>
                     <div style={{display:'flex', justifyContent:'space-between', marginBottom:'0.5rem'}}>
                       <span style={{fontSize:'0.85rem', fontWeight:'600'}}>{cat}</span>
-                      <span style={{fontSize:'0.82rem', color:'#7a80a0'}}>{count} course{count !== 1 ? 's' : ''} · {pct}%</span>
+                      <span style={{fontSize:'0.82rem', color:'var(--muted)'}}>{count} course{count !== 1 ? 's' : ''} · {pct}%</span>
                     </div>
-                    <div style={{width:'100%', height:'6px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
-                      <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,#4488ff,#00d4aa)', width:`${pct}%`, transition:'width 0.4s'}}/>
+                    <div style={{width:'100%', height:'6px', background:'var(--surface2)', borderRadius:'100px'}}>
+                      <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,var(--blue),var(--teal))', width:`${pct}%`, transition:'width 0.4s'}}/>
                     </div>
                   </div>
                 );
@@ -232,7 +233,7 @@ export default function Admin() {
             {usersLoading ? (
               <AdminSkeleton/>
             ) : allUsers.length === 0 ? (
-              <div style={{textAlign:'center', padding:'3rem', color:'#7a80a0'}}>
+              <div style={{textAlign:'center', padding:'3rem', color:'var(--muted)'}}>
                 <p>No users found in Firestore yet.</p>
                 <p style={{fontSize:'0.82rem', marginTop:'0.5rem'}}>Users appear here after they sign in and their data syncs to the cloud.</p>
               </div>
@@ -240,31 +241,31 @@ export default function Admin() {
               <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
                 {allUsers.map(u => (
                   <div key={u.id} style={{
-                    background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1rem',
+                    background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1rem',
                   }}>
                     <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.5rem'}}>
                       <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
                         {u.picture ? (
                           <img src={u.picture} alt="" style={{width:'40px', height:'40px', borderRadius:'50%', objectFit:'cover'}}/>
                         ) : (
-                          <div style={{width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg,#4488ff,#00d4aa)', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'700', fontSize:'0.85rem', color:'#fff'}}>
+                          <div style={{width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg,var(--blue),var(--teal))', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'700', fontSize:'0.85rem', color:'#fff'}}>
                             {(u.firstName?.[0]||'')+(u.lastName?.[0]||'')}
                           </div>
                         )}
                         <div>
                           <div style={{fontWeight:'600', fontSize:'0.9rem'}}>{u.firstName} {u.lastName}</div>
-                          <div style={{fontSize:'0.76rem', color:'#7a80a0'}}>{u.email} · {u.provider || 'email'}</div>
+                          <div style={{fontSize:'0.76rem', color:'var(--muted)'}}>{u.email} · {u.provider || 'email'}</div>
                         </div>
                       </div>
                       <div style={{display:'flex', gap:'0.5rem', alignItems:'center', flexWrap:'wrap'}}>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'#f0c040', border:'1px solid rgba(240,192,64,0.3)'}}>{u.xp || 0} XP</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>{(u.enrolled||[]).length} enrolled</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.15)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.3)'}}>{(u.completed||[]).length} completed</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(255,107,157,0.15)', color:'#ff6b9d', border:'1px solid rgba(255,107,157,0.3)'}}>{(u.badges||[]).length} badges</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'var(--gold)', border:'1px solid rgba(240,192,64,0.3)'}}>{u.xp || 0} XP</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'var(--blue)', border:'1px solid rgba(68,136,255,0.3)'}}>{(u.enrolled||[]).length} enrolled</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.15)', color:'var(--teal)', border:'1px solid rgba(0,212,170,0.3)'}}>{(u.completed||[]).length} completed</span>
+                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(255,107,157,0.15)', color:'var(--pink)', border:'1px solid rgba(255,107,157,0.3)'}}>{(u.badges||[]).length} badges</span>
                       </div>
                     </div>
                     {u.updatedAt && (
-                      <div style={{fontSize:'0.7rem', color:'#3a4060', marginTop:'0.5rem'}}>Last synced: {new Date(u.updatedAt).toLocaleString()}</div>
+                      <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.5rem'}}>Last synced: {new Date(u.updatedAt).toLocaleString()}</div>
                     )}
                   </div>
                 ))}
@@ -286,7 +287,7 @@ export default function Admin() {
             </div>
             <div style={{display:'flex', flexDirection:'column', gap:'0.8rem'}}>
               {courseList.map(c => (
-                <div key={c.id} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1.2rem'}}>
+                <div key={c.id} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem'}}>
                   {editingId === c.id ? (
                     // EDIT MODE
                     <div style={{display:'flex', flexDirection:'column', gap:'0.8rem'}}>
@@ -300,19 +301,19 @@ export default function Admin() {
                           {key:'img', label:'Image URL', type:'text'},
                         ].map(field => (
                           <div key={field.key}>
-                            <label style={{display:'block', fontSize:'0.72rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.3rem', textTransform:'uppercase'}}>{field.label}</label>
+                            <label style={{display:'block', fontSize:'0.72rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.3rem', textTransform:'uppercase'}}>{field.label}</label>
                             <input type={field.type} value={editForm[field.key]} onChange={e => setEditForm(p => ({...p, [field.key]: e.target.value}))} style={inp}/>
                           </div>
                         ))}
                       </div>
                       <div>
-                        <label style={{display:'block', fontSize:'0.72rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.3rem', textTransform:'uppercase'}}>Description</label>
+                        <label style={{display:'block', fontSize:'0.72rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.3rem', textTransform:'uppercase'}}>Description</label>
                         <textarea value={editForm.description} onChange={e => setEditForm(p => ({...p, description: e.target.value}))}
                           style={{...inp, minHeight:'80px', resize:'vertical'}}/>
                       </div>
                       <div style={{display:'flex', gap:'0.7rem'}}>
-                         <button onClick={() => saveEdit(c.id)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'#00d4aa', color:'#000'}}>Save</button>
-                        <button onClick={() => setEditingId(null)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'#1e2535', color:'#eef0f8'}}>Cancel</button>
+                         <button onClick={() => saveEdit(c.id)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'var(--teal)', color:'#000'}}>Save</button>
+                        <button onClick={() => setEditingId(null)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'var(--surface3)', color:'var(--text)'}}>Cancel</button>
                       </div>
                     </div>
                   ) : (
@@ -321,11 +322,11 @@ export default function Admin() {
                       <img src={c.img} alt={c.title} style={{width:'70px', height:'50px', borderRadius:'8px', objectFit:'cover', flexShrink:0}}/>
                       <div style={{flex:1, minWidth:'150px'}}>
                         <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
-                         <div style={{fontSize:'0.78rem', color:'#7a80a0'}}>by {c.instructor} · {c.category} · {c.duration} · {c.rating}</div>
+                         <div style={{fontSize:'0.78rem', color:'var(--muted)'}}>by {c.instructor} · {c.category} · {c.duration} · {c.rating}</div>
                       </div>
                       <div style={{display:'flex', gap:'0.5rem', flexShrink:0}}>
-                         <button onClick={() => startEdit(c)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(68,136,255,0.15)', color:'#4488ff'}}>Edit</button>
-                         <button onClick={() => deleteCourse(c.id)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(255,107,107,0.15)', color:'#ff6b6b'}}>Delete</button>
+                          <button onClick={() => startEdit(c)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(var(--blue-rgb,68,136,255),0.15)', color:'var(--blue)'}}>Edit</button>
+                          <button onClick={() => deleteCourse(c.id)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(255,107,107,0.15)', color:'#ff6b6b'}}>Delete</button>
                       </div>
                     </div>
                   )}
@@ -340,11 +341,11 @@ export default function Admin() {
           <div>
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>Add New Course</h2>
             {error && (
-              <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
+            <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--pink)', marginBottom:'1rem'}}>
                 {error}
               </div>
             )}
-            <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', padding:'1.5rem'}}>
+            <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', padding:'1.5rem'}}>
               <div className="admin-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(220px,100%), 1fr))', gap:'1rem', marginBottom:'1rem'}}>
                 {[
                   {key:'title', label:'Course Title', placeholder:'e.g. React for Beginners'},
@@ -355,7 +356,7 @@ export default function Admin() {
                   {key:'img', label:'Image URL', placeholder:'https://...'},
                 ].map(field => (
                   <div key={field.key}>
-                    <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>{field.label}</label>
+                    <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>{field.label}</label>
                     <input
                       type={field.key === 'rating' ? 'number' : 'text'}
                       placeholder={field.placeholder}
@@ -367,7 +368,7 @@ export default function Admin() {
                 ))}
               </div>
               <div style={{marginBottom:'1.2rem'}}>
-                <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Description</label>
+                <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Description</label>
                 <textarea
                   placeholder="Course description…"
                   value={newCourse.description}
@@ -378,10 +379,10 @@ export default function Admin() {
 
               {/* PREVIEW */}
               {newCourse.title && (
-                <div style={{background:'#161b26', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'12px', padding:'1rem', marginBottom:'1.2rem'}}>
-                  <div style={{fontSize:'0.74rem', color:'#7a80a0', marginBottom:'0.5rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Preview</div>
+                <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'12px', padding:'1rem', marginBottom:'1.2rem'}}>
+                  <div style={{fontSize:'0.74rem', color:'var(--muted)', marginBottom:'0.5rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Preview</div>
                   <div style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', marginBottom:'0.2rem'}}>{newCourse.title}</div>
-                  <div style={{fontSize:'0.8rem', color:'#7a80a0'}}>by {newCourse.instructor || '—'} · {newCourse.category || '—'} · {newCourse.duration || '—'}</div>
+                  <div style={{fontSize:'0.8rem', color:'var(--muted)'}}>by {newCourse.instructor || '—'} · {newCourse.category || '—'} · {newCourse.duration || '—'}</div>
                 </div>
               )}
 
@@ -389,12 +390,12 @@ export default function Admin() {
                 <button onClick={addCourse} style={{
                   fontSize:'0.9rem', fontWeight:'700', padding:'0.78rem 1.7rem',
                   borderRadius:'12px', border:'none', cursor:'pointer',
-                  background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                background:'linear-gradient(135deg,var(--gold),#c8960a)', color:'#000',
                  }}>Add Course</button>
                 <button onClick={() => { setNewCourse({title:'',instructor:'',category:'',duration:'',description:'',img:'',rating:4.5}); setError(''); }} style={{
                   fontSize:'0.9rem', fontWeight:'600', padding:'0.78rem 1.7rem',
-                  borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)',
-                  background:'transparent', color:'#7a80a0', cursor:'pointer',
+                  borderRadius:'12px', border:'1px solid var(--border2)',
+                  background:'transparent', color:'var(--muted)', cursor:'pointer',
                 }}>Clear Form</button>
               </div>
             </div>

@@ -109,7 +109,7 @@ export default function CourseDetail() {
   const passed = pct >= 60;
   const timerRunning = timer !== null && timer > 0 && !finished;
   const fmtTime = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-  const timerColor = timer <= 30 ? '#ff6b9d' : timer <= 60 ? '#f0c040' : '#eef0f8';
+  const timerColor = timer <= 30 ? '#ff6b9d' : timer <= 60 ? '#f0c040' : 'var(--text)';
   const courseLeaderboard = leaderboard.filter(e => e.courseId === course.id).sort((a, b) => b.score - a.score || new Date(a.date) - new Date(b.date)).slice(0, 10);
 
   // Timer countdown
@@ -145,7 +145,7 @@ export default function CourseDetail() {
       {/* BACK */}
       <div onClick={() => router.push('/')} style={{
         display:'inline-flex', alignItems:'center', gap:'6px',
-        fontSize:'0.83rem', color:'#7a80a0', cursor:'pointer',
+        fontSize:'0.83rem', color:'var(--muted)', cursor:'pointer',
         padding:'1.2rem 1.2rem 0',
       }}>
         ← Back to courses
@@ -163,7 +163,7 @@ export default function CourseDetail() {
 
         {/* SIDEBAR */}
         <div className="detail-sidebar">
-          <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', overflow:'hidden'}}>
+          <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', overflow:'hidden'}}>
             <img src={course.img} alt={course.title}
               style={{width:'100%', height:'160px', objectFit:'cover', display:'block'}}
               className="sidebar-img"
@@ -174,11 +174,11 @@ export default function CourseDetail() {
               {/* PROGRESS BAR */}
               {isEnrolled && (
                 <div style={{marginBottom:'1rem'}}>
-                  <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'#7a80a0', marginBottom:'0.3rem'}}>
+                  <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'var(--muted)', marginBottom:'0.3rem'}}>
                     <span>Course Progress</span>
                     <span>{progressPct}%</span>
                   </div>
-                  <div style={{width:'100%', height:'6px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
+                  <div style={{width:'100%', height:'6px', background:'var(--border)', borderRadius:'100px'}}>
                     <div style={{
                       height:'100%', borderRadius:'100px',
                       background:'linear-gradient(135deg,#4488ff,#00d4aa)',
@@ -186,8 +186,8 @@ export default function CourseDetail() {
                       transition:'width 0.4s ease',
                     }}/>
                   </div>
-                  <div style={{fontSize:'0.72rem', color:'#7a80a0', marginTop:'0.3rem'}}>
-                    {progressPct === 100 ? '✅ All lessons watched!' : `${Math.round(progressPct / 100 * course.lessons.length)}/${course.lessons.length} lessons watched`}
+                  <div style={{fontSize:'0.72rem', color:'var(--muted)', marginTop:'0.3rem'}}>
+                    {progressPct === 100 ? 'All lessons watched!' : `${Math.round(progressPct / 100 * course.lessons.length)}/${course.lessons.length} lessons watched`}
                   </div>
                 </div>
               )}
@@ -199,15 +199,15 @@ export default function CourseDetail() {
                 background: isEnrolled ? 'linear-gradient(135deg,#0f2d1a,#1a4d2a)' : 'linear-gradient(135deg,#4488ff,#3366dd)',
                 color: isEnrolled ? '#00d4aa' : '#fff',
               }}>
-                {isEnrolled ? '✓ Enrolled' : 'Enroll in Course'}
+                {isEnrolled ? 'Enrolled' : 'Enroll in Course'}
               </button>
               <button onClick={() => toggleWishlist(course.id, toast)} style={{
                 width:'100%', padding:'0.65rem', borderRadius:'12px',
                 fontSize:'0.85rem', fontWeight:'500', cursor:'pointer',
-                border:'1px solid rgba(255,255,255,0.13)', background:'transparent',
-                color: isWishlisted ? '#ff6b9d' : '#eef0f8',
+                border:'1px solid var(--border2)', background:'transparent',
+                color: isWishlisted ? '#ff6b9d' : 'var(--text)',
               }}>
-                {isWishlisted ? '♥ In Wishlist' : '♡ Add to Wishlist'}
+                {isWishlisted ? 'In Wishlist' : 'Add to Wishlist'}
               </button>
               <button onClick={() => {
                 const url = window.location.href;
@@ -219,27 +219,27 @@ export default function CourseDetail() {
               }} style={{
                 width:'100%', padding:'0.65rem', borderRadius:'12px',
                 fontSize:'0.85rem', fontWeight:'500', cursor:'pointer',
-                border:'1px solid rgba(255,255,255,0.13)', background:'transparent',
+                border:'1px solid var(--border2)', background:'transparent',
                 color:'var(--muted)',
               }}>
                 ↗ Share Course
               </button>
               <div style={{marginTop:'1rem', display:'flex', flexDirection:'column', gap:'0.45rem'}}>
                 {[
-                  {i:'🎓', l:'Instructor', v:course.instructor},
-                  {i:'📂', l:'Category', v:course.category},
-                  {i:'📊', l:'Level', v:course.level},
-                  {i:'⏱', l:'Duration', v:course.duration},
-                  {i:'📹', l:'Lessons', v:`${course.lessons.length} videos`},
-                  {i:'🌍', l:'Language', v:'English'},
-                  {i:'🏆', l:'Certificate', v:'On completion'},
+                  {l:'Instructor', v:course.instructor},
+                  {l:'Category', v:course.category},
+                  {l:'Level', v:course.level},
+                  {l:'Duration', v:course.duration},
+                  {l:'Lessons', v:`${course.lessons.length} videos`},
+                  {l:'Language', v:'English'},
+                  {l:'Certificate', v:'On completion'},
                 ].map(item => (
-                  <div key={item.l} style={{display:'flex', alignItems:'center', gap:'0.5rem', fontSize:'0.79rem', color:'#7a80a0'}}>
-                    {item.i} <span>{item.l}: <strong style={{color:'#eef0f8'}}>{item.v}</strong></span>
+                  <div key={item.l} style={{display:'flex', alignItems:'center', gap:'0.5rem', fontSize:'0.79rem', color:'var(--muted)'}}>
+                    <span>{item.l}: <strong style={{color:'var(--text)'}}>{item.v}</strong></span>
                   </div>
                 ))}
-                <div key="study-time" style={{display:'flex', alignItems:'center', gap:'0.5rem', fontSize:'0.79rem', color:'#7a80a0'}}>
-                  ⏰ <span>Study Time: <strong style={{color:'#eef0f8'}}>{getStudyTime(course.id) >= 60 ? `${Math.floor(getStudyTime(course.id) / 60)}h ${getStudyTime(course.id) % 60}m` : `${getStudyTime(course.id)}m`}</strong></span>
+                <div key="study-time" style={{display:'flex', alignItems:'center', gap:'0.5rem', fontSize:'0.79rem', color:'var(--muted)'}}>
+                  <span>Study Time: <strong style={{color:'var(--text)'}}>{getStudyTime(course.id) >= 60 ? `${Math.floor(getStudyTime(course.id) / 60)}h ${getStudyTime(course.id) % 60}m` : `${getStudyTime(course.id)}m`}</strong></span>
                 </div>
               </div>
             </div>
@@ -251,24 +251,24 @@ export default function CourseDetail() {
           <div style={{fontSize:'0.73rem', fontWeight:'600', letterSpacing:'0.08em', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.6rem'}}>{course.category}</div>
           <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.4rem,4vw,2.2rem)', fontWeight:'700', lineHeight:'1.15', marginBottom:'0.9rem'}}>{course.title}</h1>
           <div style={{display:'flex', alignItems:'center', gap:'1rem', flexWrap:'wrap', marginBottom:'1.3rem'}}>
-            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}>⭐ <strong style={{color:'#eef0f8'}}>{course.rating}</strong></span>
-            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}><strong style={{color:'#eef0f8'}}>{course.instructor}</strong></span>
-            <span style={{fontSize:'0.84rem', color:'#7a80a0'}}>⏱ <strong style={{color:'#eef0f8'}}>{course.duration}</strong></span>
-            <span style={{fontSize:'0.84rem', color:'#00d4aa'}}>🆓 Free</span>
+            <span style={{fontSize:'0.84rem', color:'var(--muted)'}}>{course.rating} <strong style={{color:'var(--text)'}}>stars</strong></span>
+            <span style={{fontSize:'0.84rem', color:'var(--muted)'}}><strong style={{color:'var(--text)'}}>{course.instructor}</strong></span>
+            <span style={{fontSize:'0.84rem', color:'var(--muted)'}}>{course.duration}</span>
+            <span style={{fontSize:'0.84rem', color:'#00d4aa'}}>Free</span>
           </div>
-          <p style={{fontSize:'0.95rem', lineHeight:'1.75', color:'#c0bce0', marginBottom:'1.5rem'}}>{course.description}</p>
+          <p style={{fontSize:'0.95rem', lineHeight:'1.75', color:'var(--text2)', marginBottom:'1.5rem'}}>{course.description}</p>
 
           {/* TABS */}
-          <div style={{display:'flex', borderBottom:'1px solid rgba(255,255,255,0.06)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
+          <div style={{display:'flex', borderBottom:'1px solid var(--border)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
             {['videos','reading','quiz'].map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)} style={{
                 fontSize:'0.82rem', fontWeight:'600',
                 padding:'0.6rem 1rem', border:'none', background:'transparent',
-                color: activeTab === tab ? '#eef0f8' : '#7a80a0',
+                color: activeTab === tab ? 'var(--text)' : 'var(--muted)',
                 borderBottom: activeTab === tab ? '2px solid #f0c040' : '2px solid transparent',
                 cursor:'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
               }}>
-                {tab === 'videos' ? '📹 Videos' : tab === 'reading' ? '📄 Reading' : '📝 Quiz'}
+                {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : 'Quiz'}
               </button>
             ))}
           </div>
@@ -277,20 +277,20 @@ export default function CourseDetail() {
           {activeTab === 'videos' && (
             <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
               {course.lessons.map((l, i) => (
-                <div key={i} style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'12px', overflow:'hidden'}}>
+                <div key={i} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', overflow:'hidden'}}>
                   <div onClick={() => handleLessonOpen(i)}
                     style={{display:'flex', alignItems:'center', gap:'0.8rem', padding:'0.8rem 1rem', cursor:'pointer'}}>
                     <div style={{
                       width:'26px', height:'26px', borderRadius:'50%',
-                      background: isBookmarked(course.id, i) ? 'rgba(240,192,64,0.2)' : '#161b26',
-                      border: `1px solid ${isBookmarked(course.id, i) ? 'rgba(240,192,64,0.4)' : 'rgba(255,255,255,0.13)'}`,
+                      background: isBookmarked(course.id, i) ? 'rgba(240,192,64,0.2)' : 'var(--surface2)',
+                      border: `1px solid ${isBookmarked(course.id, i) ? 'rgba(240,192,64,0.4)' : 'var(--border2)'}`,
                       display:'flex', alignItems:'center', justifyContent:'center',
                       fontSize:'0.7rem', fontWeight:'700',
-                      color: isBookmarked(course.id, i) ? '#f0c040' : '#7a80a0', flexShrink:0,
+                      color: isBookmarked(course.id, i) ? '#f0c040' : 'var(--muted)', flexShrink:0,
                     }}>{isBookmarked(course.id, i) ? '★' : i + 1}</div>
                     <div style={{flex:1, minWidth:0}}>
                       <div style={{fontSize:'0.86rem', fontWeight:'600', marginBottom:'0.1rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{l.title}</div>
-                      <div style={{fontSize:'0.72rem', color:'#7a80a0'}}>▶ {l.dur}</div>
+                      <div style={{fontSize:'0.72rem', color:'var(--muted)'}}>▶ {l.dur}</div>
                     </div>
                     <button onClick={e => { e.stopPropagation(); toggleBookmark(course.id, i); }}
                       style={{background:'none', border:'none', cursor:'pointer', fontSize:'1rem', color: isBookmarked(course.id, i) ? 'var(--gold)' : 'var(--muted2)', padding:'0 0.2rem'}}
@@ -317,9 +317,9 @@ export default function CourseDetail() {
                       />
                       {/* NOTES */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
-                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>📝 Notes<button onClick={downloadNotes}
-                            style={{marginLeft:'auto', fontSize:'0.68rem', fontWeight:'600', padding:'0.2rem 0.6rem', borderRadius:'6px', border:'1px solid rgba(255,255,255,0.13)', background:'transparent', color:'#7a80a0', cursor:'pointer', whiteSpace:'nowrap'}}
-                            title="Download all notes">⬇ Download</button></div>
+                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>Notes<button onClick={downloadNotes}
+                            style={{marginLeft:'auto', fontSize:'0.68rem', fontWeight:'600', padding:'0.2rem 0.6rem', borderRadius:'6px', border:'1px solid var(--border2)', background:'transparent', color:'var(--muted)', cursor:'pointer', whiteSpace:'nowrap'}}
+                            title="Download all notes">Download</button></div>
                         <div style={{display:'flex', gap:'0.4rem', marginBottom:'0.5rem'}}>
                           <input value={noteText[i] || ''} onChange={e => setNoteText(p => ({...p, [i]: e.target.value}))}
                             placeholder="Write a note..."
@@ -331,13 +331,13 @@ export default function CourseDetail() {
                         {(notes[`${course.id}_${i}`] || []).slice().reverse().map(n => (
                           <div key={n.id} style={{display:'flex', alignItems:'flex-start', gap:'0.4rem', padding:'0.4rem 0', borderBottom:'1px solid var(--border)'}}>
                             <span style={{flex:1, fontSize:'0.78rem', color:'var(--text2)', lineHeight:'1.4'}}>{n.text}</span>
-                            <button onClick={() => removeNote(course.id, i, n.id)} style={{background:'none', border:'none', cursor:'pointer', color:'var(--muted2)', fontSize:'0.7rem', padding:'0.1rem'}}>✕</button>
+                            <button onClick={() => removeNote(course.id, i, n.id)} style={{background:'none', border:'none', cursor:'pointer', color:'var(--muted2)', fontSize:'0.7rem', padding:'0.1rem'}}>X</button>
                           </div>
                         ))}
                       </div>
                       {/* COMMENTS */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
-                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>💬 Discussion</div>
+                        <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>Discussion</div>
                         <div style={{display:'flex', gap:'0.4rem', marginBottom:'0.5rem', flexWrap:'wrap'}}>
                           <input value={commentName[i] || ''} onChange={e => setCommentName(p => ({...p, [i]: e.target.value}))}
                             placeholder="Your name"
@@ -397,12 +397,12 @@ export default function CourseDetail() {
             <div style={{display:'flex', flexDirection:'column', gap:'1rem'}}>
               <StarRating courseId={course.id} courseName={course.title} />
               {course.reading.length > 0 && (
-                <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1rem 1.2rem', marginBottom:'0.5rem'}}>
+                <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1rem 1.2rem', marginBottom:'0.5rem'}}>
                   <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.5rem'}}>
                     <span style={{fontSize:'0.75rem', fontWeight:'700', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em'}}>Reading Progress</span>
                     <span style={{fontSize:'0.8rem', color:'var(--blue)', fontWeight:'600'}}>{readingProgress[course.id]?.length || 0}/{course.reading.length} read</span>
                   </div>
-                  <div style={{width:'100%', height:'5px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
+                  <div style={{width:'100%', height:'5px', background:'var(--border)', borderRadius:'100px'}}>
                     <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,#4488ff,#00d4aa)', width:`${getReadingProgress(course.id, course.reading.length)}%`, transition:'width 0.4s ease'}}/>
                   </div>
                 </div>
@@ -411,7 +411,7 @@ export default function CourseDetail() {
                 const isRead = readingProgress[course.id]?.includes(i);
                 return (
                 <div key={i} style={{
-                  background:'#0d1117', border:`1px solid ${isRead ? 'rgba(0,212,170,0.2)' : 'rgba(255,255,255,0.06)'}`,
+                  background:'var(--surface)', border:`1px solid ${isRead ? 'rgba(0,212,170,0.2)' : 'var(--border)'}`,
                   borderRadius:'14px', padding:'1.2rem', transition:'border 0.3s',
                 }}>
                   <div style={{display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'0.5rem', marginBottom:'0.6rem'}}>
@@ -421,23 +421,23 @@ export default function CourseDetail() {
                         style={{
                           flexShrink:0, fontSize:'0.7rem', fontWeight:'700', textTransform:'uppercase',
                           padding:'0.3rem 0.7rem', borderRadius:'100px', border:'none', cursor:'pointer',
-                          background: isRead ? 'rgba(0,212,170,0.15)' : 'rgba(255,255,255,0.06)',
+                          background: isRead ? 'rgba(0,212,170,0.15)' : 'var(--border)',
                           color: isRead ? '#00d4aa' : 'var(--muted)',
                           fontFamily:'inherit', letterSpacing:'0.04em',
                           transition:'all 0.2s',
                         }}
                         onMouseEnter={e => { if (!isRead) { e.currentTarget.style.background='rgba(68,136,255,0.15)'; e.currentTarget.style.color='var(--blue)'; } }}
-                        onMouseLeave={e => { if (!isRead) { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.color='var(--muted)'; } }}
+                        onMouseLeave={e => { if (!isRead) { e.currentTarget.style.background='var(--border)'; e.currentTarget.style.color='var(--muted)'; } }}
                       >
-                        {isRead ? '✓ Read' : 'Mark Read'}
+                        {isRead ? 'Read' : 'Mark Read'}
                       </button>
                     )}
                   </div>
-                  <p style={{fontSize:'0.85rem', lineHeight:'1.75', color:'#b0acd0', marginBottom:'0.6rem'}}>{r.body}</p>
+                  <p style={{fontSize:'0.85rem', lineHeight:'1.75', color:'var(--text2)', marginBottom:'0.6rem'}}>{r.body}</p>
                   {r.points && (
                     <ul style={{paddingLeft:'1.2rem', display:'flex', flexDirection:'column', gap:'0.35rem'}}>
                       {r.points.map((p, j) => (
-                        <li key={j} style={{fontSize:'0.83rem', color:'#b0acd0', lineHeight:'1.6'}}>{p}</li>
+                        <li key={j} style={{fontSize:'0.83rem', color:'var(--text2)', lineHeight:'1.6'}}>{p}</li>
                       ))}
                     </ul>
                   )}
@@ -449,56 +449,52 @@ export default function CourseDetail() {
 
           {/* QUIZ TAB */}
           {activeTab === 'quiz' && (
-            <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'14px', padding:'1.2rem'}}>
+            <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem'}}>
               {!isEnrolled ? (
-                <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                  <span style={{fontSize:'3rem', display:'block', marginBottom:'0.8rem'}}>🔒</span>
-                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Enroll to Take the Quiz</h3>
-                  <p style={{fontSize:'0.85rem', color:'#7a80a0', marginBottom:'1.2rem'}}>Enroll in this course to unlock the quiz and earn your certificate.</p>
-                  <button onClick={() => toggleEnroll(course.id, course.title, toast)} style={{
-                    fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                    borderRadius:'12px', border:'none', cursor:'pointer',
-                    background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                  }}>Enroll Now — It&apos;s Free</button>
-                </div>
-              ) : !quizState ? (
-                <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                  <span style={{fontSize:'3rem', display:'block', marginBottom:'0.8rem'}}>📝</span>
-                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Ready for the Quiz?</h3>
-                  <p style={{fontSize:'0.85rem', color:'#7a80a0', marginBottom:'1.2rem'}}>{course.quiz.length} questions · Pass with 60% to earn your certificate</p>
-                  <button onClick={startQuiz} style={{
-                    fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                    borderRadius:'12px', border:'none', cursor:'pointer',
-                    background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
-                  }}>Start Quiz</button>
-                </div>
-              ) : finished && passed ? (
-                <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                  <span style={{fontSize:'3.5rem', display:'block', marginBottom:'0.8rem'}}>🏆</span>
-                  <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
-                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed! 🎉</h3>
-                  <p style={{fontSize:'0.86rem', color:'#7a80a0', marginBottom:'1.2rem'}}>Your certificate is ready!</p>
-                  <button onClick={() => setShowCert(true)} style={{
-                    fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                    borderRadius:'12px', border:'none', cursor:'pointer',
-                    background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                  }}>🎓 Get Your Certificate</button>
-                </div>
-              ) : finished && !passed ? (
-                <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                  <span style={{fontSize:'3.5rem', display:'block', marginBottom:'0.8rem'}}>📚</span>
-                  <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
-                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>Keep Learning!</h3>
-                  <p style={{fontSize:'0.86rem', color:'#7a80a0', marginBottom:'1.2rem'}}>You need 60% to pass. Review and try again!</p>
-                  <button onClick={retake} style={{
-                    fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                    borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)',
-                    cursor:'pointer', background:'transparent', color:'#eef0f8',
-                  }}>Retake Quiz</button>
-                </div>
+                  <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Enroll to Take the Quiz</h3>
+                    <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Enroll in this course to unlock the quiz and earn your certificate.</p>
+                    <button onClick={() => toggleEnroll(course.id, course.title, toast)} style={{
+                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                      borderRadius:'12px', border:'none', cursor:'pointer',
+                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                    }}>Enroll Now — It&apos;s Free</button>
+                  </div>
+                ) : !quizState ? (
+                  <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Ready for the Quiz?</h3>
+                    <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>{course.quiz.length} questions · Pass with 60% to earn your certificate</p>
+                    <button onClick={startQuiz} style={{
+                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                      borderRadius:'12px', border:'none', cursor:'pointer',
+                      background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
+                    }}>Start Quiz</button>
+                  </div>
+                ) : finished && passed ? (
+                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
+                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed!</h3>
+                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Your certificate is ready!</p>
+                    <button onClick={() => setShowCert(true)} style={{
+                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                      borderRadius:'12px', border:'none', cursor:'pointer',
+                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                    }}>Get Your Certificate</button>
+                  </div>
+                ) : finished && !passed ? (
+                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
+                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>Keep Learning!</h3>
+                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>You need 60% to pass. Review and try again!</p>
+                    <button onClick={retake} style={{
+                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                      borderRadius:'12px', border:'1px solid var(--border2)',
+                      cursor:'pointer', background:'transparent', color:'var(--text)',
+                    }}>Retake Quiz</button>
+                  </div>
               ) : (
                 <div>
-                  <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                  <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                     <span>Question {quizState.idx + 1} of {course.quiz.length} · Score: {quizState.score}/{quizState.idx + (quizState.answered ? 1 : 0)}</span>
                     <span style={{fontWeight:'700', fontFamily:'monospace', fontSize:'0.9rem', color:timerColor}}>{fmtTime(timer)}</span>
                   </div>
@@ -507,7 +503,7 @@ export default function CourseDetail() {
                   </p>
                   <div style={{display:'flex', flexDirection:'column', gap:'0.5rem', marginBottom:'1rem'}}>
                     {course.quiz[quizState.idx].opts.map((opt, i) => {
-                      let bg = '#161b26', border = 'rgba(255,255,255,0.13)', color = '#eef0f8';
+                      let bg = 'var(--surface2)', border = 'var(--border2)', color = 'var(--text)';
                       if (quizState.answered) {
                         if (i === course.quiz[quizState.idx].ans) { bg = 'rgba(0,212,170,0.1)'; border = '#00d4aa'; color = '#00d4aa'; }
                         else if (i === quizState.answers[quizState.idx]) { bg = 'rgba(255,107,157,0.1)'; border = '#ff6b9d'; color = '#ff6b9d'; }
@@ -524,22 +520,22 @@ export default function CourseDetail() {
                   </div>
                   <div style={{display:'flex', justifyContent:'flex-end', gap:'0.7rem'}}>
                     {quizState.idx > 0 && (
-                      <button onClick={prevQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'#1e2535', color:'#eef0f8'}}>← Back</button>
+                      <button onClick={prevQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'var(--surface3)', color:'var(--text)'}}>← Back</button>
                     )}
                     {quizState.answered && !finished && (
                       <button onClick={nextQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'#4488ff', color:'#fff'}}>Next →</button>
                     )}
                     {quizState.answered && finished && passed && (
-                      <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>🎓 Certificate</button>
+                      <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Certificate</button>
                     )}
                   </div>
                 </div>
               )}
               {isEnrolled && (
-                <div style={{marginTop:'1.5rem', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'1.2rem'}}>
-                  <h4 style={{fontSize:'0.9rem', fontWeight:'700', marginBottom:'0.8rem', color:'#eef0f8'}}>🏆 Leaderboard</h4>
+                <div style={{marginTop:'1.5rem', borderTop:'1px solid var(--border)', paddingTop:'1.2rem'}}>
+                  <h4 style={{fontSize:'0.9rem', fontWeight:'700', marginBottom:'0.8rem', color:'var(--text)'}}>Leaderboard</h4>
                   {courseLeaderboard.length === 0 ? (
-                    <p style={{fontSize:'0.8rem', color:'#7a80a0'}}>No scores yet. Be the first to take the quiz!</p>
+                    <p style={{fontSize:'0.8rem', color:'var(--muted)'}}>No scores yet. Be the first to take the quiz!</p>
                   ) : (
                     <div style={{display:'flex', flexDirection:'column', gap:'0.4rem'}}>
                       {courseLeaderboard.map((entry, i) => (
@@ -549,10 +545,10 @@ export default function CourseDetail() {
                           background: i === 0 ? 'rgba(240,192,64,0.08)' : 'transparent',
                           border: i === 0 ? '1px solid rgba(240,192,64,0.15)' : 'none',
                         }}>
-                          <span style={{fontSize:'0.85rem', fontWeight:'700', color: i === 0 ? '#f0c040' : '#7a80a0', width:'20px'}}>#{i + 1}</span>
-                          <span style={{flex:1, fontSize:'0.82rem', fontWeight:'600', color:'#eef0f8'}}>{entry.userName}</span>
+                          <span style={{fontSize:'0.85rem', fontWeight:'700', color: i === 0 ? '#f0c040' : 'var(--muted)', width:'20px'}}>#{i + 1}</span>
+                          <span style={{flex:1, fontSize:'0.82rem', fontWeight:'600', color:'var(--text)'}}>{entry.userName}</span>
                           <span style={{fontSize:'0.82rem', fontWeight:'700', color:'#00d4aa'}}>{entry.score}/{entry.total}</span>
-                          <span style={{fontSize:'0.68rem', color:'#5a6080'}}>{new Date(entry.date).toLocaleDateString()}</span>
+                          <span style={{fontSize:'0.68rem', color:'var(--muted2)'}}>{new Date(entry.date).toLocaleDateString()}</span>
                         </div>
                       ))}
                     </div>
@@ -569,31 +565,30 @@ export default function CourseDetail() {
       {/* CERTIFICATE MODAL */}
       {showCert && (
         <div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', backdropFilter:'blur(12px)', zIndex:500, display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem', overflowY:'auto'}}>
-          <div style={{background:'#0d1117', border:'1px solid rgba(255,255,255,0.13)', borderRadius:'20px', padding:'1.5rem', maxWidth:'680px', width:'100%', position:'relative'}}>
-            <button onClick={() => setShowCert(false)} style={{position:'absolute', top:'1rem', right:'1rem', background:'#161b26', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'8px', padding:'0.28rem 0.6rem', fontSize:'0.78rem', cursor:'pointer', color:'#7a80a0'}}>✕ Close</button>
+          <div style={{background:'var(--surface)', border:'1px solid var(--border2)', borderRadius:'20px', padding:'1.5rem', maxWidth:'680px', width:'100%', position:'relative'}}>
+            <button onClick={() => setShowCert(false)} style={{position:'absolute', top:'1rem', right:'1rem', background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'8px', padding:'0.28rem 0.6rem', fontSize:'0.78rem', cursor:'pointer', color:'var(--muted)'}}>Close</button>
             <div style={{background:'linear-gradient(135deg,#0a0e1a,#0f1528,#0a1020)', border:'2px solid #f0c040', borderRadius:'14px', padding:'2rem', textAlign:'center'}}>
               <div style={{fontSize:'0.66rem', fontWeight:'700', letterSpacing:'0.15em', textTransform:'uppercase', color:'#f0c040', marginBottom:'0.7rem'}}>Certificate of Completion</div>
               <div style={{fontFamily:'Georgia, serif', fontSize:'1.5rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', marginBottom:'0.2rem'}}>Eduverse Academy</div>
-              <div style={{fontSize:'0.68rem', color:'#7a80a0', marginBottom:'1.2rem'}}>Where Curiosity Meets Knowledge</div>
+              <div style={{fontSize:'0.68rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Where Curiosity Meets Knowledge</div>
               <hr style={{border:'none', borderTop:'1px solid rgba(240,192,64,0.25)', marginBottom:'1.2rem'}}/>
-              <div style={{fontSize:'0.74rem', color:'#7a80a0', marginBottom:'0.3rem'}}>This is to certify that</div>
-              <div style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.2rem,4vw,1.6rem)', fontStyle:'italic', color:'#eef0f8', marginBottom:'0.7rem'}}>
+              <div style={{fontSize:'0.74rem', color:'var(--muted)', marginBottom:'0.3rem'}}>This is to certify that</div>
+              <div style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.2rem,4vw,1.6rem)', fontStyle:'italic', color:'var(--text)', marginBottom:'0.7rem'}}>
                 {currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : 'Dedicated Learner'}
               </div>
-              <div style={{fontSize:'0.81rem', color:'#7a80a0', marginBottom:'0.7rem'}}>has successfully completed the course</div>
+              <div style={{fontSize:'0.81rem', color:'var(--muted)', marginBottom:'0.7rem'}}>has successfully completed the course</div>
               <div style={{fontFamily:'Georgia, serif', fontSize:'clamp(0.9rem,3vw,1.1rem)', fontWeight:'700', color:'#f0c040', marginBottom:'1.2rem'}}>{course.title}</div>
-              <div style={{fontSize:'0.81rem', color:'#7a80a0', lineHeight:'1.7', marginBottom:'0.7rem'}}>
-                Taught by <strong style={{color:'#eef0f8'}}>{course.instructor}</strong> · Duration: {course.duration}
+              <div style={{fontSize:'0.81rem', color:'var(--muted)', lineHeight:'1.7', marginBottom:'0.7rem'}}>
+                Taught by <strong style={{color:'var(--text)'}}>{course.instructor}</strong> · Duration: {course.duration}
               </div>
               <div style={{display:'flex', justifyContent:'space-around', marginTop:'1rem', paddingTop:'1rem', borderTop:'1px solid rgba(240,192,64,0.2)', flexWrap:'wrap', gap:'0.5rem'}}>
-                {[{i:'🏆',l:'Achievement Unlocked'},{i:'✦',l:'Eduverse Academy'},{i:'🎓',l:'Certified Graduate'}].map(s => (
-                  <div key={s.l} style={{textAlign:'center', fontSize:'0.66rem', color:'#7a80a0'}}>
-                    <div style={{fontSize:'1.4rem', marginBottom:'0.3rem'}}>{s.i}</div>
+                {[{l:'Achievement Unlocked'},{l:'Eduverse Academy'},{l:'Certified Graduate'}].map(s => (
+                  <div key={s.l} style={{textAlign:'center', fontSize:'0.66rem', color:'var(--muted)'}}>
                     {s.l}
                   </div>
                 ))}
               </div>
-              <div style={{fontSize:'0.74rem', color:'#3a4060', marginTop:'0.8rem'}}>
+              <div style={{fontSize:'0.74rem', color:'var(--muted2)', marginTop:'0.8rem'}}>
                 Issued on {new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}
               </div>
               <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.5rem', fontFamily:'monospace', letterSpacing:'0.05em'}}>
@@ -601,8 +596,8 @@ export default function CourseDetail() {
               </div>
             </div>
             <div style={{display:'flex', gap:'0.8rem', justifyContent:'center', marginTop:'1.2rem', flexWrap:'wrap'}}>
-              <button onClick={() => window.print()} style={{fontSize:'0.88rem', fontWeight:'600', padding:'0.75rem 1.5rem', borderRadius:'12px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>🖨️ Print Certificate</button>
-              <button onClick={() => setShowCert(false)} style={{fontSize:'0.88rem', fontWeight:'600', padding:'0.75rem 1.5rem', borderRadius:'12px', border:'1px solid rgba(255,255,255,0.13)', cursor:'pointer', background:'transparent', color:'#eef0f8'}}>Done</button>
+              <button onClick={() => window.print()} style={{fontSize:'0.88rem', fontWeight:'600', padding:'0.75rem 1.5rem', borderRadius:'12px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Print Certificate</button>
+              <button onClick={() => setShowCert(false)} style={{fontSize:'0.88rem', fontWeight:'600', padding:'0.75rem 1.5rem', borderRadius:'12px', border:'1px solid var(--border2)', cursor:'pointer', background:'transparent', color:'var(--text)'}}>Done</button>
             </div>
           </div>
         </div>

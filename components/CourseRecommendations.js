@@ -34,7 +34,7 @@ export default function CourseRecommendations({ currentCourseId }) {
   return (
     <div style={{padding:'2rem 1.2rem 3rem', maxWidth:'1100px', margin:'0 auto'}}>
       <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-        🎯 Recommended Courses
+        Recommended Courses
       </h2>
       <div style={{
         display:'grid',
@@ -58,7 +58,7 @@ export default function CourseRecommendations({ currentCourseId }) {
               <div style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', lineHeight:'1.3', marginBottom:'0.3rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
               <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'0.5rem'}}>by {c.instructor}</div>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                <span style={{fontSize:'0.76rem'}}><span style={{color:'#fbbf24'}}>★</span> {c.rating}</span>
+                <span style={{fontSize:'0.76rem'}}>{c.rating}</span>
                 <span style={{fontSize:'0.76rem', color:'#00d4aa', fontWeight:'700'}}>Free</span>
               </div>
             </div>

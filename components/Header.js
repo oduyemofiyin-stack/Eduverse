@@ -141,7 +141,7 @@ export default function Header() {
               borderRadius:'9px', padding:'0.38rem 0.6rem',
               cursor:'pointer', fontSize:'0.95rem', lineHeight:'1',
             }}>
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === 'dark' ? 'Light' : 'Dark'}
           </button>
 
           {/* USER AVATAR / GOOGLE SIGN-IN */}
@@ -190,13 +190,13 @@ export default function Header() {
                     <div style={{fontSize:'0.75rem', color:'var(--muted)'}}>{currentUser.email}</div>
                   </div>
                   {[
-                    {ico:'👤', label:'My Profile', path:'/profile'},
-                    {ico:'📊', label:'Dashboard', path:'/dashboard'},
-                    {ico:'📚', label:'My Learning', path:'/enrolled'},
-                    {ico:'♡', label:'Wishlist', path:'/wishlist'},
-                    {ico:'🔍', label:'Search', path:'/search'},
-                    {ico:'ℹ️', label:'About', path:'/about'},
-                    {ico:'✉️', label:'Contact', path:'/contact'},
+                  {label:'My Profile', path:'/profile'},
+                  {label:'Dashboard', path:'/dashboard'},
+                  {label:'My Learning', path:'/enrolled'},
+                  {label:'Wishlist', path:'/wishlist'},
+                  {label:'Search', path:'/search'},
+                  {label:'About', path:'/about'},
+                  {label:'Contact', path:'/contact'},
                   ].map(item => (
                     <button key={item.path}
                       onClick={() => { router.push(item.path); setDropdownOpen(false); }}
@@ -211,7 +211,7 @@ export default function Header() {
                       onMouseEnter={e => { e.currentTarget.style.background='var(--surface2)'; e.currentTarget.style.color='var(--text)'; }}
                       onMouseLeave={e => { e.currentTarget.style.background='none'; e.currentTarget.style.color='var(--muted)'; }}
                     >
-                      {item.ico} {item.label}
+                      {item.label}
                     </button>
                   ))}
                   <button

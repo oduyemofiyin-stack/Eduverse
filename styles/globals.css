@@ -36,6 +36,7 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
   --blue: #4488ff;
+  --blue-rgb: 68, 136, 255;
   --gold: #f0c040;
   --teal: #00d4aa;
   --pink: #ff6b9d;

@@ -323,7 +323,7 @@ export default function Home() {
                 }}
                 onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
                 onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
-              >Continue →</button>
+              >Continue</button>
             </div>
           </div>
         );
@@ -419,7 +419,6 @@ export default function Home() {
           Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
         ) : filtered.length === 0 ? (
           <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem 2rem', color:'var(--muted)'}}>
-            <div style={{fontSize:'4rem', marginBottom:'1rem', lineHeight:'1'}}>🔍</div>
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', color:'var(--text)', marginBottom:'0.4rem'}}>No courses found</h3>
             <p style={{marginBottom:'1.2rem'}}>Try a different keyword or category</p>
             <button onClick={() => { setSearch(''); setActiveCat('All'); }} style={{
@@ -518,7 +517,7 @@ export default function Home() {
                   onMouseEnter={e => { e.currentTarget.style.transform='scale(1.15)'; e.currentTarget.style.background='rgba(6,8,15,0.7)'; }}
                   onMouseLeave={e => { e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.background='rgba(6,8,15,0.55)'; }}
                 >
-                  {wishlist.includes(c.id) ? '♥' : '♡'}
+                  {''}
                 </div>
               </div>
 
@@ -550,8 +549,8 @@ export default function Home() {
                   borderTop:'1px solid var(--border)', paddingTop:'0.7rem',
                   flexWrap:'wrap', gap:'0.3rem',
                 }}>
-                  <span style={{fontSize:'0.78rem', color:'var(--gold)'}}>{'★'.repeat(Math.round(c.rating))}{'☆'.repeat(5 - Math.round(c.rating))} <span style={{color:'var(--muted)'}}>{c.rating}</span></span>
-                  <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>⏱ {c.duration}</span>
+                  <span style={{fontSize:'0.78rem', color:'var(--gold)'}}><span style={{color:'var(--muted)'}}>{c.rating}</span></span>
+                  <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>{c.duration}</span>
                   <span style={{fontFamily:'Georgia, serif', fontWeight:'700', color:'var(--teal)', fontSize:'0.92rem'}}>Free</span>
                 </div>
                 {prog > 0 && (

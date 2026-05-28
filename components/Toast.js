@@ -26,7 +26,7 @@ export function ToastProvider({ children }) {
     };
   }, []);
 
-  const icons = { default:'💬', success:'✅', error:'❌', warning:'⚠️', info:'ℹ️' };
+  const icons = { default:'Info', success:'Done', error:'Error', warning:'Alert', info:'Info' };
   const colors = {
     default:'var(--blue)', success:'var(--teal)',
     error:'var(--pink)', warning:'var(--gold)', info:'var(--blue)',
@@ -58,7 +58,7 @@ export function ToastProvider({ children }) {
             <div style={{display:'flex', alignItems:'center', gap:'0.7rem'}}>
               <span style={{fontSize:'1.1rem', flexShrink:0}}>{icons[t.type]}</span>
               <span style={{fontSize:'0.84rem', color:'var(--text)', lineHeight:'1.4', flex:1}}>{t.msg}</span>
-              <span style={{fontSize:'0.7rem', color:'var(--muted2)', cursor:'pointer', flexShrink:0}}>✕</span>
+              <span style={{fontSize:'0.7rem', color:'var(--muted2)', cursor:'pointer', flexShrink:0}}>X</span>
             </div>
             <div style={{
               width:'100%', height:'3px', borderRadius:'100px',

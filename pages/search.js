@@ -108,7 +108,7 @@ export default function Search() {
           <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem,4vw,2rem)', fontWeight:'700', marginBottom:'0.3rem'}}>
             Search Courses
           </h1>
-          <p style={{color:'#7a80a0', fontSize:'0.88rem'}}>
+          <p style={{color:'var(--muted)', fontSize:'0.88rem'}}>
             Find your perfect course from our library
           </p>
         </div>
@@ -116,7 +116,6 @@ export default function Search() {
 
       {/* SEARCH BAR */}
       <div style={{position:'relative', marginBottom:'1.5rem'}}>
-        <span style={{position:'absolute', left:'1rem', top:'50%', transform:'translateY(-50%)', color:'#7a80a0', fontSize:'1.1rem'}}>⌕</span>
         <input
           type="text"
           placeholder="Search by title, instructor, or keyword…"
@@ -133,10 +132,9 @@ export default function Search() {
           autoFocus
           inputMode="search"
           style={{
-            width:'100%', background:'#0d1117',
-            border:'1px solid rgba(255,255,255,0.1)',
+            width:'100%', background:'var(--surface)', border:'1px solid rgba(255,255,255,0.1)',
             borderRadius:'14px', padding:'1rem 1rem 1rem 3rem',
-            fontSize:'1rem', color:'#eef0f8', outline:'none',
+            fontSize:'1rem', color:'var(--text)', outline:'none',
           }}
         />
         {search && (
@@ -144,33 +142,33 @@ export default function Search() {
             onClick={() => setSearch('')}
             style={{
               position:'absolute', right:'1rem', top:'50%', transform:'translateY(-50%)',
-              background:'none', border:'none', color:'#7a80a0', cursor:'pointer', fontSize:'1.1rem',
+              background:'none', border:'none', color:'var(--muted)', cursor:'pointer', fontSize:'1.1rem',
             }}
-          >✕</button>
+            >X</button>
         )}
         {focused && recentSearches.length > 0 && (
           <div style={{
             position:'absolute', top:'100%', left:0, right:0, zIndex:50,
-            background:'#0d1117', border:'1px solid rgba(255,255,255,0.1)',
+            background:'var(--surface)', border:'1px solid rgba(255,255,255,0.1)',
             borderRadius:'12px', marginTop:'0.3rem', overflow:'hidden',
             boxShadow:'0 8px 30px rgba(0,0,0,0.5)',
           }}>
-            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0.55rem 0.85rem', borderBottom:'1px solid rgba(255,255,255,0.06)'}}>
-              <span style={{fontSize:'0.72rem', fontWeight:'600', color:'#7a80a0', textTransform:'uppercase', letterSpacing:'0.05em'}}>Recent Searches</span>
+            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0.55rem 0.85rem', borderBottom:'1px solid var(--border)'}}>
+              <span style={{fontSize:'0.72rem', fontWeight:'600', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em'}}>Recent Searches</span>
               <button onClick={() => { setRecentSearches([]); setFocused(false); }}
                 style={{fontSize:'0.68rem', color:'#ff6b9d', background:'none', border:'none', cursor:'pointer', fontWeight:'600', padding:'0.2rem'}}>Clear</button>
             </div>
             {recentSearches.map((term, i) => (
               <div key={i} onClick={() => { setSearch(term); setFocused(false); }}
                 style={{
-                  padding:'0.6rem 0.85rem', cursor:'pointer', fontSize:'0.85rem', color:'#eef0f8',
+                  padding:'0.6rem 0.85rem', cursor:'pointer', fontSize:'0.85rem', color:'var(--text)',
                   borderBottom: i < recentSearches.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
                   display:'flex', alignItems:'center', gap:'0.5rem',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.04)'}
                 onMouseLeave={e => e.currentTarget.style.background='transparent'}
               >
-                <span style={{color:'#7a80a0', fontSize:'0.8rem'}}>⌕</span>
+
                 {term}
               </div>
             ))}
@@ -181,24 +179,24 @@ export default function Search() {
         {search.trim() && suggestions.length > 0 && (
           <div style={{
             position:'absolute', top:'100%', left:0, right:0, zIndex:50,
-            background:'#0d1117', border:'1px solid rgba(255,255,255,0.1)',
+            background:'var(--surface)', border:'1px solid rgba(255,255,255,0.1)',
             borderRadius:'12px', marginTop:'0.3rem', overflow:'hidden',
             boxShadow:'0 8px 30px rgba(0,0,0,0.5)',
           }}>
-            <div style={{padding:'0.55rem 0.85rem', borderBottom:'1px solid rgba(255,255,255,0.06)', fontSize:'0.72rem', fontWeight:'600', color:'#7a80a0', textTransform:'uppercase', letterSpacing:'0.05em'}}>
+            <div style={{padding:'0.55rem 0.85rem', borderBottom:'1px solid var(--border)', fontSize:'0.72rem', fontWeight:'600', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em'}}>
               Course Suggestions
             </div>
             {suggestions.map((c, i) => (
               <div key={c.id} onClick={() => { setSearch(c.title); setFocused(false); }}
                 style={{
-                  padding:'0.6rem 0.85rem', cursor:'pointer', fontSize:'0.85rem', color:'#eef0f8',
+                  padding:'0.6rem 0.85rem', cursor:'pointer', fontSize:'0.85rem', color:'var(--text)',
                   borderBottom: i < suggestions.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
                   display:'flex', alignItems:'center', gap:'0.5rem',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.04)'}
                 onMouseLeave={e => e.currentTarget.style.background='transparent'}
               >
-                <span style={{color:'#4488ff', fontSize:'0.75rem'}}>▸</span>
+                <span style={{color:'var(--blue)', fontSize:'0.75rem'}}>▸</span>
                 <span style={{flex:1}}>{c.title}</span>
                 <span style={{fontSize:'0.7rem', color:'var(--muted)', background:'var(--surface2)', padding:'0.15rem 0.5rem', borderRadius:'100px'}}>{c.category}</span>
               </div>
@@ -235,21 +233,21 @@ export default function Search() {
 
       {/* FILTERS */}
       <div className="filters-desktop" style={{
-        background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+        background:'var(--surface)', border:'1px solid var(--border)',
         borderRadius:'14px', padding:'1.2rem', marginBottom:'1.5rem',
       }}>
         <div className="filter-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'1rem'}}>
 
           {/* SORT BY */}
           <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Sort By</label>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Sort By</label>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value)}
               style={{
-                width:'100%', background:'#161b26', border:'1px solid rgba(255,255,255,0.1)',
+                width:'100%', background:'var(--surface2)', border:'1px solid rgba(255,255,255,0.1)',
                 borderRadius:'9px', padding:'0.55rem 0.8rem',
-                fontSize:'0.85rem', color:'#eef0f8', outline:'none', cursor:'pointer',
+                fontSize:'0.85rem', color:'var(--text)', outline:'none', cursor:'pointer',
               }}
             >
               <option value="relevance">Relevance</option>
@@ -261,14 +259,14 @@ export default function Search() {
 
           {/* DURATION */}
           <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Duration</label>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Duration</label>
             <select
               value={duration}
               onChange={e => setDuration(e.target.value)}
               style={{
-                width:'100%', background:'#161b26', border:'1px solid rgba(255,255,255,0.1)',
+                width:'100%', background:'var(--surface2)', border:'1px solid rgba(255,255,255,0.1)',
                 borderRadius:'9px', padding:'0.55rem 0.8rem',
-                fontSize:'0.85rem', color:'#eef0f8', outline:'none', cursor:'pointer',
+                fontSize:'0.85rem', color:'var(--text)', outline:'none', cursor:'pointer',
               }}
             >
               {durations.map(d => <option key={d} value={d}>{d}</option>)}
@@ -277,14 +275,14 @@ export default function Search() {
 
           {/* MIN RATING */}
           <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Min Rating</label>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Min Rating</label>
             <select
               value={minRating}
               onChange={e => setMinRating(parseFloat(e.target.value))}
               style={{
-                width:'100%', background:'#161b26', border:'1px solid rgba(255,255,255,0.1)',
+                width:'100%', background:'var(--surface2)', border:'1px solid rgba(255,255,255,0.1)',
                 borderRadius:'9px', padding:'0.55rem 0.8rem',
-                fontSize:'0.85rem', color:'#eef0f8', outline:'none', cursor:'pointer',
+                fontSize:'0.85rem', color:'var(--text)', outline:'none', cursor:'pointer',
               }}
             >
               <option value={0}>Any Rating</option>
@@ -296,14 +294,14 @@ export default function Search() {
 
           {/* LEVEL */}
           <div>
-            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'#7a80a0', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Level</label>
+            <label style={{display:'block', fontSize:'0.74rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.4rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>Level</label>
             <select
               value={level}
               onChange={e => setLevel(e.target.value)}
               style={{
-                width:'100%', background:'#161b26', border:'1px solid rgba(255,255,255,0.1)',
+                width:'100%', background:'var(--surface2)', border:'1px solid rgba(255,255,255,0.1)',
                 borderRadius:'9px', padding:'0.55rem 0.8rem',
-                fontSize:'0.85rem', color:'#eef0f8', outline:'none', cursor:'pointer',
+                fontSize:'0.85rem', color:'var(--text)', outline:'none', cursor:'pointer',
               }}
             >
               {levels.map(l => <option key={l} value={l}>{l.charAt(0).toUpperCase() + l.slice(1)}</option>)}
@@ -320,7 +318,7 @@ export default function Search() {
               background:'none', border:'none', cursor:'pointer', textDecoration:'underline',
             }}
           >
-            ✕ Reset all filters
+            Reset all filters
           </button>
         )}
       </div>
@@ -332,38 +330,38 @@ export default function Search() {
           {activeCat !== 'All' && (
             <button onClick={() => setActiveCat('All')}
               style={tagStyle}>
-              {activeCat} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+              {activeCat} <span style={{marginLeft:'0.3rem', opacity:0.7}}>X</span>
             </button>
           )}
           {sortBy !== 'relevance' && (
             <button onClick={() => setSortBy('relevance')}
               style={tagStyle}>
-              {sortBy === 'rating' ? 'Highest Rated' : sortBy === 'duration_asc' ? 'Shortest' : 'Longest'} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+              {sortBy === 'rating' ? 'Highest Rated' : sortBy === 'duration_asc' ? 'Shortest' : 'Longest'} <span style={{marginLeft:'0.3rem', opacity:0.7}}>X</span>
             </button>
           )}
           {duration !== 'All' && (
             <button onClick={() => setDuration('All')}
               style={tagStyle}>
-              {duration} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+              {duration} <span style={{marginLeft:'0.3rem', opacity:0.7}}>X</span>
             </button>
           )}
           {minRating > 0 && (
             <button onClick={() => setMinRating(0)}
               style={tagStyle}>
-              {minRating}+ ⭐ <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+              {minRating}+ <span style={{marginLeft:'0.3rem', opacity:0.7}}>X</span>
             </button>
           )}
           {level !== 'All' && (
             <button onClick={() => setLevel('All')}
               style={tagStyle}>
-              {level.charAt(0).toUpperCase() + level.slice(1)} <span style={{marginLeft:'0.3rem', opacity:0.7}}>✕</span>
+              {level.charAt(0).toUpperCase() + level.slice(1)} <span style={{marginLeft:'0.3rem', opacity:0.7}}>X</span>
             </button>
           )}
         </div>
       )}
 
       {/* RESULTS COUNT */}
-      <div style={{fontSize:'0.82rem', color:'#7a80a0', marginBottom:'1rem'}}>
+      <div style={{fontSize:'0.82rem', color:'var(--muted)', marginBottom:'1rem'}}>
         {loading ? 'Searching...' : `${filtered.length} course${filtered.length !== 1 ? 's' : ''} found${search ? ` for "${search}"` : ''}`}
       </div>
 
@@ -376,8 +374,8 @@ export default function Search() {
         {loading ? (
           Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
         ) : filtered.length === 0 ? (
-          <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem 1rem', color:'#7a80a0'}}>
-            <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'#eef0f8', marginBottom:'0.4rem'}}>No courses found</h3>
+          <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem 1rem', color:'var(--muted)'}}>
+            <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'var(--text)', marginBottom:'0.4rem'}}>No courses found</h3>
             <p style={{marginBottom:'1rem'}}>Try different keywords or reset your filters</p>
             <button
               onClick={() => { setSearch(''); setActiveCat('All'); setSortBy('relevance'); setDuration('All'); setMinRating(0); setLevel('All'); }}
@@ -393,63 +391,63 @@ export default function Search() {
             onClick={() => router.push(`/courses/${c.id}`)}
             className="list-item"
             style={{
-              background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+              background:'var(--surface)', border:'1px solid var(--border)',
               borderRadius:'16px', overflow:'hidden', cursor:'pointer', transition:'all 0.3s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.borderColor='rgba(68,136,255,0.22)'; e.currentTarget.style.background='#161b26'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.background='#0d1117'; }}
+            onMouseEnter={e => { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.borderColor='rgba(var(--blue-rgb,68,136,255),0.22)'; e.currentTarget.style.background='var(--surface2)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.background='var(--surface)'; }}
           >
-            <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'#161b26'}}>
+            <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'var(--surface2)'}}>
               <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}}/>
-              <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(6,8,15,0.65) 0%, transparent 55%)'}}/>
+              <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)'}}/>
               {enrolled.includes(c.id) ? (
-                <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(68,136,255,0.2)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)'}}>✓ Enrolled</span>
+                <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(var(--blue-rgb,68,136,255),0.2)', color:'var(--blue)', border:'1px solid rgba(var(--blue-rgb,68,136,255),0.3)'}}>Enrolled</span>
               ) : (
-                <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(0,212,170,0.18)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.28)'}}>Free</span>
+                <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(0,212,170,0.18)', color:'var(--teal)', border:'1px solid rgba(0,212,170,0.28)'}}>Free</span>
               )}
               <div
                 onClick={e => { e.stopPropagation(); toggleWishlist(c.id, toast); }}
                 style={{
                   position:'absolute', top:'9px', right:'9px', width:'32px', height:'32px',
-                  borderRadius:'50%', background:'rgba(6,8,15,0.72)', backdropFilter:'blur(8px)',
-                  border:'1px solid rgba(255,255,255,0.13)', display:'flex', alignItems:'center',
+                  borderRadius:'50%', background:'rgba(0,0,0,0.72)', backdropFilter:'blur(8px)',
+                  border:'1px solid var(--border2)', display:'flex', alignItems:'center',
                   justifyContent:'center', fontSize:'1rem', cursor:'pointer', zIndex:2,
-                  color: wishlist.includes(c.id) ? '#ff6b9d' : '#eef0f8',
+                  color: wishlist.includes(c.id) ? 'var(--pink)' : 'var(--text)',
                 }}
               >
-                {wishlist.includes(c.id) ? '♥' : '♡'}
+                {''}
               </div>
             </div>
             <div style={{padding:'1rem'}}>
               <div style={{display:'flex', alignItems:'center', gap:'0.5rem', marginBottom:'0.4rem', flexWrap:'wrap'}}>
-                <span style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff'}}>{c.category}</span>
+                <span style={{fontSize:'0.7rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)'}}>{c.category}</span>
                 {c.level && (
                   <span style={{
                     fontSize:'0.62rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.05em',
                     padding:'0.15rem 0.5rem', borderRadius:'100px',
                     background: c.level === 'beginner' ? 'rgba(0,212,170,0.15)' : c.level === 'intermediate' ? 'rgba(240,192,64,0.15)' : 'rgba(255,107,157,0.15)',
-                    color: c.level === 'beginner' ? '#00d4aa' : c.level === 'intermediate' ? '#f0c040' : '#ff6b9d',
+                    color: c.level === 'beginner' ? 'var(--teal)' : c.level === 'intermediate' ? 'var(--gold)' : 'var(--pink)',
                     border: c.level === 'beginner' ? '1px solid rgba(0,212,170,0.25)' : c.level === 'intermediate' ? '1px solid rgba(240,192,64,0.25)' : '1px solid rgba(255,107,157,0.25)',
                   }}>{c.level}</span>
                 )}
               </div>
               <div style={{fontFamily:'Georgia, serif', fontSize:'0.98rem', fontWeight:'700', lineHeight:'1.35', marginBottom:'0.4rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
-              <div style={{fontSize:'0.78rem', color:'#7a80a0', marginBottom:'0.7rem'}}>by {c.instructor}</div>
-              <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:'0.65rem', flexWrap:'wrap', gap:'0.3rem'}}>
+              <div style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.7rem'}}>by {c.instructor}</div>
+              <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', borderTop:'1px solid var(--border)', paddingTop:'0.65rem', flexWrap:'wrap', gap:'0.3rem'}}>
                 <span style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.78rem'}}>
-                  <span style={{color:'#fbbf24', fontSize:'0.7rem'}}>★★★★★</span> {c.rating}
+                  {c.rating}
                 </span>
-                <span style={{fontSize:'0.76rem', color:'#7a80a0'}}>⏱ {c.duration}</span>
-                <span style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', color:'#00d4aa'}}>Free</span>
+                <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>{c.duration}</span>
+                <span style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', color:'var(--teal)'}}>Free</span>
               </div>
               {enrolled.includes(c.id) && (
                 <div style={{marginTop:'0.7rem'}}>
-                  <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'#7a80a0', marginBottom:'0.3rem'}}>
+                  <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.72rem', color:'var(--muted)', marginBottom:'0.3rem'}}>
                     <span>Progress</span>
                     <span>{getCourseProgress(c.id, c.lessons.length)}%</span>
                   </div>
-                  <div style={{width:'100%', height:'4px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
-                    <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,#4488ff,#00d4aa)', width:`${getCourseProgress(c.id, c.lessons.length)}%`, transition:'width 0.4s ease'}}/>
+                  <div style={{width:'100%', height:'4px', background:'var(--border)', borderRadius:'100px'}}>
+                    <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,var(--blue),var(--teal))', width:`${getCourseProgress(c.id, c.lessons.length)}%`, transition:'width 0.4s ease'}}/>
                   </div>
                 </div>
               )}

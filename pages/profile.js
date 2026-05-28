@@ -32,8 +32,8 @@ export default function Profile() {
 
       {/* PROFILE HEADER */}
       <div style={{
-        background:'linear-gradient(135deg,#0d1117,#161b26)',
-        border:'1px solid rgba(255,255,255,0.06)',
+        background:'linear-gradient(135deg,var(--surface),var(--surface2))',
+        border:'1px solid var(--border)',
         borderRadius:'20px', padding:'2rem',
         display:'flex', alignItems:'center', gap:'1.5rem',
         flexWrap:'wrap', marginBottom:'1.5rem',
@@ -46,15 +46,15 @@ export default function Profile() {
               alt="avatar"
               referrerPolicy="no-referrer"
               onError={() => setPfpError(true)}
-              style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover', border:'3px solid #f0c040'}}
+              style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover', border:'3px solid var(--gold)'}}
             />
           ) : (
             <div style={{
               width:'90px', height:'90px', borderRadius:'50%',
-              background:'linear-gradient(135deg,#4488ff,#00d4aa)',
+              background:'linear-gradient(135deg,var(--blue),var(--teal))',
               display:'flex', alignItems:'center', justifyContent:'center',
               fontFamily:'Georgia, serif', fontSize:'2.2rem', fontWeight:'700',
-              color:'#fff', border:'3px solid #f0c040',
+              color:'#fff', border:'3px solid var(--gold)',
             }}>
               {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
             </div>
@@ -63,7 +63,7 @@ export default function Profile() {
           <div style={{
             position:'absolute', bottom:'4px', right:'4px',
             width:'16px', height:'16px', borderRadius:'50%',
-            background:'#00d4aa', border:'2px solid #0d1117',
+            background:'var(--teal)', border:'2px solid var(--surface)',
           }}/>
         </div>
 
@@ -72,32 +72,32 @@ export default function Profile() {
           <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.6rem', fontWeight:'700', marginBottom:'0.2rem'}}>
             {currentUser.firstName} {currentUser.lastName}
           </h1>
-          <div style={{fontSize:'0.85rem', color:'#7a80a0', marginBottom:'0.6rem'}}>{currentUser.email}</div>
+          <div style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'0.6rem'}}>{currentUser.email}</div>
           <div style={{display:'flex', alignItems:'center', gap:'0.5rem'}}>
             <span style={{
               fontSize:'0.72rem', fontWeight:'600', letterSpacing:'0.06em', textTransform:'uppercase',
               padding:'0.2rem 0.7rem', borderRadius:'100px',
-              background:'rgba(240,192,64,0.15)', color:'#f0c040',
+              background:'rgba(240,192,64,0.15)', color:'var(--gold)',
               border:'1px solid rgba(240,192,64,0.3)',
             }}>
-              {currentUser.provider === 'Google' ? '🔷 Google Account' : '✉️ Email Account'}
+              {currentUser.provider === 'Google' ? 'Google Account' : 'Email Account'}
             </span>
           </div>
         </div>
 
         {/* XP & STREAK */}
         <div style={{display:'flex', gap:'0.6rem'}}>
-          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'#0d1117', borderRadius:'10px', border:'1px solid rgba(255,255,255,0.06)'}}>
-            <div style={{fontSize:'1rem', fontWeight:'700', color:'#f0c040'}}>⚡{xp}</div>
-            <div style={{fontSize:'0.6rem', color:'#7a80a0', letterSpacing:'0.04em', textTransform:'uppercase'}}>XP</div>
+          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'var(--surface)', borderRadius:'10px', border:'1px solid var(--border)'}}>
+            <div style={{fontSize:'1rem', fontWeight:'700', color:'var(--gold)'}}>{xp}</div>
+            <div style={{fontSize:'0.6rem', color:'var(--muted)', letterSpacing:'0.04em', textTransform:'uppercase'}}>XP</div>
           </div>
-          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'#0d1117', borderRadius:'10px', border:'1px solid rgba(255,255,255,0.06)'}}>
-            <div style={{fontSize:'1rem', fontWeight:'700', color: streak >= 7 ? '#f0c040' : '#00d4aa'}}>🔥{streak}</div>
-            <div style={{fontSize:'0.6rem', color:'#7a80a0', letterSpacing:'0.04em', textTransform:'uppercase'}}>Streak</div>
+          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'var(--surface)', borderRadius:'10px', border:'1px solid var(--border)'}}>
+            <div style={{fontSize:'1rem', fontWeight:'700', color: streak >= 7 ? 'var(--gold)' : 'var(--teal)'}}>{streak}</div>
+            <div style={{fontSize:'0.6rem', color:'var(--muted)', letterSpacing:'0.04em', textTransform:'uppercase'}}>Streak</div>
           </div>
-          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'#0d1117', borderRadius:'10px', border:'1px solid rgba(255,255,255,0.06)'}}>
-            <div style={{fontSize:'1rem', fontWeight:'700', color:'#4488ff'}}>Lv.{levelInfo.level}</div>
-            <div style={{fontSize:'0.6rem', color:'#7a80a0', letterSpacing:'0.04em', textTransform:'uppercase'}}>{levelInfo.title}</div>
+          <div style={{textAlign:'center', padding:'0.4rem 0.7rem', background:'var(--surface)', borderRadius:'10px', border:'1px solid var(--border)'}}>
+            <div style={{fontSize:'1rem', fontWeight:'700', color:'var(--blue)'}}>Lv.{levelInfo.level}</div>
+            <div style={{fontSize:'0.6rem', color:'var(--muted)', letterSpacing:'0.04em', textTransform:'uppercase'}}>{levelInfo.title}</div>
           </div>
         </div>
 
@@ -107,14 +107,14 @@ export default function Profile() {
           style={{
             fontSize:'0.82rem', fontWeight:'600',
             padding:'0.6rem 1.2rem', borderRadius:'10px',
-            border:'1px solid rgba(68,136,255,0.3)',
-            background:'rgba(68,136,255,0.08)', color:'#4488ff',
+            border:'1px solid rgba(var(--blue-rgb,68,136,255),0.3)',
+            background:'rgba(var(--blue-rgb,68,136,255),0.08)', color:'var(--blue)',
             cursor:'pointer',
             opacity: syncing ? 0.5 : 1,
           }}
           disabled={syncing}
         >
-          {syncing ? '⏳ Syncing...' : '☁️ Sync to Cloud'}
+          {syncing ? 'Syncing...' : 'Sync to Cloud'}
         </button>
 
         {/* SIGN OUT */}
@@ -139,18 +139,17 @@ export default function Profile() {
         gap:'1rem', marginBottom:'1.5rem',
       }}>
         {[
-          {ico:'📚', label:'Enrolled', value:enrolledCourses.length, color:'#4488ff'},
-          {ico:'🏆', label:'Completed', value:completedCourses.length, color:'#f0c040'},
-          {ico:'♡', label:'Wishlisted', value:wishlistCourses.length, color:'#ff6b9d'},
-          {ico:'📈', label:'Avg Progress', value:`${totalProgress}%`, color:'#00d4aa'},
+          {label:'Enrolled', value:enrolledCourses.length, color:'var(--blue)'},
+          {label:'Completed', value:completedCourses.length, color:'var(--gold)'},
+          {label:'Wishlisted', value:wishlistCourses.length, color:'var(--pink)'},
+          {label:'Avg Progress', value:`${totalProgress}%`, color:'var(--teal)'},
         ].map(s => (
           <div key={s.label} style={{
-            background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+            background:'var(--surface)', border:'1px solid var(--border)',
             borderRadius:'14px', padding:'1.2rem', textAlign:'center',
           }}>
-            <div style={{fontSize:'1.8rem', marginBottom:'0.4rem'}}>{s.ico}</div>
             <div style={{fontFamily:'Georgia, serif', fontSize:'1.6rem', fontWeight:'700', color:s.color}}>{s.value}</div>
-            <div style={{fontSize:'0.75rem', color:'#7a80a0', marginTop:'0.2rem'}}>{s.label}</div>
+            <div style={{fontSize:'0.75rem', color:'var(--muted)', marginTop:'0.2rem'}}>{s.label}</div>
           </div>
         ))}
       </div>
@@ -158,7 +157,7 @@ export default function Profile() {
       {/* BADGES */}
       <div style={{marginBottom:'1.5rem'}}>
         <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-          🏅 Badges ({badges.length}/{Object.keys(BADGE_DEFS).length})
+          Badges ({badges.length}/{Object.keys(BADGE_DEFS).length})
         </h2>
         <div style={{display:'flex', gap:'0.7rem', flexWrap:'wrap'}}>
           {Object.entries(BADGE_DEFS).map(([id, def]) => {
@@ -166,14 +165,14 @@ export default function Profile() {
             return (
               <div key={id} title={def.desc} style={{
                 padding:'0.5rem 0.8rem', borderRadius:'100px',
-                background: earned ? 'rgba(68,136,255,0.12)' : '#0d1117',
-                border: `1px solid ${earned ? 'rgba(68,136,255,0.3)' : 'rgba(255,255,255,0.06)'}`,
-                color: earned ? '#eef0f8' : '#3a4060',
+                background: earned ? 'rgba(var(--blue-rgb,68,136,255),0.12)' : 'var(--surface)',
+                border: `1px solid ${earned ? 'rgba(var(--blue-rgb,68,136,255),0.3)' : 'var(--border)'}`,
+                color: earned ? 'var(--text)' : 'var(--muted2)',
                 fontSize:'0.82rem', fontWeight:'500',
                 opacity: earned ? 1 : 0.5,
                 display:'flex', alignItems:'center', gap:'0.4rem',
               }}>
-                <span>{earned ? def.icon : '🔒'}</span>
+                <span>{earned ? def.icon : ''}</span>
                 {def.label}
               </div>
             );
@@ -185,7 +184,7 @@ export default function Profile() {
       {enrolledCourses.length > 0 && (
         <div style={{marginBottom:'1.5rem'}}>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-            📚 My Courses
+            My Courses
           </h2>
           <div style={{display:'flex', flexDirection:'column', gap:'0.7rem'}}>
             {enrolledCourses.map(c => {
@@ -195,29 +194,29 @@ export default function Profile() {
                 <div key={c.id}
                   onClick={() => router.push(`/courses/${c.id}`)}
                   style={{
-                    background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+                    background:'var(--surface)', border:'1px solid var(--border)',
                     borderRadius:'14px', padding:'1rem',
                     display:'flex', alignItems:'center', gap:'1rem',
                     cursor:'pointer', transition:'all 0.2s', flexWrap:'wrap',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(68,136,255,0.22)'; e.currentTarget.style.background='#161b26'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.background='#0d1117'; }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(var(--blue-rgb,68,136,255),0.22)'; e.currentTarget.style.background='var(--surface2)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.background='var(--surface)'; }}
                 >
                   <img src={c.img} alt={c.title} style={{width:'60px', height:'60px', borderRadius:'10px', objectFit:'cover', flexShrink:0}}/>
                   <div style={{flex:1, minWidth:'150px'}}>
                     <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
-                    <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'0.5rem'}}>by {c.instructor}</div>
+                    <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'0.5rem'}}>by {c.instructor}</div>
                     <div style={{display:'flex', alignItems:'center', gap:'0.5rem'}}>
-                      <div style={{flex:1, height:'4px', background:'rgba(255,255,255,0.06)', borderRadius:'100px'}}>
-                        <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,#4488ff,#00d4aa)', width:`${prog}%`, transition:'width 0.4s'}}/>
+                      <div style={{flex:1, height:'4px', background:'var(--border)', borderRadius:'100px'}}>
+                        <div style={{height:'100%', borderRadius:'100px', background:'linear-gradient(135deg,var(--blue),var(--teal))', width:`${prog}%`, transition:'width 0.4s'}}/>
                       </div>
-                      <span style={{fontSize:'0.72rem', color:'#7a80a0', flexShrink:0}}>{prog}%</span>
+                      <span style={{fontSize:'0.72rem', color:'var(--muted)', flexShrink:0}}>{prog}%</span>
                     </div>
                   </div>
                   {isDone ? (
-                    <span style={{fontSize:'0.72rem', fontWeight:'700', padding:'0.2rem 0.7rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'#f0c040', border:'1px solid rgba(240,192,64,0.3)', flexShrink:0}}>🏆 Completed</span>
+                    <span style={{fontSize:'0.72rem', fontWeight:'700', padding:'0.2rem 0.7rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'var(--gold)', border:'1px solid rgba(240,192,64,0.3)', flexShrink:0}}>Completed</span>
                   ) : (
-                    <span style={{fontSize:'0.72rem', fontWeight:'700', padding:'0.2rem 0.7rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'#4488ff', border:'1px solid rgba(68,136,255,0.3)', flexShrink:0}}>In Progress</span>
+                    <span style={{fontSize:'0.72rem', fontWeight:'700', padding:'0.2rem 0.7rem', borderRadius:'100px', background:'rgba(var(--blue-rgb,68,136,255),0.15)', color:'var(--blue)', border:'1px solid rgba(var(--blue-rgb,68,136,255),0.3)', flexShrink:0}}>In Progress</span>
                   )}
                 </div>
               );
@@ -230,22 +229,21 @@ export default function Profile() {
       {completedCourses.length > 0 && (
         <div style={{marginBottom:'1.5rem'}}>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-            🏆 My Certificates
+            My Certificates
           </h2>
           <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap:'1rem'}}>
             {completedCourses.map(c => {
               const cert = certificates.filter(cert => cert.courseId === c.id).slice(-1)[0];
               return (
                 <div key={c.id} style={{
-                  background:'linear-gradient(135deg,#0a0e1a,#0f1528)',
+                  background:'linear-gradient(135deg,var(--surface),var(--surface2))',
                   border:'1px solid rgba(240,192,64,0.3)',
                   borderRadius:'14px', padding:'1.2rem', textAlign:'center',
                 }}>
-                  <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>🎓</div>
-                  <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.3rem'}}>{c.title}</div>
-                  <div style={{fontSize:'0.75rem', color:'#7a80a0', marginBottom:'0.3rem'}}>by {c.instructor}</div>
+                  <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', color:'var(--gold)', marginBottom:'0.3rem'}}>{c.title}</div>
+                  <div style={{fontSize:'0.75rem', color:'var(--muted)', marginBottom:'0.3rem'}}>by {c.instructor}</div>
                   {cert && (
-                    <div style={{fontSize:'0.65rem', color:'#3a4060', fontFamily:'monospace', letterSpacing:'0.05em', marginBottom:'0.8rem', wordBreak:'break-all'}}>
+                    <div style={{fontSize:'0.65rem', color:'var(--muted2)', fontFamily:'monospace', letterSpacing:'0.05em', marginBottom:'0.8rem', wordBreak:'break-all'}}>
                       {cert.code}
                     </div>
                   )}
@@ -254,7 +252,7 @@ export default function Profile() {
                     style={{
                       fontSize:'0.8rem', fontWeight:'600', padding:'0.5rem 1rem',
                       borderRadius:'8px', border:'none', cursor:'pointer',
-                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                      background:'linear-gradient(135deg,var(--gold),#c8960a)', color:'#000',
                     }}
                   >View Certificate</button>
                 </div>
@@ -266,14 +264,13 @@ export default function Profile() {
 
       {/* EMPTY STATE */}
       {enrolledCourses.length === 0 && (
-        <div style={{textAlign:'center', padding:'3rem 1rem', color:'#7a80a0'}}>
-          <div style={{fontSize:'3.5rem', marginBottom:'0.8rem'}}>🎯</div>
-          <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'#eef0f8', marginBottom:'0.4rem'}}>Start your learning journey</h2>
+        <div style={{textAlign:'center', padding:'3rem 1rem', color:'var(--muted)'}}>
+          <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'var(--text)', marginBottom:'0.4rem'}}>Start your learning journey</h2>
           <p style={{marginBottom:'1.4rem'}}>Enroll in a course to track your progress here</p>
           <button onClick={() => router.push('/')} style={{
             fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
             borderRadius:'12px', border:'none', cursor:'pointer',
-            background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+            background:'linear-gradient(135deg,var(--gold),#c8960a)', color:'#000',
           }}>Browse Courses</button>
         </div>
       )}
