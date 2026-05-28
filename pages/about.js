@@ -15,7 +15,7 @@ export default function About() {
           </span>
         </h1>
         <p style={{fontSize:'clamp(0.88rem, 2.5vw, 1rem)', color:'#7a80a0', lineHeight:'1.8', maxWidth:'580px', margin:'0 auto'}}>
-          Eduverse was built on a simple belief — where you were born should never determine what you can learn. We are on a mission to democratize education, globally.
+          Eduverse was built on a simple belief  where you were born should never determine what you can learn. We are on a mission to democratize education, globally.
         </p>
       </div>
 
