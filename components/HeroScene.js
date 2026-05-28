@@ -24,7 +24,7 @@ export default function HeroScene() {
       </video>
       <div style={{
         position: 'absolute', inset: 0,
-        background: 'linear-gradient(to bottom, rgba(6,8,15,0.5) 0%, rgba(6,8,15,0.85) 100%)',
+        background: 'linear-gradient(to bottom, rgba(6,8,15,0.15) 0%, rgba(6,8,15,0.6) 100%)',
         zIndex: 0,
       }} />
     </>
