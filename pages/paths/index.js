@@ -50,7 +50,10 @@ export default function LearningPaths() {
               >
                 <div style={{padding:'1.5rem 1.5rem 1.2rem', background: `linear-gradient(135deg, ${path.color}15, transparent)`}}>
                   <div style={{display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:'0.8rem'}}>
-                    <div style={{fontSize:'2.2rem', lineHeight:'1'}}>{path.icon}</div>
+                    <div style={{
+                      width:'44px', height:'44px', borderRadius:'12px', display:'flex', alignItems:'center', justifyContent:'center',
+                      background: path.color + '22', color: path.color, fontSize:'1.1rem', fontWeight:'800',
+                    }}>{path.title[0]}</div>
                     <div style={{display:'flex', gap:'0.4rem', alignItems:'center', flexWrap:'wrap'}}>
                       <span style={{fontSize:'0.65rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.06em', padding:'0.2rem 0.6rem', borderRadius:'100px', background: path.color + '22', color: path.color}}>{path.level}</span>
                       <span style={{fontSize:'0.65rem', color:'var(--muted)', fontWeight:'500'}}>{path.duration}</span>

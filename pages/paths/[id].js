@@ -45,7 +45,10 @@ export default function PathDetail() {
           padding:'2rem',
         }}>
           <div style={{display:'flex', alignItems:'center', gap:'0.6rem', marginBottom:'0.8rem'}}>
-            <span style={{fontSize:'2.5rem'}}>{path.icon}</span>
+            <div style={{
+              width:'48px', height:'48px', borderRadius:'14px', display:'flex', alignItems:'center', justifyContent:'center',
+              background: path.color + '22', color: path.color, fontSize:'1.3rem', fontWeight:'800',
+            }}>{path.title[0]}</div>
             <span style={{fontSize:'0.7rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.06em', padding:'0.25rem 0.7rem', borderRadius:'100px', background: path.color + '22', color: path.color}}>{path.level}</span>
           </div>
           <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.6rem, 4vw, 2.4rem)', fontWeight:'700', marginBottom:'0.3rem'}}>{path.title}</h1>
