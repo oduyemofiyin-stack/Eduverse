@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import emailjs from '@emailjs/browser';
+import { saveUserData } from '../lib/firestore';
 
 export default function Login() {
   const { login, users, addUser } = useApp();
@@ -73,6 +74,7 @@ export default function Login() {
     };
     addUser(newUser);
     login(newUser);
+    saveUserData(newUser.id, { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, picture: newUser.picture, provider: newUser.provider, createdAt: newUser.createdAt, wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
     setLoading(false);
     router.push('/');
   }

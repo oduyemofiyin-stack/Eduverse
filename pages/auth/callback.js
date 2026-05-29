@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
+import { saveUserData } from '../../lib/firestore';
 
 export default function AuthCallback() {
   const { login, addUser } = useApp();
@@ -23,6 +24,7 @@ export default function AuthCallback() {
           };
           addUser(user);
           login(user);
+          saveUserData(user.id, { email: user.email, firstName: user.firstName, lastName: user.lastName, picture: user.picture, provider: user.provider, createdAt: new Date().toISOString(), wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
           router.push('/');
         })
         .catch(() => router.push('/login'));
