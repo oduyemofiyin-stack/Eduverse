@@ -67,7 +67,7 @@ export default function Footer() {
           {/* QUICK LINKS */}
           <div>
             <h4 style={{fontSize:'0.78rem', fontWeight:'700', color:'var(--text)', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:'0.8rem'}}>Learn</h4>
-            {['Courses', 'Search', 'Wishlist', 'My Learning'].map(link => (
+            {['Courses', 'Paths', 'Search', 'Wishlist', 'My Learning'].map(link => (
               <button key={link} onClick={() => router.push(`/${link.toLowerCase().replace(' ','')}`)}
                 style={linkStyle}
                 onMouseEnter={e => { e.currentTarget.style.color='var(--text)'; e.currentTarget.style.transform='translateX(3px)'; }}
@@ -79,7 +79,7 @@ export default function Footer() {
           {/* COMPANY */}
           <div>
             <h4 style={{fontSize:'0.78rem', fontWeight:'700', color:'var(--text)', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:'0.8rem'}}>Company</h4>
-            {['About', 'Contact', 'Privacy Policy', 'Terms of Use'].map(link => {
+            {['About', 'Contact', 'Instructors', 'Blog', 'Privacy Policy', 'Terms of Use'].map(link => {
               const path = link === 'Privacy Policy' ? '/privacy' : link === 'Terms of Use' ? '/terms' : `/${link.toLowerCase()}`;
               return (
                 <button key={link} onClick={() => router.push(path)}

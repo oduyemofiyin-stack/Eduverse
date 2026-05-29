@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/router';
 
 export default function Header() {
-  const { currentUser, logout, wishlist, enrolled, theme, toggleTheme } = useApp();
+  const { currentUser, logout, wishlist, enrolled, theme, toggleTheme, unreadNotifications } = useApp();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,9 +30,12 @@ export default function Header() {
   const navItems = [
     {label:'Courses', path:'/'},
     {label:'Search', path:'/search'},
+    {label:'Paths', path:'/paths'},
     {label:'Dashboard', path:'/dashboard'},
     {label:`Wishlist${wishlist.length > 0 ? ` (${wishlist.length})` : ''}`, path:'/wishlist'},
     {label:`My Learning${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
+    {label:'Leaderboard', path:'/leaderboard'},
+    {label:'Blog', path:'/blog'},
     {label:'About', path:'/about'},
     {label:'Contact', path:'/contact'},
   ];
@@ -144,6 +147,25 @@ export default function Header() {
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
 
+          {/* NOTIFICATION BELL */}
+          <button onClick={() => router.push('/notifications')} title="Notifications" style={{
+            background:'var(--surface2)', border:'1px solid var(--border2)',
+            borderRadius:'9px', padding:'0.38rem 0.6rem',
+            cursor:'pointer', fontSize:'0.95rem', lineHeight:'1', position:'relative',
+          }}>
+            🔔
+            {unreadNotifications > 0 && (
+              <span style={{
+                position:'absolute', top:'-2px', right:'-2px',
+                width:'16px', height:'16px', borderRadius:'50%',
+                background:'var(--pink)', color:'#fff',
+                fontSize:'0.55rem', fontWeight:'700',
+                display:'flex', alignItems:'center', justifyContent:'center',
+                border:'2px solid var(--bg)',
+              }}>{unreadNotifications > 9 ? '9+' : unreadNotifications}</span>
+            )}
+          </button>
+
           {/* USER AVATAR / GOOGLE SIGN-IN */}
           {currentUser ? (
             <div style={{position:'relative'}}>
@@ -195,6 +217,13 @@ export default function Header() {
                   {ico:'📚', label:'My Learning', path:'/enrolled'},
                   {ico:'♡', label:'Wishlist', path:'/wishlist'},
                   {ico:'🔍', label:'Search', path:'/search'},
+                  {ico:'🗺️', label:'Learning Paths', path:'/paths'},
+                  {ico:'🏆', label:'Leaderboard', path:'/leaderboard'},
+                  {ico:'📝', label:'Blog', path:'/blog'},
+                  {ico:'🎓', label:'Certificates', path:'/certificates'},
+                  {ico:'📋', label:'Study Planner', path:'/planner'},
+                  {ico:'🔔', label:'Notifications', path:'/notifications'},
+                  {ico:'👨‍🏫', label:'Instructors', path:'/instructors'},
                   {ico:'ℹ️', label:'About', path:'/about'},
                   {ico:'✉️', label:'Contact', path:'/contact'},
                   ].map(item => (

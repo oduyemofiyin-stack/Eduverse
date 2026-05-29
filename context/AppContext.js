@@ -74,6 +74,26 @@ export function AppProvider({ children }) {
       return saved ? JSON.parse(saved) : {};
     } catch { return {}; }
   });
+  const [followingPaths, setFollowingPaths] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try { return JSON.parse(localStorage.getItem('eduverse_following_paths') || '[]'); } catch { return []; }
+  });
+  const [plannerGoals, setPlannerGoals] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try { return JSON.parse(localStorage.getItem('eduverse_planner_goals') || '[]'); } catch { return []; }
+  });
+  const [plannerTarget, setPlannerTarget] = useState(() => {
+    if (typeof window === 'undefined') return 30;
+    try { return parseInt(localStorage.getItem('eduverse_planner_target')) || 30; } catch { return 30; }
+  });
+  const [unreadNotifications, setUnreadNotifications] = useState(() => {
+    if (typeof window === 'undefined') return 0;
+    try { return parseInt(localStorage.getItem('eduverse_unread_notifications')) || 0; } catch { return 0; }
+  });
+  const [dismissedNotifs, setDismissedNotifs] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try { return JSON.parse(localStorage.getItem('eduverse_dismissed_notifs') || '[]'); } catch { return []; }
+  });
   const trackingRef = useRef(null);
 
   useEffect(() => {
@@ -175,6 +195,11 @@ export function AppProvider({ children }) {
   useEffect(() => { localStorage.setItem('eduverse_comments', JSON.stringify(comments)); if (currentUser) syncToFirestore(); }, [comments]);
   useEffect(() => { localStorage.setItem('eduverse_certificates', JSON.stringify(certificates)); if (currentUser) syncToFirestore(); }, [certificates]);
   useEffect(() => { localStorage.setItem('eduverse_study_time', JSON.stringify(studyTime)); if (currentUser) syncToFirestore(); }, [studyTime]);
+  useEffect(() => { localStorage.setItem('eduverse_following_paths', JSON.stringify(followingPaths)); }, [followingPaths]);
+  useEffect(() => { localStorage.setItem('eduverse_planner_goals', JSON.stringify(plannerGoals)); }, [plannerGoals]);
+  useEffect(() => { localStorage.setItem('eduverse_planner_target', plannerTarget.toString()); }, [plannerTarget]);
+  useEffect(() => { localStorage.setItem('eduverse_unread_notifications', unreadNotifications.toString()); }, [unreadNotifications]);
+  useEffect(() => { localStorage.setItem('eduverse_dismissed_notifs', JSON.stringify(dismissedNotifs)); }, [dismissedNotifs]);
 
   // Streak check on mount
   useEffect(() => {
@@ -460,6 +485,47 @@ export function AppProvider({ children }) {
       .slice(0, 10);
   }
 
+  function togglePathFollow(pathId) {
+    setFollowingPaths(prev => prev.includes(pathId) ? prev.filter(p => p !== pathId) : [...prev, pathId]);
+  }
+
+  function addPlannerGoal(text, targetMinutes = 30) {
+    const goal = { id: Date.now() + Math.random(), text, targetMinutes, completed: false, createdAt: new Date().toISOString() };
+    setPlannerGoals(prev => [...prev, goal]);
+  }
+
+  function togglePlannerGoal(id) {
+    setPlannerGoals(prev => prev.map(g => g.id === id ? { ...g, completed: !g.completed } : g));
+  }
+
+  function removePlannerGoal(id) {
+    setPlannerGoals(prev => prev.filter(g => g.id !== id));
+  }
+
+  function addNotification(type, title, desc) {
+    setUnreadNotifications(prev => prev + 1);
+    addActivity(type, desc || title);
+  }
+
+  function markNotificationsRead() {
+    setUnreadNotifications(0);
+  }
+
+  function dismissNotification(id) {
+    setDismissedNotifs(prev => [...prev, id]);
+  }
+
+  function getPlannerProgress() {
+    if (plannerGoals.length === 0) return 0;
+    return Math.round((plannerGoals.filter(g => g.completed).length / plannerGoals.length) * 100);
+  }
+
+  function getPathProgress(pathCourses) {
+    if (!pathCourses || pathCourses.length === 0) return 0;
+    const completedCount = pathCourses.filter(cId => completed.includes(cId)).length;
+    return Math.round((completedCount / pathCourses.length) * 100);
+  }
+
   return (
     <AppContext.Provider value={{
       currentUser, login, logout,
@@ -478,6 +544,9 @@ export function AppProvider({ children }) {
       certificates, addXp, addActivity, markQuizPassed, checkBookworm,
       studyTime, startTracking, stopTracking, getStudyTime,
       leaderboard, addScore, getLeaderboard,
+      followingPaths, togglePathFollow, getPathProgress,
+      plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress,
+      unreadNotifications, addNotification, markNotificationsRead, dismissNotification, dismissedNotifs,
     }}>
       {children}
     </AppContext.Provider>

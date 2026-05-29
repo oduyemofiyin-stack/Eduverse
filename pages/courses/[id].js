@@ -6,6 +6,7 @@ import courses from '../../data/courses';
 import StarRating from '../../components/StarRating';
 import { CourseDetailSkeleton } from '../../components/Skeleton';
 import CourseRecommendations from '../../components/CourseRecommendations';
+import resources from '../../data/resources';
 
 export default function CourseDetail() {
   const router = useRouter();
@@ -260,7 +261,7 @@ export default function CourseDetail() {
 
           {/* TABS */}
           <div style={{display:'flex', borderBottom:'1px solid var(--border)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
-            {['videos','reading','quiz'].map(tab => (
+            {['videos','reading','quiz','resources'].map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)} style={{
                 fontSize:'0.82rem', fontWeight:'600',
                 padding:'0.6rem 1rem', border:'none', background:'transparent',
@@ -268,7 +269,7 @@ export default function CourseDetail() {
                 borderBottom: activeTab === tab ? '2px solid #f0c040' : '2px solid transparent',
                 cursor:'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
               }}>
-                {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : 'Quiz'}
+                {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? 'Quiz' : 'Resources'}
               </button>
             ))}
           </div>
@@ -555,6 +556,51 @@ export default function CourseDetail() {
                   )}
                 </div>
               )}
+            </div>
+          )}
+
+          {activeTab === 'resources' && (
+            <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem'}}>
+              {(() => {
+                const allResources = resources.filter(r => r.courseId === course.id);
+                if (allResources.length === 0) return (
+                  <div style={{textAlign:'center', padding:'1.5rem', color:'var(--muted)'}}>
+                    <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>📁</div>
+                    <p style={{fontSize:'0.88rem'}}>No downloadable resources for this course yet.</p>
+                  </div>
+                );
+                return (
+                  <div>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', marginBottom:'0.3rem'}}>Course Resources</h3>
+                    <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'1rem'}}>Downloadable files to support your learning.</p>
+                    <div style={{display:'flex', flexDirection:'column', gap:'0.5rem'}}>
+                      {allResources.map((section, si) => (
+                        <div key={si}>
+                          <div style={{fontSize:'0.72rem', fontWeight:'600', color:'var(--blue)', marginBottom:'0.3rem', textTransform:'uppercase', letterSpacing:'0.05em'}}>
+                            Lesson {section.lessonIdx + 1}: {course.lessons[section.lessonIdx]?.title || `Lesson ${section.lessonIdx + 1}`}
+                          </div>
+                          {section.files.map((f, fi) => (
+                            <a key={fi} href={f.url} target="_blank" rel="noopener noreferrer" style={{
+                              display:'flex', alignItems:'center', gap:'0.6rem', padding:'0.6rem 0.8rem',
+                              borderRadius:'8px', marginBottom:'0.3rem',
+                              background:'var(--surface2)', border:'1px solid var(--border)',
+                              color:'var(--text)', fontSize:'0.82rem', textDecoration:'none',
+                              transition:'background 0.2s',
+                            }}
+                              onMouseEnter={e => e.currentTarget.style.background='var(--surface3)'}
+                              onMouseLeave={e => e.currentTarget.style.background='var(--surface2)'}
+                            >
+                              <span style={{fontSize:'0.9rem'}}>{f.type === 'pdf' ? '📄' : f.type === 'zip' ? '📦' : f.type === 'py' ? '🐍' : f.type === 'ipynb' ? '📓' : f.type === 'html' ? '🌐' : f.type === 'fig' ? '🎨' : f.type === 'xlsx' ? '📊' : '📎'}</span>
+                              <span style={{flex:1}}>{f.name}</span>
+                              <span style={{fontSize:'0.65rem', fontWeight:'600', padding:'0.15rem 0.5rem', borderRadius:'100px', background:'var(--surface3)', color:'var(--muted)', textTransform:'uppercase'}}>{f.type}</span>
+                            </a>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
         </div>
