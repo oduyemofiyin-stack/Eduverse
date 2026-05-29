@@ -36,6 +36,7 @@ export default function Header() {
     {label:`My Learning${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
     {label:'Leaderboard', path:'/leaderboard'},
     {label:'Blog', path:'/blog'},
+    {label:'Flashcards', path:'/flashcards'},
     {label:'About', path:'/about'},
     {label:'Contact', path:'/contact'},
   ];
@@ -220,6 +221,7 @@ export default function Header() {
                   {ico:'🗺️', label:'Learning Paths', path:'/paths'},
                   {ico:'🏆', label:'Leaderboard', path:'/leaderboard'},
                   {ico:'📝', label:'Blog', path:'/blog'},
+                  {ico:'🃏', label:'Flashcards', path:'/flashcards'},
                   {ico:'🎓', label:'Certificates', path:'/certificates'},
                   {ico:'📋', label:'Study Planner', path:'/planner'},
                   {ico:'🔔', label:'Notifications', path:'/notifications'},

@@ -11,7 +11,7 @@ import resources from '../../data/resources';
 export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, getCourseReviews, getAverageRating, getRatingDistribution, forumTopics, addForumTopic, addForumReply, getForumTopics } = useApp();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
@@ -24,6 +24,12 @@ export default function CourseDetail() {
   const [showReply, setShowReply] = useState({});
   const [playlistIdx, setPlaylistIdx] = useState(null);
   const [timer, setTimer] = useState(null);
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewHover, setReviewHover] = useState(0);
+  const [forumTitle, setForumTitle] = useState('');
+  const [forumBody, setForumBody] = useState('');
+  const [replyTexts, setReplyTexts] = useState({});
 
   const course = courses.find(c => c.id === parseInt(id));
   if (!course) return <CourseDetailSkeleton/>;
@@ -261,7 +267,7 @@ export default function CourseDetail() {
 
           {/* TABS */}
           <div style={{display:'flex', borderBottom:'1px solid var(--border)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
-            {['videos','reading','quiz','resources'].map(tab => (
+            {['videos','reading','quiz','resources','reviews','forum'].map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)} style={{
                 fontSize:'0.82rem', fontWeight:'600',
                 padding:'0.6rem 1rem', border:'none', background:'transparent',
@@ -269,7 +275,7 @@ export default function CourseDetail() {
                 borderBottom: activeTab === tab ? '2px solid #f0c040' : '2px solid transparent',
                 cursor:'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
               }}>
-                {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? 'Quiz' : 'Resources'}
+                {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? 'Quiz' : tab === 'resources' ? 'Resources' : tab === 'reviews' ? 'Reviews' : 'Forum'}
               </button>
             ))}
           </div>
@@ -601,6 +607,209 @@ export default function CourseDetail() {
                   </div>
                 );
               })()}
+            </div>
+          )}
+
+          {/* REVIEWS TAB */}
+          {activeTab === 'reviews' && (
+            <div>
+              {/* Review summary */}
+              {(() => {
+                const courseReviews = getCourseReviews(course.id);
+                const avgRating = getAverageRating(course.id);
+                const dist = getRatingDistribution(course.id);
+                const totalReviews = courseReviews.length;
+                return (
+                  <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem', marginBottom:'1rem'}}>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', marginBottom:'0.3rem'}}>Student Reviews</h3>
+                    <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'1rem'}}>
+                      {totalReviews > 0 ? `${totalReviews} review${totalReviews > 1 ? 's' : ''}` : 'No reviews yet. Be the first!'}
+                    </p>
+                    {totalReviews > 0 && (
+                      <div style={{display:'flex', gap:'1.5rem', flexWrap:'wrap', marginBottom:'1rem'}}>
+                        <div style={{textAlign:'center'}}>
+                          <div style={{fontFamily:'Georgia, serif', fontSize:'2.2rem', fontWeight:'700', color:'var(--gold)'}}>{avgRating}</div>
+                          <div style={{fontSize:'0.72rem', color:'var(--muted)'}}>out of 5</div>
+                        </div>
+                        <div style={{flex:1, minWidth:'150px'}}>
+                          {[5,4,3,2,1].map(star => (
+                            <div key={star} style={{display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.2rem', fontSize:'0.74rem'}}>
+                              <span style={{color:'var(--muted)', width:'30px'}}>{star} star</span>
+                              <div style={{flex:1, height:'6px', background:'var(--border)', borderRadius:'100px', overflow:'hidden'}}>
+                                <div style={{
+                                  height:'100%', borderRadius:'100px',
+                                  background:'linear-gradient(135deg,#f0c040,#c8960a)',
+                                  width: totalReviews > 0 ? `${(dist[star-1] / totalReviews) * 100}%` : '0%',
+                                }}/>
+                              </div>
+                              <span style={{color:'var(--muted2)', width:'20px', textAlign:'right'}}>{dist[star-1]}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Review form */}
+                    {isEnrolled && (
+                      <div style={{background:'var(--surface2)', borderRadius:'12px', padding:'1rem', marginTop:'0.5rem'}}>
+                        <h4 style={{fontSize:'0.85rem', fontWeight:'700', marginBottom:'0.5rem'}}>Write a Review</h4>
+                        <div style={{display:'flex', gap:'0.3rem', marginBottom:'0.6rem'}}>
+                          {[1,2,3,4,5].map(star => (
+                            <button key={star} onClick={() => setReviewRating(star)}
+                              onMouseEnter={() => setReviewHover(star)}
+                              onMouseLeave={() => setReviewHover(0)}
+                              style={{
+                                fontSize:'1.4rem', background:'none', border:'none', cursor:'pointer',
+                                color: (reviewHover || reviewRating) >= star ? '#f0c040' : 'var(--muted2)',
+                                transform: (reviewHover || reviewRating) >= star ? 'scale(1.15)' : 'scale(1)',
+                                transition:'all 0.15s',
+                              }}
+                            >★</button>
+                          ))}
+                          {reviewRating > 0 && <span style={{fontSize:'0.78rem', color:'var(--muted)', marginLeft:'0.3rem', alignSelf:'center'}}>{reviewRating} star{reviewRating > 1 ? 's' : ''}</span>}
+                        </div>
+                        <textarea value={reviewText} onChange={e => setReviewText(e.target.value)}
+                          placeholder="Share your experience with this course..."
+                          style={{
+                            width:'100%', minHeight:'70px', padding:'0.6rem', borderRadius:'8px',
+                            border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
+                            fontSize:'0.82rem', outline:'none', resize:'vertical', fontFamily:'inherit',
+                          }}/>
+                        <button onClick={() => {
+                          if (!reviewRating) { toast('Please select a rating', 'error'); return; }
+                          if (!reviewText.trim()) { toast('Please write a review', 'error'); return; }
+                          addReview(course.id, course.title, reviewRating, reviewText.trim());
+                          setReviewText(''); setReviewRating(0);
+                          toast('Review submitted!', 'success');
+                        }} style={{
+                          marginTop:'0.5rem', padding:'0.55rem 1.2rem', borderRadius:'8px',
+                          border:'none', cursor:'pointer', fontWeight:'600', fontSize:'0.82rem',
+                          background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                        }}>Submit Review</button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Review list */}
+              <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
+                {getCourseReviews(course.id).map(r => (
+                  <div key={r.id} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', padding:'1rem'}}>
+                    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.3rem'}}>
+                      <div style={{display:'flex', alignItems:'center', gap:'0.5rem'}}>
+                        <div style={{
+                          width:'28px', height:'28px', borderRadius:'50%',
+                          background:'linear-gradient(135deg,var(--blue),var(--teal))',
+                          display:'flex', alignItems:'center', justifyContent:'center',
+                          fontSize:'0.7rem', fontWeight:'700', color:'#fff',
+                        }}>{r.userName[0]?.toUpperCase()}</div>
+                        <span style={{fontWeight:'600', fontSize:'0.82rem', color:'var(--text)'}}>{r.userName}</span>
+                        <span style={{fontSize:'0.65rem', color:'var(--muted2)'}}>{new Date(r.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})}</span>
+                      </div>
+                      <div style={{display:'flex', gap:'0.15rem'}}>
+                        {[1,2,3,4,5].map(s => (
+                          <span key={s} style={{fontSize:'0.75rem', color: s <= r.rating ? '#f0c040' : 'var(--muted2)'}}>★</span>
+                        ))}
+                      </div>
+                    </div>
+                    <p style={{fontSize:'0.84rem', color:'var(--text2)', lineHeight:'1.6'}}>{r.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* FORUM TAB */}
+          {activeTab === 'forum' && (
+            <div>
+              <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem', marginBottom:'1rem'}}>
+                <h3 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', marginBottom:'0.3rem'}}>Discussion Forum</h3>
+                <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'1rem'}}>Ask questions and discuss this course with other learners.</p>
+
+                {isEnrolled && (
+                  <div style={{background:'var(--surface2)', borderRadius:'12px', padding:'1rem', marginBottom:'1rem'}}>
+                    <h4 style={{fontSize:'0.85rem', fontWeight:'700', marginBottom:'0.5rem'}}>Start a Discussion</h4>
+                    <input value={forumTitle} onChange={e => setForumTitle(e.target.value)}
+                      placeholder="Topic title"
+                      style={{
+                        width:'100%', padding:'0.55rem 0.7rem', borderRadius:'8px',
+                        border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
+                        fontSize:'0.82rem', outline:'none', marginBottom:'0.5rem',
+                      }}/>
+                    <textarea value={forumBody} onChange={e => setForumBody(e.target.value)}
+                      placeholder="What would you like to discuss?"
+                      style={{
+                        width:'100%', minHeight:'60px', padding:'0.55rem 0.7rem', borderRadius:'8px',
+                        border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
+                        fontSize:'0.82rem', outline:'none', resize:'vertical', fontFamily:'inherit',
+                      }}/>
+                    <button onClick={() => {
+                      if (!forumTitle.trim()) { toast('Please enter a topic title', 'error'); return; }
+                      if (!forumBody.trim()) { toast('Please enter some text', 'error'); return; }
+                      addForumTopic(course.id, course.title, forumTitle.trim(), forumBody.trim());
+                      setForumTitle(''); setForumBody('');
+                      toast('Topic posted!', 'success');
+                    }} style={{
+                      padding:'0.55rem 1.2rem', borderRadius:'8px',
+                      border:'none', cursor:'pointer', fontWeight:'600', fontSize:'0.82rem',
+                      background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
+                    }}>Post Topic</button>
+                  </div>
+                )}
+
+                {/* Topic list */}
+                <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
+                  {getForumTopics(course.id).length === 0 ? (
+                    <p style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', padding:'1rem'}}>
+                      No discussions yet. Be the first to start one!
+                    </p>
+                  ) : getForumTopics(course.id).map(topic => (
+                    <div key={topic.id} style={{background:'var(--surface2)', borderRadius:'12px', padding:'1rem', border:'1px solid var(--border)'}}>
+                      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.3rem'}}>
+                        <h4 style={{fontSize:'0.88rem', fontWeight:'700', color:'var(--text)'}}>{topic.title}</h4>
+                        <span style={{fontSize:'0.68rem', color:'var(--muted2)'}}>{topic.replies.length} reply{topic.replies.length !== 1 ? 's' : ''}</span>
+                      </div>
+                      <p style={{fontSize:'0.82rem', color:'var(--text2)', lineHeight:'1.5', marginBottom:'0.4rem'}}>{topic.body}</p>
+                      <div style={{display:'flex', alignItems:'center', gap:'0.5rem', marginBottom:'0.6rem', fontSize:'0.7rem', color:'var(--muted2)'}}>
+                        <span style={{fontWeight:'600', color:'var(--blue)'}}>{topic.userName}</span>
+                        <span>{new Date(topic.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
+                      </div>
+
+                      {/* Replies */}
+                      {topic.replies.length > 0 && (
+                        <div style={{marginLeft:'0.5rem', borderLeft:'2px solid var(--border)', paddingLeft:'0.8rem', marginBottom:'0.6rem'}}>
+                          {topic.replies.map(reply => (
+                            <div key={reply.id} style={{padding:'0.4rem 0', borderBottom:'1px solid var(--border)'}}>
+                              <div style={{display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.15rem'}}>
+                                <span style={{fontWeight:'600', fontSize:'0.74rem', color:'var(--teal)'}}>{reply.userName}</span>
+                                <span style={{fontSize:'0.6rem', color:'var(--muted2)'}}>{new Date(reply.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
+                              </div>
+                              <p style={{fontSize:'0.78rem', color:'var(--text2)', lineHeight:'1.4'}}>{reply.text}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Reply form */}
+                      {isEnrolled && (
+                        <div style={{display:'flex', gap:'0.4rem'}}>
+                          <input value={replyTexts[topic.id] || ''} onChange={e => setReplyTexts(p => ({...p, [topic.id]: e.target.value}))}
+                            placeholder="Write a reply..."
+                            style={{
+                              flex:1, padding:'0.4rem 0.6rem', borderRadius:'6px',
+                              border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
+                              fontSize:'0.75rem', outline:'none',
+                            }}
+                            onKeyDown={e => { if (e.key === 'Enter' && replyTexts[topic.id]?.trim()) { addForumReply(topic.id, replyTexts[topic.id].trim()); setReplyTexts(p => ({...p, [topic.id]: ''})); } }}/>
+                          <button onClick={() => { if (replyTexts[topic.id]?.trim()) { addForumReply(topic.id, replyTexts[topic.id].trim()); setReplyTexts(p => ({...p, [topic.id]: ''})); } }}
+                            style={{padding:'0.4rem 0.7rem', borderRadius:'6px', border:'none', background:'var(--teal)', color:'#fff', fontSize:'0.75rem', cursor:'pointer', fontWeight:'600'}}>Reply</button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>

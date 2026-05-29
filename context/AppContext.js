@@ -63,6 +63,19 @@ export function AppProvider({ children }) {
   const [lastActiveDate, setLastActiveDate] = useState(null);
   const [badges, setBadges] = useState([]);
   const [activityLog, setActivityLog] = useState([]);
+  const [reviews, setReviews] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try { return JSON.parse(localStorage.getItem('eduverse_reviews') || '[]'); } catch { return []; }
+  });
+  const [forumTopics, setForumTopics] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try { return JSON.parse(localStorage.getItem('eduverse_forum_topics') || '[]'); } catch { return []; }
+  });
+  const [flashcardDecks, setFlashcardDecks] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    try { return JSON.parse(localStorage.getItem('eduverse_flashcard_decks') || '[]'); } catch { return []; }
+  });
+  const [flashcardProgress, setFlashcardProgress] = useState({});
   const [notes, setNotes] = useState({});
   const [bookmarks, setBookmarks] = useState({});
   const [comments, setComments] = useState({});
@@ -134,6 +147,14 @@ export function AppProvider({ children }) {
       if (savedComments) setComments(JSON.parse(savedComments));
       const savedCerts = localStorage.getItem('eduverse_certificates');
       if (savedCerts) setCertificates(JSON.parse(savedCerts));
+      const savedReviews = localStorage.getItem('eduverse_reviews');
+      if (savedReviews) setReviews(JSON.parse(savedReviews));
+      const savedForum = localStorage.getItem('eduverse_forum_topics');
+      if (savedForum) setForumTopics(JSON.parse(savedForum));
+      const savedDecks = localStorage.getItem('eduverse_flashcard_decks');
+      if (savedDecks) setFlashcardDecks(JSON.parse(savedDecks));
+      const savedFp = localStorage.getItem('eduverse_flashcard_progress');
+      if (savedFp) setFlashcardProgress(JSON.parse(savedFp));
     } catch(e) {}
   }, []);
 
@@ -157,6 +178,10 @@ export function AppProvider({ children }) {
       if (cloud.bookmarks) setBookmarks(cloud.bookmarks);
       if (cloud.comments) setComments(cloud.comments);
       if (cloud.certificates) setCertificates(cloud.certificates);
+      if (cloud.reviews) setReviews(cloud.reviews);
+      if (cloud.forumTopics) setForumTopics(cloud.forumTopics);
+      if (cloud.flashcardDecks) setFlashcardDecks(cloud.flashcardDecks);
+      if (cloud.flashcardProgress) setFlashcardProgress(cloud.flashcardProgress);
     });
   }, [currentUser?.id]);
 
@@ -172,6 +197,7 @@ export function AppProvider({ children }) {
       wishlist, enrolled, progress, readingProgress, completed, ratings,
       xp, streak, lastActiveDate, badges, activityLog,
       notes, bookmarks, comments, certificates, studyTime,
+      reviews, forumTopics, flashcardDecks, flashcardProgress,
     });
   }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
 
@@ -200,6 +226,10 @@ export function AppProvider({ children }) {
   useEffect(() => { localStorage.setItem('eduverse_planner_target', plannerTarget.toString()); }, [plannerTarget]);
   useEffect(() => { localStorage.setItem('eduverse_unread_notifications', unreadNotifications.toString()); }, [unreadNotifications]);
   useEffect(() => { localStorage.setItem('eduverse_dismissed_notifs', JSON.stringify(dismissedNotifs)); }, [dismissedNotifs]);
+  useEffect(() => { localStorage.setItem('eduverse_reviews', JSON.stringify(reviews)); }, [reviews]);
+  useEffect(() => { localStorage.setItem('eduverse_forum_topics', JSON.stringify(forumTopics)); }, [forumTopics]);
+  useEffect(() => { localStorage.setItem('eduverse_flashcard_decks', JSON.stringify(flashcardDecks)); }, [flashcardDecks]);
+  useEffect(() => { localStorage.setItem('eduverse_flashcard_progress', JSON.stringify(flashcardProgress)); }, [flashcardProgress]);
 
   // Streak check on mount
   useEffect(() => {
@@ -234,6 +264,7 @@ export function AppProvider({ children }) {
     setWishlist([]); setEnrolled([]); setProgress({}); setCompleted([]); setRatings({});
     setXp(0); setStreak(0); setLastActiveDate(null); setBadges([]); setActivityLog([]);
     setNotes({}); setBookmarks({}); setComments({}); setCertificates([]); setStudyTime({});
+    setReviews([]); setForumTopics([]); setFlashcardDecks([]); setFlashcardProgress({});
     localStorage.removeItem('eduverse_user'); localStorage.removeItem('eduverse_wishlist');
     localStorage.removeItem('eduverse_enrolled'); localStorage.removeItem('eduverse_progress'); localStorage.removeItem('eduverse_reading_progress');
     localStorage.removeItem('eduverse_completed'); localStorage.removeItem('eduverse_ratings');
@@ -242,6 +273,8 @@ export function AppProvider({ children }) {
     localStorage.removeItem('eduverse_activity'); localStorage.removeItem('eduverse_notes');
     localStorage.removeItem('eduverse_bookmarks'); localStorage.removeItem('eduverse_comments');
     localStorage.removeItem('eduverse_certificates'); localStorage.removeItem('eduverse_study_time');
+    localStorage.removeItem('eduverse_reviews'); localStorage.removeItem('eduverse_forum_topics');
+    localStorage.removeItem('eduverse_flashcard_decks'); localStorage.removeItem('eduverse_flashcard_progress');
   }
 
   function addXp(amount, reason) {
@@ -526,6 +559,112 @@ export function AppProvider({ children }) {
     return Math.round((completedCount / pathCourses.length) * 100);
   }
 
+  // ─── Reviews ───
+  function addReview(courseId, courseName, rating, text) {
+    const review = {
+      id: Date.now() + Math.random(),
+      courseId, courseName, rating, text,
+      userName: currentUser?.firstName || 'Anonymous',
+      userEmail: currentUser?.email || '',
+      createdAt: new Date().toISOString(),
+    };
+    setReviews(prev => [review, ...prev]);
+    rateCourse(courseId, rating);
+    addActivity('review', `${review.userName} reviewed "${courseName}" (${rating} stars)`);
+  }
+
+  function getCourseReviews(courseId) {
+    return reviews.filter(r => r.courseId === courseId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+
+  function getAverageRating(courseId) {
+    const courseReviews = reviews.filter(r => r.courseId === courseId);
+    if (courseReviews.length === 0) return 0;
+    const sum = courseReviews.reduce((a, r) => a + r.rating, 0);
+    return Math.round((sum / courseReviews.length) * 10) / 10;
+  }
+
+  function getRatingDistribution(courseId) {
+    const courseReviews = reviews.filter(r => r.courseId === courseId);
+    const dist = [0, 0, 0, 0, 0];
+    courseReviews.forEach(r => { if (r.rating >= 1 && r.rating <= 5) dist[r.rating - 1]++; });
+    return dist;
+  }
+
+  // ─── Forum Topics ───
+  function addForumTopic(courseId, courseName, title, body) {
+    const topic = {
+      id: Date.now() + Math.random(),
+      courseId, courseName, title, body,
+      userName: currentUser?.firstName || currentUser?.email?.split('@')[0] || 'Anonymous',
+      userEmail: currentUser?.email || '',
+      createdAt: new Date().toISOString(),
+      replies: [],
+    };
+    setForumTopics(prev => [topic, ...prev]);
+    addActivity('forum', `${topic.userName} posted "${title}" in ${courseName}`);
+  }
+
+  function addForumReply(topicId, text) {
+    const reply = {
+      id: Date.now() + Math.random(),
+      userName: currentUser?.firstName || currentUser?.email?.split('@')[0] || 'Anonymous',
+      text,
+      createdAt: new Date().toISOString(),
+    };
+    setForumTopics(prev => prev.map(t => t.id === topicId ? { ...t, replies: [...t.replies, reply] } : t));
+    addActivity('forum', `${reply.userName} replied to a topic`);
+  }
+
+  function getForumTopics(courseId) {
+    return forumTopics.filter(t => t.courseId === courseId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+
+  function getAllForumTopics() {
+    return [...forumTopics].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+
+  // ─── Flashcards ───
+  function addFlashcardDeck(courseId, courseName) {
+    const deck = {
+      id: Date.now() + Math.random(),
+      courseId, courseName,
+      cards: [],
+      createdAt: new Date().toISOString(),
+    };
+    setFlashcardDecks(prev => [...prev, deck]);
+    return deck.id;
+  }
+
+  function addCardToDeck(deckId, front, back) {
+    const card = { id: Date.now() + Math.random(), front, back };
+    setFlashcardDecks(prev => prev.map(d => d.id === deckId ? { ...d, cards: [...d.cards, card] } : d));
+  }
+
+  function removeCardFromDeck(deckId, cardId) {
+    setFlashcardDecks(prev => prev.map(d => d.id === deckId ? { ...d, cards: d.cards.filter(c => c.id !== cardId) } : d));
+  }
+
+  function removeFlashcardDeck(deckId) {
+    setFlashcardDecks(prev => prev.filter(d => d.id !== deckId));
+  }
+
+  function markCardStudied(deckId, cardId, known) {
+    setFlashcardProgress(prev => ({
+      ...prev,
+      [`${deckId}_${cardId}`]: { known, studiedAt: new Date().toISOString() },
+    }));
+  }
+
+  function getDeckProgress(deckId) {
+    const deck = flashcardDecks.find(d => d.id === deckId);
+    if (!deck || deck.cards.length === 0) return { studied: 0, known: 0, total: 0, pct: 0 };
+    const total = deck.cards.length;
+    const studied = deck.cards.filter(c => flashcardProgress[`${deckId}_${c.id}`]).length;
+    const known = deck.cards.filter(c => flashcardProgress[`${deckId}_${c.id}`]?.known).length;
+    return { studied, known, total, pct: Math.round((studied / total) * 100) };
+  }
+
   return (
     <AppContext.Provider value={{
       currentUser, login, logout,
@@ -547,6 +686,9 @@ export function AppProvider({ children }) {
       followingPaths, togglePathFollow, getPathProgress,
       plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress,
       unreadNotifications, addNotification, markNotificationsRead, dismissNotification, dismissedNotifs,
+      reviews, addReview, getCourseReviews, getAverageRating, getRatingDistribution,
+      forumTopics, addForumTopic, addForumReply, getForumTopics, getAllForumTopics,
+      flashcardDecks, addFlashcardDeck, addCardToDeck, removeCardFromDeck, removeFlashcardDeck, markCardStudied, getDeckProgress, flashcardProgress,
     }}>
       {children}
     </AppContext.Provider>
