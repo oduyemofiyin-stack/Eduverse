@@ -13,12 +13,10 @@ import '../styles/globals.css';
 function AuthGuard({ Component, pageProps }) {
   const { currentUser, theme } = useApp();
   const router = useRouter();
-  const [checking, setChecking] = useState(true);
   const [transitioning, setTransitioning] = useState(false);
   const touchStartX = useRef(0);
 
   const publicPaths = ['/login', '/admin', '/auth/callback'];
-  const noFramePaths = ['/login', '/admin', '/auth/callback'];
 
   // Back-swipe gesture
   useEffect(() => {
@@ -49,36 +47,24 @@ function AuthGuard({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
-    const id = setTimeout(() => setChecking(false), 150);
-    return () => clearTimeout(id);
-  }, []);
-
-  useEffect(() => {
-    if (!checking && !currentUser && !publicPaths.includes(router.pathname)) {
-      router.push('/login');
-    }
-  }, [checking, currentUser, router.pathname]);
-
-  useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  if (checking) return (
-    <div style={{
-      minHeight:'100vh',
-      background: theme === 'light' ? '#f0f4ff' : '#06080f',
-      display:'flex', alignItems:'center', justifyContent:'center',
-    }}>
-      <div style={{
-        width:'40px', height:'40px', borderRadius:'50%',
-        border:'3px solid rgba(68,136,255,0.2)',
-        borderTop:'3px solid #4488ff',
-        animation:'spin 0.8s linear infinite',
-      }}/>
-    </div>
-  );
+  useEffect(() => {
+    if (!currentUser && !publicPaths.includes(router.pathname)) {
+      router.push('/login');
+    }
+  }, [currentUser]);
 
-  if (!currentUser && !publicPaths.includes(router.pathname)) return null;
+  // During SSR, currentUser is always null (no localStorage).
+  // Show a placeholder to avoid hydration mismatch; client logic handles the rest.
+  if (typeof window === 'undefined') {
+    return <div style={{minHeight:'100vh', background:'var(--bg)'}} />;
+  }
+
+  if (!currentUser && !publicPaths.includes(router.pathname)) {
+    return null;
+  }
 
   if (publicPaths.includes(router.pathname)) {
     return <Component {...pageProps} />;
