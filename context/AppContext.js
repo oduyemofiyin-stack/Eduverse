@@ -43,7 +43,13 @@ const BADGE_DEFS = {
 };
 
 export function AppProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const saved = localStorage.getItem('eduverse_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch { return null; }
+  });
   const [wishlist, setWishlist] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
   const [progress, setProgress] = useState({});

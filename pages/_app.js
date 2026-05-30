@@ -49,7 +49,8 @@ function AuthGuard({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
-    setChecking(false);
+    const id = requestAnimationFrame(() => setChecking(false));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   useEffect(() => {
