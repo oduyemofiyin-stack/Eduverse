@@ -57,11 +57,7 @@ function AuthGuard({ Component, pageProps }) {
   }, [currentUser]);
 
   // During SSR, currentUser is always null (no localStorage).
-  // Show a placeholder to avoid hydration mismatch; client logic handles the rest.
-  if (typeof window === 'undefined') {
-    return <div style={{minHeight:'100vh', background:'var(--bg)'}} />;
-  }
-
+  // Render null for protected pages to match client; redirect useEffect handles the rest.
   if (!currentUser && !publicPaths.includes(router.pathname)) {
     return null;
   }
