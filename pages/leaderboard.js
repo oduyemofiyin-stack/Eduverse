@@ -86,13 +86,13 @@ export default function Leaderboard() {
             border: tab === 'global' ? 'none' : '1px solid var(--border)',
             background: tab === 'global' ? 'linear-gradient(135deg,var(--blue),#3366dd)' : 'var(--surface)',
             color: tab === 'global' ? '#fff' : 'var(--muted)', cursor:'pointer',
-          }}>My Stats</button>
+          }}>🏆 My Stats</button>
           <button onClick={() => setTab('badges')} style={{
             fontSize:'0.78rem', fontWeight:'600', padding:'0.4rem 1.2rem', borderRadius:'100px',
             border: tab === 'badges' ? 'none' : '1px solid var(--border)',
             background: tab === 'badges' ? 'linear-gradient(135deg,var(--blue),#3366dd)' : 'var(--surface)',
             color: tab === 'badges' ? '#fff' : 'var(--muted)', cursor:'pointer',
-          }}>Badges</button>
+          }}>🏅 Badges</button>
         </div>
 
         {tab === 'global' && (
