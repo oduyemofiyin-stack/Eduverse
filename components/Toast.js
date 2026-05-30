@@ -36,7 +36,7 @@ export function ToastProvider({ children }) {
     <ToastContext.Provider value={toast}>
       {children}
       <div style={{
-        position:'fixed', bottom:'1.5rem', right:'1.5rem',
+        position:'fixed', top:'50%', left:'50%', transform:'translate(-50%, -50%)',
         zIndex:9999, display:'flex', flexDirection:'column', gap:'0.6rem',
         pointerEvents:'none', maxWidth:'340px', width:'100%',
       }}>

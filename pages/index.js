@@ -177,7 +177,7 @@ export default function Home() {
             maxWidth:'580px', margin:'0.5rem auto 2.2rem',
             fontWeight:'400',
           }}>
-            World-class courses with real video lessons, reading materials, quizzes, and certificates — completely free, forever.
+            World-class courses with real video lessons, reading materials, quizzes, and free certificates which is completely free forever.
           </p>
 
           <div className="reveal delay-4" style={{

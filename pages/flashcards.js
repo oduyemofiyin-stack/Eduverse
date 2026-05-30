@@ -88,7 +88,6 @@ export default function Flashcards() {
 
           {userDecks.length === 0 ? (
             <div style={{textAlign:'center', padding:'3rem 1rem', background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px'}}>
-              <div style={{fontSize:'2.5rem', marginBottom:'0.8rem'}}>🃏</div>
               <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700', marginBottom:'0.4rem'}}>No Flashcard Decks Yet</h3>
               <p style={{fontSize:'0.84rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Create a deck for an enrolled course to start studying.</p>
               {enrolledCourses.length > 0 ? (

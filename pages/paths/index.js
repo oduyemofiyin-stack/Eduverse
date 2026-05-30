@@ -33,7 +33,7 @@ export default function LearningPaths() {
           Learning <span className="shimmer-text">Paths</span>
         </h1>
         <p style={{color:'var(--muted)', fontSize:'0.95rem', maxWidth:'560px', lineHeight:'1.7', marginBottom:'1.5rem'}}>
-          Curated sequences of courses designed to take you from beginner to job-ready. Follow a path and track your progress.
+          Curated sequences of courses designed to take you from beginner to job ready. Follow a path and track your progress.
         </p>
 
         <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap:'1.3rem'}}>

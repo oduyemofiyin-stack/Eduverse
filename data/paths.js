@@ -3,7 +3,7 @@ const learningPaths = [
     id: 'frontend-dev',
     title: 'Frontend Web Developer',
     subtitle: 'From zero to building modern web apps',
-    description: 'Master HTML, CSS, JavaScript, React, and TypeScript to become a job-ready frontend developer.',
+    description: 'Master HTML, CSS, JavaScript, React, and TypeScript to become a job ready frontend developer.',
     color: '#4488ff',
     duration: '6 courses',
     courses: [13, 14, 1, 9, 16, 20],

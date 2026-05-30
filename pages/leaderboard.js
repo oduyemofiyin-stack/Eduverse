@@ -42,13 +42,13 @@ export default function Leaderboard() {
 
   const BadgeList = () => {
     const allBadges = [
-      { id: 'first_lesson', icon: '👣', label: 'First Steps' },
-      { id: 'quiz_whiz', icon: '🧠', label: 'Quiz Whiz' },
-      { id: 'streak_7', icon: '🔥', label: 'Streak Master' },
-      { id: 'graduate', icon: '🎓', label: 'Course Graduate' },
-      { id: 'explorer', icon: '📖', label: 'Knowledge Seeker' },
-      { id: 'centurion', icon: '⚡', label: 'Centurion' },
-      { id: 'bookworm', icon: '📚', label: 'Bookworm' },
+      { id: 'first_lesson', icon: '', label: 'First Steps' },
+      { id: 'quiz_whiz', icon: '', label: 'Quiz Whiz' },
+      { id: 'streak_7', icon: '', label: 'Streak Master' },
+      { id: 'graduate', icon: '', label: 'Course Graduate' },
+      { id: 'explorer', icon: '', label: 'Knowledge Seeker' },
+      { id: 'centurion', icon: '', label: 'Centurion' },
+      { id: 'bookworm', icon: '', label: 'Bookworm' },
     ];
     return (
       <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(130px, 1fr))', gap:'0.8rem'}}>
@@ -86,13 +86,13 @@ export default function Leaderboard() {
             border: tab === 'global' ? 'none' : '1px solid var(--border)',
             background: tab === 'global' ? 'linear-gradient(135deg,var(--blue),#3366dd)' : 'var(--surface)',
             color: tab === 'global' ? '#fff' : 'var(--muted)', cursor:'pointer',
-          }}>🏆 My Stats</button>
+          }}>My Stats</button>
           <button onClick={() => setTab('badges')} style={{
             fontSize:'0.78rem', fontWeight:'600', padding:'0.4rem 1.2rem', borderRadius:'100px',
             border: tab === 'badges' ? 'none' : '1px solid var(--border)',
             background: tab === 'badges' ? 'linear-gradient(135deg,var(--blue),#3366dd)' : 'var(--surface)',
             color: tab === 'badges' ? '#fff' : 'var(--muted)', cursor:'pointer',
-          }}>🏅 Badges</button>
+          }}>Badges</button>
         </div>
 
         {tab === 'global' && (
@@ -100,7 +100,7 @@ export default function Leaderboard() {
             <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(170px, 1fr))', gap:'1rem', marginBottom:'2rem'}}>
               <RankCard rank={levelInfo.level} title="Level" value={`${levelInfo.title}`} icon={`Level ${levelInfo.level}`} color="var(--gold)" />
               <RankCard rank={xp} title="Total XP" value={xp.toLocaleString()} icon={`${levelInfo.progress}% to ${levelInfo.nextTitle || 'Max'}`} color="var(--blue)" />
-              <RankCard rank={streak} title="Streak" value={`${streak}d`} icon="🔥" color="var(--pink)" />
+              <RankCard rank={streak} title="Streak" value={`${streak}d`} icon="" color="var(--pink)" />
               <RankCard rank={completedCount} title="Courses Done" value={completedCount} icon={`${enrolledCount} enrolled`} color="var(--teal)" />
             </div>
 
