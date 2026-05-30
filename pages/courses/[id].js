@@ -161,7 +161,7 @@ export default function CourseDetail() {
       {/* MOBILE HERO IMAGE */}
       <div style={{width:'100%', height:'200px', overflow:'hidden', marginTop:'1rem', position:'relative'}}
         className="mobile-hero-img">
-        <img src={course.img} alt={course.title} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+        <img src={course.img} alt={course.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
         <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(6,8,15,0.8) 0%, transparent 60%)'}}/>
       </div>
 
@@ -171,7 +171,7 @@ export default function CourseDetail() {
         {/* SIDEBAR */}
         <div className="detail-sidebar">
           <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', overflow:'hidden'}}>
-            <img src={course.img} alt={course.title}
+            <img src={course.img} alt={course.title} loading="lazy"
               style={{width:'100%', height:'160px', objectFit:'cover', display:'block'}}
               className="sidebar-img"
             />

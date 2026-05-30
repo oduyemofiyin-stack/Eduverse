@@ -76,7 +76,7 @@ export default function LearningPaths() {
                         onMouseEnter={e => { e.currentTarget.style.borderColor = path.color + '66'; e.currentTarget.style.transform = 'scale(1.1)'; }}
                         onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'scale(1)'; }}
                       >
-                        <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover'}} />
+                        <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}} />
                       </div>
                       );
                     })}

@@ -53,7 +53,7 @@ export default function Blog() {
               onClick={() => router.push(`/blog/${post.id}`)}
             >
               <div style={{height:'180px', overflow:'hidden', background:'var(--surface2)', position:'relative'}}>
-                <img src={post.image} alt={post.title} style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s'}}
+                <img src={post.image} alt={post.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s'}}
                   onMouseEnter={e => e.target.style.transform='scale(1.1)'}
                   onMouseLeave={e => e.target.style.transform='scale(1)'}
                 />

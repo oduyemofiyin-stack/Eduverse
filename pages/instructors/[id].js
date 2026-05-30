@@ -88,7 +88,7 @@ export default function InstructorDetail() {
                 onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.boxShadow='none'; }}
               >
                 <div style={{height:'140px', overflow:'hidden', background:'var(--surface2)'}}>
-                  <img src={c.img} alt={c.title} style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s'}}
+                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s'}}
                     onMouseEnter={e => e.target.style.transform='scale(1.1)'}
                     onMouseLeave={e => e.target.style.transform='scale(1)'}
                   />

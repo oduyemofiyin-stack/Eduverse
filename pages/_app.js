@@ -49,8 +49,7 @@ function AuthGuard({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => setChecking(false), 300);
-    return () => clearTimeout(timer);
+    setChecking(false);
   }, []);
 
   useEffect(() => {
@@ -75,7 +74,6 @@ function AuthGuard({ Component, pageProps }) {
         borderTop:'3px solid #4488ff',
         animation:'spin 0.8s linear infinite',
       }}/>
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 

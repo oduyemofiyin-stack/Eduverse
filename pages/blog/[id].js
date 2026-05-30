@@ -34,7 +34,7 @@ export default function BlogPost() {
         <button onClick={() => router.push('/blog')} style={{background:'none', border:'none', color:'var(--muted)', cursor:'pointer', fontSize:'0.85rem', marginBottom:'1rem', display:'inline-flex', alignItems:'center', gap:'0.3rem'}}>← Back to Blog</button>
 
         <div style={{borderRadius:'20px', overflow:'hidden', border:'1px solid var(--border)', marginBottom:'1.5rem', position:'relative'}}>
-          <img src={post.image} alt={post.title} style={{width:'100%', height:'clamp(200px, 40vw, 400px)', objectFit:'cover', display:'block'}}/>
+          <img src={post.image} alt={post.title} loading="lazy" style={{width:'100%', height:'clamp(200px, 40vw, 400px)', objectFit:'cover', display:'block'}}/>
           <div style={{position:'absolute', bottom:'0', left:'0', right:'0', padding:'2rem 1.5rem 1.2rem', background:'linear-gradient(to top, rgba(6,8,15,0.9), transparent)'}}>
             <span style={{fontSize:'0.65rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.08em', padding:'0.25rem 0.7rem', borderRadius:'100px', background:'rgba(240,192,64,0.2)', color:'var(--gold)', border:'1px solid rgba(240,192,64,0.3)'}}>{post.category}</span>
           </div>
@@ -69,7 +69,7 @@ export default function BlogPost() {
                   onClick={() => router.push(`/blog/${r.id}`)}
                 >
                   <div style={{height:'120px', overflow:'hidden', background:'var(--surface2)'}}>
-                    <img src={r.image} alt={r.title} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                    <img src={r.image} alt={r.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
                   </div>
                   <div style={{padding:'0.8rem'}}>
                     <div style={{fontWeight:'700', fontSize:'0.8rem', lineHeight:'1.3', marginBottom:'0.2rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{r.title}</div>

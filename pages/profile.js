@@ -203,7 +203,7 @@ export default function Profile() {
                   onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(var(--blue-rgb,68,136,255),0.22)'; e.currentTarget.style.background='var(--surface2)'; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.background='var(--surface)'; }}
                 >
-                  <img src={c.img} alt={c.title} style={{width:'60px', height:'60px', borderRadius:'10px', objectFit:'cover', flexShrink:0}}/>
+                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'60px', height:'60px', borderRadius:'10px', objectFit:'cover', flexShrink:0}}/>
                   <div style={{flex:1, minWidth:'150px'}}>
                     <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
                     <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'0.5rem'}}>by {c.instructor}</div>

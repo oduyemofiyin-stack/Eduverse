@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { saveUserData, loadUserData } from '../lib/firestore';
 
 const AppContext = createContext();
@@ -665,31 +665,40 @@ export function AppProvider({ children }) {
     return { studied, known, total, pct: Math.round((studied / total) * 100) };
   }
 
+  const ctxValue = useMemo(() => ({
+    currentUser, login, logout,
+    wishlist, toggleWishlist,
+    enrolled, toggleEnroll,
+    progress, markLesson, getCourseProgress,
+    readingProgress, markReading, getReadingProgress, getCombinedProgress,
+    completed, markCompleted,
+    ratings, rateCourse, getUserRating,
+    theme, toggleTheme,
+    users, addUser, syncToFirestore,
+    xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS,
+    notes, addNote, removeNote,
+    bookmarks, toggleBookmark, isBookmarked,
+    comments, addComment, getCommentsData, getReplies,
+    certificates, addXp, addActivity, markQuizPassed, checkBookworm,
+    studyTime, startTracking, stopTracking, getStudyTime,
+    leaderboard, addScore, getLeaderboard,
+    followingPaths, togglePathFollow, getPathProgress,
+    plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress,
+    unreadNotifications, addNotification, markNotificationsRead, dismissNotification, dismissedNotifs,
+    reviews, addReview, getCourseReviews, getAverageRating, getRatingDistribution,
+    forumTopics, addForumTopic, addForumReply, getForumTopics, getAllForumTopics,
+    flashcardDecks, addFlashcardDeck, addCardToDeck, removeCardFromDeck, removeFlashcardDeck, markCardStudied, getDeckProgress, flashcardProgress,
+  }), [
+    currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings,
+    theme, users, xp, streak, lastActiveDate, badges, activityLog,
+    notes, bookmarks, comments, certificates, studyTime,
+    leaderboard, followingPaths, plannerGoals, plannerTarget,
+    unreadNotifications, dismissedNotifs, reviews, forumTopics,
+    flashcardDecks, flashcardProgress,
+  ]);
+
   return (
-    <AppContext.Provider value={{
-      currentUser, login, logout,
-      wishlist, toggleWishlist,
-      enrolled, toggleEnroll,
-      progress, markLesson, getCourseProgress,
-      readingProgress, markReading, getReadingProgress, getCombinedProgress,
-      completed, markCompleted,
-      ratings, rateCourse, getUserRating,
-      theme, toggleTheme,
-      users, addUser, syncToFirestore,
-      xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS,
-      notes, addNote, removeNote,
-      bookmarks, toggleBookmark, isBookmarked,
-      comments, addComment, getCommentsData, getReplies,
-      certificates, addXp, addActivity, markQuizPassed, checkBookworm,
-      studyTime, startTracking, stopTracking, getStudyTime,
-      leaderboard, addScore, getLeaderboard,
-      followingPaths, togglePathFollow, getPathProgress,
-      plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress,
-      unreadNotifications, addNotification, markNotificationsRead, dismissNotification, dismissedNotifs,
-      reviews, addReview, getCourseReviews, getAverageRating, getRatingDistribution,
-      forumTopics, addForumTopic, addForumReply, getForumTopics, getAllForumTopics,
-      flashcardDecks, addFlashcardDeck, addCardToDeck, removeCardFromDeck, removeFlashcardDeck, markCardStudied, getDeckProgress, flashcardProgress,
-    }}>
+    <AppContext.Provider value={ctxValue}>
       {children}
     </AppContext.Provider>
   );
