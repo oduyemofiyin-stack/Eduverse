@@ -15,6 +15,7 @@ export default function Login() {
   const [resetEmail, setResetEmail] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+  const [tempPass, setTempPass] = useState('');
 
   function switchTab(t) {
     setTab(t);
@@ -101,21 +102,19 @@ export default function Login() {
     setErrors({});
     try {
       const tempPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8).toUpperCase();
-      // Update password in users
       addUser({ ...user, password: tempPassword });
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        {
-          to_name: `${user.firstName} ${user.lastName}`,
-          to_email: resetEmail,
-          temp_password: tempPassword,
-        },
-        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
-      );
+      try {
+        await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+          { to_name: `${user.firstName} ${user.lastName}`, to_email: resetEmail, temp_password: tempPassword },
+          { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
+        );
+      } catch(e) { /* email may fail, still show temp password on screen */ }
+      setTempPass(tempPassword);
       setResetSent(true);
     } catch(e) {
-      setErrors({ reset: 'Could not send reset email. Please try again.' });
+      setErrors({ reset: 'Something went wrong. Please try again.' });
     }
     setResetLoading(false);
   }
@@ -271,9 +270,10 @@ export default function Login() {
             <div style={{background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'12px', padding:'1.2rem'}}>
               {resetSent ? (
                 <div style={{textAlign:'center'}}>
-                  <p style={{fontSize:'0.85rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.3rem'}}>Reset email sent!</p>
-                  <p style={{fontSize:'0.8rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Check your inbox for your temporary password.</p>
-                  <span onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Back to sign in</span>
+                  <p style={{fontSize:'0.85rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.3rem'}}>Password reset successfully!</p>
+                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.6rem'}}>Use this temporary password to sign in:</p>
+                  <div style={{fontSize:'1.1rem', fontWeight:'700', color:'var(--gold)', background:'var(--surface)', padding:'0.5rem', borderRadius:'8px', letterSpacing:'0.1em', marginBottom:'0.8rem', fontFamily:'monospace'}}>{tempPass}</div>
+                  <span onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(''); setTempPass(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Back to sign in</span>
                 </div>
               ) : (
                 <>
