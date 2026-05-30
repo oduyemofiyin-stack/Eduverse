@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
 import { useToast } from '../../components/Toast';
@@ -145,6 +145,42 @@ export default function CourseDetail() {
     startTracking(course.id);
     return () => stopTracking();
   }, [course.id]);
+
+  // Auto-mark reading sections as read when visible for 3+ seconds
+  const readingTimers = useRef({});
+  const autoMarkReading = useCallback((idx) => {
+    markReading(course.id, idx);
+  }, [course.id, markReading]);
+
+  useEffect(() => {
+    const els = document.querySelectorAll('[data-reading-idx]');
+    if (!els.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const idx = parseInt(entry.target.getAttribute('data-reading-idx'));
+        if (isNaN(idx)) return;
+        const alreadyRead = readingProgress[course.id]?.includes(idx);
+
+        if (entry.isIntersecting && !alreadyRead && !readingTimers.current[idx]) {
+          readingTimers.current[idx] = setTimeout(() => {
+            autoMarkReading(idx);
+            delete readingTimers.current[idx];
+          }, 3000);
+        } else if (!entry.isIntersecting && readingTimers.current[idx]) {
+          clearTimeout(readingTimers.current[idx]);
+          delete readingTimers.current[idx];
+        }
+      });
+    }, { threshold: 0.6 });
+
+    els.forEach(el => observer.observe(el));
+    return () => {
+      observer.disconnect();
+      Object.values(readingTimers.current).forEach(clearTimeout);
+      readingTimers.current = {};
+    };
+  }, [activeTab, course.id, autoMarkReading]);
 
   return (
     <div style={{maxWidth:'1100px', margin:'0 auto', padding:'0 0 4rem'}}>
@@ -417,7 +453,7 @@ export default function CourseDetail() {
               {course.reading.map((r, i) => {
                 const isRead = readingProgress[course.id]?.includes(i);
                 return (
-                <div key={i} style={{
+                <div key={i} data-reading-idx={i} style={{
                   background:'var(--surface)', border:`1px solid ${isRead ? 'rgba(0,212,170,0.2)' : 'var(--border)'}`,
                   borderRadius:'14px', padding:'1.2rem', transition:'border 0.3s',
                 }}>
@@ -451,6 +487,7 @@ export default function CourseDetail() {
                 </div>
                 );
               })}
+
             </div>
           )}
 
@@ -465,7 +502,7 @@ export default function CourseDetail() {
                       fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
                       borderRadius:'12px', border:'none', cursor:'pointer',
                       background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                    }}>Enroll Now — It&apos;s Free</button>
+                    }}>Enroll Now</button>
                   </div>
                 ) : !quizState ? (
                   <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
