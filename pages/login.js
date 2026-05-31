@@ -128,7 +128,7 @@ export default function Login() {
   });
 
   return (
-      <div style={{
+      <div suppressHydrationWarning style={{
         minHeight:'100vh', background:'var(--bg)',
         display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
         backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.08) 0%, transparent 60%)',
