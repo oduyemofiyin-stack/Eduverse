@@ -273,7 +273,11 @@ export default function Login() {
                   <p style={{fontSize:'0.85rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.3rem'}}>Password reset successfully!</p>
                   <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.6rem'}}>Use this temporary password to sign in:</p>
                   <div style={{fontSize:'1.1rem', fontWeight:'700', color:'var(--gold)', background:'var(--surface)', padding:'0.5rem', borderRadius:'8px', letterSpacing:'0.1em', marginBottom:'0.8rem', fontFamily:'monospace'}}>{tempPass}</div>
-                  <span onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(''); setTempPass(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Back to sign in</span>
+                  <div style={{display:'flex', gap:'0.6rem', justifyContent:'center'}}>
+                    <span onClick={() => { setResetSent(false); setTempPass(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Generate another</span>
+                    <span style={{fontSize:'0.78rem', color:'var(--muted2)'}}>·</span>
+                    <span onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(''); setTempPass(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Back to sign in</span>
+                  </div>
                 </div>
               ) : (
                 <>
