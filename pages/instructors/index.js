@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import instructors from '../../data/instructors';
 import courses from '../../data/courses';
 
+// Instructors listing page — currently only shows Oduye Emmanuel
 export default function Instructors() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);

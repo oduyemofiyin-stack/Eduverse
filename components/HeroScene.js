@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { initStarfield } from '../lib/animations';
 
+// Starfield background for the hero section
 export default function HeroScene() {
   const canvasRef = useRef(null);
 

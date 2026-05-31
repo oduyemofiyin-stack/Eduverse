@@ -1,3 +1,4 @@
+// Contact page with form (uses emailjs)
 export default function Contact() {
   return (
     <div className="page-container" style={{maxWidth:'860px', margin:'0 auto', padding:'3rem 1.2rem 4rem'}}>

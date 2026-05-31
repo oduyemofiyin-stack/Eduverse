@@ -57,6 +57,7 @@ export default function Home() {
   const categories = ['All', ...new Set(courses.map(c => c.category))];
 
   useEffect(() => {
+    // FIXME: this loading timer feels hacky but it works
     const timer = setTimeout(() => setLoading(false), 200);
     return () => clearTimeout(timer);
   }, []);
@@ -68,13 +69,14 @@ export default function Home() {
       const parallaxCleanup = initParallax();
       initMagneticButtons();
       initCustomCursor();
+      console.log('animations initialized yay');
       return () => {
         if (typeof parallaxCleanup === 'function') parallaxCleanup();
       };
     }
   }, [loading]);
 
-  // Typewriter effect
+  // Typewriter effect (kinda janky but whatever)
   useEffect(() => {
     const phrases = ['your pace.', 'zero cost.', 'anywhere.', 'your potential.'];
     let pi = 0, ci = 0;

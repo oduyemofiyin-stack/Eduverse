@@ -10,6 +10,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
+  // track scroll pos for hiding header on scroll down
   const lastScrollY = useRef(0);
 
   useEffect(() => {

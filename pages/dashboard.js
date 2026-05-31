@@ -11,7 +11,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [celebration, setCelebration] = useState(null);
 
-  // Show celebration when a new badge is earned (first load)
+  // Show celebration modal for new badges (runs once on load)
   useEffect(() => {
     if (!loading && badges.length > 0) {
       const lastBadge = badges[badges.length - 1];
@@ -37,7 +37,7 @@ export default function Dashboard() {
   const totalStudySeconds = Object.values(studyTime).reduce((sum, s) => sum + s, 0);
   const totalStudyMinutes = Math.floor(totalStudySeconds / 60);
 
-  // Activity heatmap data (last 12 weeks)
+  // Activity heatmap - last 90 days (github style)
   const today = new Date();
   const heatmapData = [];
   for (let d = 90; d >= 0; d--) {

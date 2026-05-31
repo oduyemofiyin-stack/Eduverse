@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// Shows a red banner when user goes offline
 export default function OfflineBanner() {
   const [offline, setOffline] = useState(false);
 

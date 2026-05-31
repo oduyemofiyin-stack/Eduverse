@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 
+// Notification center — shows all activity feed items
 export default function Notifications() {
   const { activityLog, markNotificationsRead, unreadNotifications } = useApp();
   const [loading, setLoading] = useState(true);

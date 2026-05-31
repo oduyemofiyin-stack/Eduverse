@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import blogPosts from '../../data/blog';
 
+// Blog listing page — shows all posts with category filter
 export default function Blog() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);

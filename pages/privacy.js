@@ -16,6 +16,7 @@ const sections = [
   { title:'13. Contact & Data Protection Officer', body:'For any privacy-related questions, concerns, or requests, please contact:\n\nEduverse Academy Ltd\n10, Osoro Street, Papa Ajao\nMushin, Lagos, Nigeria\nEmail: Oduyemofiyin@gmail.com\nPhone: +234 916 257 8348' },
 ];
 
+// Privacy policy page
 export default function Privacy() {
   return (
     <div className="page-container" style={{maxWidth:'800px', margin:'0 auto', padding:'3rem 1.2rem 5rem'}}>

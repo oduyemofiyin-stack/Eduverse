@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// Floating button to scroll back to top (appears after 600px)
 export default function ScrollToTop() {
   const [show, setShow] = useState(false);
 

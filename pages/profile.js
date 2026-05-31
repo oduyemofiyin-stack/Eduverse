@@ -12,6 +12,7 @@ export default function Profile() {
   const [pfpError, setPfpError] = useState(false);
 
   useEffect(() => {
+    // why 800ms? just feels right lol
     const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);

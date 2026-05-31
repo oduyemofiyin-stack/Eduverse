@@ -18,7 +18,7 @@ function AuthGuard({ Component, pageProps }) {
 
   const publicPaths = ['/login', '/admin', '/auth/callback'];
 
-  // Back-swipe gesture
+  // Back-swipe gesture (works for iOS-like navigation, kinda janky on android)
   useEffect(() => {
     function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
     function onTouchEnd(e) {
@@ -56,7 +56,7 @@ function AuthGuard({ Component, pageProps }) {
     }
   }, [currentUser]);
 
-  // During SSR, currentUser is always null (no localStorage).
+  // During SSR, currentUser is always null since localStorage doesnt exist on server.
   // Render null for protected pages to match client; redirect useEffect handles the rest.
   if (!currentUser && !publicPaths.includes(router.pathname)) {
     return null;

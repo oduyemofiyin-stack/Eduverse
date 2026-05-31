@@ -1,3 +1,4 @@
+// these skeleton loaders are kinda ugly but better than nothing
 export function CourseSkeleton() {
   return (
     <div style={{

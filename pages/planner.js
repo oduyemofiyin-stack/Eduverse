@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 
+// Study planner page — set daily goals and track progress
 export default function Planner() {
   const { plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress, streak, studyTime } = useApp();
   const [loading, setLoading] = useState(true);

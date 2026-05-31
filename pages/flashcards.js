@@ -17,6 +17,7 @@ export default function Flashcards() {
   const [newDeckCourseId, setNewDeckCourseId] = useState('');
   const [frontText, setFrontText] = useState('');
   const [backText, setBackText] = useState('');
+  // prob should add image support for cards later
 
   const enrolledCourses = courses.filter(c => enrolled.includes(c.id));
   const userDecks = flashcardDecks.filter(d => d.userEmail === currentUser?.email || !d.userEmail);

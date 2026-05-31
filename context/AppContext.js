@@ -105,6 +105,7 @@ export function AppProvider({ children }) {
     if (typeof window === 'undefined') return 30;
     try { return parseInt(localStorage.getItem('eduverse_planner_target')) || 30; } catch { return 30; }
   });
+  // TODO: move all these localStorage reads into a single helper function...
   const [unreadNotifications, setUnreadNotifications] = useState(() => {
     if (typeof window === 'undefined') return 0;
     try { return parseInt(localStorage.getItem('eduverse_unread_notifications')) || 0; } catch { return 0; }
@@ -207,7 +208,7 @@ export function AppProvider({ children }) {
     });
   }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
 
-  // Persist new state (localStorage + Firestore)
+  // Persist everything to localStorage + firestore (yes its a lot of useEffects lol)
   useEffect(() => { if (currentUser) { localStorage.setItem('eduverse_user', JSON.stringify(currentUser)); syncToFirestore(); } }, [currentUser]);
   useEffect(() => { localStorage.setItem('eduverse_wishlist', JSON.stringify(wishlist)); if (currentUser) syncToFirestore(); }, [wishlist]);
   useEffect(() => { localStorage.setItem('eduverse_enrolled', JSON.stringify(enrolled)); if (currentUser) syncToFirestore(); }, [enrolled]);
@@ -237,7 +238,7 @@ export function AppProvider({ children }) {
   useEffect(() => { localStorage.setItem('eduverse_flashcard_decks', JSON.stringify(flashcardDecks)); }, [flashcardDecks]);
   useEffect(() => { localStorage.setItem('eduverse_flashcard_progress', JSON.stringify(flashcardProgress)); }, [flashcardProgress]);
 
-  // Streak check on mount
+  // Streak check on mount — im using date string compare, works fine
   useEffect(() => {
     if (!currentUser) return;
     const today = new Date().toDateString();
@@ -246,6 +247,7 @@ export function AppProvider({ children }) {
     if (lastActiveDate === yesterday) {
       setStreak(prev => prev + 1);
     } else if (lastActiveDate && lastActiveDate !== today) {
+      console.log('streak lost :(');
       setStreak(0);
     } else if (!lastActiveDate) {
       setStreak(1);
@@ -253,7 +255,7 @@ export function AppProvider({ children }) {
     setLastActiveDate(today);
   }, [currentUser]);
 
-  // Check streak badge
+  // Check if we earned any new badges
   useEffect(() => {
     if (streak >= 7 && !badges.includes('streak_7')) {
       setBadges(prev => [...prev, 'streak_7']);
@@ -420,7 +422,7 @@ export function AppProvider({ children }) {
     });
   }
 
-  // ─── Notes ───
+  // ─── Notes (user notes on lessons) ───
   function addNote(courseId, lessonIdx, text) {
     const key = `${courseId}_${lessonIdx}`;
     const note = { id: Date.now() + Math.random(), text, createdAt: new Date().toISOString() };
@@ -433,7 +435,7 @@ export function AppProvider({ children }) {
     setNotes(prev => ({ ...prev, [key]: (prev[key] || []).filter(n => n.id !== noteId) }));
   }
 
-  // ─── Bookmarks ───
+  // ─── Bookmarks (might refactor this later) ───
   function toggleBookmark(courseId, lessonIdx) {
     setBookmarks(prev => {
       const list = prev[courseId] || [];
@@ -447,7 +449,7 @@ export function AppProvider({ children }) {
     return (bookmarks[courseId] || []).includes(lessonIdx);
   }
 
-  // ─── Comments ───
+  // ─── Comments on lessons ───
   function addComment(courseId, lessonIdx, userName, text, parentId = null) {
     const key = `${courseId}_${lessonIdx}`;
     const comment = { id: Date.now() + Math.random(), userName, text, parentId, createdAt: new Date().toISOString() };

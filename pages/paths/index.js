@@ -4,6 +4,7 @@ import { useApp } from '../../context/AppContext';
 import learningPaths from '../../data/paths';
 import courses from '../../data/courses';
 
+// Learning paths — curated course collections for specific tracks
 export default function LearningPaths() {
   const { followingPaths, togglePathFollow, getPathProgress } = useApp();
   const router = useRouter();

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
+// Verify a certificate by its unique code
 export default function Verify() {
   const { certificates } = useApp();
   const [searchCode, setSearchCode] = useState('');

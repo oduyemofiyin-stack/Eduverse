@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { CourseGridSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
+// My Learning page — shows currently enrolled courses with progress
 export default function Enrolled() {
   const { enrolled } = useApp();
   const router = useRouter();

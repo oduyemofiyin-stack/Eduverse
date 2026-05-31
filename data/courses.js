@@ -3,18 +3,18 @@ const courses = [
     id:1, title:"React for Beginners",     instructor:"Oduye Emmanuel",
     category:"Web Development", duration:"0.9 hours",
     level:"beginner",
-    description:"Master React from scratch. Learn components, hooks, props, state management, and build real-world applications. Perfect for anyone starting their frontend journey.",
+    description:"Master React from the ground up. Components, hooks, props, state management — build real apps. Good for beginners.",
     img:"https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80",
-    rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks"],
+    rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks","jsx"],
     lessons:[
-      {title:"Introduction to React & JSX", dur:"2 min", yt:"Tn6-PIqc4UM"},
+      {title:"Intro to React & JSX", dur:"2 min", yt:"Tn6-PIqc4UM"},
       {title:"Components, Props & State", dur:"12 min", yt:"1yTYmuXn6NQ"},
       {title:"React Hooks — useState & useEffect", dur:"15 min", yt:"O6P86uwfdR0"},
       {title:"Building a Real Project", dur:"27 min", yt:"hQAHSlTtcmY"},
     ],
     reading:[
-      {title:"Why React?", body:"React is a JavaScript library for building user interfaces, maintained by Meta. It uses a virtual DOM to efficiently update the UI.", points:["Functional Components are the modern standard","JSX lets you write HTML-like syntax in JS","Props flow down from parent to child","State is local to a component unless lifted"]},
-      {title:"The Component Model", body:"React apps are built as trees of components. Each component is a function that returns JSX.", points:["Break UI into small reusable pieces","Use keys in lists for performance","Avoid deeply nested components","Lift state up when sharing data"]},
+      {title:"Why React?", body:"React is a JS library for UIs, made by Meta. Uses virtual DOM to update efficiently. Pretty dope.", points:["Functional Components are the modern standard","JSX lets you write HTML-like syntax in JS","Props flow down from parent to child","State is local to a component unless lifted"]},
+      {title:"The Component Model", body:"React apps are trees of components. Each component = function returning JSX.", points:["Break UI into small reusable pieces","Use keys in lists for performance","Avoid deeply nested components","Lift state up when sharing data"]},
     ],
     quiz:[
       {q:"What does JSX stand for?", opts:["JavaScript XML","Java Syntax Extension","JSON XML","JavaScript Extra"], ans:0},
@@ -28,7 +28,7 @@ const courses = [
     id:2, title:"Python Data Science Bootcamp",     instructor:"Oduye Emmanuel",
     category:"Data Science", duration:"9.7 hours",
     level:"intermediate",
-    description:"Master Python for data analysis and visualization. Covers NumPy, Pandas, Matplotlib, and ML fundamentals with real-world projects.",
+    description:"Python for data analysis and viz. NumPy, Pandas, Matplotlib, basic ML. Real projects included.",
     img:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
     lessons:[
@@ -53,7 +53,7 @@ const courses = [
     id:3, title:"UI/UX Design Fundamentals",     instructor:"Oduye Emmanuel",
     category:"Design", duration:"0.8 hours",
     level:"beginner",
-    description:"Learn user-centered design principles. Master Figma, wireframing, prototyping, and design systems.",
+    description:"User-centered design principles. Figma, wireframing, prototyping, design systems. Pretty comprehensive for a short course.",
     img:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
     lessons:[
