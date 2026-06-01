@@ -93,10 +93,25 @@ function AuthGuard({ Component, pageProps }) {
   );
 }
 
+function SwCleanup() {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => r.unregister());
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+    }
+  }, []);
+  return null;
+}
+
 export default function MyApp({ Component, pageProps }) {
   return (
     <AppProvider>
       <ToastProvider>
+        <SwCleanup />
         <AuthGuard Component={Component} pageProps={pageProps} />
       </ToastProvider>
     </AppProvider>
