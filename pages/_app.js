@@ -6,8 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import ScrollToTop from '../components/ScrollToTop';
-import OfflineBanner from '../components/OfflineBanner';
-import PwaRegister from '../components/PwaRegister';
+
 import '../styles/globals.css';
 
 function AuthGuard({ Component, pageProps }) {
@@ -82,7 +81,6 @@ function AuthGuard({ Component, pageProps }) {
           : 'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.05) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.04) 0%, transparent 60%)',
         pointerEvents:'none', zIndex:0,
       }}/>
-      <OfflineBanner />
       <Header />
       <main style={{flex:1, position:'relative', zIndex:1, transition:'opacity 0.2s, transform 0.2s', opacity: transitioning ? 0.7 : 1, transform: transitioning ? 'scale(0.98)' : 'scale(1)'}}>
         <Component {...pageProps} />
@@ -99,7 +97,6 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <AppProvider>
       <ToastProvider>
-        <PwaRegister />
         <AuthGuard Component={Component} pageProps={pageProps} />
       </ToastProvider>
     </AppProvider>
