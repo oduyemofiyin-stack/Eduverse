@@ -22,9 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# leftover duplicate dir (locked, will be deleted after reboot)
-/Eduverse/
-
 # local env files
 .env
 .env.local
