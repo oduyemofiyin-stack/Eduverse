@@ -4,7 +4,7 @@ const courses = [
     category:"Web Development", duration:"0.9 hours",
     level:"beginner",
     description:"Master React from the ground up. Components, hooks, props, state management — build real apps. Good for beginners.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+4pqb77iPPC90ZXh0Pjx0ZXh0IHg9IjMwMCIgeT0iMjIwLjAwMDAwMDAwMDAwMDAzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5SZWFjdCBmb3IgQmVnaW5uZXJzPC90ZXh0PjxyZWN0IHg9IjIzMCIgeT0iMjUyIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMykiLz48dGV4dCB4PSIzMDAiIHk9IjI5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIiBmb250LXNpemU9IjE2IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+V2ViIERldmVsb3BtZW50PC90ZXh0Pjwvc3ZnPg==",
+    img:"https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks","jsx"],
     lessons:[
       {title:"Intro to React & JSX", dur:"2 min", yt:"Tn6-PIqc4UM"},
@@ -29,7 +29,7 @@ const courses = [
     category:"Data Science", duration:"9.7 hours",
     level:"intermediate",
     description:"Python for data analysis and viz. NumPy, Pandas, Matplotlib, basic ML. Real projects included.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwZDRhYSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwZDRhYWRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+TijwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+UHl0aG9uIERhdGEgU2NpZW5jZSBCb290Y2FtcDwvdGV4dD48cmVjdCB4PSIyMzAiIHk9IjI1MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIi8+PHRleHQgeD0iMzAwIiB5PSIyOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPkRhdGEgU2NpZW5jZTwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
     lessons:[
       {title:"Python Fundamentals & Setup", dur:"374 min", yt:"_uQrJ0TkZlc"},
@@ -54,7 +54,7 @@ const courses = [
     category:"Design", duration:"0.8 hours",
     level:"beginner",
     description:"User-centered design principles. Figma, wireframing, prototyping, design systems. Pretty comprehensive for a short course.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YwYzA0MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2YwYzA0MGRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+OqDwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+VUkvVVggRGVzaWduIEZ1bmRhbWVudGFsczwvdGV4dD48cmVjdCB4PSIyMzAiIHk9IjI1MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIi8+PHRleHQgeD0iMzAwIiB5PSIyOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPkRlc2lnbjwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/7568293/pexels-photo-7568293.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
     lessons:[
       {title:"Design Thinking & UX Research", dur:"1 min", yt:"a7sEoEvT8l8"},
@@ -79,7 +79,7 @@ const courses = [
     category:"Mobile Development", duration:"4.5 hours",
     level:"intermediate",
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNmI5ZCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmNmI5ZGRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+TsTwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+Rmx1dHRlciBNb2JpbGUgRGV2ZWxvcG1lbnQ8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5Nb2JpbGUgRGV2ZWxvcG1lbnQ8L3RleHQ+PC9zdmc+",
+    img:"https://images.pexels.com/photos/28902919/pexels-photo-28902919.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
     lessons:[
       {title:"Flutter & Dart Crash Course", dur:"12 min", yt:"1ukSR1GRtMU"},
@@ -104,7 +104,7 @@ const courses = [
     category:"AI & Machine Learning", duration:"8.7 hours",
     level:"advanced",
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2E4NTVmNyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2E4NTVmN2RkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+kljwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+TWFjaGluZSBMZWFybmluZyB3aXRoIFRlbnNvckZsb3c8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5BSSAmYW1wOyBNYWNoaW5lIExlYXJuaW5nPC90ZXh0Pjwvc3ZnPg==",
+    img:"https://images.pexels.com/photos/17483868/pexels-photo-17483868.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["tensorflow","neural networks","deep learning","keras","nlp"],
     lessons:[
       {title:"Machine Learning Fundamentals", dur:"7 min", yt:"ukzFI9rgwfU"},
@@ -129,7 +129,7 @@ const courses = [
     category:"Marketing", duration:"17.6 hours",
     level:"beginner",
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y5NzMxNiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y5NzMxNmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+TiDwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+RGlnaXRhbCBNYXJrZXRpbmcgTWFzdGVyY2xhc3M8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5NYXJrZXRpbmc8L3RleHQ+PC9zdmc+",
+    img:"https://images.pexels.com/photos/15543041/pexels-photo-15543041.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
     lessons:[
       {title:"Digital Marketing Strategy Overview", dur:"1 min", yt:"Mf6PcbGDiO4"},
@@ -154,7 +154,7 @@ const courses = [
     category:"Web Development", duration:"3.2 hours",
     level:"intermediate",
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+4pqZ77iPPC90ZXh0Pjx0ZXh0IHg9IjMwMCIgeT0iMjIwLjAwMDAwMDAwMDAwMDAzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5Ob2RlLmpzICZhbXA7IEV4cHJlc3MgQmFja2VuZDwvdGV4dD48cmVjdCB4PSIyMzAiIHk9IjI1MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIi8+PHRleHQgeD0iMzAwIiB5PSIyOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPldlYiBEZXZlbG9wbWVudDwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/6424589/pexels-photo-6424589.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["nodejs","express","rest api","mongodb","backend"],
     lessons:[
       {title:"Node.js Fundamentals", dur:"78 min", yt:"TlB_eWDSMt4"},
@@ -179,7 +179,7 @@ const courses = [
     category:"Cybersecurity", duration:"24.6 hours",
     level:"intermediate",
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzIyYzU1ZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzIyYzU1ZWRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+UkjwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+RXRoaWNhbCBIYWNraW5nICZhbXA7IEN5YmVyc2VjdXJpdHk8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5DeWJlcnNlY3VyaXR5PC90ZXh0Pjwvc3ZnPg==",
+    img:"https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["hacking","penetration testing","kali linux","security","networking"],
     lessons:[
       {title:"Introduction to Cybersecurity", dur:"7 min", yt:"inWWhr5tnEA"},
@@ -204,7 +204,7 @@ const courses = [
     category:"Web Development", duration:"0.6 hours",
     level:"advanced",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+TnTwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QWR2YW5jZWQgVHlwZVNjcmlwdCBQYXR0ZXJuczwvdGV4dD48cmVjdCB4PSIyMzAiIHk9IjI1MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIi8+PHRleHQgeD0iMzAwIiB5PSIyOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPldlYiBEZXZlbG9wbWVudDwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/207580/pexels-photo-207580.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
     lessons:[
       {title:"TypeScript Generics Deep Dive", dur:"10 min", yt:"nePDL5lQSE4"},
@@ -229,7 +229,7 @@ const courses = [
     category:"Business", duration:"3.7 hours",
     level:"beginner",
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzYzNjZmMSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzYzNjZmMWRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+TizwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QnVzaW5lc3MgQW5hbHl0aWNzIHdpdGggRXhjZWwgJmFtcDsgUG93ZXIgQkk8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5CdXNpbmVzczwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/6829522/pexels-photo-6829522.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
     lessons:[
       {title:"Excel for Business Analysis", dur:"146 min", yt:"Vl0H-qTclOg"},
@@ -254,7 +254,7 @@ const courses = [
     category:"Web Development", duration:"7.2 hours",
     level:"intermediate",
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+WljwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+VnVlLmpzIDMg4oCTIFRoZSBDb21wbGV0ZSBHdWlkZTwvdGV4dD48cmVjdCB4PSIyMzAiIHk9IjI1MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIi8+PHRleHQgeD0iMzAwIiB5PSIyOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPldlYiBEZXZlbG9wbWVudDwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["vuejs","vue 3","composition api","pinia","frontend"],
     lessons:[
       {title:"Vue 3 Core Concepts", dur:"219 min", yt:"FXpIoQ_rT_c"},
@@ -279,7 +279,7 @@ const courses = [
     category:"Data Science", duration:"13.5 hours",
     level:"intermediate",
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwZDRhYSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwZDRhYWRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+nrjwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+RGF0YSBTdHJ1Y3R1cmVzICZhbXA7IEFsZ29yaXRobXMgaW4gUHl0aG9uPC90ZXh0PjxyZWN0IHg9IjIzMCIgeT0iMjUyIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMykiLz48dGV4dCB4PSIzMDAiIHk9IjI5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIiBmb250LXNpemU9IjE2IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+RGF0YSBTY2llbmNlPC90ZXh0Pjwvc3ZnPg==",
+    img:"https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["algorithms","data structures","python","leetcode","interviews"],
     lessons:[
       {title:"Big O Notation & Complexity", dur:"8 min", yt:"v4cd1O4zkGw"},
@@ -304,7 +304,7 @@ const courses = [
     category:"Web Development", duration:"15.3 hours",
     level:"beginner",
     description:"Build beautiful websites from scratch. Master HTML5, CSS3, Flexbox, CSS Grid, and responsive design principles.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+MkDwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+SFRNTCAmYW1wOyBDU1MgTWFzdGVyY2xhc3M8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5XZWIgRGV2ZWxvcG1lbnQ8L3RleHQ+PC9zdmc+",
+    img:"https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
     lessons:[
       {title:"HTML5 Semantics & Structure", dur:"122 min", yt:"pQN-pnXPaVg"},
@@ -329,7 +329,7 @@ const courses = [
     category:"Web Development", duration:"6.3 hours",
     level:"beginner",
     description:"Learn JavaScript from the ground up. Covers variables, functions, DOM manipulation, ES6+, and async programming.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+4pqhPC90ZXh0Pjx0ZXh0IHg9IjMwMCIgeT0iMjIwLjAwMDAwMDAwMDAwMDAzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5KYXZhU2NyaXB0IEZ1bmRhbWVudGFsczwvdGV4dD48cmVjdCB4PSIyMzAiIHk9IjI1MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIi8+PHRleHQgeD0iMzAwIiB5PSIyOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPldlYiBEZXZlbG9wbWVudDwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["javascript","es6","dom","async","web"],
     lessons:[
       {title:"JS Basics: Variables & Data Types", dur:"206 min", yt:"PkZNo7MFNFg"},
@@ -354,7 +354,7 @@ const courses = [
     category:"Programming", duration:"20.4 hours",
     level:"beginner",
     description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+4piVPC90ZXh0Pjx0ZXh0IHg9IjMwMCIgeT0iMjIwLjAwMDAwMDAwMDAwMDAzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5KYXZhIFByb2dyYW1taW5nIGZvciBCZWdpbm5lcnM8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5Qcm9ncmFtbWluZzwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/276452/pexels-photo-276452.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"150 min", yt:"eIrMbAQSU34"},
@@ -379,7 +379,7 @@ const courses = [
     category:"Design", duration:"8.5 hours",
     level:"intermediate",
     description:"Master modern CSS layout techniques. Build complex responsive designs with Flexbox, Grid, and advanced positioning.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YwYzA0MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2YwYzA0MGRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+OrzwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+Q1NTIEdyaWQsIEZsZXhib3ggJmFtcDsgTW9kZXJuIExheW91dHM8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5EZXNpZ248L3RleHQ+PC9zdmc+",
+    img:"https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
     lessons:[
       {title:"Flexbox Complete Guide", dur:"27 min", yt:"jV8B24rSN5o"},
@@ -404,7 +404,7 @@ const courses = [
     category:"Web Development", duration:"5 hours",
     level:"beginner",
     description:"Learn version control with Git and collaborate effectively on GitHub. Branching, merging, pull requests, and workflows.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+UgDwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+R2l0ICZhbXA7IEdpdEh1YiBFc3NlbnRpYWxzPC90ZXh0PjxyZWN0IHg9IjIzMCIgeT0iMjUyIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMykiLz48dGV4dCB4PSIzMDAiIHk9IjI5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIiBmb250LXNpemU9IjE2IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+V2ViIERldmVsb3BtZW50PC90ZXh0Pjwvc3ZnPg==",
+    img:"https://images.pexels.com/photos/34212896/pexels-photo-34212896.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.5, keywords:["git","github","version control","branching","collaboration"],
     lessons:[
       {title:"Git Basics: Init, Add, Commit", dur:"68 min", yt:"RGOj5yH7evk"},
@@ -429,7 +429,7 @@ const courses = [
     category:"Data Science", duration:"17.3 hours",
     level:"intermediate",
     description:"Master SQL queries and relational database design. Covers joins, subqueries, indexing, normalization, and performance tuning.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwZDRhYSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwZDRhYWRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+XhO+4jzwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+U1FMICZhbXA7IERhdGFiYXNlIERlc2lnbjwvdGV4dD48cmVjdCB4PSIyMzAiIHk9IjI1MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIi8+PHRleHQgeD0iMzAwIiB5PSIyOTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPkRhdGEgU2NpZW5jZTwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/572056/pexels-photo-572056.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
     lessons:[
       {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"260 min", yt:"HXV3zeQKqGY"},
@@ -454,7 +454,7 @@ const courses = [
     category:"Programming", duration:"18.2 hours",
     level:"beginner",
     description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQ0ODhmZmRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+QjTwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+UHl0aG9uIFByb2dyYW1taW5nIGZvciBCZWdpbm5lcnM8L3RleHQ+PHJlY3QgeD0iMjMwIiB5PSIyNTIiIHdpZHRoPSIxNDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5Qcm9ncmFtbWluZzwvdGV4dD48L3N2Zz4=",
+    img:"https://images.pexels.com/photos/4498093/pexels-photo-4498093.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"266 min", yt:"rfscVS0vtbw"},
@@ -479,7 +479,7 @@ const courses = [
     category:"Design", duration:"12.5 hours",
     level:"beginner",
     description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
-    img:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjYwMCIgeTI9IjQwMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YwYzA0MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2YwYzA0MGRkIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZykiLz48dGV4dCB4PSIzMDAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMiI+8J+TkDwvdGV4dD48dGV4dCB4PSIzMDAiIHk9IjIyMC4wMDAwMDAwMDAwMDAwMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+UmVzcG9uc2l2ZSBXZWIgRGVzaWduIEJvb3RjYW1wPC90ZXh0PjxyZWN0IHg9IjIzMCIgeT0iMjUyIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMykiLz48dGV4dCB4PSIzMDAiIHk9IjI5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIiBmb250LXNpemU9IjE2IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+RGVzaWduPC90ZXh0Pjwvc3ZnPg==",
+    img:"https://images.pexels.com/photos/29205845/pexels-photo-29205845.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
     lessons:[
       {title:"Responsive Design Principles & Strategy", dur:"247 min", yt:"kUMe1FH4CHE"},
