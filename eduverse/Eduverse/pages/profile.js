@@ -47,7 +47,7 @@ export default function Profile() {
               alt="avatar"
               referrerPolicy="no-referrer"
               onError={() => setPfpError(true)}
-              style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover', border:'3px solid var(--gold)'}}
+              style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover'}}
             />
           ) : (
             <div style={{
@@ -55,17 +55,11 @@ export default function Profile() {
               background:'linear-gradient(135deg,var(--blue),var(--teal))',
               display:'flex', alignItems:'center', justifyContent:'center',
               fontFamily:'Georgia, serif', fontSize:'2.2rem', fontWeight:'700',
-              color:'#fff', border:'3px solid var(--gold)',
+              color:'#fff',
             }}>
               {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
             </div>
           )}
-          {/* ONLINE DOT */}
-          <div style={{
-            position:'absolute', bottom:'4px', right:'4px',
-            width:'16px', height:'16px', borderRadius:'50%',
-            background:'var(--teal)', border:'2px solid var(--surface)',
-          }}/>
         </div>
 
         {/* USER INFO */}
@@ -140,10 +134,10 @@ export default function Profile() {
         gap:'1rem', marginBottom:'1.5rem',
       }}>
           {[
-          {ico:'📚', label:'Enrolled', value:enrolledCourses.length, color:'var(--blue)'},
-          {ico:'🏆', label:'Completed', value:completedCourses.length, color:'var(--gold)'},
-          {ico:'♡', label:'Wishlisted', value:wishlistCourses.length, color:'var(--pink)'},
-          {ico:'📈', label:'Avg Progress', value:`${totalProgress}%`, color:'var(--teal)'},
+          {ico:'', label:'Enrolled', value:enrolledCourses.length, color:'var(--blue)'},
+          {ico:'', label:'Completed', value:completedCourses.length, color:'var(--gold)'},
+          {ico:'', label:'Wishlisted', value:wishlistCourses.length, color:'var(--pink)'},
+          {ico:'', label:'Avg Progress', value:`${totalProgress}%`, color:'var(--teal)'},
         ].map(s => (
           <div key={s.label} style={{
             background:'var(--surface)', border:'1px solid var(--border)',
@@ -159,7 +153,7 @@ export default function Profile() {
       {/* BADGES */}
       <div style={{marginBottom:'1.5rem'}}>
         <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-          🏅 Badges ({badges.length}/{Object.keys(BADGE_DEFS).length})
+          Badges ({badges.length}/{Object.keys(BADGE_DEFS).length})
         </h2>
         <div style={{display:'flex', gap:'0.7rem', flexWrap:'wrap'}}>
           {Object.entries(BADGE_DEFS).map(([id, def]) => {
@@ -267,7 +261,7 @@ export default function Profile() {
       {/* EMPTY STATE */}
       {enrolledCourses.length === 0 && (
         <div style={{textAlign:'center', padding:'3rem 1rem', color:'var(--muted)'}}>
-          <div style={{fontSize:'3.5rem', marginBottom:'0.8rem'}}>🎯</div>
+          <div style={{fontSize:'3.5rem', marginBottom:'0.8rem'}}></div>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', color:'var(--text)', marginBottom:'0.4rem'}}>Start your learning journey</h2>
           <p style={{marginBottom:'1.4rem'}}>Enroll in a course to track your progress here</p>
           <button onClick={() => router.push('/')} style={{
