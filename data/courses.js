@@ -4,7 +4,7 @@ const courses = [
     category:"Web Development", duration:"0.9 hours",
     level:"beginner",
     description:"Master React from the ground up. Components, hooks, props, state management — build real apps. Good for beginners.",
-    img:"https://loremflickr.com/600/400/react,programming?lock=1",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>⚛</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>React for Beginners</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Web Development</text></svg>",
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks","jsx"],
     lessons:[
       {title:"Intro to React & JSX", dur:"2 min", yt:"Tn6-PIqc4UM"},
@@ -29,7 +29,7 @@ const courses = [
     category:"Data Science", duration:"9.7 hours",
     level:"intermediate",
     description:"Python for data analysis and viz. NumPy, Pandas, Matplotlib, basic ML. Real projects included.",
-    img:"https://loremflickr.com/600/400/data,science?lock=2",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#00d4aa'/><stop offset='100%' stop-color='#00d4aadd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>📊</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Python Data Science Bootcamp</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Data Science</text></svg>",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
     lessons:[
       {title:"Python Fundamentals & Setup", dur:"374 min", yt:"_uQrJ0TkZlc"},
@@ -54,7 +54,7 @@ const courses = [
     category:"Design", duration:"0.8 hours",
     level:"beginner",
     description:"User-centered design principles. Figma, wireframing, prototyping, design systems. Pretty comprehensive for a short course.",
-    img:"https://loremflickr.com/600/400/ui,design?lock=3",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#f0c040'/><stop offset='100%' stop-color='#f0c040dd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🎨</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>UI/UX Design Fundamentals</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Design</text></svg>",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
     lessons:[
       {title:"Design Thinking & UX Research", dur:"1 min", yt:"a7sEoEvT8l8"},
@@ -79,7 +79,7 @@ const courses = [
     category:"Mobile Development", duration:"4.5 hours",
     level:"intermediate",
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
-    img:"https://loremflickr.com/600/400/flutter,mobile?lock=4",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#ff6b9d'/><stop offset='100%' stop-color='#ff6b9ddd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>📱</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Flutter Mobile Development</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Mobile Development</text></svg>",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
     lessons:[
       {title:"Flutter & Dart Crash Course", dur:"12 min", yt:"1ukSR1GRtMU"},
@@ -104,7 +104,7 @@ const courses = [
     category:"AI & Machine Learning", duration:"8.7 hours",
     level:"advanced",
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
-    img:"https://loremflickr.com/600/400/machine,learning?lock=5",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#a855f7'/><stop offset='100%' stop-color='#a855f7dd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🤖</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Machine Learning with TensorFlow</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>AI &amp; Machine Learning</text></svg>",
     rating:4.9, keywords:["tensorflow","neural networks","deep learning","keras","nlp"],
     lessons:[
       {title:"Machine Learning Fundamentals", dur:"7 min", yt:"ukzFI9rgwfU"},
@@ -129,7 +129,7 @@ const courses = [
     category:"Marketing", duration:"17.6 hours",
     level:"beginner",
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
-    img:"https://loremflickr.com/600/400/marketing,digital?lock=6",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#f97316'/><stop offset='100%' stop-color='#f97316dd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>📈</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Digital Marketing Masterclass</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Marketing</text></svg>",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
     lessons:[
       {title:"Digital Marketing Strategy Overview", dur:"1 min", yt:"Mf6PcbGDiO4"},
@@ -154,7 +154,7 @@ const courses = [
     category:"Web Development", duration:"3.2 hours",
     level:"intermediate",
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
-    img:"https://loremflickr.com/600/400/nodejs,server?lock=7",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>⚙</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Node.js &amp; Express Backend</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Web Development</text></svg>",
     rating:4.8, keywords:["nodejs","express","rest api","mongodb","backend"],
     lessons:[
       {title:"Node.js Fundamentals", dur:"78 min", yt:"TlB_eWDSMt4"},
@@ -179,7 +179,7 @@ const courses = [
     category:"Cybersecurity", duration:"24.6 hours",
     level:"intermediate",
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
-    img:"https://loremflickr.com/600/400/cybersecurity,hacking?lock=8",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#22c55e'/><stop offset='100%' stop-color='#22c55edd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🔒</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Ethical Hacking &amp; Cybersecurity</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Cybersecurity</text></svg>",
     rating:4.7, keywords:["hacking","penetration testing","kali linux","security","networking"],
     lessons:[
       {title:"Introduction to Cybersecurity", dur:"7 min", yt:"inWWhr5tnEA"},
@@ -204,7 +204,7 @@ const courses = [
     category:"Web Development", duration:"0.6 hours",
     level:"advanced",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
-    img:"https://loremflickr.com/600/400/typescript,code?lock=9",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>📝</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Advanced TypeScript Patterns</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Web Development</text></svg>",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
     lessons:[
       {title:"TypeScript Generics Deep Dive", dur:"10 min", yt:"nePDL5lQSE4"},
@@ -229,7 +229,7 @@ const courses = [
     category:"Business", duration:"3.7 hours",
     level:"beginner",
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
-    img:"https://loremflickr.com/600/400/business,analytics?lock=10",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#6366f1'/><stop offset='100%' stop-color='#6366f1dd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>📋</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Business Analytics with Excel &amp; Power BI</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Business</text></svg>",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
     lessons:[
       {title:"Excel for Business Analysis", dur:"146 min", yt:"Vl0H-qTclOg"},
@@ -254,7 +254,7 @@ const courses = [
     category:"Web Development", duration:"7.2 hours",
     level:"intermediate",
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
-    img:"https://loremflickr.com/600/400/vuejs,programming?lock=11",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🖖</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Vue.js 3 – The Complete Guide</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Web Development</text></svg>",
     rating:4.7, keywords:["vuejs","vue 3","composition api","pinia","frontend"],
     lessons:[
       {title:"Vue 3 Core Concepts", dur:"219 min", yt:"FXpIoQ_rT_c"},
@@ -279,7 +279,7 @@ const courses = [
     category:"Data Science", duration:"13.5 hours",
     level:"intermediate",
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
-    img:"https://loremflickr.com/600/400/algorithms,data?lock=12",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#00d4aa'/><stop offset='100%' stop-color='#00d4aadd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🧮</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Data Structures &amp; Algorithms in Python</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Data Science</text></svg>",
     rating:4.9, keywords:["algorithms","data structures","python","leetcode","interviews"],
     lessons:[
       {title:"Big O Notation & Complexity", dur:"8 min", yt:"v4cd1O4zkGw"},
@@ -304,7 +304,7 @@ const courses = [
     category:"Web Development", duration:"15.3 hours",
     level:"beginner",
     description:"Build beautiful websites from scratch. Master HTML5, CSS3, Flexbox, CSS Grid, and responsive design principles.",
-    img:"https://loremflickr.com/600/400/html,css,web?lock=13",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🌐</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>HTML &amp; CSS Masterclass</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Web Development</text></svg>",
     rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
     lessons:[
       {title:"HTML5 Semantics & Structure", dur:"122 min", yt:"pQN-pnXPaVg"},
@@ -329,7 +329,7 @@ const courses = [
     category:"Web Development", duration:"6.3 hours",
     level:"beginner",
     description:"Learn JavaScript from the ground up. Covers variables, functions, DOM manipulation, ES6+, and async programming.",
-    img:"https://loremflickr.com/600/400/javascript,programming?lock=14",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>⚡</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>JavaScript Fundamentals</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Web Development</text></svg>",
     rating:4.7, keywords:["javascript","es6","dom","async","web"],
     lessons:[
       {title:"JS Basics: Variables & Data Types", dur:"206 min", yt:"PkZNo7MFNFg"},
@@ -354,7 +354,7 @@ const courses = [
     category:"Programming", duration:"20.4 hours",
     level:"beginner",
     description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
-    img:"https://loremflickr.com/600/400/java,programming?lock=15",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>☕</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Java Programming for Beginners</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Programming</text></svg>",
     rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"150 min", yt:"eIrMbAQSU34"},
@@ -379,7 +379,7 @@ const courses = [
     category:"Design", duration:"8.5 hours",
     level:"intermediate",
     description:"Master modern CSS layout techniques. Build complex responsive designs with Flexbox, Grid, and advanced positioning.",
-    img:"https://loremflickr.com/600/400/css,layout,design?lock=16",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#f0c040'/><stop offset='100%' stop-color='#f0c040dd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🎯</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>CSS Grid, Flexbox &amp; Modern Layouts</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Design</text></svg>",
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
     lessons:[
       {title:"Flexbox Complete Guide", dur:"27 min", yt:"jV8B24rSN5o"},
@@ -404,7 +404,7 @@ const courses = [
     category:"Web Development", duration:"5 hours",
     level:"beginner",
     description:"Learn version control with Git and collaborate effectively on GitHub. Branching, merging, pull requests, and workflows.",
-    img:"https://loremflickr.com/600/400/git,github?lock=17",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🔀</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Git &amp; GitHub Essentials</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Web Development</text></svg>",
     rating:4.5, keywords:["git","github","version control","branching","collaboration"],
     lessons:[
       {title:"Git Basics: Init, Add, Commit", dur:"68 min", yt:"RGOj5yH7evk"},
@@ -429,7 +429,7 @@ const courses = [
     category:"Data Science", duration:"17.3 hours",
     level:"intermediate",
     description:"Master SQL queries and relational database design. Covers joins, subqueries, indexing, normalization, and performance tuning.",
-    img:"https://loremflickr.com/600/400/sql,database?lock=18",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#00d4aa'/><stop offset='100%' stop-color='#00d4aadd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🗄</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>SQL &amp; Database Design</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Data Science</text></svg>",
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
     lessons:[
       {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"260 min", yt:"HXV3zeQKqGY"},
@@ -454,7 +454,7 @@ const courses = [
     category:"Programming", duration:"18.2 hours",
     level:"beginner",
     description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
-    img:"https://loremflickr.com/600/400/python,programming?lock=19",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#4488ff'/><stop offset='100%' stop-color='#4488ffdd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>🐍</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Python Programming for Beginners</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Programming</text></svg>",
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"266 min", yt:"rfscVS0vtbw"},
@@ -479,7 +479,7 @@ const courses = [
     category:"Design", duration:"12.5 hours",
     level:"beginner",
     description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
-    img:"https://loremflickr.com/600/400/responsive,web,design?lock=20",
+    img:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='600' y2='400'><stop offset='0%' stop-color='#f0c040'/><stop offset='100%' stop-color='#f0c040dd'/></linearGradient></defs><rect width='600' height='400' fill='url(#g)'/><text x='300' y='80' text-anchor='middle' font-size='100'>📐</text><text x='300' y='220' text-anchor='middle' fill='white' font-size='32' font-weight='bold' font-family='sans-serif'>Responsive Web Design Bootcamp</text><rect x='230' y='250' width='140' height='2' rx='1' fill='rgba(255,255,255,0.3)'/><text x='300' y='290' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-size='16' font-family='sans-serif'>Design</text></svg>",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
     lessons:[
       {title:"Responsive Design Principles & Strategy", dur:"247 min", yt:"kUMe1FH4CHE"},
