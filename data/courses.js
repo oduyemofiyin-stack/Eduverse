@@ -4,7 +4,7 @@ const courses = [
     category:"Web Development", duration:"0.9 hours",
     level:"beginner",
     description:"Master React from the ground up. Components, hooks, props, state management — build real apps. Good for beginners.",
-    img:"https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80",
+    img:"https://picsum.photos/seed/react/600/400",
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks","jsx"],
     lessons:[
       {title:"Intro to React & JSX", dur:"2 min", yt:"Tn6-PIqc4UM"},
@@ -29,7 +29,7 @@ const courses = [
     category:"Data Science", duration:"9.7 hours",
     level:"intermediate",
     description:"Python for data analysis and viz. NumPy, Pandas, Matplotlib, basic ML. Real projects included.",
-    img:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+    img:"https://picsum.photos/seed/datascience/600/400",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
     lessons:[
       {title:"Python Fundamentals & Setup", dur:"374 min", yt:"_uQrJ0TkZlc"},
@@ -54,7 +54,7 @@ const courses = [
     category:"Design", duration:"0.8 hours",
     level:"beginner",
     description:"User-centered design principles. Figma, wireframing, prototyping, design systems. Pretty comprehensive for a short course.",
-    img:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
+    img:"https://picsum.photos/seed/uidesign/600/400",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
     lessons:[
       {title:"Design Thinking & UX Research", dur:"1 min", yt:"a7sEoEvT8l8"},
@@ -79,7 +79,7 @@ const courses = [
     category:"Mobile Development", duration:"4.5 hours",
     level:"intermediate",
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
-    img:"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
+    img:"https://picsum.photos/seed/flutter/600/400",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
     lessons:[
       {title:"Flutter & Dart Crash Course", dur:"12 min", yt:"1ukSR1GRtMU"},
@@ -104,7 +104,7 @@ const courses = [
     category:"AI & Machine Learning", duration:"8.7 hours",
     level:"advanced",
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
-    img:"https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80",
+    img:"https://picsum.photos/seed/tensorflow/600/400",
     rating:4.9, keywords:["tensorflow","neural networks","deep learning","keras","nlp"],
     lessons:[
       {title:"Machine Learning Fundamentals", dur:"7 min", yt:"ukzFI9rgwfU"},
@@ -129,7 +129,7 @@ const courses = [
     category:"Marketing", duration:"17.6 hours",
     level:"beginner",
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
-    img:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+    img:"https://picsum.photos/seed/marketing/600/400",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
     lessons:[
       {title:"Digital Marketing Strategy Overview", dur:"1 min", yt:"Mf6PcbGDiO4"},
@@ -154,7 +154,7 @@ const courses = [
     category:"Web Development", duration:"3.2 hours",
     level:"intermediate",
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
-    img:"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&q=80",
+    img:"https://picsum.photos/seed/nodejs/600/400",
     rating:4.8, keywords:["nodejs","express","rest api","mongodb","backend"],
     lessons:[
       {title:"Node.js Fundamentals", dur:"78 min", yt:"TlB_eWDSMt4"},
@@ -179,7 +179,7 @@ const courses = [
     category:"Cybersecurity", duration:"24.6 hours",
     level:"intermediate",
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
-    img:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80",
+    img:"https://picsum.photos/seed/cybersecurity/600/400",
     rating:4.7, keywords:["hacking","penetration testing","kali linux","security","networking"],
     lessons:[
       {title:"Introduction to Cybersecurity", dur:"7 min", yt:"inWWhr5tnEA"},
@@ -204,7 +204,7 @@ const courses = [
     category:"Web Development", duration:"0.6 hours",
     level:"advanced",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
-    img:"https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&q=80",
+    img:"https://picsum.photos/seed/typescript/600/400",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
     lessons:[
       {title:"TypeScript Generics Deep Dive", dur:"10 min", yt:"nePDL5lQSE4"},
@@ -229,7 +229,7 @@ const courses = [
     category:"Business", duration:"3.7 hours",
     level:"beginner",
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
-    img:"https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80",
+    img:"https://picsum.photos/seed/business/600/400",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
     lessons:[
       {title:"Excel for Business Analysis", dur:"146 min", yt:"Vl0H-qTclOg"},
@@ -254,7 +254,7 @@ const courses = [
     category:"Web Development", duration:"7.2 hours",
     level:"intermediate",
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
-    img:"https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80",
+    img:"https://picsum.photos/seed/vuejs/600/400",
     rating:4.7, keywords:["vuejs","vue 3","composition api","pinia","frontend"],
     lessons:[
       {title:"Vue 3 Core Concepts", dur:"219 min", yt:"FXpIoQ_rT_c"},
@@ -279,7 +279,7 @@ const courses = [
     category:"Data Science", duration:"13.5 hours",
     level:"intermediate",
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
-    img:"https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=600&q=80",
+    img:"https://picsum.photos/seed/algorithms/600/400",
     rating:4.9, keywords:["algorithms","data structures","python","leetcode","interviews"],
     lessons:[
       {title:"Big O Notation & Complexity", dur:"8 min", yt:"v4cd1O4zkGw"},
@@ -304,7 +304,7 @@ const courses = [
     category:"Web Development", duration:"15.3 hours",
     level:"beginner",
     description:"Build beautiful websites from scratch. Master HTML5, CSS3, Flexbox, CSS Grid, and responsive design principles.",
-    img:"https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=600&q=80",
+    img:"https://picsum.photos/seed/htmlcss/600/400",
     rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
     lessons:[
       {title:"HTML5 Semantics & Structure", dur:"122 min", yt:"pQN-pnXPaVg"},
@@ -329,7 +329,7 @@ const courses = [
     category:"Web Development", duration:"6.3 hours",
     level:"beginner",
     description:"Learn JavaScript from the ground up. Covers variables, functions, DOM manipulation, ES6+, and async programming.",
-    img:"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&q=80",
+    img:"https://picsum.photos/seed/javascript/600/400",
     rating:4.7, keywords:["javascript","es6","dom","async","web"],
     lessons:[
       {title:"JS Basics: Variables & Data Types", dur:"206 min", yt:"PkZNo7MFNFg"},
@@ -354,7 +354,7 @@ const courses = [
     category:"Programming", duration:"20.4 hours",
     level:"beginner",
     description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
-    img:"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80",
+    img:"https://picsum.photos/seed/java/600/400",
     rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"150 min", yt:"eIrMbAQSU34"},
@@ -379,7 +379,7 @@ const courses = [
     category:"Design", duration:"8.5 hours",
     level:"intermediate",
     description:"Master modern CSS layout techniques. Build complex responsive designs with Flexbox, Grid, and advanced positioning.",
-    img:"https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=600&q=80",
+    img:"https://picsum.photos/seed/cssgrid/600/400",
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
     lessons:[
       {title:"Flexbox Complete Guide", dur:"27 min", yt:"jV8B24rSN5o"},
@@ -404,7 +404,7 @@ const courses = [
     category:"Web Development", duration:"5 hours",
     level:"beginner",
     description:"Learn version control with Git and collaborate effectively on GitHub. Branching, merging, pull requests, and workflows.",
-    img:"https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=600&q=80",
+    img:"https://picsum.photos/seed/git/600/400",
     rating:4.5, keywords:["git","github","version control","branching","collaboration"],
     lessons:[
       {title:"Git Basics: Init, Add, Commit", dur:"68 min", yt:"RGOj5yH7evk"},
@@ -429,7 +429,7 @@ const courses = [
     category:"Data Science", duration:"17.3 hours",
     level:"intermediate",
     description:"Master SQL queries and relational database design. Covers joins, subqueries, indexing, normalization, and performance tuning.",
-    img:"https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&q=80",
+    img:"https://picsum.photos/seed/sql/600/400",
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
     lessons:[
       {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"260 min", yt:"HXV3zeQKqGY"},
@@ -454,7 +454,7 @@ const courses = [
     category:"Programming", duration:"18.2 hours",
     level:"beginner",
     description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
-    img:"https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=600&q=80",
+    img:"https://picsum.photos/seed/python/600/400",
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"266 min", yt:"rfscVS0vtbw"},
@@ -479,7 +479,7 @@ const courses = [
     category:"Design", duration:"12.5 hours",
     level:"beginner",
     description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
-    img:"https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&q=80",
+    img:"https://picsum.photos/seed/responsive/600/400",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
     lessons:[
       {title:"Responsive Design Principles & Strategy", dur:"247 min", yt:"kUMe1FH4CHE"},
