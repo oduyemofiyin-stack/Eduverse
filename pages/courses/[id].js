@@ -8,34 +8,10 @@ import { CourseDetailSkeleton } from '../../components/Skeleton';
 import CourseRecommendations from '../../components/CourseRecommendations';
 import resources from '../../data/resources';
 
-export default function CourseDetail() {
+export default function CourseDetail({ course: propCourse }) {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution, forumTopics, addForumTopic, addForumReply, getForumTopics } = useApp();
-  const toast = useToast();
-  const [activeTab, setActiveTab] = useState('videos');
-  const [openLesson, setOpenLesson] = useState(null);
-  const [quizState, setQuizState] = useState(null);
-  const [showCert, setShowCert] = useState(false);
-  const [noteText, setNoteText] = useState({});
-  const [commentText, setCommentText] = useState({});
-  const [commentName, setCommentName] = useState({});
-  const [replyText, setReplyText] = useState({});
-  const [showReply, setShowReply] = useState({});
-  const [playlistIdx, setPlaylistIdx] = useState(null);
-  const [timer, setTimer] = useState(null);
-  const [reviewText, setReviewText] = useState('');
-  const [reviewRating, setReviewRating] = useState(0);
-  const [reviewHover, setReviewHover] = useState(0);
-  const [editingReviewId, setEditingReviewId] = useState(null);
-  const [editRating, setEditRating] = useState(0);
-  const [editText, setEditText] = useState('');
-  const [editHover, setEditHover] = useState(0);
-  const [forumTitle, setForumTitle] = useState('');
-  const [forumBody, setForumBody] = useState('');
-  const [replyTexts, setReplyTexts] = useState({});
-
-  const course = courses.find(c => c.id === parseInt(id));
+  const course = propCourse || courses.find(c => c.id === parseInt(id));
   if (!course) return <CourseDetailSkeleton/>;
 
   const isEnrolled = enrolled.includes(course.id);
@@ -973,4 +949,10 @@ export default function CourseDetail() {
       `}</style>
     </div>
   );
+}
+
+export async function getServerSideProps({ params }) {
+  const id = parseInt(params.id);
+  const course = courses.find(c => c.id === id) || null;
+  return { props: { course } };
 }
