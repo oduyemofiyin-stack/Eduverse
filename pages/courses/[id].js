@@ -732,7 +732,7 @@ export default function CourseDetail({ course: propCourse }) {
                           <div style={{display:'flex', gap:'0.3rem'}}>
                             <button onClick={() => { setEditingReviewId(r.id); setEditText(r.text); setEditRating(r.rating); }}
                               style={{fontSize:'0.7rem', padding:'0.2rem 0.5rem', borderRadius:'6px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', fontWeight:'500'}}>Edit</button>
-                            <button onClick={() => { if (confirm('Delete this review?')) deleteReview(r.id); }}
+                            <button onClick={() => deleteReview(r.id)}
                               style={{fontSize:'0.7rem', padding:'0.2rem 0.5rem', borderRadius:'6px', border:'1px solid #e55', background:'#fee', color:'#c33', cursor:'pointer', fontWeight:'500'}}>Delete</button>
                           </div>
                         )}
