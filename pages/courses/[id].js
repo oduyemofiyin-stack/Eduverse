@@ -11,7 +11,7 @@ import resources from '../../data/resources';
 export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, getCourseReviews, getAverageRating, getRatingDistribution, forumTopics, addForumTopic, addForumReply, getForumTopics } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution, forumTopics, addForumTopic, addForumReply, getForumTopics } = useApp();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
@@ -27,6 +27,10 @@ export default function CourseDetail() {
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewHover, setReviewHover] = useState(0);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editRating, setEditRating] = useState(0);
+  const [editText, setEditText] = useState('');
+  const [editHover, setEditHover] = useState(0);
   const [forumTitle, setForumTitle] = useState('');
   const [forumBody, setForumBody] = useState('');
   const [replyTexts, setReplyTexts] = useState({});
@@ -742,13 +746,69 @@ export default function CourseDetail() {
                         <span style={{fontWeight:'600', fontSize:'0.82rem', color:'var(--text)'}}>{r.userName}</span>
                         <span style={{fontSize:'0.65rem', color:'var(--muted2)'}}>{new Date(r.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})}</span>
                       </div>
-                      <div style={{display:'flex', gap:'0.15rem'}}>
-                        {[1,2,3,4,5].map(s => (
-                          <span key={s} style={{fontSize:'0.75rem', color: s <= r.rating ? '#f0c040' : 'var(--muted2)'}}>★</span>
-                        ))}
+                      <div style={{display:'flex', alignItems:'center', gap:'0.5rem'}}>
+                        <div style={{display:'flex', gap:'0.15rem'}}>
+                          {[1,2,3,4,5].map(s => (
+                            <span key={s} style={{fontSize:'0.75rem', color: s <= r.rating ? '#f0c040' : 'var(--muted2)'}}>★</span>
+                          ))}
+                        </div>
+                        {currentUser?.email === r.userEmail && editingReviewId !== r.id && (
+                          <div style={{display:'flex', gap:'0.3rem'}}>
+                            <button onClick={() => { setEditingReviewId(r.id); setEditText(r.text); setEditRating(r.rating); }}
+                              style={{fontSize:'0.7rem', padding:'0.2rem 0.5rem', borderRadius:'6px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', fontWeight:'500'}}>Edit</button>
+                            <button onClick={() => { if (confirm('Delete this review?')) deleteReview(r.id); }}
+                              style={{fontSize:'0.7rem', padding:'0.2rem 0.5rem', borderRadius:'6px', border:'1px solid #e55', background:'#fee', color:'#c33', cursor:'pointer', fontWeight:'500'}}>Delete</button>
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <p style={{fontSize:'0.84rem', color:'var(--text2)', lineHeight:'1.6'}}>{r.text}</p>
+                    {editingReviewId === r.id ? (
+                      <div style={{marginTop:'0.5rem'}}>
+                        <div style={{display:'flex', gap:'0.3rem', marginBottom:'0.5rem'}}>
+                          {[1,2,3,4,5].map(star => (
+                            <button key={star} onClick={() => setEditRating(star)}
+                              onMouseEnter={() => setEditHover(star)}
+                              onMouseLeave={() => setEditHover(0)}
+                              style={{
+                                fontSize:'1.3rem', background:'none', border:'none', cursor:'pointer',
+                                color: (editHover || editRating) >= star ? '#f0c040' : 'var(--muted2)',
+                                transform: (editHover || editRating) >= star ? 'scale(1.15)' : 'scale(1)',
+                                transition:'all 0.15s',
+                              }}
+                            >★</button>
+                          ))}
+                          {editRating > 0 && <span style={{fontSize:'0.78rem', color:'var(--muted)', alignSelf:'center'}}>{editRating} star{editRating > 1 ? 's' : ''}</span>}
+                        </div>
+                        <textarea value={editText} onChange={e => setEditText(e.target.value)}
+                          placeholder="Update your review..."
+                          style={{
+                            width:'100%', minHeight:'60px', padding:'0.5rem', borderRadius:'8px',
+                            border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
+                            fontSize:'0.82rem', outline:'none', resize:'vertical', fontFamily:'inherit',
+                          }}/>
+                        <div style={{display:'flex', gap:'0.5rem', marginTop:'0.4rem'}}>
+                          <button onClick={() => {
+                            if (!editRating) { toast('Please select a rating', 'error'); return; }
+                            if (!editText.trim()) { toast('Please write a review', 'error'); return; }
+                            updateReview(r.id, editRating, editText.trim());
+                            setEditingReviewId(null);
+                            toast('Review updated!', 'success');
+                          }} style={{
+                            padding:'0.4rem 1rem', borderRadius:'6px',
+                            border:'none', cursor:'pointer', fontWeight:'600', fontSize:'0.8rem',
+                            background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                          }}>Save</button>
+                          <button onClick={() => setEditingReviewId(null)}
+                            style={{
+                              padding:'0.4rem 1rem', borderRadius:'6px',
+                              border:'1px solid var(--border)', cursor:'pointer', fontWeight:'500', fontSize:'0.8rem',
+                              background:'var(--surface2)', color:'var(--text)',
+                            }}>Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <p style={{fontSize:'0.84rem', color:'var(--text2)', lineHeight:'1.6'}}>{r.text}</p>
+                    )}
                   </div>
                 ))}
               </div>

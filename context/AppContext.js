@@ -566,6 +566,16 @@ export function AppProvider({ children }) {
     addActivity('review', `${review.userName} reviewed "${courseName}" (${rating} stars)`);
   }
 
+  function updateReview(reviewId, newRating, newText) {
+    setReviews(prev => prev.map(r => r.id === reviewId ? { ...r, rating: newRating, text: newText } : r));
+    addActivity('review', `Review updated (${newRating} stars)`);
+  }
+
+  function deleteReview(reviewId) {
+    setReviews(prev => prev.filter(r => r.id !== reviewId));
+    addActivity('review', 'Review deleted');
+  }
+
   function getCourseReviews(courseId) {
     return reviews.filter(r => r.courseId === courseId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
@@ -637,7 +647,7 @@ export function AppProvider({ children }) {
     followingPaths, togglePathFollow, getPathProgress,
     plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress,
     unreadNotifications, addNotification, markNotificationsRead, dismissNotification, dismissedNotifs,
-    reviews, addReview, getCourseReviews, getAverageRating, getRatingDistribution,
+    reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution,
     forumTopics, addForumTopic, addForumReply, getForumTopics, getAllForumTopics,
   }), [
     currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings,
