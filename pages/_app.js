@@ -60,7 +60,7 @@ function AuthGuard({ Component, pageProps }) {
     }
   }, [currentUser]);
 
-  // Wait for hydration before reading currentUser to avoid SSR mismatch
+  // Wait for hydration so server and first client render always match
   if (!hydrated) return null;
 
   if (!currentUser && !publicPaths.includes(router.pathname)) {

@@ -8,10 +8,13 @@ import { CourseDetailSkeleton } from '../../components/Skeleton';
 import CourseRecommendations from '../../components/CourseRecommendations';
 import resources from '../../data/resources';
 
-export default function CourseDetail({ course: propCourse }) {
+export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const course = propCourse || courses.find(c => c.id === parseInt(id));
+
+  if (!router.isReady) return <CourseDetailSkeleton/>;
+
+  const course = courses.find(c => c.id === parseInt(id));
   if (!course) return <CourseDetailSkeleton/>;
 
   const isEnrolled = enrolled.includes(course.id);
@@ -718,7 +721,7 @@ export default function CourseDetail({ course: propCourse }) {
                           background:'linear-gradient(135deg,var(--blue),var(--teal))',
                           display:'flex', alignItems:'center', justifyContent:'center',
                           fontSize:'0.7rem', fontWeight:'700', color:'#fff',
-                        }}>{r.userName[0]?.toUpperCase()}</div>
+                        }}>{r.userName?.charAt(0)?.toUpperCase() ?? '?'}</div>
                         <span style={{fontWeight:'600', fontSize:'0.82rem', color:'var(--text)'}}>{r.userName}</span>
                         <span style={{fontSize:'0.65rem', color:'var(--muted2)'}}>{new Date(r.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})}</span>
                       </div>
@@ -949,10 +952,4 @@ export default function CourseDetail({ course: propCourse }) {
       `}</style>
     </div>
   );
-}
-
-export async function getServerSideProps({ params }) {
-  const id = parseInt(params.id);
-  const course = courses.find(c => c.id === id) || null;
-  return { props: { course } };
 }
