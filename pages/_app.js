@@ -13,14 +13,9 @@ function AuthGuard({ Component, pageProps }) {
   const { currentUser, theme } = useApp();
   const router = useRouter();
   const [transitioning, setTransitioning] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
   const touchStartX = useRef(0);
 
   const publicPaths = ['/login', '/admin', '/auth/callback'];
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   // Back-swipe gesture (works for iOS-like navigation, kinda janky on android)
   useEffect(() => {
@@ -60,9 +55,8 @@ function AuthGuard({ Component, pageProps }) {
     }
   }, [currentUser]);
 
-  // Wait for hydration so server and first client render always match
-  if (!hydrated) return null;
-
+  // During SSR, currentUser is always null since localStorage doesnt exist on server.
+  // Render null for protected pages to match client; redirect useEffect handles the rest.
   if (!currentUser && !publicPaths.includes(router.pathname)) {
     return null;
   }

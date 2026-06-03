@@ -188,7 +188,7 @@ export default function Header() {
                     display:'flex', alignItems:'center', justifyContent:'center',
                     fontSize:'0.68rem', fontWeight:'700', color:'#fff',
                   }}>
-                    {((currentUser.firstName?.[0] ?? '') + (currentUser.lastName?.[0] ?? '')).toUpperCase()}
+                    {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
                   </div>
                 )}
                 <span className="user-name-desktop" style={{fontSize:'0.76rem', fontWeight:'600', color:'var(--text)', maxWidth:'80px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
@@ -311,7 +311,7 @@ export default function Header() {
                     display:'flex', alignItems:'center', justifyContent:'center',
                     fontSize:'0.75rem', fontWeight:'700', color:'#fff', flexShrink:0,
                   }}>
-                    {((currentUser.firstName?.[0] ?? '') + (currentUser.lastName?.[0] ?? '')).toUpperCase()}
+                    {(currentUser.firstName[0] + (currentUser.lastName[0] || '')).toUpperCase()}
                   </div>
                 )}
                 <div>

@@ -11,8 +11,29 @@ import resources from '../../data/resources';
 export default function CourseDetail() {
   const router = useRouter();
   const { id } = router.query;
-
-  if (!router.isReady) return <CourseDetailSkeleton/>;
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution, forumTopics, addForumTopic, addForumReply, getForumTopics } = useApp();
+  const toast = useToast();
+  const [activeTab, setActiveTab] = useState('videos');
+  const [openLesson, setOpenLesson] = useState(null);
+  const [quizState, setQuizState] = useState(null);
+  const [showCert, setShowCert] = useState(false);
+  const [noteText, setNoteText] = useState({});
+  const [commentText, setCommentText] = useState({});
+  const [commentName, setCommentName] = useState({});
+  const [replyText, setReplyText] = useState({});
+  const [showReply, setShowReply] = useState({});
+  const [playlistIdx, setPlaylistIdx] = useState(null);
+  const [timer, setTimer] = useState(null);
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewHover, setReviewHover] = useState(0);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editRating, setEditRating] = useState(0);
+  const [editText, setEditText] = useState('');
+  const [editHover, setEditHover] = useState(0);
+  const [forumTitle, setForumTitle] = useState('');
+  const [forumBody, setForumBody] = useState('');
+  const [replyTexts, setReplyTexts] = useState({});
 
   const course = courses.find(c => c.id === parseInt(id));
   if (!course) return <CourseDetailSkeleton/>;
@@ -721,7 +742,7 @@ export default function CourseDetail() {
                           background:'linear-gradient(135deg,var(--blue),var(--teal))',
                           display:'flex', alignItems:'center', justifyContent:'center',
                           fontSize:'0.7rem', fontWeight:'700', color:'#fff',
-                        }}>{r.userName?.charAt(0)?.toUpperCase() ?? '?'}</div>
+                        }}>{r.userName[0]?.toUpperCase()}</div>
                         <span style={{fontWeight:'600', fontSize:'0.82rem', color:'var(--text)'}}>{r.userName}</span>
                         <span style={{fontSize:'0.65rem', color:'var(--muted2)'}}>{new Date(r.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'})}</span>
                       </div>
@@ -735,7 +756,7 @@ export default function CourseDetail() {
                           <div style={{display:'flex', gap:'0.3rem'}}>
                             <button onClick={() => { setEditingReviewId(r.id); setEditText(r.text); setEditRating(r.rating); }}
                               style={{fontSize:'0.7rem', padding:'0.2rem 0.5rem', borderRadius:'6px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', fontWeight:'500'}}>Edit</button>
-                            <button onClick={() => deleteReview(r.id)}
+                            <button onClick={() => { if (confirm('Delete this review?')) deleteReview(r.id); }}
                               style={{fontSize:'0.7rem', padding:'0.2rem 0.5rem', borderRadius:'6px', border:'1px solid #e55', background:'#fee', color:'#c33', cursor:'pointer', fontWeight:'500'}}>Delete</button>
                           </div>
                         )}
