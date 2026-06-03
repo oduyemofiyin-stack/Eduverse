@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
+import { CourseSkeleton } from '../components/Skeleton';
 import { initScrollReveal, initCardTilt, initParallax, initMagneticButtons, initCustomCursor } from '../lib/animations';
 
 import courses from '../data/courses';
@@ -46,6 +47,7 @@ export default function Home() {
   const toast = useToast();
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState('All');
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const heroRef = useRef(null);
   const isLight = theme === 'light';
@@ -55,15 +57,24 @@ export default function Home() {
   const categories = ['All', ...new Set(courses.map(c => c.category))];
 
   useEffect(() => {
-    initScrollReveal();
-    initCardTilt();
-    const parallaxCleanup = initParallax();
-    initMagneticButtons();
-    initCustomCursor();
-    return () => {
-      if (typeof parallaxCleanup === 'function') parallaxCleanup();
-    };
+    // FIXME: this loading timer feels hacky but it works
+    const timer = setTimeout(() => setLoading(false), 200);
+    return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      initScrollReveal();
+      initCardTilt();
+      const parallaxCleanup = initParallax();
+      initMagneticButtons();
+      initCustomCursor();
+      console.log('animations initialized yay');
+      return () => {
+        if (typeof parallaxCleanup === 'function') parallaxCleanup();
+      };
+    }
+  }, [loading]);
 
   // Typewriter effect (kinda janky but whatever)
   useEffect(() => {
@@ -406,7 +417,9 @@ export default function Home() {
         gap:'1.3rem', padding:'0 1.2rem 2rem',
         maxWidth:'1240px', margin:'0 auto',
       }} className="course-grid-desktop">
-        {filtered.length === 0 ? (
+        {loading ? (
+          Array.from({length:6}).map((_,i) => <CourseSkeleton key={i}/>)
+        ) : filtered.length === 0 ? (
           <div style={{gridColumn:'1/-1', textAlign:'center', padding:'4rem 2rem', color:'var(--muted)'}}>
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', color:'var(--text)', marginBottom:'0.4rem'}}>No courses found</h3>
             <p style={{marginBottom:'1.2rem'}}>Try a different keyword or category</p>

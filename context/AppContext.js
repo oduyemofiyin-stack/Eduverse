@@ -233,6 +233,7 @@ export function AppProvider({ children }) {
     if (lastActiveDate === yesterday) {
       setStreak(prev => prev + 1);
     } else if (lastActiveDate && lastActiveDate !== today) {
+      console.log('streak lost :(');
       setStreak(0);
     } else if (!lastActiveDate) {
       setStreak(1);
