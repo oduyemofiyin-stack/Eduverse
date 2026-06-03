@@ -178,7 +178,7 @@ export function AppProvider({ children }) {
       if (cloud.certificates) setCertificates(cloud.certificates);
       if (cloud.reviews) setReviews(cloud.reviews);
       if (cloud.forumTopics) setForumTopics(cloud.forumTopics);
-    });
+    }).catch(() => {});
   }, [currentUser?.id]);
 
   // Firestore sync helper
