@@ -34,7 +34,7 @@ export default function CourseRecommendations({ currentCourseId }) {
   return (
     <div style={{padding:'2rem 1.2rem 3rem', maxWidth:'1100px', margin:'0 auto'}}>
       <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', fontWeight:'700', marginBottom:'1rem'}}>
-        🎯 Recommended Courses
+        Recommended Courses
       </h2>
       <div style={{
         display:'grid',
