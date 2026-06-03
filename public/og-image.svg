@@ -1,0 +1,82 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#06080f"/>
+
+  <!-- Gradient orbs -->
+  <circle cx="100" cy="100" r="350" fill="#4488ff" opacity="0.08"/>
+  <circle cx="1100" cy="500" r="300" fill="#00d4aa" opacity="0.06"/>
+  <circle cx="600" cy="315" r="250" fill="#f0c040" opacity="0.04"/>
+
+  <!-- Grid lines -->
+  <line x1="0" y1="540" x2="1200" y2="540" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  <line x1="0" y1="560" x2="1200" y2="560" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="0" y1="580" x2="1200" y2="580" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+
+  <!-- Small decorative dots -->
+  <circle cx="200" cy="180" r="2" fill="#4488ff" opacity="0.3"/>
+  <circle cx="850" cy="120" r="1.5" fill="#f0c040" opacity="0.4"/>
+  <circle cx="950" cy="400" r="2" fill="#00d4aa" opacity="0.3"/>
+  <circle cx="350" cy="450" r="1.5" fill="#ff6b9d" opacity="0.3"/>
+  <circle cx="1050" cy="200" r="1" fill="#4488ff" opacity="0.2"/>
+
+  <!-- Logo icon -->
+  <g transform="translate(80, 80)">
+    <circle cx="36" cy="36" r="34" stroke="url(#logo1)" stroke-width="1.5" fill="none"/>
+    <ellipse cx="36" cy="36" rx="34" ry="13" stroke="url(#logo2)" stroke-width="1" stroke-dasharray="2.5 2" transform="rotate(-22 36 36)" fill="none"/>
+    <circle cx="36" cy="36" r="8" fill="url(#logo3)"/>
+    <circle cx="58" cy="20" r="3.6" fill="#f0c040" opacity="0.85"/>
+    <circle cx="14" cy="52" r="2.8" fill="#4488ff" opacity="0.75"/>
+  </g>
+
+  <!-- Brand name -->
+  <text x="132" y="108" font-family="Georgia, serif" font-size="40" font-weight="700" fill="url(#brandGrad)">Eduverse</text>
+
+  <!-- Tagline -->
+  <text x="80" y="280" font-family="Georgia, serif" font-size="76" font-weight="700" fill="#eef0f8" letter-spacing="-0.02">
+    Learn Without
+    <tspan fill="url(#shimmer)"> Limits.</tspan>
+  </text>
+
+  <!-- Description -->
+  <text x="80" y="370" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="26" fill="#7a80a0" letter-spacing="0.01">
+    World-class courses with real video lessons, reading materials,
+  </text>
+  <text x="80" y="410" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="26" fill="#7a80a0" letter-spacing="0.01">
+    quizzes, and free certificates — completely free forever.
+  </text>
+
+  <!-- Stats bar -->
+  <g transform="translate(80, 490)">
+    <rect width="380" height="1" fill="rgba(255,255,255,0.06)"/>
+    <text x="0" y="40" font-family="Georgia, serif" font-size="36" font-weight="700" fill="#4488ff">20</text>
+    <text x="50" y="40" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="14" fill="#7a80a0" letter-spacing="0.06" text-transform="uppercase">EXPERT COURSES</text>
+
+    <text x="220" y="40" font-family="Georgia, serif" font-size="36" font-weight="700" fill="#f0c040">100%</text>
+    <text x="280" y="40" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="14" fill="#7a80a0" letter-spacing="0.06" text-transform="uppercase">FREE</text>
+  </g>
+
+  <!-- Gradient defs -->
+  <defs>
+    <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0c040"/>
+      <stop offset="55%" stop-color="#4488ff"/>
+      <stop offset="100%" stop-color="#00d4aa"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f0c040"/>
+      <stop offset="50%" stop-color="#4488ff"/>
+      <stop offset="100%" stop-color="#f0c040"/>
+    </linearGradient>
+    <linearGradient id="logo1" x1="2" y1="2" x2="70" y2="70">
+      <stop offset="0%" stop-color="#f0c040"/>
+      <stop offset="100%" stop-color="#4488ff"/>
+    </linearGradient>
+    <linearGradient id="logo2" x1="2" y1="36" x2="70" y2="36">
+      <stop offset="0%" stop-color="#4488ff"/>
+      <stop offset="100%" stop-color="#00d4aa"/>
+    </linearGradient>
+    <linearGradient id="logo3" x1="28" y1="28" x2="44" y2="44">
+      <stop offset="0%" stop-color="#f0c040"/>
+      <stop offset="100%" stop-color="#4488ff"/>
+    </linearGradient>
+  </defs>
+</svg>

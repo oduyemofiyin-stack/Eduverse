@@ -16,7 +16,15 @@ function AuthGuard({ Component, pageProps }) {
   const [hydrated, setHydrated] = useState(false);
   const touchStartX = useRef(0);
 
-  const publicPaths = ['/login', '/admin', '/auth/callback'];
+  const publicPaths = [
+    '/login', '/admin', '/auth/callback',
+    '/', '/about', '/contact',
+    '/blog', '/blog/[id]',
+    '/courses/[id]',
+    '/search', '/paths', '/leaderboard',
+    '/privacy', '/terms',
+    '/instructors', '/instructors/[id]',
+  ];
 
   useEffect(() => {
     setHydrated(true);
