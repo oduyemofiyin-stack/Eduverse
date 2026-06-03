@@ -687,8 +687,7 @@ export default function CourseDetail() {
                     )}
 
                     {/* Review form */}
-                    {isEnrolled && (
-                      <div style={{background:'var(--surface2)', borderRadius:'12px', padding:'1rem', marginTop:'0.5rem'}}>
+                    <div style={{background:'var(--surface2)', borderRadius:'12px', padding:'1rem', marginTop:'0.5rem'}}>
                         <h4 style={{fontSize:'0.85rem', fontWeight:'700', marginBottom:'0.5rem'}}>Write a Review</h4>
                         <div style={{display:'flex', gap:'0.3rem', marginBottom:'0.6rem'}}>
                           {[1,2,3,4,5].map(star => (
@@ -724,7 +723,6 @@ export default function CourseDetail() {
                           background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
                         }}>Submit Review</button>
                       </div>
-                    )}
                   </div>
                 );
               })()}
