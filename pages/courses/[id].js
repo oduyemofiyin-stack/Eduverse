@@ -612,7 +612,7 @@ export default function CourseDetail({ course: propCourse }) {
                 const allResources = resources.filter(r => r.courseId === course.id);
                 if (allResources.length === 0) return (
                   <div style={{textAlign:'center', padding:'1.5rem', color:'var(--muted)'}}>
-                    <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>📁</div>
+                    <div style={{fontSize:'1.2rem', marginBottom:'0.5rem', fontWeight:'600', color:'var(--muted)'}}>—</div>
                     <p style={{fontSize:'0.88rem'}}>No downloadable resources for this course yet.</p>
                   </div>
                 );
@@ -637,8 +637,7 @@ export default function CourseDetail({ course: propCourse }) {
                               onMouseEnter={e => e.currentTarget.style.background='var(--surface3)'}
                               onMouseLeave={e => e.currentTarget.style.background='var(--surface2)'}
                             >
-                              <span style={{fontSize:'0.9rem'}}>{f.type === 'pdf' ? '📄' : f.type === 'zip' ? '📦' : f.type === 'py' ? '🐍' : f.type === 'ipynb' ? '📓' : f.type === 'html' ? '🌐' : f.type === 'fig' ? '🎨' : f.type === 'xlsx' ? '📊' : '📎'}</span>
-                              <span style={{flex:1}}>{f.name}</span>
+                               <span style={{flex:1}}>{f.name}</span>
                               <span style={{fontSize:'0.65rem', fontWeight:'600', padding:'0.15rem 0.5rem', borderRadius:'100px', background:'var(--surface3)', color:'var(--muted)', textTransform:'uppercase'}}>{f.type}</span>
                             </a>
                           ))}
