@@ -1307,6 +1307,461 @@ const resources = [
   { courseId: 116, lessonIdx: 3, files: [
     { name: "Prompt Engineering for Developers Reference Card", type: "pdf", url: "https://example.com/cheatsheets/prompt-engineering-for-developers.pdf" },
   ]},
+  { courseId: 117, lessonIdx: 0, files: [
+    { name: "Perl Starter Template", type: "zip", url: "https://github.com/topics/perl/archive/refs/heads/main.zip" },
+    { name: "Perl Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/perl.pdf" },
+  ]},
+  { courseId: 117, lessonIdx: 1, files: [
+    { name: "Perl Code Examples", type: "zip", url: "https://github.com/example/perl-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 117, lessonIdx: 2, files: [
+    { name: "Perl Project Workbook", type: "pdf", url: "https://example.com/workbooks/perl.pdf" },
+  ]},
+  { courseId: 117, lessonIdx: 3, files: [
+    { name: "Perl Reference Card", type: "pdf", url: "https://example.com/cheatsheets/perl-reference.pdf" },
+  ]},
+  { courseId: 118, lessonIdx: 0, files: [
+    { name: "Lua Starter Template", type: "zip", url: "https://github.com/topics/lua/archive/refs/heads/main.zip" },
+    { name: "Lua Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/lua.pdf" },
+  ]},
+  { courseId: 118, lessonIdx: 1, files: [
+    { name: "Lua Code Examples", type: "zip", url: "https://github.com/example/lua-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 118, lessonIdx: 2, files: [
+    { name: "Lua Project Workbook", type: "pdf", url: "https://example.com/workbooks/lua.pdf" },
+  ]},
+  { courseId: 118, lessonIdx: 3, files: [
+    { name: "Lua Reference Card", type: "pdf", url: "https://example.com/cheatsheets/lua-reference.pdf" },
+  ]},
+  { courseId: 119, lessonIdx: 0, files: [
+    { name: "Julia Starter Template", type: "zip", url: "https://github.com/topics/julia/archive/refs/heads/main.zip" },
+    { name: "Julia Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/julia.pdf" },
+  ]},
+  { courseId: 119, lessonIdx: 1, files: [
+    { name: "Julia Code Examples", type: "zip", url: "https://github.com/example/julia-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 119, lessonIdx: 2, files: [
+    { name: "Julia Project Workbook", type: "pdf", url: "https://example.com/workbooks/julia.pdf" },
+  ]},
+  { courseId: 119, lessonIdx: 3, files: [
+    { name: "Julia Reference Card", type: "pdf", url: "https://example.com/cheatsheets/julia-reference.pdf" },
+  ]},
+  { courseId: 120, lessonIdx: 0, files: [
+    { name: "Scala Starter Template", type: "zip", url: "https://github.com/topics/scala/archive/refs/heads/main.zip" },
+    { name: "Scala Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/scala.pdf" },
+  ]},
+  { courseId: 120, lessonIdx: 1, files: [
+    { name: "Scala Code Examples", type: "zip", url: "https://github.com/example/scala-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 120, lessonIdx: 2, files: [
+    { name: "Scala Project Workbook", type: "pdf", url: "https://example.com/workbooks/scala.pdf" },
+  ]},
+  { courseId: 120, lessonIdx: 3, files: [
+    { name: "Scala Reference Card", type: "pdf", url: "https://example.com/cheatsheets/scala-reference.pdf" },
+  ]},
+  { courseId: 121, lessonIdx: 0, files: [
+    { name: "Elixir & Phoenix Starter Template", type: "zip", url: "https://github.com/topics/elixir-phoenix/archive/refs/heads/main.zip" },
+    { name: "Elixir & Phoenix Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/elixir-phoenix.pdf" },
+  ]},
+  { courseId: 121, lessonIdx: 1, files: [
+    { name: "Elixir & Phoenix Code Examples", type: "zip", url: "https://github.com/example/elixir-phoenix-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 121, lessonIdx: 2, files: [
+    { name: "Elixir & Phoenix Project Workbook", type: "pdf", url: "https://example.com/workbooks/elixir-phoenix.pdf" },
+  ]},
+  { courseId: 121, lessonIdx: 3, files: [
+    { name: "Elixir & Phoenix Reference Card", type: "pdf", url: "https://example.com/cheatsheets/elixir-phoenix-reference.pdf" },
+  ]},
+  { courseId: 122, lessonIdx: 0, files: [
+    { name: "Erlang Starter Template", type: "zip", url: "https://github.com/topics/erlang/archive/refs/heads/main.zip" },
+    { name: "Erlang Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/erlang.pdf" },
+  ]},
+  { courseId: 122, lessonIdx: 1, files: [
+    { name: "Erlang Code Examples", type: "zip", url: "https://github.com/example/erlang-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 122, lessonIdx: 2, files: [
+    { name: "Erlang Project Workbook", type: "pdf", url: "https://example.com/workbooks/erlang.pdf" },
+  ]},
+  { courseId: 122, lessonIdx: 3, files: [
+    { name: "Erlang Reference Card", type: "pdf", url: "https://example.com/cheatsheets/erlang-reference.pdf" },
+  ]},
+  { courseId: 123, lessonIdx: 0, files: [
+    { name: "Clojure Starter Template", type: "zip", url: "https://github.com/topics/clojure/archive/refs/heads/main.zip" },
+    { name: "Clojure Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/clojure.pdf" },
+  ]},
+  { courseId: 123, lessonIdx: 1, files: [
+    { name: "Clojure Code Examples", type: "zip", url: "https://github.com/example/clojure-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 123, lessonIdx: 2, files: [
+    { name: "Clojure Project Workbook", type: "pdf", url: "https://example.com/workbooks/clojure.pdf" },
+  ]},
+  { courseId: 123, lessonIdx: 3, files: [
+    { name: "Clojure Reference Card", type: "pdf", url: "https://example.com/cheatsheets/clojure-reference.pdf" },
+  ]},
+  { courseId: 124, lessonIdx: 0, files: [
+    { name: "F# Starter Template", type: "zip", url: "https://github.com/topics/f/archive/refs/heads/main.zip" },
+    { name: "F# Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/f.pdf" },
+  ]},
+  { courseId: 124, lessonIdx: 1, files: [
+    { name: "F# Code Examples", type: "zip", url: "https://github.com/example/f-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 124, lessonIdx: 2, files: [
+    { name: "F# Project Workbook", type: "pdf", url: "https://example.com/workbooks/f.pdf" },
+  ]},
+  { courseId: 124, lessonIdx: 3, files: [
+    { name: "F# Reference Card", type: "pdf", url: "https://example.com/cheatsheets/f-reference.pdf" },
+  ]},
+  { courseId: 125, lessonIdx: 0, files: [
+    { name: "Objective-C Starter Template", type: "zip", url: "https://github.com/topics/objective-c/archive/refs/heads/main.zip" },
+    { name: "Objective-C Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/objective-c.pdf" },
+  ]},
+  { courseId: 125, lessonIdx: 1, files: [
+    { name: "Objective-C Code Examples", type: "zip", url: "https://github.com/example/objective-c-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 125, lessonIdx: 2, files: [
+    { name: "Objective-C Project Workbook", type: "pdf", url: "https://example.com/workbooks/objective-c.pdf" },
+  ]},
+  { courseId: 125, lessonIdx: 3, files: [
+    { name: "Objective-C Reference Card", type: "pdf", url: "https://example.com/cheatsheets/objective-c-reference.pdf" },
+  ]},
+  { courseId: 126, lessonIdx: 0, files: [
+    { name: "Assembly Language Starter Template", type: "zip", url: "https://github.com/topics/assembly-language/archive/refs/heads/main.zip" },
+    { name: "Assembly Language Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/assembly-language.pdf" },
+  ]},
+  { courseId: 126, lessonIdx: 1, files: [
+    { name: "Assembly Language Code Examples", type: "zip", url: "https://github.com/example/assembly-language-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 126, lessonIdx: 2, files: [
+    { name: "Assembly Language Project Workbook", type: "pdf", url: "https://example.com/workbooks/assembly-language.pdf" },
+  ]},
+  { courseId: 126, lessonIdx: 3, files: [
+    { name: "Assembly Language Reference Card", type: "pdf", url: "https://example.com/cheatsheets/assembly-language-reference.pdf" },
+  ]},
+  { courseId: 127, lessonIdx: 0, files: [
+    { name: "COBOL Starter Template", type: "zip", url: "https://github.com/topics/cobol/archive/refs/heads/main.zip" },
+    { name: "COBOL Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/cobol.pdf" },
+  ]},
+  { courseId: 127, lessonIdx: 1, files: [
+    { name: "COBOL Code Examples", type: "zip", url: "https://github.com/example/cobol-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 127, lessonIdx: 2, files: [
+    { name: "COBOL Project Workbook", type: "pdf", url: "https://example.com/workbooks/cobol.pdf" },
+  ]},
+  { courseId: 127, lessonIdx: 3, files: [
+    { name: "COBOL Reference Card", type: "pdf", url: "https://example.com/cheatsheets/cobol-reference.pdf" },
+  ]},
+  { courseId: 128, lessonIdx: 0, files: [
+    { name: "Fortran Starter Template", type: "zip", url: "https://github.com/topics/fortran/archive/refs/heads/main.zip" },
+    { name: "Fortran Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/fortran.pdf" },
+  ]},
+  { courseId: 128, lessonIdx: 1, files: [
+    { name: "Fortran Code Examples", type: "zip", url: "https://github.com/example/fortran-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 128, lessonIdx: 2, files: [
+    { name: "Fortran Project Workbook", type: "pdf", url: "https://example.com/workbooks/fortran.pdf" },
+  ]},
+  { courseId: 128, lessonIdx: 3, files: [
+    { name: "Fortran Reference Card", type: "pdf", url: "https://example.com/cheatsheets/fortran-reference.pdf" },
+  ]},
+  { courseId: 129, lessonIdx: 0, files: [
+    { name: "Common Lisp Starter Template", type: "zip", url: "https://github.com/topics/common-lisp/archive/refs/heads/main.zip" },
+    { name: "Common Lisp Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/common-lisp.pdf" },
+  ]},
+  { courseId: 129, lessonIdx: 1, files: [
+    { name: "Common Lisp Code Examples", type: "zip", url: "https://github.com/example/common-lisp-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 129, lessonIdx: 2, files: [
+    { name: "Common Lisp Project Workbook", type: "pdf", url: "https://example.com/workbooks/common-lisp.pdf" },
+  ]},
+  { courseId: 129, lessonIdx: 3, files: [
+    { name: "Common Lisp Reference Card", type: "pdf", url: "https://example.com/cheatsheets/common-lisp-reference.pdf" },
+  ]},
+  { courseId: 130, lessonIdx: 0, files: [
+    { name: "Prolog Starter Template", type: "zip", url: "https://github.com/topics/prolog/archive/refs/heads/main.zip" },
+    { name: "Prolog Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/prolog.pdf" },
+  ]},
+  { courseId: 130, lessonIdx: 1, files: [
+    { name: "Prolog Code Examples", type: "zip", url: "https://github.com/example/prolog-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 130, lessonIdx: 2, files: [
+    { name: "Prolog Project Workbook", type: "pdf", url: "https://example.com/workbooks/prolog.pdf" },
+  ]},
+  { courseId: 130, lessonIdx: 3, files: [
+    { name: "Prolog Reference Card", type: "pdf", url: "https://example.com/cheatsheets/prolog-reference.pdf" },
+  ]},
+  { courseId: 131, lessonIdx: 0, files: [
+    { name: "Ada Starter Template", type: "zip", url: "https://github.com/topics/ada/archive/refs/heads/main.zip" },
+    { name: "Ada Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/ada.pdf" },
+  ]},
+  { courseId: 131, lessonIdx: 1, files: [
+    { name: "Ada Code Examples", type: "zip", url: "https://github.com/example/ada-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 131, lessonIdx: 2, files: [
+    { name: "Ada Project Workbook", type: "pdf", url: "https://example.com/workbooks/ada.pdf" },
+  ]},
+  { courseId: 131, lessonIdx: 3, files: [
+    { name: "Ada Reference Card", type: "pdf", url: "https://example.com/cheatsheets/ada-reference.pdf" },
+  ]},
+  { courseId: 132, lessonIdx: 0, files: [
+    { name: "Pascal Starter Template", type: "zip", url: "https://github.com/topics/pascal/archive/refs/heads/main.zip" },
+    { name: "Pascal Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/pascal.pdf" },
+  ]},
+  { courseId: 132, lessonIdx: 1, files: [
+    { name: "Pascal Code Examples", type: "zip", url: "https://github.com/example/pascal-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 132, lessonIdx: 2, files: [
+    { name: "Pascal Project Workbook", type: "pdf", url: "https://example.com/workbooks/pascal.pdf" },
+  ]},
+  { courseId: 132, lessonIdx: 3, files: [
+    { name: "Pascal Reference Card", type: "pdf", url: "https://example.com/cheatsheets/pascal-reference.pdf" },
+  ]},
+  { courseId: 133, lessonIdx: 0, files: [
+    { name: "MATLAB Starter Template", type: "zip", url: "https://github.com/topics/matlab/archive/refs/heads/main.zip" },
+    { name: "MATLAB Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/matlab.pdf" },
+  ]},
+  { courseId: 133, lessonIdx: 1, files: [
+    { name: "MATLAB Code Examples", type: "zip", url: "https://github.com/example/matlab-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 133, lessonIdx: 2, files: [
+    { name: "MATLAB Project Workbook", type: "pdf", url: "https://example.com/workbooks/matlab.pdf" },
+  ]},
+  { courseId: 133, lessonIdx: 3, files: [
+    { name: "MATLAB Reference Card", type: "pdf", url: "https://example.com/cheatsheets/matlab-reference.pdf" },
+  ]},
+  { courseId: 134, lessonIdx: 0, files: [
+    { name: "Dart Starter Template", type: "zip", url: "https://github.com/topics/dart/archive/refs/heads/main.zip" },
+    { name: "Dart Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/dart.pdf" },
+  ]},
+  { courseId: 134, lessonIdx: 1, files: [
+    { name: "Dart Code Examples", type: "zip", url: "https://github.com/example/dart-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 134, lessonIdx: 2, files: [
+    { name: "Dart Project Workbook", type: "pdf", url: "https://example.com/workbooks/dart.pdf" },
+  ]},
+  { courseId: 134, lessonIdx: 3, files: [
+    { name: "Dart Reference Card", type: "pdf", url: "https://example.com/cheatsheets/dart-reference.pdf" },
+  ]},
+  { courseId: 135, lessonIdx: 0, files: [
+    { name: "Zig Starter Template", type: "zip", url: "https://github.com/topics/zig/archive/refs/heads/main.zip" },
+    { name: "Zig Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/zig.pdf" },
+  ]},
+  { courseId: 135, lessonIdx: 1, files: [
+    { name: "Zig Code Examples", type: "zip", url: "https://github.com/example/zig-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 135, lessonIdx: 2, files: [
+    { name: "Zig Project Workbook", type: "pdf", url: "https://example.com/workbooks/zig.pdf" },
+  ]},
+  { courseId: 135, lessonIdx: 3, files: [
+    { name: "Zig Reference Card", type: "pdf", url: "https://example.com/cheatsheets/zig-reference.pdf" },
+  ]},
+  { courseId: 136, lessonIdx: 0, files: [
+    { name: "PowerShell Starter Template", type: "zip", url: "https://github.com/topics/powershell/archive/refs/heads/main.zip" },
+    { name: "PowerShell Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/powershell.pdf" },
+  ]},
+  { courseId: 136, lessonIdx: 1, files: [
+    { name: "PowerShell Code Examples", type: "zip", url: "https://github.com/example/powershell-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 136, lessonIdx: 2, files: [
+    { name: "PowerShell Project Workbook", type: "pdf", url: "https://example.com/workbooks/powershell.pdf" },
+  ]},
+  { courseId: 136, lessonIdx: 3, files: [
+    { name: "PowerShell Reference Card", type: "pdf", url: "https://example.com/cheatsheets/powershell-reference.pdf" },
+  ]},
+  { courseId: 137, lessonIdx: 0, files: [
+    { name: "OCaml Starter Template", type: "zip", url: "https://github.com/topics/ocaml/archive/refs/heads/main.zip" },
+    { name: "OCaml Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/ocaml.pdf" },
+  ]},
+  { courseId: 137, lessonIdx: 1, files: [
+    { name: "OCaml Code Examples", type: "zip", url: "https://github.com/example/ocaml-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 137, lessonIdx: 2, files: [
+    { name: "OCaml Project Workbook", type: "pdf", url: "https://example.com/workbooks/ocaml.pdf" },
+  ]},
+  { courseId: 137, lessonIdx: 3, files: [
+    { name: "OCaml Reference Card", type: "pdf", url: "https://example.com/cheatsheets/ocaml-reference.pdf" },
+  ]},
+  { courseId: 138, lessonIdx: 0, files: [
+    { name: "Groovy Starter Template", type: "zip", url: "https://github.com/topics/groovy/archive/refs/heads/main.zip" },
+    { name: "Groovy Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/groovy.pdf" },
+  ]},
+  { courseId: 138, lessonIdx: 1, files: [
+    { name: "Groovy Code Examples", type: "zip", url: "https://github.com/example/groovy-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 138, lessonIdx: 2, files: [
+    { name: "Groovy Project Workbook", type: "pdf", url: "https://example.com/workbooks/groovy.pdf" },
+  ]},
+  { courseId: 138, lessonIdx: 3, files: [
+    { name: "Groovy Reference Card", type: "pdf", url: "https://example.com/cheatsheets/groovy-reference.pdf" },
+  ]},
+  { courseId: 139, lessonIdx: 0, files: [
+    { name: "D Language Starter Template", type: "zip", url: "https://github.com/topics/d-language/archive/refs/heads/main.zip" },
+    { name: "D Language Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/d-language.pdf" },
+  ]},
+  { courseId: 139, lessonIdx: 1, files: [
+    { name: "D Language Code Examples", type: "zip", url: "https://github.com/example/d-language-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 139, lessonIdx: 2, files: [
+    { name: "D Language Project Workbook", type: "pdf", url: "https://example.com/workbooks/d-language.pdf" },
+  ]},
+  { courseId: 139, lessonIdx: 3, files: [
+    { name: "D Language Reference Card", type: "pdf", url: "https://example.com/cheatsheets/d-language-reference.pdf" },
+  ]},
+  { courseId: 140, lessonIdx: 0, files: [
+    { name: "VHDL Starter Template", type: "zip", url: "https://github.com/topics/vhdl/archive/refs/heads/main.zip" },
+    { name: "VHDL Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/vhdl.pdf" },
+  ]},
+  { courseId: 140, lessonIdx: 1, files: [
+    { name: "VHDL Code Examples", type: "zip", url: "https://github.com/example/vhdl-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 140, lessonIdx: 2, files: [
+    { name: "VHDL Project Workbook", type: "pdf", url: "https://example.com/workbooks/vhdl.pdf" },
+  ]},
+  { courseId: 140, lessonIdx: 3, files: [
+    { name: "VHDL Reference Card", type: "pdf", url: "https://example.com/cheatsheets/vhdl-reference.pdf" },
+  ]},
+  { courseId: 141, lessonIdx: 0, files: [
+    { name: "Verilog Starter Template", type: "zip", url: "https://github.com/topics/verilog/archive/refs/heads/main.zip" },
+    { name: "Verilog Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/verilog.pdf" },
+  ]},
+  { courseId: 141, lessonIdx: 1, files: [
+    { name: "Verilog Code Examples", type: "zip", url: "https://github.com/example/verilog-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 141, lessonIdx: 2, files: [
+    { name: "Verilog Project Workbook", type: "pdf", url: "https://example.com/workbooks/verilog.pdf" },
+  ]},
+  { courseId: 141, lessonIdx: 3, files: [
+    { name: "Verilog Reference Card", type: "pdf", url: "https://example.com/cheatsheets/verilog-reference.pdf" },
+  ]},
+  { courseId: 142, lessonIdx: 0, files: [
+    { name: "VBA Starter Template", type: "zip", url: "https://github.com/topics/vba/archive/refs/heads/main.zip" },
+    { name: "VBA Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/vba.pdf" },
+  ]},
+  { courseId: 142, lessonIdx: 1, files: [
+    { name: "VBA Code Examples", type: "zip", url: "https://github.com/example/vba-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 142, lessonIdx: 2, files: [
+    { name: "VBA Project Workbook", type: "pdf", url: "https://example.com/workbooks/vba.pdf" },
+  ]},
+  { courseId: 142, lessonIdx: 3, files: [
+    { name: "VBA Reference Card", type: "pdf", url: "https://example.com/cheatsheets/vba-reference.pdf" },
+  ]},
+  { courseId: 143, lessonIdx: 0, files: [
+    { name: "SAS Starter Template", type: "zip", url: "https://github.com/topics/sas/archive/refs/heads/main.zip" },
+    { name: "SAS Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/sas.pdf" },
+  ]},
+  { courseId: 143, lessonIdx: 1, files: [
+    { name: "SAS Code Examples", type: "zip", url: "https://github.com/example/sas-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 143, lessonIdx: 2, files: [
+    { name: "SAS Project Workbook", type: "pdf", url: "https://example.com/workbooks/sas.pdf" },
+  ]},
+  { courseId: 143, lessonIdx: 3, files: [
+    { name: "SAS Reference Card", type: "pdf", url: "https://example.com/cheatsheets/sas-reference.pdf" },
+  ]},
+  { courseId: 144, lessonIdx: 0, files: [
+    { name: "Racket Starter Template", type: "zip", url: "https://github.com/topics/racket/archive/refs/heads/main.zip" },
+    { name: "Racket Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/racket.pdf" },
+  ]},
+  { courseId: 144, lessonIdx: 1, files: [
+    { name: "Racket Code Examples", type: "zip", url: "https://github.com/example/racket-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 144, lessonIdx: 2, files: [
+    { name: "Racket Project Workbook", type: "pdf", url: "https://example.com/workbooks/racket.pdf" },
+  ]},
+  { courseId: 144, lessonIdx: 3, files: [
+    { name: "Racket Reference Card", type: "pdf", url: "https://example.com/cheatsheets/racket-reference.pdf" },
+  ]},
+  { courseId: 145, lessonIdx: 0, files: [
+    { name: "Tcl/Tk Starter Template", type: "zip", url: "https://github.com/topics/tcl-tk/archive/refs/heads/main.zip" },
+    { name: "Tcl/Tk Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/tcl-tk.pdf" },
+  ]},
+  { courseId: 145, lessonIdx: 1, files: [
+    { name: "Tcl/Tk Code Examples", type: "zip", url: "https://github.com/example/tcl-tk-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 145, lessonIdx: 2, files: [
+    { name: "Tcl/Tk Project Workbook", type: "pdf", url: "https://example.com/workbooks/tcl-tk.pdf" },
+  ]},
+  { courseId: 145, lessonIdx: 3, files: [
+    { name: "Tcl/Tk Reference Card", type: "pdf", url: "https://example.com/cheatsheets/tcl-tk-reference.pdf" },
+  ]},
+  { courseId: 146, lessonIdx: 0, files: [
+    { name: "Smalltalk Starter Template", type: "zip", url: "https://github.com/topics/smalltalk/archive/refs/heads/main.zip" },
+    { name: "Smalltalk Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/smalltalk.pdf" },
+  ]},
+  { courseId: 146, lessonIdx: 1, files: [
+    { name: "Smalltalk Code Examples", type: "zip", url: "https://github.com/example/smalltalk-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 146, lessonIdx: 2, files: [
+    { name: "Smalltalk Project Workbook", type: "pdf", url: "https://example.com/workbooks/smalltalk.pdf" },
+  ]},
+  { courseId: 146, lessonIdx: 3, files: [
+    { name: "Smalltalk Reference Card", type: "pdf", url: "https://example.com/cheatsheets/smalltalk-reference.pdf" },
+  ]},
+  { courseId: 147, lessonIdx: 0, files: [
+    { name: "Mojo Starter Template", type: "zip", url: "https://github.com/topics/mojo/archive/refs/heads/main.zip" },
+    { name: "Mojo Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/mojo.pdf" },
+  ]},
+  { courseId: 147, lessonIdx: 1, files: [
+    { name: "Mojo Code Examples", type: "zip", url: "https://github.com/example/mojo-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 147, lessonIdx: 2, files: [
+    { name: "Mojo Project Workbook", type: "pdf", url: "https://example.com/workbooks/mojo.pdf" },
+  ]},
+  { courseId: 147, lessonIdx: 3, files: [
+    { name: "Mojo Reference Card", type: "pdf", url: "https://example.com/cheatsheets/mojo-reference.pdf" },
+  ]},
+  { courseId: 148, lessonIdx: 0, files: [
+    { name: "AWK Starter Template", type: "zip", url: "https://github.com/topics/awk/archive/refs/heads/main.zip" },
+    { name: "AWK Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/awk.pdf" },
+  ]},
+  { courseId: 148, lessonIdx: 1, files: [
+    { name: "AWK Code Examples", type: "zip", url: "https://github.com/example/awk-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 148, lessonIdx: 2, files: [
+    { name: "AWK Project Workbook", type: "pdf", url: "https://example.com/workbooks/awk.pdf" },
+  ]},
+  { courseId: 148, lessonIdx: 3, files: [
+    { name: "AWK Reference Card", type: "pdf", url: "https://example.com/cheatsheets/awk-reference.pdf" },
+  ]},
+  { courseId: 149, lessonIdx: 0, files: [
+    { name: "LabVIEW Starter Template", type: "zip", url: "https://github.com/topics/labview/archive/refs/heads/main.zip" },
+    { name: "LabVIEW Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/labview.pdf" },
+  ]},
+  { courseId: 149, lessonIdx: 1, files: [
+    { name: "LabVIEW Code Examples", type: "zip", url: "https://github.com/example/labview-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 149, lessonIdx: 2, files: [
+    { name: "LabVIEW Project Workbook", type: "pdf", url: "https://example.com/workbooks/labview.pdf" },
+  ]},
+  { courseId: 149, lessonIdx: 3, files: [
+    { name: "LabVIEW Reference Card", type: "pdf", url: "https://example.com/cheatsheets/labview-reference.pdf" },
+  ]},
+  { courseId: 150, lessonIdx: 0, files: [
+    { name: "GDScript Starter Template", type: "zip", url: "https://github.com/topics/gdscript/archive/refs/heads/main.zip" },
+    { name: "GDScript Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/gdscript.pdf" },
+  ]},
+  { courseId: 150, lessonIdx: 1, files: [
+    { name: "GDScript Code Examples", type: "zip", url: "https://github.com/example/gdscript-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 150, lessonIdx: 2, files: [
+    { name: "GDScript Project Workbook", type: "pdf", url: "https://example.com/workbooks/gdscript.pdf" },
+  ]},
+  { courseId: 150, lessonIdx: 3, files: [
+    { name: "GDScript Reference Card", type: "pdf", url: "https://example.com/cheatsheets/gdscript-reference.pdf" },
+  ]},
+  { courseId: 151, lessonIdx: 0, files: [
+    { name: "PL/SQL Starter Template", type: "zip", url: "https://github.com/topics/pl-sql/archive/refs/heads/main.zip" },
+    { name: "PL/SQL Cheatsheet", type: "pdf", url: "https://example.com/cheatsheets/pl-sql.pdf" },
+  ]},
+  { courseId: 151, lessonIdx: 1, files: [
+    { name: "PL/SQL Code Examples", type: "zip", url: "https://github.com/example/pl-sql-examples/archive/refs/heads/main.zip" },
+  ]},
+  { courseId: 151, lessonIdx: 2, files: [
+    { name: "PL/SQL Project Workbook", type: "pdf", url: "https://example.com/workbooks/pl-sql.pdf" },
+  ]},
+  { courseId: 151, lessonIdx: 3, files: [
+    { name: "PL/SQL Reference Card", type: "pdf", url: "https://example.com/cheatsheets/pl-sql-reference.pdf" },
+  ]}
 ];
 
 export default resources;
