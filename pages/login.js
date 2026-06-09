@@ -255,7 +255,7 @@ export default function Login() {
               inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
               style={inp(errors.password)}/>
             {errors.password && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
-            {tab === 'signup' && form.password && (
+            {tab === 'signup' && (
               <div style={{marginTop:'0.5rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
                 {[
                   { check: form.password.length >= 12, label: 'At least 12 characters' },
