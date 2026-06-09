@@ -9,7 +9,7 @@ export default function Login() {
   const { login, users, addUser } = useApp();
   const router = useRouter();
   const [tab, setTab] = useState('login');
-  const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'' });
+  const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showReset, setShowReset] = useState(false);
@@ -21,7 +21,7 @@ export default function Login() {
   function switchTab(t) {
     setTab(t);
     setErrors({});
-    setForm({ firstName:'', lastName:'', email:'', password:'' });
+    setForm({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
   }
 
   function validate() {
@@ -29,6 +29,18 @@ export default function Login() {
     if (tab === 'signup') {
       if (!form.firstName.trim()) errs.firstName = 'First name is required';
       if (!form.lastName.trim()) errs.lastName = 'Last name is required';
+      if (!form.username.trim()) {
+        errs.username = 'Username is required';
+      } else if (form.username.trim().length < 4 || form.username.trim().length > 20) {
+        errs.username = 'Username must be 4–20 characters';
+      } else if (!/^[A-Za-z]/.test(form.username.trim())) {
+        errs.username = 'Must start with a letter';
+      } else if (!/^[A-Za-z][A-Za-z0-9_-]*$/.test(form.username.trim())) {
+        errs.username = 'Letters, numbers, underscores, hyphens only';
+      }
+      if (form.confirmEmail !== form.email) {
+        errs.confirmEmail = 'Emails do not correspond';
+      }
     }
     if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email';
     if (!form.password || !isValidPassword(form.password)) errs.password = 'Password does not meet requirements';
@@ -64,10 +76,16 @@ export default function Login() {
       setLoading(false);
       return;
     }
+    if (users.find(u => u.username === form.username.trim())) {
+      setErrors({ general: 'This username is already taken.' });
+      setLoading(false);
+      return;
+    }
     const newUser = {
       id: Date.now().toString(),
       firstName: form.firstName.trim(),
       lastName: form.lastName.trim(),
+      username: form.username.trim(),
       email: form.email,
       password: form.password,
       picture: '',
@@ -76,7 +94,7 @@ export default function Login() {
     };
     addUser(newUser);
     login(newUser);
-    saveUserData(newUser.id, { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, picture: newUser.picture, provider: newUser.provider, createdAt: newUser.createdAt, wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
+    saveUserData(newUser.id, { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, username: newUser.username, picture: newUser.picture, provider: newUser.provider, createdAt: newUser.createdAt, wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
     setLoading(false);
     router.push('/');
   }
@@ -237,6 +255,31 @@ export default function Login() {
             </div>
           )}
 
+          {tab === 'signup' && (
+            <div>
+              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Username</label>
+              <input type="text" placeholder="e.g. johndoe" value={form.username}
+                onChange={e => setForm(p => ({...p, username: e.target.value}))}
+                inputMode="text" autoComplete="username"
+                style={inp(errors.username)}/>
+              {errors.username && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.username}</div>}
+              {!errors.username && form.username && (
+                <div style={{marginTop:'0.4rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
+                  {[
+                    { check: form.username.length >= 4 && form.username.length <= 20, label: '4–20 characters' },
+                    { check: /^[A-Za-z]/.test(form.username), label: 'Starts with a letter' },
+                    { check: /^[A-Za-z][A-Za-z0-9_-]*$/.test(form.username), label: 'Letters, numbers, underscores, hyphens' },
+                  ].map((item, i) => (
+                    <div key={i} style={{display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.73rem', color: item.check ? 'var(--green, #00d4aa)' : 'var(--muted)'}}>
+                      <span style={{fontSize:'0.65rem'}}>{item.check ? '✓' : '✗'}</span>
+                      {item.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           <div>
             <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email</label>
             <input type="email" placeholder="you@example.com" value={form.email}
@@ -246,6 +289,17 @@ export default function Login() {
               style={inp(errors.email)}/>
             {errors.email && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.email}</div>}
           </div>
+
+          {tab === 'signup' && (
+            <div>
+              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Confirm Email</label>
+              <input type="email" placeholder="you@example.com" value={form.confirmEmail}
+                onChange={e => setForm(p => ({...p, confirmEmail: e.target.value}))}
+                inputMode="email" autoComplete="email"
+                style={inp(errors.confirmEmail)}/>
+              {errors.confirmEmail && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.confirmEmail}</div>}
+            </div>
+          )}
 
           <div>
             <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
