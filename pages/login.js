@@ -167,17 +167,17 @@ export default function Login() {
               color: tab === t ? 'var(--text)' : 'var(--muted)',
               fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer',
             }}>
-              {t === 'login' ? 'Sign In' : 'Create Account'}
+              {t === 'login' ? 'Sign In' : 'Sign Up'}
             </button>
           ))}
         </div>
 
         {/* TITLE */}
         <div style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700', textAlign:'center', marginBottom:'0.3rem', color:'var(--text)'}}>
-          {tab === 'login' ? 'Welcome back' : 'Create your account'}
+          {tab === 'login' ? 'Welcome back' : 'Sign Up'}
         </div>
         <div style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', marginBottom:'1.4rem'}}>
-          {tab === 'login' ? 'Sign in to continue your learning journey' : 'Create your free account and start learning'}
+          {tab === 'login' ? 'Sign in to continue your learning journey' : 'Sign up to Eduverse and start learning'}
         </div>
 
         {/* GOOGLE BUTTON */}
@@ -330,7 +330,7 @@ export default function Login() {
           }}>
             {loading ? (
               <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> Signing in...</>
-            ) : tab === 'login' ? 'Sign In' : 'Create Free Account'}
+            ) : tab === 'login' ? 'Sign In' : 'Sign Up'}
           </button>
         </div>
 
