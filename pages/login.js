@@ -263,20 +263,7 @@ export default function Login() {
                 inputMode="text" autoComplete="username"
                 style={inp(errors.username)}/>
               {errors.username && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.username}</div>}
-              {!errors.username && form.username && (
-                <div style={{marginTop:'0.4rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
-                  {[
-                    { check: form.username.length >= 4 && form.username.length <= 20, label: '4–20 characters' },
-                    { check: /^[A-Za-z]/.test(form.username), label: 'Starts with a letter' },
-                    { check: /^[A-Za-z][A-Za-z0-9_-]*$/.test(form.username), label: 'Letters, numbers, underscores, hyphens' },
-                  ].map((item, i) => (
-                    <div key={i} style={{display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.73rem', color: item.check ? 'var(--green, #00d4aa)' : 'var(--muted)'}}>
-                      <span style={{fontSize:'0.65rem'}}>{item.check ? '✓' : '✗'}</span>
-                      {item.label}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.3rem', lineHeight:'1.4'}}>4–20 characters. Letters, numbers, underscores, and hyphens. Must start with a letter.</div>
             </div>
           )}
 
@@ -294,7 +281,19 @@ export default function Login() {
             <div>
               <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Confirm Email</label>
               <input type="email" placeholder="you@example.com" value={form.confirmEmail}
-                onChange={e => setForm(p => ({...p, confirmEmail: e.target.value}))}
+                onChange={e => {
+                  const val = e.target.value;
+                  setForm(p => ({...p, confirmEmail: val}));
+                  if (val && val !== form.email) {
+                    setErrors(prev => ({...prev, confirmEmail: 'Emails do not correspond'}));
+                  } else {
+                    setErrors(prev => {
+                      const copy = {...prev};
+                      delete copy.confirmEmail;
+                      return copy;
+                    });
+                  }
+                }}
                 inputMode="email" autoComplete="email"
                 style={inp(errors.confirmEmail)}/>
               {errors.confirmEmail && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.confirmEmail}</div>}
