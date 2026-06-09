@@ -27,6 +27,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
       <body className="antialiased">
         <Main />
