@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import emailjs from '@emailjs/browser';
 import { saveUserData } from '../lib/firestore';
+import { isValidPassword, getPasswordErrors } from '../lib/sanitize';
 
 export default function Login() {
   const { login, users, addUser } = useApp();
@@ -30,7 +31,7 @@ export default function Login() {
       if (!form.lastName.trim()) errs.lastName = 'Last name is required';
     }
     if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email';
-    if (!form.password || form.password.length < 6) errs.password = 'Password must be at least 6 characters';
+    if (!form.password || !isValidPassword(form.password)) errs.password = 'Password does not meet requirements';
     return errs;
   }
 
@@ -248,12 +249,28 @@ export default function Login() {
 
           <div>
             <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
-            <input type="password" placeholder="At least 6 characters" value={form.password}
+            <input type="password" placeholder="At least 12 characters" value={form.password}
               onChange={e => setForm(p => ({...p, password: e.target.value}))}
               onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
               inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
               style={inp(errors.password)}/>
             {errors.password && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
+            {tab === 'signup' && form.password && (
+              <div style={{marginTop:'0.5rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
+                {[
+                  { check: form.password.length >= 12, label: 'At least 12 characters' },
+                  { check: /[A-Z]/.test(form.password), label: 'One uppercase letter (A-Z)' },
+                  { check: /[a-z]/.test(form.password), label: 'One lowercase letter (a-z)' },
+                  { check: /[0-9]/.test(form.password), label: 'One number (0-9)' },
+                  { check: /[^A-Za-z0-9]/.test(form.password), label: 'One special character (e.g. @, #, $, !, %)' },
+                ].map((item, i) => (
+                  <div key={i} style={{display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.73rem', color: item.check ? 'var(--green, #00d4aa)' : 'var(--muted)'}}>
+                    <span style={{fontSize:'0.65rem'}}>{item.check ? '✓' : '✗'}</span>
+                    {item.label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* FORGOT PASSWORD LINK */}
