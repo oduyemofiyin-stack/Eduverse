@@ -66,8 +66,8 @@ export default function Home() {
             letterSpacing:'-0.03em', marginBottom:'1.5rem',
             color:'var(--text)',
           }}>
-            Free education,{' '}
-            <span style={{color:'var(--gold)'}}>full stop.</span>
+            Learn free.{' '}
+            <span style={{color:'var(--gold)'}}>Actually free.</span>
           </h1>
 
           <p style={{
