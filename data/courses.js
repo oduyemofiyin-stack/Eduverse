@@ -79,7 +79,7 @@ const courses = [
     category:"Mobile Development", duration:"4.5 hours",
     level:"intermediate",
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
-    img:"https://images.pexels.com/photos/28902919/pexels-photo-28902919.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img:"https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
     lessons:[
       {title:"Flutter & Dart Crash Course", dur:"12 min", yt:"1ukSR1GRtMU"},
@@ -204,7 +204,7 @@ const courses = [
     category:"Web Development", duration:"0.6 hours",
     level:"advanced",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
-    img:"https://images.pexels.com/photos/207580/pexels-photo-207580.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img:"https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
     lessons:[
       {title:"TypeScript Generics Deep Dive", dur:"10 min", yt:"nePDL5lQSE4"},
@@ -354,7 +354,7 @@ const courses = [
     category:"Programming", duration:"20.4 hours",
     level:"beginner",
     description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
-    img:"https://images.pexels.com/photos/276452/pexels-photo-276452.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img:"https://images.pexels.com/photos/574069/pexels-photo-574069.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"150 min", yt:"eIrMbAQSU34"},
@@ -454,7 +454,7 @@ const courses = [
     category:"Programming", duration:"18.2 hours",
     level:"beginner",
     description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
-    img:"https://images.pexels.com/photos/4498093/pexels-photo-4498093.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img:"https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"266 min", yt:"rfscVS0vtbw"},
@@ -479,7 +479,7 @@ const courses = [
     category:"Design", duration:"12.5 hours",
     level:"beginner",
     description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
-    img:"https://images.pexels.com/photos/29205845/pexels-photo-29205845.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img:"https://images.pexels.com/photos/330771/pexels-photo-330771.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
     lessons:[
       {title:"Responsive Design Principles & Strategy", dur:"247 min", yt:"kUMe1FH4CHE"},
@@ -508,7 +508,7 @@ const courses = [
     duration: "6.8 hours",
     level: "intermediate",
     description: "Build production-grade full-stack apps with Next.js. Covers SSR, SSG, API routes, middleware, and deployment on Vercel.",
-    img: "https://images.pexels.com/photos/37330054/pexels-photo-37330054.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/12899191/pexels-photo-12899191.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "nextjs",
@@ -623,7 +623,7 @@ const courses = [
     duration: "14.2 hours",
     level: "intermediate",
     description: "Master Angular from setup to deployment. Covers components, services, routing, forms, RxJS, and state management with NgRx.",
-    img: "https://images.pexels.com/photos/14743734/pexels-photo-14743734.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "angular",
@@ -737,7 +737,7 @@ const courses = [
     duration: "5.6 hours",
     level: "intermediate",
     description: "Build fast, reactive web apps with Svelte. Learn the compiler-driven approach and SvelteKit for full-stack applications.",
-    img: "https://images.pexels.com/photos/35923690/pexels-photo-35923690.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/270404/pexels-photo-270404.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "svelte",
@@ -851,7 +851,7 @@ const courses = [
     duration: "12.3 hours",
     level: "intermediate",
     description: "Build secure, scalable web applications with Django. Covers ORM, authentication, REST APIs, and deployment best practices.",
-    img: "https://images.pexels.com/photos/30956403/pexels-photo-30956403.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/160107/pexels-photo-160107.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "django",
@@ -965,7 +965,7 @@ const courses = [
     duration: "10.5 hours",
     level: "intermediate",
     description: "Build web applications rapidly with Ruby on Rails. Covers MVC, Active Record, RESTful design, and testing with RSpec.",
-    img: "https://images.pexels.com/photos/18211178/pexels-photo-18211178.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "ruby",
@@ -1079,7 +1079,7 @@ const courses = [
     duration: "11.8 hours",
     level: "intermediate",
     description: "Master modern PHP with Laravel. Build RESTful APIs, use Eloquent ORM, Blade templating, and deploy production apps.",
-    img: "https://images.pexels.com/photos/27461458/pexels-photo-27461458.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "php",
@@ -1193,7 +1193,7 @@ const courses = [
     duration: "7.4 hours",
     level: "intermediate",
     description: "Build fast, concurrent web services with Go. Covers HTTP handlers, middleware, templating, database integration, and testing.",
-    img: "https://images.pexels.com/photos/16027704/pexels-photo-16027704.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "golang",
@@ -1307,7 +1307,7 @@ const courses = [
     duration: "5.3 hours",
     level: "advanced",
     description: "Design and implement GraphQL APIs with Apollo. Covers schemas, resolvers, mutations, subscriptions, and caching strategies.",
-    img: "https://images.pexels.com/photos/30967363/pexels-photo-30967363.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "graphql",
@@ -1421,7 +1421,7 @@ const courses = [
     duration: "4.8 hours",
     level: "intermediate",
     description: "Containerize applications with Docker. Master images, containers, volumes, networks, Docker Compose, and CI/CD integration.",
-    img: "https://images.pexels.com/photos/31869531/pexels-photo-31869531.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.8,
     keywords: [
       "docker",
@@ -1535,7 +1535,7 @@ const courses = [
     duration: "4.2 hours",
     level: "advanced",
     description: "Optimize websites for speed. Master Core Web Vitals, lazy loading, code splitting, CDNs, caching, Lighthouse audits, and more.",
-    img: "https://images.pexels.com/photos/36430116/pexels-photo-36430116.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "performance",
@@ -1649,7 +1649,7 @@ const courses = [
     duration: "3.6 hours",
     level: "intermediate",
     description: "Build installable, offline-first web apps with service workers, cache strategies, push notifications, and the App Shell pattern.",
-    img: "https://images.pexels.com/photos/36538953/pexels-photo-36538953.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "pwa",
@@ -1763,7 +1763,7 @@ const courses = [
     duration: "5.9 hours",
     level: "intermediate",
     description: "Master frontend testing with Jest for unit/integration tests and Cypress for E2E testing. Covers mocking, CI integration, and best practices.",
-    img: "https://images.pexels.com/photos/36583412/pexels-photo-36583412.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "jest",
@@ -1877,7 +1877,7 @@ const courses = [
     duration: "9.4 hours",
     level: "intermediate",
     description: "Build native mobile apps for iOS and Android with React Native. Components, navigation, state management, and device APIs.",
-    img: "https://images.pexels.com/photos/36824938/pexels-photo-36824938.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "react native",
@@ -1991,7 +1991,7 @@ const courses = [
     duration: "15.7 hours",
     level: "intermediate",
     description: "Build beautiful iOS apps from scratch with Swift and SwiftUI. Learn UIKit, Core Data, networking, and App Store submission.",
-    img: "https://images.pexels.com/photos/37200611/pexels-photo-37200611.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.8,
     keywords: [
       "swift",
@@ -2105,7 +2105,7 @@ const courses = [
     duration: "14.3 hours",
     level: "intermediate",
     description: "Build modern Android apps with Kotlin. Jetpack Compose, Room database, Retrofit, Material Design 3, and Play Store deployment.",
-    img: "https://images.pexels.com/photos/36250884/pexels-photo-36250884.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "kotlin",
@@ -2219,7 +2219,7 @@ const courses = [
     duration: "6.2 hours",
     level: "advanced",
     description: "Share business logic across iOS, Android, and web with Kotlin Multiplatform. Covers KMP project structure, expect/actual, and Compose Multiplatform.",
-    img: "https://images.pexels.com/photos/37111377/pexels-photo-37111377.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "kotlin",
@@ -2333,7 +2333,7 @@ const courses = [
     duration: "5.8 hours",
     level: "intermediate",
     description: "Build hybrid mobile apps with Ionic and Capacitor using web technologies. Covers UI components, native plugins, and app store deployment.",
-    img: "https://images.pexels.com/photos/4913769/pexels-photo-4913769.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: [
       "ionic",
@@ -2447,7 +2447,7 @@ const courses = [
     duration: "11.3 hours",
     level: "advanced",
     description: "Deep dive into PyTorch for deep learning. Build neural networks, CNNs, RNNs, transformers, and GANs with hands-on projects.",
-    img: "https://images.pexels.com/photos/36397105/pexels-photo-36397105.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/37685036/pexels-photo-37685036.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.9,
     keywords: [
       "pytorch",
@@ -2561,7 +2561,7 @@ const courses = [
     duration: "9.8 hours",
     level: "advanced",
     description: "Master NLP with transformers, BERT, GPT, and spaCy. Build chatbots, sentiment analyzers, text classifiers, and question-answering systems.",
-    img: "https://images.pexels.com/photos/32796102/pexels-photo-32796102.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.8,
     keywords: [
       "nlp",
@@ -2675,7 +2675,7 @@ const courses = [
     duration: "8.6 hours",
     level: "intermediate",
     description: "Master computer vision with OpenCV and Python. Image processing, object detection, face recognition, and real-time video analysis.",
-    img: "https://images.pexels.com/photos/2058692/pexels-photo-2058692.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "computer vision",
@@ -2789,7 +2789,7 @@ const courses = [
     duration: "7.2 hours",
     level: "advanced",
     description: "Master reinforcement learning from basics to advanced. Q-learning, Deep Q-Networks, policy gradients, and building game-playing agents.",
-    img: "https://images.pexels.com/photos/32154967/pexels-photo-32154967.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "reinforcement learning",
@@ -2903,7 +2903,7 @@ const courses = [
     duration: "6.5 hours",
     level: "advanced",
     description: "Explore generative AI with large language models. Build with GPT APIs, fine-tune models, and create AI-powered applications.",
-    img: "https://images.pexels.com/photos/33971235/pexels-photo-33971235.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.9,
     keywords: [
       "generative ai",
@@ -3017,7 +3017,7 @@ const courses = [
     duration: "6.8 hours",
     level: "advanced",
     description: "Deploy, monitor, and maintain ML models in production. Covers Docker, Kubernetes, model serving, CI/CD pipelines, and MLflow.",
-    img: "https://images.pexels.com/photos/37174011/pexels-photo-37174011.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "mlops",
@@ -3131,7 +3131,7 @@ const courses = [
     duration: "3.5 hours",
     level: "beginner",
     description: "Understand the ethical implications of AI. Bias, fairness, transparency, privacy, accountability, and building responsible AI systems.",
-    img: "https://images.pexels.com/photos/25365222/pexels-photo-25365222.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "ethics",
@@ -3245,7 +3245,7 @@ const courses = [
     duration: "3.2 hours",
     level: "beginner",
     description: "Master the art of prompt engineering for ChatGPT, Claude, and other LLMs. Techniques for better outputs, chain-of-thought, and complex workflows.",
-    img: "https://images.pexels.com/photos/36810423/pexels-photo-36810423.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.8,
     keywords: [
       "prompt engineering",
@@ -3359,7 +3359,7 @@ const courses = [
     duration: "5.4 hours",
     level: "intermediate",
     description: "Build powerful LLM applications with LangChain. Chains, agents, RAG pipelines, vector databases, and multi-model orchestration.",
-    img: "https://images.pexels.com/photos/36789182/pexels-photo-36789182.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "langchain",
@@ -3473,7 +3473,7 @@ const courses = [
     duration: "6.1 hours",
     level: "intermediate",
     description: "Master the Hugging Face ecosystem. Transformers library, model hub, tokenizers, pipelines, fine-tuning, and deployment with spaces.",
-    img: "https://images.pexels.com/photos/4146547/pexels-photo-4146547.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "huggingface",
@@ -3587,7 +3587,7 @@ const courses = [
     duration: "9.5 hours",
     level: "intermediate",
     description: "Master data science with R. Tidyverse, dplyr, ggplot2, statistical modeling, RMarkdown, and interactive dashboards with Shiny.",
-    img: "https://images.pexels.com/photos/28137403/pexels-photo-28137403.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "r",
@@ -3701,7 +3701,7 @@ const courses = [
     duration: "4.1 hours",
     level: "beginner",
     description: "Transform data into compelling stories. Design principles, chart selection, narrative structure, and presentation techniques for data.",
-    img: "https://images.pexels.com/photos/13199593/pexels-photo-13199593.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "storytelling",
@@ -3815,7 +3815,7 @@ const courses = [
     duration: "6.7 hours",
     level: "advanced",
     description: "Analyze and forecast time series data with Python. ARIMA, Prophet, LSTMs, seasonal decomposition, and anomaly detection.",
-    img: "https://images.pexels.com/photos/37294136/pexels-photo-37294136.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "time series",
@@ -3929,7 +3929,7 @@ const courses = [
     duration: "10.4 hours",
     level: "advanced",
     description: "Process massive datasets with Apache Spark. RDDs, DataFrames, Spark SQL, MLlib, streaming, and cluster deployment on cloud.",
-    img: "https://images.pexels.com/photos/11150355/pexels-photo-11150355.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/37685036/pexels-photo-37685036.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "spark",
@@ -4043,7 +4043,7 @@ const courses = [
     duration: "7.8 hours",
     level: "intermediate",
     description: "Design and build modern data warehouses. Star/snowflake schemas, ETL pipelines, data modeling, Snowflake, BigQuery, and Redshift.",
-    img: "https://images.pexels.com/photos/30556363/pexels-photo-30556363.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "data warehouse",
@@ -4157,7 +4157,7 @@ const courses = [
     duration: "5.2 hours",
     level: "intermediate",
     description: "Orchestrate complex data workflows with Apache Airflow. DAGs, operators, sensors, task dependencies, monitoring, and best practices.",
-    img: "https://images.pexels.com/photos/37138063/pexels-photo-37138063.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "airflow",
@@ -4271,7 +4271,7 @@ const courses = [
     duration: "6.3 hours",
     level: "intermediate",
     description: "Create stunning data dashboards with Tableau. Data connections, calculated fields, parameters, LOD expressions, and storytelling.",
-    img: "https://images.pexels.com/photos/36801391/pexels-photo-36801391.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "tableau",
@@ -4385,7 +4385,7 @@ const courses = [
     duration: "7.5 hours",
     level: "intermediate",
     description: "Master statistical analysis using Python. Hypothesis testing, regression, ANOVA, Bayesian methods, and statistical modeling with SciPy and statsmodels.",
-    img: "https://images.pexels.com/photos/37435875/pexels-photo-37435875.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "statistics",
@@ -4499,7 +4499,7 @@ const courses = [
     duration: "8.9 hours",
     level: "intermediate",
     description: "Build robust data pipelines and infrastructure. Batch and stream processing, data lakes, schema design, orchestration, and monitoring.",
-    img: "https://images.pexels.com/photos/33402136/pexels-photo-33402136.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "data engineering",
@@ -4613,7 +4613,7 @@ const courses = [
     duration: "8.3 hours",
     level: "intermediate",
     description: "Master network security concepts. Firewalls, IDS/IPS, VPNs, network segmentation, zero trust, and secure network architecture design.",
-    img: "https://images.pexels.com/photos/37315328/pexels-photo-37315328.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380597/pexels-photo-5380597.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "network security",
@@ -4727,7 +4727,7 @@ const courses = [
     duration: "9.6 hours",
     level: "intermediate",
     description: "Secure cloud infrastructure across AWS, Azure, and GCP. IAM, encryption, compliance, monitoring, and incident response in the cloud.",
-    img: "https://images.pexels.com/photos/37138903/pexels-photo-37138903.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380603/pexels-photo-5380603.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "cloud security",
@@ -4841,7 +4841,7 @@ const courses = [
     duration: "14.5 hours",
     level: "beginner",
     description: "Prepare for the CompTIA Security+ certification. Covers threats, vulnerabilities, cryptography, identity management, and risk management.",
-    img: "https://images.pexels.com/photos/36504591/pexels-photo-36504591.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380655/pexels-photo-5380655.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "comptia",
@@ -4955,7 +4955,7 @@ const courses = [
     duration: "11.2 hours",
     level: "intermediate",
     description: "Investigate security incidents and collect digital evidence. Disk forensics, memory analysis, network forensics, and chain of custody.",
-    img: "https://images.pexels.com/photos/37052815/pexels-photo-37052815.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380597/pexels-photo-5380597.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "forensics",
@@ -5069,7 +5069,7 @@ const courses = [
     duration: "6.8 hours",
     level: "intermediate",
     description: "Understand cryptographic principles. Symmetric and asymmetric encryption, hashing, digital signatures, PKI, TLS, and quantum-safe cryptography.",
-    img: "https://images.pexels.com/photos/16600057/pexels-photo-16600057.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380603/pexels-photo-5380603.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "cryptography",
@@ -5183,7 +5183,7 @@ const courses = [
     duration: "5.5 hours",
     level: "intermediate",
     description: "Integrate security into DevOps pipelines. SAST, DAST, dependency scanning, secret management, container security, and compliance as code.",
-    img: "https://images.pexels.com/photos/19234146/pexels-photo-19234146.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380655/pexels-photo-5380655.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "devsecops",
@@ -5297,7 +5297,7 @@ const courses = [
     duration: "7.4 hours",
     level: "intermediate",
     description: "Learn bug bounty hunting from scratch. Reconnaissance, vulnerability discovery, exploit development, and responsible disclosure.",
-    img: "https://images.pexels.com/photos/36789172/pexels-photo-36789172.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380597/pexels-photo-5380597.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "bug bounty",
@@ -5411,7 +5411,7 @@ const courses = [
     duration: "10.8 hours",
     level: "advanced",
     description: "Analyze malicious software using static and dynamic analysis. Disassembly, debugging, sandboxing, and reverse engineering techniques.",
-    img: "https://images.pexels.com/photos/26734441/pexels-photo-26734441.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380603/pexels-photo-5380603.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "malware analysis",
@@ -5525,7 +5525,7 @@ const courses = [
     duration: "9.3 hours",
     level: "intermediate",
     description: "Become a Security Operations Center analyst. SIEM, threat hunting, log analysis, alert triage, escalation procedures, and incident handling.",
-    img: "https://images.pexels.com/photos/36781745/pexels-photo-36781745.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5380655/pexels-photo-5380655.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "soc",
@@ -5639,7 +5639,7 @@ const courses = [
     duration: "5.8 hours",
     level: "beginner",
     description: "Build a data-driven social media strategy. Platform selection, content planning, scheduling, community management, and performance analytics.",
-    img: "https://images.pexels.com/photos/36505473/pexels-photo-36505473.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "social media",
@@ -5753,7 +5753,7 @@ const courses = [
     duration: "6.2 hours",
     level: "beginner",
     description: "Create compelling content that drives traffic and conversions. Blogging, video, podcasts, SEO-optimized content, and distribution strategies.",
-    img: "https://images.pexels.com/photos/36830710/pexels-photo-36830710.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "content marketing",
@@ -5867,7 +5867,7 @@ const courses = [
     duration: "4.5 hours",
     level: "beginner",
     description: "Earn commissions by promoting products. Niche selection, affiliate networks, content strategies, traffic generation, and scaling for passive income.",
-    img: "https://images.pexels.com/photos/35459530/pexels-photo-35459530.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: [
       "affiliate marketing",
@@ -5981,7 +5981,7 @@ const courses = [
     duration: "5.6 hours",
     level: "intermediate",
     description: "Master Google Analytics 4. Track website traffic, user behavior, conversions, and create data-driven marketing strategies with actionable insights.",
-    img: "https://images.pexels.com/photos/20284284/pexels-photo-20284284.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "google analytics",
@@ -6095,7 +6095,7 @@ const courses = [
     duration: "6.9 hours",
     level: "intermediate",
     description: "Run profitable ad campaigns on Facebook and Instagram. Audience targeting, creative strategy, ad formats, bidding, and retargeting.",
-    img: "https://images.pexels.com/photos/37188165/pexels-photo-37188165.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "facebook ads",
@@ -6209,7 +6209,7 @@ const courses = [
     duration: "4.2 hours",
     level: "beginner",
     description: "Master TikTok and short-form video marketing. Algorithm insights, content creation, viral strategies, ads, and building a following.",
-    img: "https://images.pexels.com/photos/36825840/pexels-photo-36825840.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "tiktok",
@@ -6323,7 +6323,7 @@ const courses = [
     duration: "4.8 hours",
     level: "beginner",
     description: "Write persuasive copy that converts. Landing pages, email campaigns, ad copy, CTAs, brand voice, and A/B testing for optimization.",
-    img: "https://images.pexels.com/photos/36808916/pexels-photo-36808916.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "copywriting",
@@ -6437,7 +6437,7 @@ const courses = [
     duration: "5.3 hours",
     level: "intermediate",
     description: "Apply growth hacking strategies for rapid user acquisition. Viral loops, product-led growth, experimentation frameworks, and growth metrics.",
-    img: "https://images.pexels.com/photos/13861175/pexels-photo-13861175.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "growth hacking",
@@ -6552,7 +6552,7 @@ const courses = [
     duration: "6.5 hours",
     level: "beginner",
     description: "Launch and grow your own business. Idea validation, business models, funding, marketing, operations, and scaling strategies for startups.",
-    img: "https://images.pexels.com/photos/36658385/pexels-photo-36658385.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "entrepreneurship",
@@ -6666,7 +6666,7 @@ const courses = [
     duration: "12.8 hours",
     level: "intermediate",
     description: "Master project management principles and prepare for PMP certification. Waterfall, Agile, risk management, stakeholder communication, and project lifecycle.",
-    img: "https://images.pexels.com/photos/36694533/pexels-photo-36694533.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "pmp",
@@ -6781,7 +6781,7 @@ const courses = [
     duration: "6.8 hours",
     level: "beginner",
     description: "Master Agile methodology and Scrum framework. Sprints, ceremonies, backlog management, Scrum roles, and scaling with SAFe and LeSS.",
-    img: "https://images.pexels.com/photos/37193005/pexels-photo-37193005.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "agile",
@@ -6895,7 +6895,7 @@ const courses = [
     duration: "7.2 hours",
     level: "beginner",
     description: "Become a product manager. User research, product strategy, roadmapping, prioritization frameworks, stakeholder management, and go-to-market.",
-    img: "https://images.pexels.com/photos/9754720/pexels-photo-9754720.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "product management",
@@ -7009,7 +7009,7 @@ const courses = [
     duration: "9.5 hours",
     level: "intermediate",
     description: "Build financial models and analyze company performance. Financial statements, valuation, DCF, LBO, sensitivity analysis, and investment decisions.",
-    img: "https://images.pexels.com/photos/19455738/pexels-photo-19455738.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "financial analysis",
@@ -7123,7 +7123,7 @@ const courses = [
     duration: "6.2 hours",
     level: "beginner",
     description: "Develop leadership skills to inspire and manage teams. Communication, delegation, conflict resolution, coaching, and building high-performance culture.",
-    img: "https://images.pexels.com/photos/37101776/pexels-photo-37101776.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "leadership",
@@ -7237,7 +7237,7 @@ const courses = [
     duration: "5.8 hours",
     level: "beginner",
     description: "Master B2B and B2C sales. Prospecting, qualifying, pitching, objection handling, closing techniques, and negotiation tactics for win-win outcomes.",
-    img: "https://images.pexels.com/photos/37290569/pexels-photo-37290569.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "sales",
@@ -7351,7 +7351,7 @@ const courses = [
     duration: "4.5 hours",
     level: "beginner",
     description: "Overcome fear and become a confident public speaker. Speech structure, storytelling, body language, visual aids, and handling Q&A sessions.",
-    img: "https://images.pexels.com/photos/10822037/pexels-photo-10822037.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "public speaking",
@@ -7465,7 +7465,7 @@ const courses = [
     duration: "7.8 hours",
     level: "intermediate",
     description: "Improve processes and reduce waste with Lean Six Sigma. DMAIC methodology, statistical process control, value stream mapping, and Green Belt prep.",
-    img: "https://images.pexels.com/photos/35466382/pexels-photo-35466382.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7693721/pexels-photo-7693721.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "lean",
@@ -7580,7 +7580,7 @@ const courses = [
     duration: "6.5 hours",
     level: "intermediate",
     description: "Master Salesforce CRM. Sales Cloud, Service Cloud, reports, dashboards, workflow automation, and Salesforce administration fundamentals.",
-    img: "https://images.pexels.com/photos/5098043/pexels-photo-5098043.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5466280/pexels-photo-5466280.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: [
       "salesforce",
@@ -7694,7 +7694,7 @@ const courses = [
     duration: "4.8 hours",
     level: "beginner",
     description: "Design user interfaces and prototypes with Adobe XD. Wireframing, component libraries, responsive design, interactions, and design handoff.",
-    img: "https://images.pexels.com/photos/34162180/pexels-photo-34162180.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4348366/pexels-photo-4348366.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "adobe xd",
@@ -7808,7 +7808,7 @@ const courses = [
     duration: "6.5 hours",
     level: "intermediate",
     description: "Bring designs to life with motion. After Effects, Lottie, micro-interactions, easing curves, UI animations, and export for web and mobile.",
-    img: "https://images.pexels.com/photos/34334598/pexels-photo-34334598.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4348366/pexels-photo-4348366.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "motion design",
@@ -7922,7 +7922,7 @@ const courses = [
     duration: "12.5 hours",
     level: "intermediate",
     description: "Create stunning 3D models with Blender. Modeling, sculpting, texturing, lighting, rendering, and animation for games, film, and product visualization.",
-    img: "https://images.pexels.com/photos/36578323/pexels-photo-36578323.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4348366/pexels-photo-4348366.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "blender",
@@ -8036,7 +8036,7 @@ const courses = [
     duration: "7.8 hours",
     level: "beginner",
     description: "Master Adobe Photoshop for web and UI design. Layers, masks, typography, image editing, mockups, and export for web and responsive design.",
-    img: "https://images.pexels.com/photos/36890282/pexels-photo-36890282.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4348366/pexels-photo-4348366.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "photoshop",
@@ -8150,7 +8150,7 @@ const courses = [
     duration: "8.2 hours",
     level: "beginner",
     description: "Create vector graphics and illustrations with Adobe Illustrator. Pen tool, typography, logo design, patterns, and export for web and print.",
-    img: "https://images.pexels.com/photos/36583427/pexels-photo-36583427.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4348366/pexels-photo-4348366.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "illustrator",
@@ -8264,7 +8264,7 @@ const courses = [
     duration: "5.2 hours",
     level: "beginner",
     description: "Create memorable brand identities. Logo design, color psychology, typography selection, brand guidelines, and visual identity systems.",
-    img: "https://images.pexels.com/photos/34822448/pexels-photo-34822448.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4348366/pexels-photo-4348366.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "brand identity",
@@ -8378,7 +8378,7 @@ const courses = [
     duration: "4.2 hours",
     level: "beginner",
     description: "Master typography and color theory for design. Type classification, hierarchy, pairing, color wheels, harmony, contrast, and accessibility.",
-    img: "https://images.pexels.com/photos/37374998/pexels-photo-37374998.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4348366/pexels-photo-4348366.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "typography",
@@ -8492,7 +8492,7 @@ const courses = [
     duration: "16.5 hours",
     level: "beginner",
     description: "Master C programming from fundamentals to advanced. Pointers, memory management, data structures, file I/O, and system-level programming.",
-    img: "https://images.pexels.com/photos/37101837/pexels-photo-37101837.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "c programming",
@@ -8606,7 +8606,7 @@ const courses = [
     duration: "18.3 hours",
     level: "intermediate",
     description: "Learn C++ for game development. OOP, STL, memory management, graphics programming, game engines, and building a complete game project.",
-    img: "https://images.pexels.com/photos/37145721/pexels-photo-37145721.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "c++",
@@ -8720,7 +8720,7 @@ const courses = [
     duration: "14.8 hours",
     level: "beginner",
     description: "Build applications with C# and .NET. C# language, ASP.NET Core, Entity Framework, LINQ, async programming, and desktop/web development.",
-    img: "https://images.pexels.com/photos/37178226/pexels-photo-37178226.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "c#",
@@ -8834,7 +8834,7 @@ const courses = [
     duration: "10.5 hours",
     level: "intermediate",
     description: "Master Rust programming. Ownership, borrowing, lifetimes, memory safety without GC, concurrency, and building high-performance systems.",
-    img: "https://images.pexels.com/photos/29399452/pexels-photo-29399452.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.8,
     keywords: [
       "rust",
@@ -8948,7 +8948,7 @@ const courses = [
     duration: "8.5 hours",
     level: "beginner",
     description: "Learn Go for backend and systems programming. Concurrency, interfaces, error handling, testing, and building microservices and CLI tools.",
-    img: "https://images.pexels.com/photos/4255039/pexels-photo-4255039.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "golang",
@@ -9062,7 +9062,7 @@ const courses = [
     duration: "5.5 hours",
     level: "beginner",
     description: "Automate tasks with Bash scripting. Command line mastery, shell scripts, variables, control flow, functions, cron jobs, and text processing.",
-    img: "https://images.pexels.com/photos/17525437/pexels-photo-17525437.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "bash",
@@ -9176,7 +9176,7 @@ const courses = [
     duration: "12.5 hours",
     level: "intermediate",
     description: "Master competitive programming and ace technical interviews. Algorithms, data structures, problem-solving strategies, and contest techniques.",
-    img: "https://images.pexels.com/photos/17607346/pexels-photo-17607346.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "competitive programming",
@@ -9290,7 +9290,7 @@ const courses = [
     duration: "9.5 hours",
     level: "advanced",
     description: "Learn pure functional programming with Haskell. Type classes, monads, functors, lazy evaluation, and building robust, side-effect-free applications.",
-    img: "https://images.pexels.com/photos/34763439/pexels-photo-34763439.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "haskell",
@@ -9404,7 +9404,7 @@ const courses = [
     duration: "18.5 hours",
     level: "intermediate",
     description: "Prepare for AWS Solutions Architect certification. Compute, storage, networking, databases, security, and architecting scalable cloud solutions.",
-    img: "https://images.pexels.com/photos/18159142/pexels-photo-18159142.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.8,
     keywords: [
       "aws",
@@ -9519,7 +9519,7 @@ const courses = [
     duration: "14.5 hours",
     level: "beginner",
     description: "Learn Microsoft Azure cloud platform. Compute, storage, networking, Active Directory, and prepare for AZ-900 certification.",
-    img: "https://images.pexels.com/photos/21352832/pexels-photo-21352832.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "azure",
@@ -9633,7 +9633,7 @@ const courses = [
     duration: "13.2 hours",
     level: "intermediate",
     description: "Master Google Cloud Platform. Compute Engine, GKE, Cloud Storage, BigQuery, Cloud Functions, and GCP architecture best practices.",
-    img: "https://images.pexels.com/photos/36801649/pexels-photo-36801649.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "gcp",
@@ -9747,7 +9747,7 @@ const courses = [
     duration: "9.5 hours",
     level: "intermediate",
     description: "Master Kubernetes for container orchestration. Pods, services, deployments, ingress, Helm, monitoring, and production cluster management.",
-    img: "https://images.pexels.com/photos/37099817/pexels-photo-37099817.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "kubernetes",
@@ -9861,7 +9861,7 @@ const courses = [
     duration: "6.5 hours",
     level: "intermediate",
     description: "Manage cloud infrastructure as code with Terraform. HCL, state management, modules, provisioning across AWS, Azure, GCP, and best practices.",
-    img: "https://images.pexels.com/photos/37425324/pexels-photo-37425324.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "terraform",
@@ -9975,7 +9975,7 @@ const courses = [
     duration: "5.8 hours",
     level: "intermediate",
     description: "Build robust CI/CD pipelines with Jenkins, GitHub Actions, GitLab CI, and CircleCI. Automated testing, deployment, and pipeline optimization.",
-    img: "https://images.pexels.com/photos/37459980/pexels-photo-37459980.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "ci/cd",
@@ -10089,7 +10089,7 @@ const courses = [
     duration: "14.5 hours",
     level: "beginner",
     description: "Master Linux system administration. Command line, file systems, users/permissions, processes, networking, shell scripting, and server management.",
-    img: "https://images.pexels.com/photos/9980487/pexels-photo-9980487.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "linux",
@@ -10203,7 +10203,7 @@ const courses = [
     duration: "7.5 hours",
     level: "advanced",
     description: "Apply SRE principles for reliable systems. SLIs, SLOs, error budgets, incident management, capacity planning, and reliability culture.",
-    img: "https://images.pexels.com/photos/12420357/pexels-photo-12420357.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: [
       "sre",
@@ -10317,7 +10317,7 @@ const courses = [
     duration: "16.5 hours",
     level: "intermediate",
     description: "Build games with Unity and C#. Game objects, physics, scripting, animations, audio, UI, and publishing to multiple platforms.",
-    img: "https://images.pexels.com/photos/5853819/pexels-photo-5853819.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "unity",
@@ -10431,7 +10431,7 @@ const courses = [
     duration: "18.5 hours",
     level: "intermediate",
     description: "Create stunning games and experiences with Unreal Engine 5. Nanite, Lumen, Blueprints, C++, sequencer, and photorealistic rendering.",
-    img: "https://images.pexels.com/photos/29423444/pexels-photo-29423444.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.8,
     keywords: [
       "unreal engine",
@@ -10545,7 +10545,7 @@ const courses = [
     duration: "10.5 hours",
     level: "intermediate",
     description: "Build games with Godot Engine 4. GDScript, scene system, signals, physics, UI, and 2D/3D game development in this free open-source engine.",
-    img: "https://images.pexels.com/photos/11734995/pexels-photo-11734995.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "godot",
@@ -10659,7 +10659,7 @@ const courses = [
     duration: "7.5 hours",
     level: "beginner",
     description: "Learn game design principles and level design. Player engagement, game mechanics, level flow, pacing, storytelling, and prototyping.",
-    img: "https://images.pexels.com/photos/32801364/pexels-photo-32801364.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "game design",
@@ -10773,7 +10773,7 @@ const courses = [
     duration: "7.5 hours",
     level: "beginner",
     description: "Understand blockchain technology and Web3. Cryptocurrency, consensus mechanisms, smart contracts, DeFi, NFTs, and decentralized applications.",
-    img: "https://images.pexels.com/photos/18759177/pexels-photo-18759177.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "blockchain",
@@ -10887,7 +10887,7 @@ const courses = [
     duration: "8.5 hours",
     level: "intermediate",
     description: "Build smart contracts on Ethereum with Solidity. ERC20, ERC721, inheritance, gas optimization, security, and deploying to mainnet and testnets.",
-    img: "https://images.pexels.com/photos/35579451/pexels-photo-35579451.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "solidity",
@@ -11001,7 +11001,7 @@ const courses = [
     duration: "7.5 hours",
     level: "intermediate",
     description: "Build IoT systems with sensors, microcontrollers, and cloud platforms. Arduino, Raspberry Pi, MQTT, AWS IoT, and real-world automation projects.",
-    img: "https://images.pexels.com/photos/17066707/pexels-photo-17066707.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: [
       "iot",
@@ -11115,7 +11115,7 @@ const courses = [
     duration: "9.5 hours",
     level: "intermediate",
     description: "Build augmented and virtual reality experiences with Unity. AR Foundation, XR Interaction Toolkit, spatial tracking, and cross-platform deployment.",
-    img: "https://images.pexels.com/photos/17415913/pexels-photo-17415913.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: [
       "ar",
@@ -11229,7 +11229,7 @@ const courses = [
     duration: "4.5 hours",
     level: "beginner",
     description: "Understand quantum computing fundamentals. Qubits, superposition, entanglement, quantum gates, algorithms, and programming with Qiskit.",
-    img: "https://images.pexels.com/photos/37314075/pexels-photo-37314075.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: [
       "quantum computing",
@@ -11343,7 +11343,7 @@ const courses = [
     duration: "3.8 hours",
     level: "beginner",
     description: "Master prompt engineering specifically for developers. Code generation, debugging with AI, API integration, and building developer tools with LLMs.",
-    img: "https://images.pexels.com/photos/37293538/pexels-photo-37293538.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: [
       "prompt engineering",
@@ -11458,7 +11458,7 @@ const courses = [
     duration: "8.3 hours",
     level: "intermediate",
     description: "Master Perl for text processing, system administration, and CGI scripting. Covers regex, file manipulation, modules, and CPAN.",
-    img: "https://images.pexels.com/photos/18949258/pexels-photo-18949258.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["perl", "regex", "sysadmin", "text processing", "cgi"],
     lessons: [
@@ -11566,7 +11566,7 @@ const courses = [
     duration: "6.5 hours",
     level: "intermediate",
     description: "Learn Lua from the ground up. Covers tables, metatables, coroutines, and integration with game engines like Love2D and Roblox.",
-    img: "https://images.pexels.com/photos/37330078/pexels-photo-37330078.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["lua", "scripting", "gamedev", "roblox", "love2d"],
     lessons: [
@@ -11674,7 +11674,7 @@ const courses = [
     duration: "9.1 hours",
     level: "intermediate",
     description: "Harness Julia's speed for numerical computing, data science, and machine learning. Multiple dispatch, metaprogramming, and parallel computing.",
-    img: "https://images.pexels.com/photos/11526816/pexels-photo-11526816.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: ["julia", "scientific computing", "numerical", "data science", "multiple dispatch"],
     lessons: [
@@ -11782,7 +11782,7 @@ const courses = [
     duration: "10.4 hours",
     level: "advanced",
     description: "Master Scala for scalable applications. Covers functional programming, Akka actors, Spark integration, and type-level programming.",
-    img: "https://images.pexels.com/photos/37101659/pexels-photo-37101659.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: ["scala", "functional programming", "akka", "spark", "jvm"],
     lessons: [
@@ -11890,7 +11890,7 @@ const courses = [
     duration: "11.2 hours",
     level: "advanced",
     description: "Build fault-tolerant, concurrent applications with Elixir and the Phoenix web framework on the BEAM VM.",
-    img: "https://images.pexels.com/photos/36392373/pexels-photo-36392373.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: ["elixir", "phoenix", "concurrency", "beam", "functional"],
     lessons: [
@@ -11998,7 +11998,7 @@ const courses = [
     duration: "9.8 hours",
     level: "advanced",
     description: "Learn Erlang for building massively concurrent, distributed, and fault-tolerant systems used in telecommunications and messaging.",
-    img: "https://images.pexels.com/photos/32770351/pexels-photo-32770351.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["erlang", "concurrency", "otp", "distributed systems", "beam"],
     lessons: [
@@ -12106,7 +12106,7 @@ const courses = [
     duration: "7.6 hours",
     level: "advanced",
     description: "Write elegant, concurrent code with Clojure — a modern Lisp dialect running on the JVM, CLR, and JavaScript runtimes.",
-    img: "https://images.pexels.com/photos/18502759/pexels-photo-18502759.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["clojure", "lisp", "functional", "jvm", "concurrency"],
     lessons: [
@@ -12214,7 +12214,7 @@ const courses = [
     duration: "8.7 hours",
     level: "intermediate",
     description: "Learn F# for functional-first .NET development. Covers type inference, discriminated unions, pattern matching, and async workflows.",
-    img: "https://images.pexels.com/photos/37033882/pexels-photo-37033882.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: ["fsharp", "functional", "dotnet", "pattern matching", "async"],
     lessons: [
@@ -12322,7 +12322,7 @@ const courses = [
     duration: "7.4 hours",
     level: "intermediate",
     description: "Understand Objective-C for maintaining legacy iOS/macOS apps, working with C libraries, and understanding Apple's ecosystem history.",
-    img: "https://images.pexels.com/photos/37288981/pexels-photo-37288981.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 3.9,
     keywords: ["objective-c", "apple", "ios", "macos", "legacy"],
     lessons: [
@@ -12430,7 +12430,7 @@ const courses = [
     duration: "12.5 hours",
     level: "advanced",
     description: "Learn x86-64 assembly language. Understand CPU architecture, registers, memory addressing, system calls, and reverse engineering.",
-    img: "https://images.pexels.com/photos/8984258/pexels-photo-8984258.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.2,
     keywords: ["assembly", "x86", "reverse engineering", "low-level", "cpu"],
     lessons: [
@@ -12538,7 +12538,7 @@ const courses = [
     duration: "10.2 hours",
     level: "intermediate",
     description: "Master COBOL for maintaining and modernizing enterprise mainframe systems that power banking, insurance, and government infrastructure.",
-    img: "https://images.pexels.com/photos/33138359/pexels-photo-33138359.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 3.8,
     keywords: ["cobol", "mainframe", "enterprise", "legacy", "banking"],
     lessons: [
@@ -12646,7 +12646,7 @@ const courses = [
     duration: "9.5 hours",
     level: "intermediate",
     description: "Learn Fortran for numerical weather prediction, computational physics, and high-performance computing on supercomputers.",
-    img: "https://images.pexels.com/photos/37569640/pexels-photo-37569640.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["fortran", "hpc", "scientific computing", "numerical", "supercomputing"],
     lessons: [
@@ -12754,7 +12754,7 @@ const courses = [
     duration: "8.9 hours",
     level: "advanced",
     description: "Discover the power of Common Lisp with macros, condition system, CLOS, and interactive development for AI and metaprogramming.",
-    img: "https://images.pexels.com/photos/37722718/pexels-photo-37722718.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["common lisp", "macros", "clos", "functional", "metaprogramming"],
     lessons: [
@@ -12862,7 +12862,7 @@ const courses = [
     duration: "7.8 hours",
     level: "advanced",
     description: "Learn Prolog for logic programming, AI reasoning, constraint solving, and natural language processing with declarative queries.",
-    img: "https://images.pexels.com/photos/35836823/pexels-photo-35836823.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["prolog", "logic programming", "ai", "constraint solving", "declarative"],
     lessons: [
@@ -12970,7 +12970,7 @@ const courses = [
     duration: "11.5 hours",
     level: "intermediate",
     description: "Learn Ada for safety-critical systems in aviation, defense, and railway. Strong typing, contracts, and tasking for reliable software.",
-    img: "https://images.pexels.com/photos/35845638/pexels-photo-35845638.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["ada", "safety-critical", "systems", "real-time", "contracts"],
     lessons: [
@@ -13078,7 +13078,7 @@ const courses = [
     duration: "6.8 hours",
     level: "beginner",
     description: "Learn Pascal — the language designed for teaching structured programming. Covers algorithms, data structures, and modern Delphi/Object Pascal.",
-    img: "https://images.pexels.com/photos/35748880/pexels-photo-35748880.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["pascal", "delphi", "structured programming", "teaching", "algorithms"],
     lessons: [
@@ -13186,7 +13186,7 @@ const courses = [
     duration: "10.5 hours",
     level: "intermediate",
     description: "Master MATLAB for engineering mathematics, signal processing, control systems, and simulation with Simulink integration.",
-    img: "https://images.pexels.com/photos/35759517/pexels-photo-35759517.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["matlab", "numerical computing", "simulink", "simulation", "engineering"],
     lessons: [
@@ -13294,7 +13294,7 @@ const courses = [
     duration: "7.2 hours",
     level: "intermediate",
     description: "Learn Dart beyond Flutter — the language powering modern multi-platform apps. Covers isolates, streams, and the Dart type system.",
-    img: "https://images.pexels.com/photos/36815593/pexels-photo-36815593.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["dart", "flutter", "isolates", "streams", "frontend"],
     lessons: [
@@ -13402,7 +13402,7 @@ const courses = [
     duration: "8.1 hours",
     level: "advanced",
     description: "Build fast, safe systems software with Zig. Manual memory management, comptime metaprogramming, and seamless C interop.",
-    img: "https://images.pexels.com/photos/37355150/pexels-photo-37355150.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: ["zig", "systems programming", "comptime", "c interop", "low-level"],
     lessons: [
@@ -13510,7 +13510,7 @@ const courses = [
     duration: "7.5 hours",
     level: "beginner",
     description: "Automate Windows administration with PowerShell. Covers cmdlets, pipelines, remoting, DSC, and cross-platform PowerShell Core.",
-    img: "https://images.pexels.com/photos/37678386/pexels-photo-37678386.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: ["powershell", "automation", "windows", "devops", "sysadmin"],
     lessons: [
@@ -13618,7 +13618,7 @@ const courses = [
     duration: "8.4 hours",
     level: "advanced",
     description: "Write reliable, performant code with OCaml. Algebraic data types, functors, modules, and its use at Jane Street and Facebook.",
-    img: "https://images.pexels.com/photos/37001453/pexels-photo-37001453.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["ocaml", "functional", "type inference", "module system", "jane street"],
     lessons: [
@@ -13726,7 +13726,7 @@ const courses = [
     duration: "6.5 hours",
     level: "intermediate",
     description: "Master Groovy for JVM scripting, Gradle build automation, and Jenkins pipelines. Dynamic typing meets Java's ecosystem.",
-    img: "https://images.pexels.com/photos/28438093/pexels-photo-28438093.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["groovy", "gradle", "jenkins", "jvm", "scripting"],
     lessons: [
@@ -13834,7 +13834,7 @@ const courses = [
     duration: "7.9 hours",
     level: "intermediate",
     description: "Learn D — a language combining C's power with modern features like slices, ranges, compile-time evaluation, and safe memory management.",
-    img: "https://images.pexels.com/photos/31508865/pexels-photo-31508865.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["d language", "systems programming", "ranges", "compile-time", "native"],
     lessons: [
@@ -13942,7 +13942,7 @@ const courses = [
     duration: "9.5 hours",
     level: "advanced",
     description: "Design digital circuits with VHDL. Covers concurrent statements, FSM design, simulation, and FPGA implementation for real hardware.",
-    img: "https://images.pexels.com/photos/9758237/pexels-photo-9758237.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.2,
     keywords: ["vhdl", "fpga", "hardware", "digital design", "asic"],
     lessons: [
@@ -14050,7 +14050,7 @@ const courses = [
     duration: "8.8 hours",
     level: "advanced",
     description: "Learn Verilog for digital logic design, simulation, and FPGA programming. Covers RTL design, SystemVerilog enhancements, and verification.",
-    img: "https://images.pexels.com/photos/11097428/pexels-photo-11097428.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["verilog", "systemverilog", "fpga", "rtl", "digital logic"],
     lessons: [
@@ -14158,7 +14158,7 @@ const courses = [
     duration: "6.5 hours",
     level: "beginner",
     description: "Automate Microsoft Office with VBA. Macros, user forms, Excel automation, and business process optimization for productivity.",
-    img: "https://images.pexels.com/photos/11635537/pexels-photo-11635537.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["vba", "excel", "macros", "automation", "office"],
     lessons: [
@@ -14266,7 +14266,7 @@ const courses = [
     duration: "8.5 hours",
     level: "intermediate",
     description: "Master SAS for statistical analysis, clinical trials, business intelligence, and data manipulation in enterprise environments.",
-    img: "https://images.pexels.com/photos/29157664/pexels-photo-29157664.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["sas", "statistics", "data analysis", "clinical trials", "business intelligence"],
     lessons: [
@@ -14374,7 +14374,7 @@ const courses = [
     duration: "7.2 hours",
     level: "intermediate",
     description: "Explore Racket — a language for creating programming languages. Macros, contracts, DSLs, and the worlds of syntactic abstraction.",
-    img: "https://images.pexels.com/photos/27792840/pexels-photo-27792840.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.2,
     keywords: ["racket", "scheme", "lisp", "dsl", "macros"],
     lessons: [
@@ -14482,7 +14482,7 @@ const courses = [
     duration: "5.5 hours",
     level: "beginner",
     description: "Learn Tcl/Tk for rapid scripting, GUI development, embedded scripting, and the Expect automation tool. Simple yet powerful.",
-    img: "https://images.pexels.com/photos/35609857/pexels-photo-35609857.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 3.7,
     keywords: ["tcl", "tk", "gui", "scripting", "expect"],
     lessons: [
@@ -14590,7 +14590,7 @@ const courses = [
     duration: "6.8 hours",
     level: "intermediate",
     description: "Experience Smalltalk — the language that defined OOP. Live objects, image-based development, and MVC architecture.",
-    img: "https://images.pexels.com/photos/36513756/pexels-photo-36513756.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["smalltalk", "oop", "mvc", "live coding", "pharo"],
     lessons: [
@@ -14698,7 +14698,7 @@ const courses = [
     duration: "6.5 hours",
     level: "intermediate",
     description: "Learn Mojo — a Python superset with C-level performance for AI workloads. Covers MLIR, SIMD, and systems-level programming.",
-    img: "https://images.pexels.com/photos/28610645/pexels-photo-28610645.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: ["mojo", "ai", "python", "mlir", "performance"],
     lessons: [
@@ -14806,7 +14806,7 @@ const courses = [
     duration: "3.5 hours",
     level: "beginner",
     description: "Master AWK for one-liner text processing, log analysis, and structured data extraction on the command line.",
-    img: "https://images.pexels.com/photos/37308559/pexels-photo-37308559.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["awk", "text processing", "command line", "unix", "data extraction"],
     lessons: [
@@ -14914,7 +14914,7 @@ const courses = [
     duration: "9.5 hours",
     level: "intermediate",
     description: "Program with LabVIEW's graphical G language. Data acquisition, instrument control, and automated test systems for engineering.",
-    img: "https://images.pexels.com/photos/37359491/pexels-photo-37359491.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["labview", "ni", "data acquisition", "graphical programming", "instrumentation"],
     lessons: [
@@ -15022,7 +15022,7 @@ const courses = [
     duration: "5.8 hours",
     level: "beginner",
     description: "Learn GDScript for the Godot game engine. Signals, scenes, physics, and building 2D/3D games with Godot's native scripting language.",
-    img: "https://images.pexels.com/photos/37559001/pexels-photo-37559001.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: ["gdscript", "godot", "game development", "scripting", "2d"],
     lessons: [
@@ -15130,7 +15130,7 @@ const courses = [
     duration: "7.5 hours",
     level: "intermediate",
     description: "Write stored procedures, triggers, and packages in Oracle's PL/SQL. Covers cursors, exception handling, and performance tuning.",
-    img: "https://images.pexels.com/photos/37623485/pexels-photo-37623485.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["plsql", "oracle", "stored procedures", "database", "triggers"],
     lessons: [
