@@ -347,5 +347,5 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 <div align="center">
-  Built with ❤️ by <a href="https://github.com/oduyemofiyin-stack">Oduye Emmanuel</a>
+  Built by <a href="https://github.com/oduyemofiyin-stack">Oduye Emmanuel</a>
 </div>
