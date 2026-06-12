@@ -131,15 +131,7 @@ export default function Home() {
 
         {/* HERO CONTENT */}
         <div style={{position:'relative', zIndex:1, maxWidth:'900px', margin:'0 auto', padding:'2rem 1.2rem'}} data-parallax-text>
-          {/* BRAND BADGE */}
-          <div className="reveal delay-1" style={{
-            display:'inline-flex', alignItems:'center', gap:'6px',
-            background:'rgba(68,136,255,0.1)', border:'1px solid rgba(68,136,255,0.2)',
-            borderRadius:'100px', padding:'0.35rem 1rem 0.35rem 0.8rem',
-            marginBottom:'1.5rem', fontSize:'0.7rem', fontWeight:'600',
-            color:'#4488ff', textTransform:'uppercase', letterSpacing:'0.12em',
-          }}>
-          </div>
+
 
           <h1 className="reveal delay-2" style={{
             fontFamily:'Georgia, serif',
