@@ -189,7 +189,7 @@ export default function Dashboard() {
         <h3 style={{fontSize:'0.82rem', fontWeight:'700', marginBottom:'0.8rem'}}>Recent Activity</h3>
         {activityLog.length === 0 ? (
           <div style={{textAlign:'center', padding:'2rem', color:'var(--muted)'}}>
-            <p style={{fontSize:'0.85rem'}}>🚀 Start learning to see your activity here!</p>
+            <p style={{fontSize:'0.85rem'}}>Start learning to see your activity here!</p>
           </div>
         ) : (
           <div style={{display:'flex', flexDirection:'column', gap:'0.4rem', maxHeight:'400px', overflowY:'auto'}}>
