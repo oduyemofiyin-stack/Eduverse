@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { saveUserData, loadUserData } from '../lib/firestore';
+import { getDbInstance } from '../lib/firebase';
 
 const AppContext = createContext();
 
@@ -155,6 +156,9 @@ export function AppProvider({ children }) {
       if (savedForum) setForumTopics(JSON.parse(savedForum));
     } catch(e) {}
   }, []);
+
+  // Eagerly start Firebase init in background
+  useEffect(() => { getDbInstance(); }, []);
 
   // Firestore: load cloud data after localStorage
   useEffect(() => {
