@@ -622,7 +622,7 @@ export default function Home() {
             })}
           </div>
         ) : (
-          <div className="course-grid-desktop" style={{padding:'0 1.2rem', display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(260px, 100%), 1fr))', gap:'1rem'}}>
+          <div style={{padding:'0 1.2rem', display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(260px, 100%), 1fr))', gap:'1rem'}}>
             {filtered.map((c, i) => {
               const prog = enrolled.includes(c.id) ? getCourseProgress(c.id, c.lessons.length) : 0;
               return (
