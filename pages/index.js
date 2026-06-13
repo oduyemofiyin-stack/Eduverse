@@ -48,6 +48,7 @@ export default function Home() {
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState('All');
   const [loading, setLoading] = useState(true);
+  const [showAllMobile, setShowAllMobile] = useState(false);
   const router = useRouter();
   const heroRef = useRef(null);
   const isLight = theme === 'light';
@@ -564,50 +565,73 @@ export default function Home() {
 
       {/* COURSE CAROUSEL — mobile */}
       <div style={{padding:'0 0 3rem'}} className="carousel-section-mobile">
-        <div style={{padding:'0 1.2rem', marginBottom:'0.8rem'}}>
+        <div style={{padding:'0 1.2rem', marginBottom:'0.8rem', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700'}}>
             {search || activeCat !== 'All' ? 'Search Results' : 'Browse Courses'}
           </h2>
+          {showAllMobile && (
+            <button onClick={() => setShowAllMobile(false)}
+              style={{fontSize:'0.75rem', fontWeight:'600', color:'var(--blue)', background:'none', border:'none', cursor:'pointer', padding:'0'}}>
+              Show Less
+            </button>
+          )}
         </div>
-        <div className="carousel">
-          {filtered.length === 0 ? (
-            <div style={{padding:'2rem 1.2rem', color:'var(--muted)', fontSize:'0.88rem', width:'100%', textAlign:'center'}}>No courses found</div>
-          ) : filtered.map((c, i) => {
-            const prog = enrolled.includes(c.id) ? getCourseProgress(c.id, c.lessons.length) : 0;
-            return (
-              <div key={c.id} onClick={() => router.push(`/courses/${c.id}`)}
+        {!showAllMobile ? (
+          <div className="carousel">
+            {filtered.length === 0 ? (
+              <div style={{padding:'2rem 1.2rem', color:'var(--muted)', fontSize:'0.88rem', width:'100%', textAlign:'center'}}>No courses found</div>
+            ) : (
+              <div onClick={() => setShowAllMobile(true)}
                 className="list-item"
-                style={{background:'var(--card-bg)', borderRadius:'16px', overflow:'hidden', border:'1px solid var(--border)', cursor:'pointer'}}
+                style={{background:'var(--card-bg)', borderRadius:'16px', overflow:'hidden', border:'1px solid var(--border)', cursor:'pointer', minWidth:'200px', maxWidth:'260px', display:'flex', alignItems:'center', justifyContent:'center', height:'260px'}}
               >
-                <div style={{width:'100%', height:'150px', overflow:'hidden', position:'relative', background:'var(--surface2)'}}>
-                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
-                  <span style={{position:'absolute', top:'8px', left:'8px', fontSize:'0.6rem', fontWeight:'700', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.2)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.35)'}}>Free</span>
-                </div>
-                <div style={{padding:'0.8rem'}}>
-                  <div style={{display:'flex', alignItems:'center', gap:'0.3rem', flexWrap:'wrap', marginBottom:'0.2rem'}}>
-                    <span style={{fontSize:'0.65rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)'}}>{c.category}</span>
-                    {c.level && (
-                      <span style={{
-                        fontSize:'0.55rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.04em',
-                        padding:'0.1rem 0.4rem', borderRadius:'100px',
-                        background: c.level === 'beginner' ? 'rgba(0,212,170,0.15)' : c.level === 'intermediate' ? 'rgba(240,192,64,0.15)' : 'rgba(255,107,157,0.15)',
-                        color: c.level === 'beginner' ? '#00d4aa' : c.level === 'intermediate' ? '#f0c040' : '#ff6b9d',
-                        border: c.level === 'beginner' ? '1px solid rgba(0,212,170,0.25)' : c.level === 'intermediate' ? '1px solid rgba(240,192,64,0.25)' : '1px solid rgba(255,107,157,0.25)',
-                      }}>{c.level}</span>
-                    )}
-                  </div>
-                  <div style={{fontWeight:'700', fontSize:'0.9rem', lineHeight:'1.3', marginBottom:'0.2rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
-                  <div style={{fontSize:'0.75rem', color:'var(--muted)'}}>{c.duration}</div>
-                  {prog > 0 && (
-                    <div style={{marginTop:'0.5rem', height:'3px', background:'var(--surface3)', borderRadius:'100px', overflow:'hidden'}}>
-                      <div style={{width:`${prog}%`, height:'100%', borderRadius:'100px', background:'linear-gradient(90deg,var(--blue),var(--teal))'}}/>
-                    </div>
-                  )}
+                <div style={{textAlign:'center', padding:'1.5rem'}}>
+                  <div style={{fontSize:'2.2rem', marginBottom:'0.5rem', opacity:0.7}}>📚</div>
+                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700', marginBottom:'0.3rem'}}>See All Courses</h3>
+                  <p style={{color:'var(--muted)', fontSize:'0.8rem'}}>Browse all {filtered.length} courses</p>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            )}
+          </div>
+        ) : (
+          <div className="carousel">
+            {filtered.map((c, i) => {
+              const prog = enrolled.includes(c.id) ? getCourseProgress(c.id, c.lessons.length) : 0;
+              return (
+                <div key={c.id} onClick={() => router.push(`/courses/${c.id}`)}
+                  className="list-item"
+                  style={{background:'var(--card-bg)', borderRadius:'16px', overflow:'hidden', border:'1px solid var(--border)', cursor:'pointer'}}
+                >
+                  <div style={{width:'100%', height:'150px', overflow:'hidden', position:'relative', background:'var(--surface2)'}}>
+                    <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                    <span style={{position:'absolute', top:'8px', left:'8px', fontSize:'0.6rem', fontWeight:'700', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.2)', color:'#00d4aa', border:'1px solid rgba(0,212,170,0.35)'}}>Free</span>
+                  </div>
+                  <div style={{padding:'0.8rem'}}>
+                    <div style={{display:'flex', alignItems:'center', gap:'0.3rem', flexWrap:'wrap', marginBottom:'0.2rem'}}>
+                      <span style={{fontSize:'0.65rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)'}}>{c.category}</span>
+                      {c.level && (
+                        <span style={{
+                          fontSize:'0.55rem', fontWeight:'700', textTransform:'uppercase', letterSpacing:'0.04em',
+                          padding:'0.1rem 0.4rem', borderRadius:'100px',
+                          background: c.level === 'beginner' ? 'rgba(0,212,170,0.15)' : c.level === 'intermediate' ? 'rgba(240,192,64,0.15)' : 'rgba(255,107,157,0.15)',
+                          color: c.level === 'beginner' ? '#00d4aa' : c.level === 'intermediate' ? '#f0c040' : '#ff6b9d',
+                          border: c.level === 'beginner' ? '1px solid rgba(0,212,170,0.25)' : c.level === 'intermediate' ? '1px solid rgba(240,192,64,0.25)' : '1px solid rgba(255,107,157,0.25)',
+                        }}>{c.level}</span>
+                      )}
+                    </div>
+                    <div style={{fontWeight:'700', fontSize:'0.9rem', lineHeight:'1.3', marginBottom:'0.2rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
+                    <div style={{fontSize:'0.75rem', color:'var(--muted)'}}>{c.duration}</div>
+                    {prog > 0 && (
+                      <div style={{marginTop:'0.5rem', height:'3px', background:'var(--surface3)', borderRadius:'100px', overflow:'hidden'}}>
+                        <div style={{width:`${prog}%`, height:'100%', borderRadius:'100px', background:'linear-gradient(90deg,var(--blue),var(--teal))'}}/>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
