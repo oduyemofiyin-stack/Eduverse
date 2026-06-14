@@ -6,6 +6,7 @@ const courses = [
     description:"Master React from the ground up. Components, hooks, props, state management — build real apps. Good for beginners.",
     img:"https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks","jsx"],
+    preview:"CgkZ7MvWUAA",
     lessons:[
       {title:"Intro to React & JSX", dur:"2 min", yt:"Tn6-PIqc4UM"},
       {title:"Components, Props & State", dur:"12 min", yt:"1yTYmuXn6NQ"},
@@ -31,6 +32,7 @@ const courses = [
     description:"Python for data analysis and viz. NumPy, Pandas, Matplotlib, basic ML. Real projects included.",
     img:"https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
+    preview:"7eh4d6sabA0",
     lessons:[
       {title:"Python Fundamentals & Setup", dur:"374 min", yt:"_uQrJ0TkZlc"},
       {title:"NumPy Arrays & Operations", dur:"58 min", yt:"QUT1VHiLmmI"},
@@ -56,6 +58,7 @@ const courses = [
     description:"User-centered design principles. Figma, wireframing, prototyping, design systems. Pretty comprehensive for a short course.",
     img:"https://images.pexels.com/photos/7568293/pexels-photo-7568293.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
+    preview:"olYCG47WI2s",
     lessons:[
       {title:"Design Thinking & UX Research", dur:"1 min", yt:"a7sEoEvT8l8"},
       {title:"Wireframing & Prototyping in Figma", dur:"24 min", yt:"FTFaQWZBqQ8"},
@@ -81,6 +84,7 @@ const courses = [
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
     img:"https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
+    preview:"3kaGC_DrUnw",
     lessons:[
       {title:"Flutter & Dart Crash Course", dur:"12 min", yt:"1ukSR1GRtMU"},
       {title:"Widgets & Layouts", dur:"<1 min", yt:"b_sQ9bMltGU"},
@@ -106,6 +110,7 @@ const courses = [
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
     img:"https://images.pexels.com/photos/17483868/pexels-photo-17483868.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["tensorflow","neural networks","deep learning","keras","nlp"],
+    preview:"gWvwu7qLjJs",
     lessons:[
       {title:"Machine Learning Fundamentals", dur:"7 min", yt:"ukzFI9rgwfU"},
       {title:"Neural Networks from Scratch", dur:"18 min", yt:"aircAruvnKk"},
@@ -131,6 +136,7 @@ const courses = [
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
     img:"https://images.pexels.com/photos/15543041/pexels-photo-15543041.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
+    preview:"fvGxOGQHoI8",
     lessons:[
       {title:"Digital Marketing Strategy Overview", dur:"1 min", yt:"Mf6PcbGDiO4"},
       {title:"SEO Fundamentals", dur:"19 min", yt:"DvwS7cV9GmQ"},
@@ -156,6 +162,7 @@ const courses = [
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
     img:"https://images.pexels.com/photos/6424589/pexels-photo-6424589.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["nodejs","express","rest api","mongodb","backend"],
+    preview:"ChVE-JbtYbM",
     lessons:[
       {title:"Node.js Fundamentals", dur:"78 min", yt:"TlB_eWDSMt4"},
       {title:"Building REST APIs with Express", dur:"58 min", yt:"pKd0Rpw7O48"},
@@ -181,6 +188,7 @@ const courses = [
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
     img:"https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["hacking","penetration testing","kali linux","security","networking"],
+    preview:"1ihg4ETwMrk",
     lessons:[
       {title:"Introduction to Cybersecurity", dur:"7 min", yt:"inWWhr5tnEA"},
       {title:"Network Security Fundamentals", dur:"564 min", yt:"qiQR5rTSshw"},
@@ -206,6 +214,7 @@ const courses = [
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
     img:"https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
+    preview:"nKbdBcIpkkk",
     lessons:[
       {title:"TypeScript Generics Deep Dive", dur:"10 min", yt:"nePDL5lQSE4"},
       {title:"Advanced Types & Utility Types", dur:"8 min", yt:"4ugy-WuO1eg"},
@@ -231,6 +240,7 @@ const courses = [
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
     img:"https://images.pexels.com/photos/6829522/pexels-photo-6829522.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
+    preview:"X88Rbk_ZDkY",
     lessons:[
       {title:"Excel for Business Analysis", dur:"146 min", yt:"Vl0H-qTclOg"},
       {title:"Pivot Tables & Power Query", dur:"13 min", yt:"m0wI61ahfLc"},
@@ -256,6 +266,7 @@ const courses = [
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
     img:"https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["vuejs","vue 3","composition api","pinia","frontend"],
+    preview:"s9URD3PefTk",
     lessons:[
       {title:"Vue 3 Core Concepts", dur:"219 min", yt:"FXpIoQ_rT_c"},
       {title:"Composition API Deep Dive", dur:"23 min", yt:"bwItFdPt-6M"},
@@ -281,6 +292,7 @@ const courses = [
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
     img:"https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["algorithms","data structures","python","leetcode","interviews"],
+    preview:"pkYVOmU3MgA",
     lessons:[
       {title:"Big O Notation & Complexity", dur:"8 min", yt:"v4cd1O4zkGw"},
       {title:"Arrays, Stacks & Queues", dur:"483 min", yt:"RBSGKlAvoiM"},
@@ -306,6 +318,7 @@ const courses = [
     description:"Build beautiful websites from scratch. Master HTML5, CSS3, Flexbox, CSS Grid, and responsive design principles.",
     img:"https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
+    preview:"HGTJBPNC-Gw",
     lessons:[
       {title:"HTML5 Semantics & Structure", dur:"122 min", yt:"pQN-pnXPaVg"},
       {title:"CSS Fundamentals & Selectors", dur:"321 min", yt:"a_iQb1lnAEQ"},
@@ -331,6 +344,7 @@ const courses = [
     description:"Learn JavaScript from the ground up. Covers variables, functions, DOM manipulation, ES6+, and async programming.",
     img:"https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["javascript","es6","dom","async","web"],
+    preview:"WPUU6XnAQoc",
     lessons:[
       {title:"JS Basics: Variables & Data Types", dur:"206 min", yt:"PkZNo7MFNFg"},
       {title:"Functions, Scope & Closures", dur:"100 min", yt:"hdI2bqOjy3c"},
@@ -356,6 +370,7 @@ const courses = [
     description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
     img:"https://images.pexels.com/photos/574069/pexels-photo-574069.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
+    preview:"zDc7w4Fz-wI",
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"150 min", yt:"eIrMbAQSU34"},
       {title:"Object-Oriented Programming Deep Dive", dur:"572 min", yt:"grEKMHGYyns"},
@@ -381,6 +396,7 @@ const courses = [
     description:"Master modern CSS layout techniques. Build complex responsive designs with Flexbox, Grid, and advanced positioning.",
     img:"https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
+    preview:"GWrJZhZqFwQ",
     lessons:[
       {title:"Flexbox Complete Guide", dur:"27 min", yt:"jV8B24rSN5o"},
       {title:"CSS Grid Complete Guide", dur:"85 min", yt:"0xMQfnTU6oo"},
@@ -406,6 +422,7 @@ const courses = [
     description:"Learn version control with Git and collaborate effectively on GitHub. Branching, merging, pull requests, and workflows.",
     img:"https://images.pexels.com/photos/34212896/pexels-photo-34212896.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.5, keywords:["git","github","version control","branching","collaboration"],
+    preview:"vA5TTz6BXhY",
     lessons:[
       {title:"Git Basics: Init, Add, Commit", dur:"68 min", yt:"RGOj5yH7evk"},
       {title:"Branching & Merging Strategies", dur:"81 min", yt:"mAFoROnOfHs"},
@@ -431,6 +448,7 @@ const courses = [
     description:"Master SQL queries and relational database design. Covers joins, subqueries, indexing, normalization, and performance tuning.",
     img:"https://images.pexels.com/photos/572056/pexels-photo-572056.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
+    preview:"m0wI61ahfLc",
     lessons:[
       {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"260 min", yt:"HXV3zeQKqGY"},
       {title:"Joins & Relationships", dur:"260 min", yt:"7S_tz1z_5bA"},
@@ -456,6 +474,7 @@ const courses = [
     description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
     img:"https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
+    preview:"K5KVEU3aaeQ",
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"266 min", yt:"rfscVS0vtbw"},
       {title:"Functions & Modules", dur:"280 min", yt:"eWRfhZUzrAc"},
@@ -481,6 +500,7 @@ const courses = [
     description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
     img:"https://images.pexels.com/photos/330771/pexels-photo-330771.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
+    preview:"x4u1yp3Msao",
     lessons:[
       {title:"Responsive Design Principles & Strategy", dur:"247 min", yt:"kUMe1FH4CHE"},
       {title:"Fluid Layouts & Relative Units", dur:"60 min", yt:"UB1O30fR-EE"},

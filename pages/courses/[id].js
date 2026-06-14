@@ -347,13 +347,13 @@ export default function CourseDetail({ course: propCourse }) {
                 position:'relative', width:'100%', paddingBottom:'56.25%', borderRadius:'14px', overflow:'hidden',
                 background:'var(--surface2)', border:'1px solid var(--border)',
               }}>
-                <iframe src={`https://www.youtube.com/embed/${course.lessons[1]?.yt || course.lessons[0].yt}?rel=0&showinfo=0`}
+                <iframe src={`https://www.youtube.com/embed/${course.preview || course.lessons[0].yt}?rel=0&showinfo=0`}
                   title="Course Preview" frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   style={{position:'absolute', inset:0, width:'100%', height:'100%'}}/>
               </div>
-              <div style={{fontSize:'0.75rem', color:'var(--muted)', marginTop:'0.4rem'}}>Preview: {course.lessons[1]?.title || course.lessons[0].title} · {course.lessons[1]?.dur || course.lessons[0].dur}</div>
+              <div style={{fontSize:'0.75rem', color:'var(--muted)', marginTop:'0.4rem'}}>Course Trailer</div>
             </div>
           )}
 
