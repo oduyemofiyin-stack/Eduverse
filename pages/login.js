@@ -20,6 +20,12 @@ export default function Login() {
   const [resetCodeInput, setResetCodeInput] = useState('');
   const [resetNewPassword, setResetNewPassword] = useState('');
 
+  async function getRecaptchaToken(action) {
+    try {
+      return await grecaptcha.enterprise.execute('6LcbM_4sAAAAAIxAXswECKNaJf4eNm1Vwa5yVOlK', {action});
+    } catch { return null; }
+  }
+
   function switchTab(t) {
     setTab(t);
     setErrors({});
@@ -49,9 +55,11 @@ export default function Login() {
     return errs;
   }
 
-  function handleLogin() {
+  async function handleLogin() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    const recaptchaToken = await getRecaptchaToken('LOGIN');
+    if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
     setLoading(true);
     setErrors({});
     const user = users.find(u =>
@@ -68,9 +76,11 @@ export default function Login() {
     router.push('/');
   }
 
-  function handleSignup() {
+  async function handleSignup() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    const recaptchaToken = await getRecaptchaToken('SIGNUP');
+    if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
     setLoading(true);
     setErrors({});
     if (users.find(u => u.email === form.email)) {
@@ -119,6 +129,8 @@ export default function Login() {
       setErrors({ reset: 'No account found with this email' });
       return;
     }
+    const recaptchaToken = await getRecaptchaToken('PASSWORD_RESET');
+    if (!recaptchaToken) { setErrors({ reset: 'Security check failed. Please refresh and try again.' }); return; }
     setResetLoading(true);
     setErrors({});
     try {

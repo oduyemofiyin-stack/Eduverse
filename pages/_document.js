@@ -21,6 +21,7 @@ export default function Document() {
             `,
           }}
         />
+        <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcbM_4sAAAAAIxAXswECKNaJf4eNm1Vwa5yVOlK"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
