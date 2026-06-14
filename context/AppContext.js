@@ -74,10 +74,6 @@ export function AppProvider({ children }) {
     if (typeof window === 'undefined') return [];
     try { return JSON.parse(localStorage.getItem('eduverse_reviews') || '[]'); } catch { return []; }
   });
-  const [forumTopics, setForumTopics] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    try { return JSON.parse(localStorage.getItem('eduverse_forum_topics') || '[]'); } catch { return []; }
-  });
   const [notes, setNotes] = useState({});
   const [bookmarks, setBookmarks] = useState({});
   const [comments, setComments] = useState({});
@@ -152,8 +148,6 @@ export function AppProvider({ children }) {
       if (savedCerts) setCertificates(JSON.parse(savedCerts));
       const savedReviews = localStorage.getItem('eduverse_reviews');
       if (savedReviews) setReviews(JSON.parse(savedReviews));
-      const savedForum = localStorage.getItem('eduverse_forum_topics');
-      if (savedForum) setForumTopics(JSON.parse(savedForum));
     } catch(e) {}
   }, []);
 
@@ -181,7 +175,6 @@ export function AppProvider({ children }) {
       if (cloud.comments) setComments(cloud.comments);
       if (cloud.certificates) setCertificates(cloud.certificates);
       if (cloud.reviews) setReviews(cloud.reviews);
-      if (cloud.forumTopics) setForumTopics(cloud.forumTopics);
     }).catch(() => {});
   }, [currentUser?.id]);
 
@@ -197,7 +190,7 @@ export function AppProvider({ children }) {
       wishlist, enrolled, progress, readingProgress, completed, ratings,
       xp, streak, lastActiveDate, badges, activityLog,
       notes, bookmarks, comments, certificates, studyTime,
-      reviews, forumTopics,
+      reviews,
     });
   }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
 
@@ -227,7 +220,6 @@ export function AppProvider({ children }) {
   useEffect(() => { localStorage.setItem('eduverse_unread_notifications', unreadNotifications.toString()); }, [unreadNotifications]);
   useEffect(() => { localStorage.setItem('eduverse_dismissed_notifs', JSON.stringify(dismissedNotifs)); }, [dismissedNotifs]);
   useEffect(() => { localStorage.setItem('eduverse_reviews', JSON.stringify(reviews)); }, [reviews]);
-  useEffect(() => { localStorage.setItem('eduverse_forum_topics', JSON.stringify(forumTopics)); }, [forumTopics]);
   // Streak check on mount — im using date string compare, works fine
   useEffect(() => {
     if (!currentUser) return;
@@ -262,7 +254,7 @@ export function AppProvider({ children }) {
     setWishlist([]); setEnrolled([]); setProgress({}); setCompleted([]); setRatings({});
     setXp(0); setStreak(0); setLastActiveDate(null); setBadges([]); setActivityLog([]);
     setNotes({}); setBookmarks({}); setComments({}); setCertificates([]); setStudyTime({});
-    setReviews([]); setForumTopics([]);
+    setReviews([]);
     localStorage.removeItem('eduverse_user'); localStorage.removeItem('eduverse_wishlist');
     localStorage.removeItem('eduverse_enrolled'); localStorage.removeItem('eduverse_progress'); localStorage.removeItem('eduverse_reading_progress');
     localStorage.removeItem('eduverse_completed'); localStorage.removeItem('eduverse_ratings');
@@ -271,7 +263,7 @@ export function AppProvider({ children }) {
     localStorage.removeItem('eduverse_activity'); localStorage.removeItem('eduverse_notes');
     localStorage.removeItem('eduverse_bookmarks'); localStorage.removeItem('eduverse_comments');
     localStorage.removeItem('eduverse_certificates'); localStorage.removeItem('eduverse_study_time');
-    localStorage.removeItem('eduverse_reviews'); localStorage.removeItem('eduverse_forum_topics');
+    localStorage.removeItem('eduverse_reviews');
   }
 
   function addXp(amount, reason) {
@@ -597,40 +589,6 @@ export function AppProvider({ children }) {
     courseReviews.forEach(r => { if (r.rating >= 1 && r.rating <= 5) dist[r.rating - 1]++; });
     return dist;
   }
-
-  // ─── Forum Topics ───
-  function addForumTopic(courseId, courseName, title, body) {
-    const topic = {
-      id: Date.now() + Math.random(),
-      courseId, courseName, title, body,
-      userName: currentUser?.firstName || currentUser?.email?.split('@')[0] || 'Anonymous',
-      userEmail: currentUser?.email || '',
-      createdAt: new Date().toISOString(),
-      replies: [],
-    };
-    setForumTopics(prev => [topic, ...prev]);
-    addActivity('forum', `${topic.userName} posted "${title}" in ${courseName}`);
-  }
-
-  function addForumReply(topicId, text) {
-    const reply = {
-      id: Date.now() + Math.random(),
-      userName: currentUser?.firstName || currentUser?.email?.split('@')[0] || 'Anonymous',
-      text,
-      createdAt: new Date().toISOString(),
-    };
-    setForumTopics(prev => prev.map(t => t.id === topicId ? { ...t, replies: [...t.replies, reply] } : t));
-    addActivity('forum', `${reply.userName} replied to a topic`);
-  }
-
-  function getForumTopics(courseId) {
-    return forumTopics.filter(t => t.courseId === courseId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  }
-
-  function getAllForumTopics() {
-    return [...forumTopics].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  }
-
   const ctxValue = useMemo(() => ({
     currentUser, login, logout,
     wishlist, toggleWishlist,
@@ -652,13 +610,12 @@ export function AppProvider({ children }) {
     plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress,
     unreadNotifications, addNotification, markNotificationsRead, dismissNotification, dismissedNotifs,
     reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution,
-    forumTopics, addForumTopic, addForumReply, getForumTopics, getAllForumTopics,
   }), [
     currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings,
     theme, users, xp, streak, lastActiveDate, badges, activityLog,
     notes, bookmarks, comments, certificates, studyTime,
     leaderboard, followingPaths, plannerGoals, plannerTarget,
-    unreadNotifications, dismissedNotifs, reviews, forumTopics,
+    unreadNotifications, dismissedNotifs, reviews,
   ]);
 
   return (

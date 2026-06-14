@@ -12,7 +12,7 @@ import resources from '../../data/resources';
 export default function CourseDetail({ course: propCourse }) {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution, forumTopics, addForumTopic, addForumReply, getForumTopics } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution } = useApp();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
@@ -32,10 +32,6 @@ export default function CourseDetail({ course: propCourse }) {
   const [editRating, setEditRating] = useState(0);
   const [editText, setEditText] = useState('');
   const [editHover, setEditHover] = useState(0);
-  const [forumTitle, setForumTitle] = useState('');
-  const [forumBody, setForumBody] = useState('');
-  const [replyTexts, setReplyTexts] = useState({});
-
   const course = propCourse || courses.find(c => c.id === parseInt(id));
   if (!course) return <CourseDetailSkeleton/>;
 
@@ -417,7 +413,7 @@ export default function CourseDetail({ course: propCourse }) {
 
           {/* TABS */}
           <div style={{display:'flex', borderBottom:'1px solid var(--border)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
-            {['videos','reading','quiz','resources','reviews','forum'].map(tab => (
+            {['videos','reading','quiz','resources','reviews'].map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)} style={{
                 fontSize:'0.82rem', fontWeight:'600',
                 padding:'0.6rem 1rem', border:'none', background:'transparent',
@@ -425,7 +421,7 @@ export default function CourseDetail({ course: propCourse }) {
                 borderBottom: activeTab === tab ? '2px solid #f0c040' : '2px solid transparent',
                 cursor:'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
               }}>
-                {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? 'Quiz' : tab === 'resources' ? 'Resources' : tab === 'reviews' ? 'Reviews' : 'Forum'}
+                  {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? 'Quiz' : tab === 'resources' ? 'Resources' : 'Reviews'}
               </button>
             ))}
           </div>
@@ -924,98 +920,6 @@ export default function CourseDetail({ course: propCourse }) {
             </div>
           )}
 
-          {/* FORUM TAB */}
-          {activeTab === 'forum' && (
-            <div>
-              <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem', marginBottom:'1rem'}}>
-                <h3 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700', marginBottom:'0.3rem'}}>Discussion Forum</h3>
-                <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'1rem'}}>Ask questions and discuss this course with other learners.</p>
-
-                {isEnrolled && (
-                  <div style={{background:'var(--surface2)', borderRadius:'12px', padding:'1rem', marginBottom:'1rem'}}>
-                    <h4 style={{fontSize:'0.85rem', fontWeight:'700', marginBottom:'0.5rem'}}>Start a Discussion</h4>
-                    <input value={forumTitle} onChange={e => setForumTitle(e.target.value)}
-                      placeholder="Topic title"
-                      style={{
-                        width:'100%', padding:'0.55rem 0.7rem', borderRadius:'8px',
-                        border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
-                        fontSize:'0.82rem', outline:'none', marginBottom:'0.5rem',
-                      }}/>
-                    <textarea value={forumBody} onChange={e => setForumBody(e.target.value)}
-                      placeholder="What would you like to discuss?"
-                      style={{
-                        width:'100%', minHeight:'60px', padding:'0.55rem 0.7rem', borderRadius:'8px',
-                        border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
-                        fontSize:'0.82rem', outline:'none', resize:'vertical', fontFamily:'inherit',
-                      }}/>
-                    <button onClick={() => {
-                      if (!forumTitle.trim()) { toast('Please enter a topic title', 'error'); return; }
-                      if (!forumBody.trim()) { toast('Please enter some text', 'error'); return; }
-                      addForumTopic(course.id, course.title, forumTitle.trim(), forumBody.trim());
-                      setForumTitle(''); setForumBody('');
-                      toast('Topic posted!', 'success');
-                    }} style={{
-                      padding:'0.55rem 1.2rem', borderRadius:'8px',
-                      border:'none', cursor:'pointer', fontWeight:'600', fontSize:'0.82rem',
-                      background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
-                    }}>Post Topic</button>
-                  </div>
-                )}
-
-                {/* Topic list */}
-                <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
-                  {getForumTopics(course.id).length === 0 ? (
-                    <p style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', padding:'1rem'}}>
-                      No discussions yet. Be the first to start one!
-                    </p>
-                  ) : getForumTopics(course.id).map(topic => (
-                    <div key={topic.id} style={{background:'var(--surface2)', borderRadius:'12px', padding:'1rem', border:'1px solid var(--border)'}}>
-                      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.3rem'}}>
-                        <h4 style={{fontSize:'0.88rem', fontWeight:'700', color:'var(--text)'}}>{topic.title}</h4>
-                        <span style={{fontSize:'0.68rem', color:'var(--muted2)'}}>{topic.replies.length} reply{topic.replies.length !== 1 ? 's' : ''}</span>
-                      </div>
-                      <p style={{fontSize:'0.82rem', color:'var(--text2)', lineHeight:'1.5', marginBottom:'0.4rem'}}>{topic.body}</p>
-                      <div style={{display:'flex', alignItems:'center', gap:'0.5rem', marginBottom:'0.6rem', fontSize:'0.7rem', color:'var(--muted2)'}}>
-                        <span style={{fontWeight:'600', color:'var(--blue)'}}>{topic.userName}</span>
-                        <span>{new Date(topic.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
-                      </div>
-
-                      {/* Replies */}
-                      {topic.replies.length > 0 && (
-                        <div style={{marginLeft:'0.5rem', borderLeft:'2px solid var(--border)', paddingLeft:'0.8rem', marginBottom:'0.6rem'}}>
-                          {topic.replies.map(reply => (
-                            <div key={reply.id} style={{padding:'0.4rem 0', borderBottom:'1px solid var(--border)'}}>
-                              <div style={{display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.15rem'}}>
-                                <span style={{fontWeight:'600', fontSize:'0.74rem', color:'var(--teal)'}}>{reply.userName}</span>
-                                <span style={{fontSize:'0.6rem', color:'var(--muted2)'}}>{new Date(reply.createdAt).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
-                              </div>
-                              <p style={{fontSize:'0.78rem', color:'var(--text2)', lineHeight:'1.4'}}>{reply.text}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Reply form */}
-                      {isEnrolled && (
-                        <div style={{display:'flex', gap:'0.4rem'}}>
-                          <input value={replyTexts[topic.id] || ''} onChange={e => setReplyTexts(p => ({...p, [topic.id]: e.target.value}))}
-                            placeholder="Write a reply..."
-                            style={{
-                              flex:1, padding:'0.4rem 0.6rem', borderRadius:'6px',
-                              border:'1px solid var(--border)', background:'var(--surface)', color:'var(--text)',
-                              fontSize:'0.75rem', outline:'none',
-                            }}
-                            onKeyDown={e => { if (e.key === 'Enter' && replyTexts[topic.id]?.trim()) { addForumReply(topic.id, replyTexts[topic.id].trim()); setReplyTexts(p => ({...p, [topic.id]: ''})); } }}/>
-                          <button onClick={() => { if (replyTexts[topic.id]?.trim()) { addForumReply(topic.id, replyTexts[topic.id].trim()); setReplyTexts(p => ({...p, [topic.id]: ''})); } }}
-                            style={{padding:'0.4rem 0.7rem', borderRadius:'6px', border:'none', background:'var(--teal)', color:'#fff', fontSize:'0.75rem', cursor:'pointer', fontWeight:'600'}}>Reply</button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
