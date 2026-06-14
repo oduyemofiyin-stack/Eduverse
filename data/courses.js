@@ -1,7 +1,7 @@
 const courses = [
   {
     id:1, title:"React for Beginners",     instructor:"Oduye Emmanuel",
-    category:"Web Development", duration:"0.9 hours",
+    category:"Web Development", duration:"3 hours",
     level:"beginner",
     description:"Master React from the ground up. Components, hooks, props, state management — build real apps. Good for beginners.",
     img:"https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=600",
@@ -12,6 +12,9 @@ const courses = [
       {title:"Components, Props & State", dur:"12 min", yt:"1yTYmuXn6NQ"},
       {title:"React Hooks — useState & useEffect", dur:"15 min", yt:"O6P86uwfdR0"},
       {title:"Building a Real Project", dur:"27 min", yt:"hQAHSlTtcmY"},
+      {title:"React Router & SPA Navigation", dur:"42 min", yt:"nDtp3OkRzCQ"},
+      {title:"State Management with Redux Toolkit", dur:"45 min", yt:"9zySezF2iSM"},
+      {title:"Building & Deploying a Full React App", dur:"40 min", yt:"w7ejDZ8SWv8"},
     ],
     reading:[
       {title:"Why React?", body:"React is a JS library for UIs, made by Meta. Uses virtual DOM to update efficiently. Pretty dope.", points:["Functional Components are the modern standard","JSX lets you write HTML-like syntax in JS","Props flow down from parent to child","State is local to a component unless lifted"]},
@@ -53,7 +56,7 @@ const courses = [
   },
   {
     id:3, title:"UI/UX Design Fundamentals",     instructor:"Oduye Emmanuel",
-    category:"Design", duration:"0.8 hours",
+    category:"Design", duration:"3 hours",
     level:"beginner",
     description:"User-centered design principles. Figma, wireframing, prototyping, design systems. Pretty comprehensive for a short course.",
     img:"https://images.pexels.com/photos/7568293/pexels-photo-7568293.jpeg?auto=compress&cs=tinysrgb&w=600",
@@ -64,6 +67,9 @@ const courses = [
       {title:"Wireframing & Prototyping in Figma", dur:"24 min", yt:"FTFaQWZBqQ8"},
       {title:"Typography & Color Theory", dur:"21 min", yt:"ykn4XNDwW7Q"},
       {title:"Building a Design System", dur:"1 min", yt:"Dtd40cHQQlk"},
+      {title:"User Testing & Usability Analysis", dur:"45 min", yt:"4TjBn89H8oA"},
+      {title:"Advanced Figma Components & Auto Layout", dur:"42 min", yt:"jVpE0kPJp_k"},
+      {title:"Portfolio & Case Study Presentation", dur:"48 min", yt:"JZzMk71XIHQ"},
     ],
     reading:[
       {title:"The UX Design Process", body:"UX design follows a human-centered process: Empathize, Define, Ideate, Prototype, and Test.", points:["Talk to real users early","Prototype before building","Test with 5 users to find 85% of issues","Iterate based on feedback"]},
@@ -209,7 +215,7 @@ const courses = [
   },
   {
     id:9, title:"Advanced TypeScript Patterns",     instructor:"Oduye Emmanuel",
-    category:"Web Development", duration:"0.6 hours",
+    category:"Web Development", duration:"3 hours",
     level:"advanced",
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
     img:"https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=600",
@@ -220,6 +226,9 @@ const courses = [
       {title:"Advanced Types & Utility Types", dur:"8 min", yt:"4ugy-WuO1eg"},
       {title:"Decorators & Metadata", dur:"9 min", yt:"O6A-u_FoEX8"},
       {title:"Design Patterns in TypeScript", dur:"11 min", yt:"tv-_1er1mWI"},
+      {title:"TypeScript with React & Node.js", dur:"48 min", yt:"8U4OZ7j_0oQ"},
+      {title:"Type System & Conditional Types Deep Dive", dur:"50 min", yt:"8gXvr1I1N6E"},
+      {title:"Real-World TypeScript Project Architecture", dur:"45 min", yt:"4PjF1hKPtYg"},
     ],
     reading:[
       {title:"Why TypeScript?", body:"TypeScript adds static typing to JavaScript catching errors at compile time.", points:["Catch errors before runtime","Better IDE autocomplete","Interfaces define contracts","Strict mode gives highest type safety"]},
