@@ -15,8 +15,10 @@ export default function Login() {
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
-  const [resetSent, setResetSent] = useState(false);
-  const [tempPass, setTempPass] = useState('');
+  const [resetStep, setResetStep] = useState(1); // 1=email, 2=code, 3=new password, 4=done
+  const [resetCode, setResetCode] = useState('');
+  const [resetCodeInput, setResetCodeInput] = useState('');
+  const [resetNewPassword, setResetNewPassword] = useState('');
 
   function switchTab(t) {
     setTab(t);
@@ -107,7 +109,7 @@ export default function Login() {
     window.location.href = url;
   }
 
-  async function handleForgotPassword() {
+  async function handleSendResetCode() {
     if (!resetEmail || !/\S+@\S+\.\S+/.test(resetEmail)) {
       setErrors({ reset: 'Please enter a valid email address' });
       return;
@@ -120,22 +122,48 @@ export default function Login() {
     setResetLoading(true);
     setErrors({});
     try {
-      const tempPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8).toUpperCase();
-      addUser({ ...user, password: tempPassword });
-      try {
-        await emailjs.send(
-          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-          { to_name: `${user.firstName} ${user.lastName}`, to_email: resetEmail, temp_password: tempPassword },
-          { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
-        );
-      } catch(e) { /* email may fail, still show temp password on screen */ }
-      setTempPass(tempPassword);
-      setResetSent(true);
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      setResetCode(code);
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        { to_name: `${user.firstName} ${user.lastName}`, to_email: resetEmail, reset_code: code },
+        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
+      );
+      setResetStep(2);
     } catch(e) {
-      setErrors({ reset: 'Something went wrong. Please try again.' });
+      setErrors({ reset: 'Failed to send reset code. Make sure EmailJS is configured.' });
     }
     setResetLoading(false);
+  }
+
+  function handleVerifyCode() {
+    if (resetCodeInput !== resetCode) {
+      setErrors({ reset: 'Incorrect code. Please try again.' });
+      return;
+    }
+    setErrors({});
+    setResetStep(3);
+  }
+
+  function handleResetPassword() {
+    const user = users.find(u => u.email === resetEmail);
+    if (!user) return;
+    const errs = {};
+    if (!resetNewPassword || !isValidPassword(resetNewPassword)) errs.resetPass = 'Password does not meet requirements';
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    addUser({ ...user, password: resetNewPassword });
+    setResetStep(4);
+  }
+
+  function resetPanelClose() {
+    setShowReset(false);
+    setResetStep(1);
+    setResetEmail('');
+    setResetCode('');
+    setResetCodeInput('');
+    setResetNewPassword('');
+    setErrors({});
   }
 
   const inp = (hasErr) => ({
@@ -338,35 +366,92 @@ export default function Login() {
           {/* FORGOT PASSWORD PANEL */}
           {showReset && (
             <div style={{background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'12px', padding:'1.2rem'}}>
-              {resetSent ? (
-                <div style={{textAlign:'center'}}>
-                  <p style={{fontSize:'0.85rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.3rem'}}>Password reset successfully!</p>
-                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.6rem'}}>Use this temporary password to sign in:</p>
-                  <div style={{fontSize:'1.1rem', fontWeight:'700', color:'var(--gold)', background:'var(--surface)', padding:'0.5rem', borderRadius:'8px', letterSpacing:'0.1em', marginBottom:'0.8rem', fontFamily:'monospace'}}>{tempPass}</div>
-                  <div style={{display:'flex', gap:'0.6rem', justifyContent:'center'}}>
-                    <span onClick={() => { setResetSent(false); setTempPass(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Generate another</span>
-                    <span style={{fontSize:'0.78rem', color:'var(--muted2)'}}>·</span>
-                    <span onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(''); setTempPass(''); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer'}}>Back to sign in</span>
-                  </div>
-                </div>
-              ) : (
+              {/* Step 1: Enter Email */}
+              {resetStep === 1 && (
                 <>
-                  <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Reset your password</p>
-                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Enter your email and we will send you a temporary password.</p>
-                  <input type="email" placeholder="your@email.com" value={resetEmail}
+                  <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Reset Password</p>
+                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Enter your email address and we'll send you a secure code to reset your password.</p>
+                  <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email Address</label>
+                  <input type="email" placeholder="Enter your email address" value={resetEmail}
                     onChange={e => setResetEmail(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && !resetLoading && handleSendResetCode()}
                     inputMode="email" autoComplete="email"
                     style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.6rem'}}/>
                   {errors.reset && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.reset}</div>}
                   <div style={{display:'flex', gap:'0.6rem'}}>
-                    <button onClick={handleForgotPassword} disabled={resetLoading} style={{flex:1, padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer', opacity: resetLoading ? 0.7 : 1}}>
-                      {resetLoading ? 'Sending...' : 'Send Reset Email'}
+                    <button onClick={handleSendResetCode} disabled={resetLoading} style={{flex:1, padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer', opacity: resetLoading ? 0.7 : 1}}>
+                      {resetLoading ? 'Sending...' : 'Send Reset Link'}
                     </button>
-                    <button onClick={() => { setShowReset(false); setErrors({}); setResetEmail(''); }} style={{padding:'0.65rem 1rem', borderRadius:'9px', border:'1px solid var(--border2)', background:'transparent', color:'var(--muted)', fontFamily:'inherit', fontSize:'0.85rem', cursor:'pointer'}}>
+                    <button onClick={resetPanelClose} style={{padding:'0.65rem 1rem', borderRadius:'9px', border:'1px solid var(--border2)', background:'transparent', color:'var(--muted)', fontFamily:'inherit', fontSize:'0.85rem', cursor:'pointer'}}>
                       Cancel
                     </button>
                   </div>
                 </>
+              )}
+
+              {/* Step 2: Enter Code */}
+              {resetStep === 2 && (
+                <>
+                  <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Check Your Email</p>
+                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>We sent a 6-digit code to <strong style={{color:'var(--text)'}}>{resetEmail}</strong>. Enter it below to reset your password.</p>
+                  <input type="text" placeholder="Enter 6-digit code" value={resetCodeInput}
+                    onChange={e => setResetCodeInput(e.target.value.replace(/\D/g, '').slice(0,6))}
+                    onKeyDown={e => e.key === 'Enter' && resetCodeInput.length === 6 && handleVerifyCode()}
+                    inputMode="numeric" autoComplete="one-time-code"
+                    style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'1.2rem', color:'var(--text)', outline:'none', fontFamily:'monospace', marginBottom:'0.6rem', textAlign:'center', letterSpacing:'0.3em'}}/>
+                  {errors.reset && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.reset}</div>}
+                  <div style={{display:'flex', gap:'0.6rem'}}>
+                    <button onClick={handleVerifyCode} disabled={resetCodeInput.length !== 6} style={{flex:1, padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer', opacity: resetCodeInput.length !== 6 ? 0.5 : 1}}>
+                      Verify Code
+                    </button>
+                  </div>
+                  <div style={{textAlign:'center', marginTop:'0.7rem'}}>
+                    <span onClick={() => { setResetStep(1); setErrors({}); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer', fontWeight:'500'}}>Change email</span>
+                  </div>
+                </>
+              )}
+
+              {/* Step 3: New Password */}
+              {resetStep === 3 && (
+                <>
+                  <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Enter New Password</p>
+                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Choose a strong new password for your account.</p>
+                  <input type="password" placeholder="At least 12 characters" value={resetNewPassword}
+                    onChange={e => setResetNewPassword(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleResetPassword()}
+                    inputMode="text" autoComplete="new-password"
+                    style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.resetPass ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.5rem'}}/>
+                  {errors.resetPass && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.resetPass}</div>}
+                  <div style={{marginBottom:'0.6rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
+                    {[
+                      { check: resetNewPassword.length >= 12, label: 'At least 12 characters' },
+                      { check: /[A-Z]/.test(resetNewPassword), label: 'One uppercase letter (A-Z)' },
+                      { check: /[a-z]/.test(resetNewPassword), label: 'One lowercase letter (a-z)' },
+                      { check: /[0-9]/.test(resetNewPassword), label: 'One number (0-9)' },
+                      { check: /[^A-Za-z0-9]/.test(resetNewPassword), label: 'One special character' },
+                    ].map((item, i) => (
+                      <div key={i} style={{display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.73rem', color: item.check ? 'var(--green, #00d4aa)' : 'var(--muted)'}}>
+                        <span style={{fontSize:'0.65rem'}}>{item.check ? '✓' : '✗'}</span>
+                        {item.label}
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={handleResetPassword} style={{width:'100%', padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer'}}>
+                    Reset Password
+                  </button>
+                </>
+              )}
+
+              {/* Step 4: Success */}
+              {resetStep === 4 && (
+                <div style={{textAlign:'center'}}>
+                  <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>✓</div>
+                  <p style={{fontSize:'0.9rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.3rem'}}>Password reset successfully!</p>
+                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Your password has been updated. Sign in with your new password.</p>
+                  <button onClick={resetPanelClose} style={{width:'100%', padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer'}}>
+                    Back to Sign In
+                  </button>
+                </div>
               )}
             </div>
           )}
