@@ -363,12 +363,16 @@ export default function CourseDetail({ course: propCourse }) {
               <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.6rem'}}>Course Syllabus ({course.lessons.length} lessons)</h3>
               <div style={{display:'flex', flexDirection:'column', gap:'0.3rem'}}>
                 {course.lessons.map((lesson, i) => (
-                  <div key={i} style={{
+                  <div key={i} onClick={() => { setActiveTab('videos'); handleLessonOpen(i); }} style={{
                     display:'flex', alignItems:'center', gap:'0.7rem',
                     padding:'0.6rem 0.9rem', borderRadius:'8px',
                     background:'var(--surface2)', border:'1px solid var(--border)',
-                    fontSize:'0.82rem',
-                  }}>
+                    fontSize:'0.82rem', cursor:'pointer',
+                    transition:'background 0.2s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background='var(--surface3)'}
+                    onMouseLeave={e => e.currentTarget.style.background='var(--surface2)'}
+                  >
                     <span style={{
                       width:'24px', height:'24px', borderRadius:'50%',
                       background:'var(--surface3)', display:'flex', alignItems:'center', justifyContent:'center',
