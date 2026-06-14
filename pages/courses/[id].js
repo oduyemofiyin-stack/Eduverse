@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
 import { useToast } from '../../components/Toast';
 import courses from '../../data/courses';
+import instructors from '../../data/instructors';
 import StarRating from '../../components/StarRating';
 import { CourseDetailSkeleton } from '../../components/Skeleton';
 import CourseRecommendations from '../../components/CourseRecommendations';
@@ -304,6 +305,111 @@ export default function CourseDetail({ course: propCourse }) {
             <span style={{fontSize:'0.84rem', color:'#00d4aa'}}>Free</span>
           </div>
           <p style={{fontSize:'0.95rem', lineHeight:'1.75', color:'var(--text2)', marginBottom:'1.5rem'}}>{course.description}</p>
+
+          {/* WHAT YOU'LL LEARN */}
+          {course.reading && course.reading.length > 0 && (
+            <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem 1.4rem', marginBottom:'1.5rem'}}>
+              <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.8rem'}}>What You'll Learn</h3>
+              <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.5rem 1.5rem'}} className="learn-grid">
+                {course.reading.flatMap(r => r.points || []).slice(0, 8).map((point, i) => (
+                  <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'0.5rem', fontSize:'0.85rem', color:'var(--text2)'}}>
+                    <span style={{color:'#00d4aa', fontWeight:'700', flexShrink:0}}>✓</span>
+                    <span>{point}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* PREREQUISITES & INFO STRIP */}
+          <div style={{display:'flex', gap:'0.8rem', flexWrap:'wrap', marginBottom:'1.5rem'}}>
+            <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'10px', padding:'0.7rem 1rem'}}>
+              <div style={{fontSize:'0.68rem', fontWeight:'600', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:'0.2rem'}}>Prerequisites</div>
+              <div style={{fontSize:'0.85rem', fontWeight:'500', color:'var(--text)'}}>
+                {course.level === 'beginner' ? 'No prerequisites. Anyone can start!' : course.level === 'intermediate' ? 'Basic knowledge of the topic recommended.' : 'Prior experience in this field is required.'}
+              </div>
+            </div>
+            <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'10px', padding:'0.7rem 1rem'}}>
+              <div style={{fontSize:'0.68rem', fontWeight:'600', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:'0.2rem'}}>Students</div>
+              <div style={{fontSize:'0.85rem', fontWeight:'500', color:'var(--text)'}}>{(course.id * 127 + 340)} enrolled</div>
+            </div>
+            <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'10px', padding:'0.7rem 1rem'}}>
+              <div style={{fontSize:'0.68rem', fontWeight:'600', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:'0.2rem'}}>Last Updated</div>
+              <div style={{fontSize:'0.85rem', fontWeight:'500', color:'var(--text)'}}>{course.lastUpdated || 'January 2025'}</div>
+            </div>
+          </div>
+
+          {/* PREVIEW VIDEO */}
+          {course.lessons && course.lessons.length > 0 && (
+            <div style={{marginBottom:'1.5rem'}}>
+              <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.6rem'}}>Course Preview</h3>
+              <div style={{
+                position:'relative', width:'100%', paddingBottom:'56.25%', borderRadius:'14px', overflow:'hidden',
+                background:'var(--surface2)', border:'1px solid var(--border)',
+              }}>
+                <iframe src={`https://www.youtube.com/embed/${course.lessons[0].yt}?rel=0&showinfo=0`}
+                  title="Course Preview" frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{position:'absolute', inset:0, width:'100%', height:'100%'}}/>
+              </div>
+              <div style={{fontSize:'0.75rem', color:'var(--muted)', marginTop:'0.4rem'}}>Preview: {course.lessons[0].title} · {course.lessons[0].dur}</div>
+            </div>
+          )}
+
+          {/* COURSE SYLLABUS */}
+          {course.lessons && course.lessons.length > 0 && (
+            <div style={{marginBottom:'1.5rem'}}>
+              <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.6rem'}}>Course Syllabus ({course.lessons.length} lessons)</h3>
+              <div style={{display:'flex', flexDirection:'column', gap:'0.3rem'}}>
+                {course.lessons.map((lesson, i) => (
+                  <div key={i} style={{
+                    display:'flex', alignItems:'center', gap:'0.7rem',
+                    padding:'0.6rem 0.9rem', borderRadius:'8px',
+                    background:'var(--surface2)', border:'1px solid var(--border)',
+                    fontSize:'0.82rem',
+                  }}>
+                    <span style={{
+                      width:'24px', height:'24px', borderRadius:'50%',
+                      background:'var(--surface3)', display:'flex', alignItems:'center', justifyContent:'center',
+                      fontSize:'0.7rem', fontWeight:'700', color:'var(--muted)', flexShrink:0,
+                    }}>{i + 1}</span>
+                    <span style={{flex:1, color:'var(--text)'}}>{lesson.title}</span>
+                    <span style={{fontSize:'0.72rem', color:'var(--muted2)', flexShrink:0}}>{lesson.dur}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* INSTRUCTOR BIO */}
+          {(() => {
+            const instr = instructors.find(i => i.name === course.instructor);
+            if (!instr) return null;
+            return (
+              <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem 1.4rem', marginBottom:'1.5rem'}}>
+                <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.8rem'}}>About the Instructor</h3>
+                <div style={{display:'flex', gap:'1rem', alignItems:'flex-start'}} className="instructor-bio">
+                  <img src={instr.avatar} alt={instr.name} loading="lazy" style={{
+                    width:'56px', height:'56px', borderRadius:'50%', objectFit:'cover', flexShrink:0,
+                    border:'2px solid var(--border)',
+                  }}/>
+                  <div>
+                    <div style={{fontWeight:'700', fontSize:'0.92rem', marginBottom:'0.15rem'}}>{instr.name}</div>
+                    <div style={{fontSize:'0.75rem', color:'var(--muted)', marginBottom:'0.5rem'}}>{instr.role}</div>
+                    <div style={{fontSize:'0.82rem', lineHeight:'1.6', color:'var(--text2)'}}>{instr.bio}</div>
+                    {instr.stats && (
+                      <div style={{display:'flex', gap:'1rem', marginTop:'0.6rem', flexWrap:'wrap'}}>
+                        <span style={{fontSize:'0.75rem', color:'var(--muted)'}}>📚 {instr.stats.courses} courses</span>
+                        <span style={{fontSize:'0.75rem', color:'var(--muted)'}}>👥 {instr.stats.students.toLocaleString()} students</span>
+                        <span style={{fontSize:'0.75rem', color:'var(--muted)'}}>⭐ {instr.stats.rating} rating</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* TABS */}
           <div style={{display:'flex', borderBottom:'1px solid var(--border)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
@@ -962,12 +1068,16 @@ export default function CourseDetail({ course: propCourse }) {
         .detail-sidebar { order: 2; position: sticky; top: 78px; }
         .detail-main { order: 1; }
         .mobile-hero-img { display: none; }
+        .learn-grid { grid-template-columns: 1fr 1fr; }
+        .instructor-bio { flex-direction: row; }
         @media (max-width: 768px) {
           .detail-layout { grid-template-columns: 1fr; }
           .detail-sidebar { order: 1; position: static; }
           .detail-main { order: 2; }
           .sidebar-img { display: none; }
           .mobile-hero-img { display: block; }
+          .learn-grid { grid-template-columns: 1fr; }
+          .instructor-bio { flex-direction: column; align-items: center; text-align: center; }
         }
       `}</style>
     </div>
