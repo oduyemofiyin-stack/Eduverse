@@ -23,15 +23,16 @@
 <details open>
 <summary><strong>🎓 Course Platform</strong></summary>
 
-- **24 full courses** across Web Development, Data Science, AI/ML, Cybersecurity, Design, Mobile, Marketing, and Business
+- **151 courses** across Web Development, Data Science, AI/ML, Cybersecurity, Design, Mobile, Marketing, and Business
 - **Video lessons** with YouTube integration and auto-advancing playlists
 - **Reading materials** with key takeaways per lesson
 - **Quizzes** per course (timed, 60% pass threshold)
+- **Short preview videos** (2–3 min) on every course — Fireship "X in 100 Seconds" style
+- **Course detail page** with What You'll Learn, prerequisites, instructor bio, preview video, and syllabus
 - **Progress tracking** per lesson and per course
 - **Certificate generation** on course completion (PDF download)
 - **Certificate verification** by public code
 - **Notes & bookmarks** per lesson
-- **Comments & discussions** per lesson
 - **Course reviews & ratings** (1–5 stars)
 - **Course recommendations** based on category and keywords
 - **Learning paths** — curated course collections (Frontend, Backend, Data Science, Mobile, Design)
@@ -43,6 +44,7 @@
 <summary><strong>👤 User System</strong></summary>
 
 - **Email/password** registration with validation
+- **Password reset** via EmailJS (6-digit code sent to email)
 - **Google OAuth 2.0** sign-in
 - **User profiles** with avatar (Google or initial-based)
 - **Dashboard** with XP, streak, level, and activity heatmap
@@ -74,7 +76,7 @@
 <summary><strong>🔐 Security & Infrastructure</strong></summary>
 
 - **Firebase Firestore** — cloud sync for all user data
-- **Firebase App Check** — ReCaptcha v3 protection (optional)
+- **reCAPTCHA Enterprise** — bot protection on login, signup, and password reset
 - **Content Security Policy** headers
 - **Input sanitization** — XSS prevention
 - **Rate limiting** — brute force protection
@@ -143,15 +145,17 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
-NEXT_PUBLIC_FIREBASE_APP_CHECK_KEY=your_recaptcha_key          # Optional
 
 # ── Google OAuth ───────────────────────────────────────
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
 
+# ── reCAPTCHA Enterprise (Bot Protection) ─────────────
+# Site key is hardcoded in _document.js and login.js
+
 # ── EmailJS (Password Reset) ──────────────────────────
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id                  # Optional
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id                # Optional
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key                  # Optional
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id                  # Required for password reset
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id                # Required for password reset
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key                  # Required for password reset
 
 # ── Admin Credentials (Optional — has defaults) ────────
 NEXT_PUBLIC_ADMIN_USER=admin                                    # Optional
@@ -167,8 +171,7 @@ NEXT_PUBLIC_ADMIN_PASS=your_admin_password                      # Optional
 4. Click **Add app** → **Web**
 5. Copy the `firebaseConfig` values into your `.env.local`
 6. Enable **Authentication** → **Sign-in method** → **Email/Password**
-7. (Optional) Enable **App Check** → **ReCaptcha v3**
-8. Create a **Firestore Database** in your preferred region
+7. Create a **Firestore Database** in your preferred region
 </details>
 
 <details>
@@ -180,6 +183,16 @@ NEXT_PUBLIC_ADMIN_PASS=your_admin_password                      # Optional
    - `http://localhost:3000/auth/callback` (development)
    - `https://your-domain.com/auth/callback` (production)
 4. Copy the Client ID into `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
+
+</details>
+
+<details>
+<summary><strong>How to set up reCAPTCHA Enterprise</strong></summary>
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/security/recaptcha)
+2. Create a reCAPTCHA key (or use the existing "Eduverse app check" key)
+3. Add your domains (localhost, your-domain.com) under **Integration**
+4. The site key is already hardcoded in `_document.js` — no env var needed
 </details>
 
 ---
@@ -242,7 +255,7 @@ eduverse/
 │   │   ├── index.js         # Blog listing
 │   │   └── [id].js          # Blog article
 │   ├── courses/
-│   │   └── [id].js          # Course detail (981 lines)
+│   │   └── [id].js          # Course detail (~920 lines)
 │   ├── instructors/
 │   │   ├── index.js         # Instructor listing
 │   │   └── [id].js          # Instructor detail
@@ -310,7 +323,9 @@ Eduverse uses a **hybrid authentication** approach:
 
 1. **Email/Password** — Users are stored in `localStorage` (client-side). No backend database is required for basic functionality.
 2. **Google OAuth 2.0** — Uses the implicit grant flow. The access token is exchanged for user info via the Google UserInfo API.
-3. **Firebase Firestore** — All user data (progress, XP, badges, certificates, etc.) is optionally synced to Firestore for cross-device persistence.
+3. **Password Reset** — A 4-step flow: enter email → receive 6-digit code via EmailJS → verify code → set new password. The code is never displayed on screen.
+4. **reCAPTCHA Enterprise** — Protects login, signup, and password reset from automated abuse.
+5. **Firebase Firestore** — All user data (progress, XP, badges, certificates, etc.) is optionally synced to Firestore for cross-device persistence.
 
 All state is managed through React Context (`context/AppContext.js`), which persists to `localStorage` on every change.
 
