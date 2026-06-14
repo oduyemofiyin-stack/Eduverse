@@ -6,7 +6,7 @@ const courses = [
     description:"Master React from the ground up. Components, hooks, props, state management — build real apps. Good for beginners.",
     img:"https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["react","frontend","nextjs","javascript","hooks","jsx"],
-    preview:"CgkZ7MvWUAA",
+    preview:"Tn6-PIqc4UM",
     lessons:[
       {title:"Intro to React & JSX", dur:"2 min", yt:"Tn6-PIqc4UM"},
       {title:"Components, Props & State", dur:"12 min", yt:"1yTYmuXn6NQ"},
@@ -32,7 +32,7 @@ const courses = [
     description:"Python for data analysis and viz. NumPy, Pandas, Matplotlib, basic ML. Real projects included.",
     img:"https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["python","pandas","numpy","data analysis","machine learning"],
-    preview:"7eh4d6sabA0",
+    preview:"x7X9w_GIm1s",
     lessons:[
       {title:"Python Fundamentals & Setup", dur:"374 min", yt:"_uQrJ0TkZlc"},
       {title:"NumPy Arrays & Operations", dur:"58 min", yt:"QUT1VHiLmmI"},
@@ -58,7 +58,7 @@ const courses = [
     description:"User-centered design principles. Figma, wireframing, prototyping, design systems. Pretty comprehensive for a short course.",
     img:"https://images.pexels.com/photos/7568293/pexels-photo-7568293.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["figma","ux","ui","wireframing","prototyping"],
-    preview:"olYCG47WI2s",
+    preview:"aD7pcm1TfRo",
     lessons:[
       {title:"Design Thinking & UX Research", dur:"1 min", yt:"a7sEoEvT8l8"},
       {title:"Wireframing & Prototyping in Figma", dur:"24 min", yt:"FTFaQWZBqQ8"},
@@ -84,7 +84,7 @@ const courses = [
     description:"Build beautiful cross-platform apps using Flutter and Dart for iOS and Android from one codebase.",
     img:"https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["flutter","dart","mobile","ios","android"],
-    preview:"3kaGC_DrUnw",
+    preview:"lHhRhPV--G0",
     lessons:[
       {title:"Flutter & Dart Crash Course", dur:"12 min", yt:"1ukSR1GRtMU"},
       {title:"Widgets & Layouts", dur:"<1 min", yt:"b_sQ9bMltGU"},
@@ -110,7 +110,7 @@ const courses = [
     description:"Deep dive into ML algorithms and neural networks with TensorFlow 2.0. Build image classifiers and NLP models.",
     img:"https://images.pexels.com/photos/17483868/pexels-photo-17483868.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["tensorflow","neural networks","deep learning","keras","nlp"],
-    preview:"gWvwu7qLjJs",
+    preview:"PeMlggyqz0Y",
     lessons:[
       {title:"Machine Learning Fundamentals", dur:"7 min", yt:"ukzFI9rgwfU"},
       {title:"Neural Networks from Scratch", dur:"18 min", yt:"aircAruvnKk"},
@@ -136,7 +136,7 @@ const courses = [
     description:"Master SEO, social media, email campaigns, and Google Ads. Build a complete digital marketing strategy from scratch.",
     img:"https://images.pexels.com/photos/15543041/pexels-photo-15543041.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.5, keywords:["seo","social media","google ads","email marketing","analytics"],
-    preview:"fvGxOGQHoI8",
+    preview:"knHjbAJfKS0",
     lessons:[
       {title:"Digital Marketing Strategy Overview", dur:"1 min", yt:"Mf6PcbGDiO4"},
       {title:"SEO Fundamentals", dur:"19 min", yt:"DvwS7cV9GmQ"},
@@ -162,7 +162,7 @@ const courses = [
     description:"Build scalable REST APIs with Node.js and Express. Covers authentication, MongoDB, file uploads, and deployment.",
     img:"https://images.pexels.com/photos/6424589/pexels-photo-6424589.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["nodejs","express","rest api","mongodb","backend"],
-    preview:"ChVE-JbtYbM",
+    preview:"DHjqpvDnNGE",
     lessons:[
       {title:"Node.js Fundamentals", dur:"78 min", yt:"TlB_eWDSMt4"},
       {title:"Building REST APIs with Express", dur:"58 min", yt:"pKd0Rpw7O48"},
@@ -188,7 +188,7 @@ const courses = [
     description:"Learn penetration testing, ethical hacking, network security, and vulnerability assessment.",
     img:"https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["hacking","penetration testing","kali linux","security","networking"],
-    preview:"1ihg4ETwMrk",
+    preview:"-Gk40UjMYgI",
     lessons:[
       {title:"Introduction to Cybersecurity", dur:"7 min", yt:"inWWhr5tnEA"},
       {title:"Network Security Fundamentals", dur:"564 min", yt:"qiQR5rTSshw"},
@@ -214,7 +214,7 @@ const courses = [
     description:"Go beyond basics with generics, decorators, conditional types, and design patterns in TypeScript.",
     img:"https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["typescript","generics","decorators","frontend","javascript"],
-    preview:"nKbdBcIpkkk",
+    preview:"zQnBQ4tB3ZA",
     lessons:[
       {title:"TypeScript Generics Deep Dive", dur:"10 min", yt:"nePDL5lQSE4"},
       {title:"Advanced Types & Utility Types", dur:"8 min", yt:"4ugy-WuO1eg"},
@@ -240,7 +240,7 @@ const courses = [
     description:"Transform raw data into business insights using Excel and Power BI with pivot tables, DAX, and interactive dashboards.",
     img:"https://images.pexels.com/photos/6829522/pexels-photo-6829522.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.4, keywords:["excel","power bi","business intelligence","dashboard","kpi"],
-    preview:"X88Rbk_ZDkY",
+    preview:"x7X9w_GIm1s",
     lessons:[
       {title:"Excel for Business Analysis", dur:"146 min", yt:"Vl0H-qTclOg"},
       {title:"Pivot Tables & Power Query", dur:"13 min", yt:"m0wI61ahfLc"},
@@ -266,7 +266,7 @@ const courses = [
     description:"Learn Vue.js 3 from zero to hero with Composition API, Pinia state management, Vue Router, and real projects.",
     img:"https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["vuejs","vue 3","composition api","pinia","frontend"],
-    preview:"s9URD3PefTk",
+    preview:"nhBVL41-_Cw",
     lessons:[
       {title:"Vue 3 Core Concepts", dur:"219 min", yt:"FXpIoQ_rT_c"},
       {title:"Composition API Deep Dive", dur:"23 min", yt:"bwItFdPt-6M"},
@@ -292,7 +292,7 @@ const courses = [
     description:"Master data structures and algorithms with Python. Cover arrays, trees, graphs, sorting, and dynamic programming.",
     img:"https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.9, keywords:["algorithms","data structures","python","leetcode","interviews"],
-    preview:"pkYVOmU3MgA",
+    preview:"DHjqpvDnNGE",
     lessons:[
       {title:"Big O Notation & Complexity", dur:"8 min", yt:"v4cd1O4zkGw"},
       {title:"Arrays, Stacks & Queues", dur:"483 min", yt:"RBSGKlAvoiM"},
@@ -318,7 +318,7 @@ const courses = [
     description:"Build beautiful websites from scratch. Master HTML5, CSS3, Flexbox, CSS Grid, and responsive design principles.",
     img:"https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["html","css","flexbox","grid","responsive"],
-    preview:"HGTJBPNC-Gw",
+    preview:"ok-plXXHlWw",
     lessons:[
       {title:"HTML5 Semantics & Structure", dur:"122 min", yt:"pQN-pnXPaVg"},
       {title:"CSS Fundamentals & Selectors", dur:"321 min", yt:"a_iQb1lnAEQ"},
@@ -344,7 +344,7 @@ const courses = [
     description:"Learn JavaScript from the ground up. Covers variables, functions, DOM manipulation, ES6+, and async programming.",
     img:"https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["javascript","es6","dom","async","web"],
-    preview:"WPUU6XnAQoc",
+    preview:"DHjqpvDnNGE",
     lessons:[
       {title:"JS Basics: Variables & Data Types", dur:"206 min", yt:"PkZNo7MFNFg"},
       {title:"Functions, Scope & Closures", dur:"100 min", yt:"hdI2bqOjy3c"},
@@ -370,7 +370,7 @@ const courses = [
     description:"Master Java from scratch. Learn OOP, collections, exception handling, multithreading, and build real console applications.",
     img:"https://images.pexels.com/photos/574069/pexels-photo-574069.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["java","oop","collections","multithreading","programming"],
-    preview:"zDc7w4Fz-wI",
+    preview:"m4-HM_sCvtQ",
     lessons:[
       {title:"Java Basics: Syntax & Data Types", dur:"150 min", yt:"eIrMbAQSU34"},
       {title:"Object-Oriented Programming Deep Dive", dur:"572 min", yt:"grEKMHGYyns"},
@@ -396,7 +396,7 @@ const courses = [
     description:"Master modern CSS layout techniques. Build complex responsive designs with Flexbox, Grid, and advanced positioning.",
     img:"https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["css grid","flexbox","layout","responsive","design"],
-    preview:"GWrJZhZqFwQ",
+    preview:"OEV8gMkCHXQ",
     lessons:[
       {title:"Flexbox Complete Guide", dur:"27 min", yt:"jV8B24rSN5o"},
       {title:"CSS Grid Complete Guide", dur:"85 min", yt:"0xMQfnTU6oo"},
@@ -422,7 +422,7 @@ const courses = [
     description:"Learn version control with Git and collaborate effectively on GitHub. Branching, merging, pull requests, and workflows.",
     img:"https://images.pexels.com/photos/34212896/pexels-photo-34212896.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.5, keywords:["git","github","version control","branching","collaboration"],
-    preview:"vA5TTz6BXhY",
+    preview:"hwP7WQkmECE",
     lessons:[
       {title:"Git Basics: Init, Add, Commit", dur:"68 min", yt:"RGOj5yH7evk"},
       {title:"Branching & Merging Strategies", dur:"81 min", yt:"mAFoROnOfHs"},
@@ -448,7 +448,7 @@ const courses = [
     description:"Master SQL queries and relational database design. Covers joins, subqueries, indexing, normalization, and performance tuning.",
     img:"https://images.pexels.com/photos/572056/pexels-photo-572056.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.7, keywords:["sql","database","postgresql","queries","data"],
-    preview:"m0wI61ahfLc",
+    preview:"zsjvFFKOm3c",
     lessons:[
       {title:"SQL Basics: SELECT, INSERT, UPDATE, DELETE", dur:"260 min", yt:"HXV3zeQKqGY"},
       {title:"Joins & Relationships", dur:"260 min", yt:"7S_tz1z_5bA"},
@@ -474,7 +474,7 @@ const courses = [
     description:"Learn Python from zero. Covers syntax, functions, data structures, file handling, and building CLI applications.",
     img:"https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.8, keywords:["python","programming","beginner","scripts","automation"],
-    preview:"K5KVEU3aaeQ",
+    preview:"x7X9w_GIm1s",
     lessons:[
       {title:"Python Basics: Variables & Control Flow", dur:"266 min", yt:"rfscVS0vtbw"},
       {title:"Functions & Modules", dur:"280 min", yt:"eWRfhZUzrAc"},
@@ -500,7 +500,7 @@ const courses = [
     description:"Build websites that work on every device. Master media queries, fluid layouts, responsive images, and mobile UX patterns.",
     img:"https://images.pexels.com/photos/330771/pexels-photo-330771.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating:4.6, keywords:["responsive","mobile","design","media queries","ux"],
-    preview:"x4u1yp3Msao",
+    preview:"ok-plXXHlWw",
     lessons:[
       {title:"Responsive Design Principles & Strategy", dur:"247 min", yt:"kUMe1FH4CHE"},
       {title:"Fluid Layouts & Relative Units", dur:"60 min", yt:"UB1O30fR-EE"},
@@ -538,6 +538,7 @@ const courses = [
       "vercel",
       "fullstack"
     ],
+    preview:"Sklc_fQBmcs",
     lessons: [
       {
         title: "Next.js Fundamentals & Routing",
@@ -652,6 +653,7 @@ const courses = [
       "ngrx",
       "frontend"
     ],
+    preview:"Ata9cSC2WpM",
     lessons: [
       {
         title: "Angular CLI & Project Structure",
@@ -766,6 +768,7 @@ const courses = [
       "frontend",
       "javascript"
     ],
+    preview:"rv3Yq-B8qp4",
     lessons: [
       {
         title: "Svelte — Reactive Declarations & Stores",
@@ -880,6 +883,7 @@ const courses = [
       "backend",
       "orm"
     ],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "Django Models & ORM",
@@ -994,6 +998,7 @@ const courses = [
       "activerecord",
       "backend"
     ],
+    preview:"DHjqpvDnNGE",
     lessons: [
       {
         title: "Ruby Fundamentals for Rails",
@@ -1108,6 +1113,7 @@ const courses = [
       "eloquent",
       "web"
     ],
+    preview:"a7_WFUlFS94",
     lessons: [
       {
         title: "PHP Modern Syntax & OOP",
@@ -1222,6 +1228,7 @@ const courses = [
       "backend",
       "concurrency"
     ],
+    preview:"446E-r0rXHI",
     lessons: [
       {
         title: "Go Language Fundamentals",
@@ -1336,6 +1343,7 @@ const courses = [
       "backend",
       "queries"
     ],
+    preview:"eIQh02xuVw4",
     lessons: [
       {
         title: "GraphQL vs REST — Core Concepts",
@@ -1450,6 +1458,7 @@ const courses = [
       "deployment",
       "compose"
     ],
+    preview:"Gjnup-PuquQ",
     lessons: [
       {
         title: "Docker Images & Containers",
@@ -1564,6 +1573,7 @@ const courses = [
       "core web vitals",
       "caching"
     ],
+    preview:"OEV8gMkCHXQ",
     lessons: [
       {
         title: "Measuring Performance — Core Web Vitals",
@@ -1678,6 +1688,7 @@ const courses = [
       "manifest",
       "push notifications"
     ],
+    preview:"ok-plXXHlWw",
     lessons: [
       {
         title: "Web App Manifest & Installability",
@@ -1792,6 +1803,7 @@ const courses = [
       "e2e",
       "tdd"
     ],
+    preview:"u6QfIXgjwGQ",
     lessons: [
       {
         title: "Jest — Unit Tests & Matchers",
@@ -1906,6 +1918,7 @@ const courses = [
       "android",
       "javascript"
     ],
+    preview:"gvkqT_Uoahw",
     lessons: [
       {
         title: "React Native Core Components",
@@ -2020,6 +2033,7 @@ const courses = [
       "apple",
       "mobile"
     ],
+    preview:"nAchMctX4YA",
     lessons: [
       {
         title: "Swift Language Fundamentals",
@@ -2134,6 +2148,7 @@ const courses = [
       "compose",
       "mobile"
     ],
+    preview:"xT8oP0wy-A0",
     lessons: [
       {
         title: "Kotlin Language & OOP",
@@ -2248,6 +2263,7 @@ const courses = [
       "mobile",
       "shared"
     ],
+    preview:"xT8oP0wy-A0",
     lessons: [
       {
         title: "KMP Architecture & Setup",
@@ -2362,6 +2378,7 @@ const courses = [
       "mobile",
       "angular"
     ],
+    preview:"vFW_TxKLyrE",
     lessons: [
       {
         title: "Ionic Components & Theming",
@@ -2476,6 +2493,7 @@ const courses = [
       "transformers",
       "gan"
     ],
+    preview:"PeMlggyqz0Y",
     lessons: [
       {
         title: "Tensors & Autograd",
@@ -2590,6 +2608,7 @@ const courses = [
       "spacy",
       "chatbot"
     ],
+    preview:"PeMlggyqz0Y",
     lessons: [
       {
         title: "Text Processing & Embeddings",
@@ -2704,6 +2723,7 @@ const courses = [
       "image processing",
       "face recognition"
     ],
+    preview:"PeMlggyqz0Y",
     lessons: [
       {
         title: "Image Basics & Processing",
@@ -2818,6 +2838,7 @@ const courses = [
       "policy gradient",
       "agent"
     ],
+    preview:"PeMlggyqz0Y",
     lessons: [
       {
         title: "Markov Decision Processes & Bellman",
@@ -2932,6 +2953,7 @@ const courses = [
       "fine-tuning",
       "prompt engineering"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Generative AI Landscape & LLM Basics",
@@ -3046,6 +3068,7 @@ const courses = [
       "docker",
       "mlflow"
     ],
+    preview:"PeMlggyqz0Y",
     lessons: [
       {
         title: "ML Project Lifecycle & Experiment Tracking",
@@ -3160,6 +3183,7 @@ const courses = [
       "fairness",
       "privacy"
     ],
+    preview:"BT2Cv-Tjq7Q",
     lessons: [
       {
         title: "Introduction to AI Ethics",
@@ -3274,6 +3298,7 @@ const courses = [
       "gpt",
       "ai"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Fundamentals of Prompt Design",
@@ -3388,6 +3413,7 @@ const courses = [
       "llm",
       "agents"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "LangChain Core — Models, Prompts & Chains",
@@ -3502,6 +3528,7 @@ const courses = [
       "tokenizers",
       "pipelines"
     ],
+    preview:"PeMlggyqz0Y",
     lessons: [
       {
         title: "Hugging Face Ecosystem Overview",
@@ -3616,6 +3643,7 @@ const courses = [
       "dplyr",
       "statistics"
     ],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "R Basics & Tidyverse Fundamentals",
@@ -3730,6 +3758,7 @@ const courses = [
       "charts",
       "narrative"
     ],
+    preview:"OEV8gMkCHXQ",
     lessons: [
       {
         title: "The Power of Data Storytelling",
@@ -3844,6 +3873,7 @@ const courses = [
       "prophet",
       "lstm"
     ],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "Time Series Fundamentals & Decomposition",
@@ -3958,6 +3988,7 @@ const courses = [
       "rdd",
       "dataframe"
     ],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "Spark Architecture & RDDs",
@@ -4072,6 +4103,7 @@ const courses = [
       "bigquery",
       "data modeling"
     ],
+    preview:"zsjvFFKOm3c",
     lessons: [
       {
         title: "Data Warehouse Architecture & Design",
@@ -4186,6 +4218,7 @@ const courses = [
       "orchestration",
       "etl"
     ],
+    preview:"zsjvFFKOm3c",
     lessons: [
       {
         title: "Airflow Architecture & DAG Fundamentals",
@@ -4300,6 +4333,7 @@ const courses = [
       "bi",
       "analytics"
     ],
+    preview:"zsjvFFKOm3c",
     lessons: [
       {
         title: "Tableau Desktop — Getting Started",
@@ -4414,6 +4448,7 @@ const courses = [
       "scipy",
       "statsmodels"
     ],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "Descriptive Statistics & Probability",
@@ -4528,6 +4563,7 @@ const courses = [
       "batch processing",
       "streaming"
     ],
+    preview:"zsjvFFKOm3c",
     lessons: [
       {
         title: "Data Engineering Landscape & Architecture",
@@ -4642,6 +4678,7 @@ const courses = [
       "vpn",
       "zero trust"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "Network Fundamentals Review",
@@ -4756,6 +4793,7 @@ const courses = [
       "gcp",
       "iam"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "Cloud Security Shared Responsibility Model",
@@ -4870,6 +4908,7 @@ const courses = [
       "threats",
       "risk management"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "Threats, Attacks & Vulnerabilities",
@@ -4984,6 +5023,7 @@ const courses = [
       "memory analysis",
       "evidence"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "Incident Response Lifecycle",
@@ -5098,6 +5138,7 @@ const courses = [
       "tls",
       "hashing"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "Symmetric vs Asymmetric Encryption",
@@ -5212,6 +5253,7 @@ const courses = [
       "dast",
       "security scanning"
     ],
+    preview:"scEDHsr3APg",
     lessons: [
       {
         title: "DevSecOps Mindset & Shift Left",
@@ -5326,6 +5368,7 @@ const courses = [
       "vulnerability",
       "disclosure"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "Bug Bounty Platforms & Methodology",
@@ -5440,6 +5483,7 @@ const courses = [
       "disassembly",
       "sandbox"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "Malware Classification & Analysis Setup",
@@ -5554,6 +5598,7 @@ const courses = [
       "log analysis",
       "triage"
     ],
+    preview:"-Gk40UjMYgI",
     lessons: [
       {
         title: "SOC Operations & Tier Model",
@@ -5668,6 +5713,7 @@ const courses = [
       "analytics",
       "community"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "Social Media Landscape & Platform Selection",
@@ -5782,6 +5828,7 @@ const courses = [
       "video",
       "distribution"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "Content Marketing Strategy & Funnel",
@@ -5896,6 +5943,7 @@ const courses = [
       "niche",
       "networks"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "Affiliate Marketing Fundamentals",
@@ -6010,6 +6058,7 @@ const courses = [
       "conversions",
       "data-driven"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "GA4 Setup & Property Configuration",
@@ -6124,6 +6173,7 @@ const courses = [
       "targeting",
       "retargeting"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "Facebook Ads Manager & Campaign Structure",
@@ -6238,6 +6288,7 @@ const courses = [
       "reels",
       "content creation"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "TikTok Algorithm & Content Strategy",
@@ -6352,6 +6403,7 @@ const courses = [
       "email",
       "cta"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "The Art of Persuasive Copywriting",
@@ -6466,6 +6518,7 @@ const courses = [
       "experimentation",
       "product-led"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "Growth Hacking Mindset & Frameworks",
@@ -6581,6 +6634,7 @@ const courses = [
       "funding",
       "scaling"
     ],
+    preview:"knHjbAJfKS0",
     lessons: [
       {
         title: "Finding & Validating Business Ideas",
@@ -6695,6 +6749,7 @@ const courses = [
       "agile",
       "risk"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Project Management Framework & Lifecycle",
@@ -6810,6 +6865,7 @@ const courses = [
       "backlog",
       "ceremonies"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Agile Mindset & Principles",
@@ -6924,6 +6980,7 @@ const courses = [
       "user research",
       "strategy"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "What is Product Management?",
@@ -7038,6 +7095,7 @@ const courses = [
       "dcf",
       "investment"
     ],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "Financial Statements & Ratios",
@@ -7152,6 +7210,7 @@ const courses = [
       "communication",
       "coaching"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Leadership Styles & Emotional Intelligence",
@@ -7266,6 +7325,7 @@ const courses = [
       "prospecting",
       "b2b"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Sales Process & Prospecting",
@@ -7380,6 +7440,7 @@ const courses = [
       "storytelling",
       "body language"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Conquering Public Speaking Anxiety",
@@ -7494,6 +7555,7 @@ const courses = [
       "process improvement",
       "green belt"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Lean Principles & Waste Reduction",
@@ -7609,6 +7671,7 @@ const courses = [
       "service cloud",
       "automation"
     ],
+    preview:"zsjvFFKOm3c",
     lessons: [
       {
         title: "Salesforce Platform Overview & Navigation",
@@ -7723,6 +7786,7 @@ const courses = [
       "wireframing",
       "design system"
     ],
+    preview:"emFMHH2Bfvo",
     lessons: [
       {
         title: "Adobe XD Interface & Tools",
@@ -7837,6 +7901,7 @@ const courses = [
       "lottie",
       "micro-interactions"
     ],
+    preview:"emFMHH2Bfvo",
     lessons: [
       {
         title: "Animation Principles & Timing",
@@ -7951,6 +8016,7 @@ const courses = [
       "texturing",
       "rendering"
     ],
+    preview:"eZ74x6dVYes",
     lessons: [
       {
         title: "Blender Interface & Navigation",
@@ -8065,6 +8131,7 @@ const courses = [
       "mockup",
       "ui"
     ],
+    preview:"OEV8gMkCHXQ",
     lessons: [
       {
         title: "Photoshop Interface & Essential Tools",
@@ -8179,6 +8246,7 @@ const courses = [
       "typography",
       "illustration"
     ],
+    preview:"emFMHH2Bfvo",
     lessons: [
       {
         title: "Illustrator Basics — Shapes, Paths & Colors",
@@ -8293,6 +8361,7 @@ const courses = [
       "visual identity",
       "typography"
     ],
+    preview:"OEV8gMkCHXQ",
     lessons: [
       {
         title: "Brand Strategy & Identity Fundamentals",
@@ -8407,6 +8476,7 @@ const courses = [
       "hierarchy",
       "accessibility"
     ],
+    preview:"OEV8gMkCHXQ",
     lessons: [
       {
         title: "Type Classification & Anatomy",
@@ -8521,6 +8591,7 @@ const courses = [
       "data structures",
       "systems"
     ],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "C Basics — Variables, Data Types, Control Flow",
@@ -8635,6 +8706,7 @@ const courses = [
       "stl",
       "unreal"
     ],
+    preview:"MNeX4EGtR5Y",
     lessons: [
       {
         title: "C++ Fundamentals & OOP",
@@ -8749,6 +8821,7 @@ const courses = [
       "entity framework",
       "linq"
     ],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "C# Language — Types, Classes & Inheritance",
@@ -8863,6 +8936,7 @@ const courses = [
       "concurrency",
       "ownership"
     ],
+    preview:"5C_HPTJg5ek",
     lessons: [
       {
         title: "Rust Fundamentals — Variables, Types, Functions",
@@ -8977,6 +9051,7 @@ const courses = [
       "microservices",
       "cli"
     ],
+    preview:"446E-r0rXHI",
     lessons: [
       {
         title: "Go Syntax & Data Types",
@@ -9091,6 +9166,7 @@ const courses = [
       "automation",
       "linux"
     ],
+    preview:"I4EWvMFj37g",
     lessons: [
       {
         title: "Command Line Fundamentals & Navigation",
@@ -9205,6 +9281,7 @@ const courses = [
       "interviews",
       "leetcode"
     ],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "Problem-Solving Strategies & Complexity Analysis",
@@ -9319,6 +9396,7 @@ const courses = [
       "type classes",
       "purely functional"
     ],
+    preview:"NrO0CJCbYLA",
     lessons: [
       {
         title: "Haskell Basics — Types, Functions & Recursion",
@@ -9433,6 +9511,7 @@ const courses = [
       "s3",
       "ec2"
     ],
+    preview:"PziYflu8cB8",
     lessons: [
       {
         title: "AWS Global Infrastructure & IAM",
@@ -9548,6 +9627,7 @@ const courses = [
       "microsoft",
       "active directory"
     ],
+    preview:"PziYflu8cB8",
     lessons: [
       {
         title: "Azure Architecture & Core Services",
@@ -9662,6 +9742,7 @@ const courses = [
       "gke",
       "compute engine"
     ],
+    preview:"PziYflu8cB8",
     lessons: [
       {
         title: "GCP Core Infrastructure & Projects",
@@ -9776,6 +9857,7 @@ const courses = [
       "containers",
       "orchestration"
     ],
+    preview:"PziYflu8cB8",
     lessons: [
       {
         title: "Kubernetes Architecture & Core Objects",
@@ -9890,6 +9972,7 @@ const courses = [
       "iac",
       "provisioning"
     ],
+    preview:"tomUWcQ0P3k",
     lessons: [
       {
         title: "Infrastructure as Code & Terraform Basics",
@@ -10004,6 +10087,7 @@ const courses = [
       "gitlab ci",
       "automation"
     ],
+    preview:"scEDHsr3APg",
     lessons: [
       {
         title: "CI/CD Concepts & Pipeline Architecture",
@@ -10118,6 +10202,7 @@ const courses = [
       "server",
       "sysadmin"
     ],
+    preview:"rrB13utjYV4",
     lessons: [
       {
         title: "Linux Fundamentals & Command Line",
@@ -10232,6 +10317,7 @@ const courses = [
       "error budget",
       "incident management"
     ],
+    preview:"rrB13utjYV4",
     lessons: [
       {
         title: "SRE Principles & Google's Approach",
@@ -10346,6 +10432,7 @@ const courses = [
       "2d",
       "3d"
     ],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "Unity Editor & Game Objects",
@@ -10460,6 +10547,7 @@ const courses = [
       "lumen",
       "blueprints"
     ],
+    preview:"MNeX4EGtR5Y",
     lessons: [
       {
         title: "Unreal Engine 5 Interface & Project Setup",
@@ -10574,6 +10662,7 @@ const courses = [
       "2d",
       "open source"
     ],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "Godot Interface & Scene System",
@@ -10688,6 +10777,7 @@ const courses = [
       "prototyping",
       "storytelling"
     ],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "Game Design Fundamentals",
@@ -10802,6 +10892,7 @@ const courses = [
       "defi",
       "nft"
     ],
+    preview:"eIQh02xuVw4",
     lessons: [
       {
         title: "Blockchain Architecture & Consensus",
@@ -10916,6 +11007,7 @@ const courses = [
       "erc20",
       "web3"
     ],
+    preview:"eIQh02xuVw4",
     lessons: [
       {
         title: "Solidity Syntax & Data Structures",
@@ -11030,6 +11122,7 @@ const courses = [
       "mqtt",
       "sensors"
     ],
+    preview:"eZ74x6dVYes",
     lessons: [
       {
         title: "IoT Architecture & Hardware Basics",
@@ -11144,6 +11237,7 @@ const courses = [
       "xr",
       "augmented reality"
     ],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "XR Fundamentals & Unity Setup",
@@ -11258,6 +11352,7 @@ const courses = [
       "superposition",
       "entanglement"
     ],
+    preview:"BT2Cv-Tjq7Q",
     lessons: [
       {
         title: "Quantum vs Classical Computing",
@@ -11372,6 +11467,7 @@ const courses = [
       "developer tools",
       "llm"
     ],
+    preview:"aD7pcm1TfRo",
     lessons: [
       {
         title: "Prompting for Code Generation",
@@ -11481,6 +11577,7 @@ const courses = [
     img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["perl", "regex", "sysadmin", "text processing", "cgi"],
+    preview:"I4EWvMFj37g",
     lessons: [
       {
         title: "Perl Basics — Syntax & Data Types",
@@ -11589,6 +11686,7 @@ const courses = [
     img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["lua", "scripting", "gamedev", "roblox", "love2d"],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "Lua Fundamentals — Syntax & Types",
@@ -11697,6 +11795,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: ["julia", "scientific computing", "numerical", "data science", "multiple dispatch"],
+    preview:"BT2Cv-Tjq7Q",
     lessons: [
       {
         title: "Julia Basics — Syntax & Types",
@@ -11805,6 +11904,7 @@ const courses = [
     img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: ["scala", "functional programming", "akka", "spark", "jvm"],
+    preview:"m4-HM_sCvtQ",
     lessons: [
       {
         title: "Scala Fundamentals — Syntax & OOP",
@@ -11913,6 +12013,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: ["elixir", "phoenix", "concurrency", "beam", "functional"],
+    preview:"eIQh02xuVw4",
     lessons: [
       {
         title: "Elixir Fundamentals — Syntax & Pipelines",
@@ -12021,6 +12122,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["erlang", "concurrency", "otp", "distributed systems", "beam"],
+    preview:"eIQh02xuVw4",
     lessons: [
       {
         title: "Erlang Basics — Syntax & Pattern Matching",
@@ -12129,6 +12231,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["clojure", "lisp", "functional", "jvm", "concurrency"],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "Clojure Syntax — Parentheses & Homoiconicity",
@@ -12237,6 +12340,7 @@ const courses = [
     img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: ["fsharp", "functional", "dotnet", "pattern matching", "async"],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "F# Basics — Syntax & Type Inference",
@@ -12345,6 +12449,7 @@ const courses = [
     img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 3.9,
     keywords: ["objective-c", "apple", "ios", "macos", "legacy"],
+    preview:"nAchMctX4YA",
     lessons: [
       {
         title: "Objective-C Syntax — Messages & Categories",
@@ -12453,6 +12558,7 @@ const courses = [
     img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.2,
     keywords: ["assembly", "x86", "reverse engineering", "low-level", "cpu"],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "CPU Architecture & Registers",
@@ -12561,6 +12667,7 @@ const courses = [
     img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 3.8,
     keywords: ["cobol", "mainframe", "enterprise", "legacy", "banking"],
+    preview:"m4-HM_sCvtQ",
     lessons: [
       {
         title: "COBOL Basics — Divisions & Structure",
@@ -12669,6 +12776,7 @@ const courses = [
     img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["fortran", "hpc", "scientific computing", "numerical", "supercomputing"],
+    preview:"BT2Cv-Tjq7Q",
     lessons: [
       {
         title: "Fortran Basics — Syntax & Data Types",
@@ -12777,6 +12885,7 @@ const courses = [
     img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["common lisp", "macros", "clos", "functional", "metaprogramming"],
+    preview:"BT2Cv-Tjq7Q",
     lessons: [
       {
         title: "Lisp Basics — S-Expressions & Evaluation",
@@ -12885,6 +12994,7 @@ const courses = [
     img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["prolog", "logic programming", "ai", "constraint solving", "declarative"],
+    preview:"PeMlggyqz0Y",
     lessons: [
       {
         title: "Prolog Basics — Facts, Rules & Queries",
@@ -12993,6 +13103,7 @@ const courses = [
     img: "https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["ada", "safety-critical", "systems", "real-time", "contracts"],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "Ada Basics — Strong Typing & Packages",
@@ -13101,6 +13212,7 @@ const courses = [
     img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["pascal", "delphi", "structured programming", "teaching", "algorithms"],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "Pascal Basics — Syntax & Types",
@@ -13209,6 +13321,7 @@ const courses = [
     img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["matlab", "numerical computing", "simulink", "simulation", "engineering"],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "MATLAB Basics — Matrices & Vectorization",
@@ -13317,6 +13430,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.5,
     keywords: ["dart", "flutter", "isolates", "streams", "frontend"],
+    preview:"NrO0CJCbYLA",
     lessons: [
       {
         title: "Dart Basics — Syntax & Sound Null Safety",
@@ -13425,6 +13539,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: ["zig", "systems programming", "comptime", "c interop", "low-level"],
+    preview:"5C_HPTJg5ek",
     lessons: [
       {
         title: "Zig Basics — Syntax & No Hidden Control Flow",
@@ -13533,6 +13648,7 @@ const courses = [
     img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.4,
     keywords: ["powershell", "automation", "windows", "devops", "sysadmin"],
+    preview:"I4EWvMFj37g",
     lessons: [
       {
         title: "PowerShell Basics — Cmdlets & Pipeline",
@@ -13641,6 +13757,7 @@ const courses = [
     img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["ocaml", "functional", "type inference", "module system", "jane street"],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "OCaml Basics — Expressions & Types",
@@ -13749,6 +13866,7 @@ const courses = [
     img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["groovy", "gradle", "jenkins", "jvm", "scripting"],
+    preview:"m4-HM_sCvtQ",
     lessons: [
       {
         title: "Groovy Basics — Syntax & Closures",
@@ -13857,6 +13975,7 @@ const courses = [
     img: "https://images.pexels.com/photos/5223887/pexels-photo-5223887.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["d language", "systems programming", "ranges", "compile-time", "native"],
+    preview:"U3aXWizDbQ4",
     lessons: [
       {
         title: "D Basics — Syntax & Memory Model",
@@ -13965,6 +14084,7 @@ const courses = [
     img: "https://images.pexels.com/photos/6190327/pexels-photo-6190327.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.2,
     keywords: ["vhdl", "fpga", "hardware", "digital design", "asic"],
+    preview:"eZ74x6dVYes",
     lessons: [
       {
         title: "VHDL Basics — Entities & Architectures",
@@ -14073,6 +14193,7 @@ const courses = [
     img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["verilog", "systemverilog", "fpga", "rtl", "digital logic"],
+    preview:"eZ74x6dVYes",
     lessons: [
       {
         title: "Verilog Basics — Modules & Nets",
@@ -14181,6 +14302,7 @@ const courses = [
     img: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["vba", "excel", "macros", "automation", "office"],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "VBA Basics — The Visual Basic Editor",
@@ -14289,6 +14411,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["sas", "statistics", "data analysis", "clinical trials", "business intelligence"],
+    preview:"x7X9w_GIm1s",
     lessons: [
       {
         title: "SAS Basics — DATA Steps & PROC Steps",
@@ -14397,6 +14520,7 @@ const courses = [
     img: "https://images.pexels.com/photos/4008707/pexels-photo-4008707.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.2,
     keywords: ["racket", "scheme", "lisp", "dsl", "macros"],
+    preview:"BT2Cv-Tjq7Q",
     lessons: [
       {
         title: "Racket Basics — Expressions & Functions",
@@ -14505,6 +14629,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861951/pexels-photo-3861951.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 3.7,
     keywords: ["tcl", "tk", "gui", "scripting", "expect"],
+    preview:"I4EWvMFj37g",
     lessons: [
       {
         title: "Tcl Basics — Everything is a String",
@@ -14613,6 +14738,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["smalltalk", "oop", "mvc", "live coding", "pharo"],
+    preview:"m4-HM_sCvtQ",
     lessons: [
       {
         title: "Smalltalk Basics — Objects & Messages",
@@ -14721,6 +14847,7 @@ const courses = [
     img: "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.7,
     keywords: ["mojo", "ai", "python", "mlir", "performance"],
+    preview:"5C_HPTJg5ek",
     lessons: [
       {
         title: "Mojo Basics — Python-compatible Syntax",
@@ -14829,6 +14956,7 @@ const courses = [
     img: "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4,
     keywords: ["awk", "text processing", "command line", "unix", "data extraction"],
+    preview:"I4EWvMFj37g",
     lessons: [
       {
         title: "AWK Basics — Pattern-Action Pairs",
@@ -14937,6 +15065,7 @@ const courses = [
     img: "https://images.pexels.com/photos/1089440/pexels-photo-1089440.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.1,
     keywords: ["labview", "ni", "data acquisition", "graphical programming", "instrumentation"],
+    preview:"eZ74x6dVYes",
     lessons: [
       {
         title: "LabVIEW Basics — Front Panel & Block Diagram",
@@ -15045,6 +15174,7 @@ const courses = [
     img: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.6,
     keywords: ["gdscript", "godot", "game development", "scripting", "2d"],
+    preview:"ravLFzIguCM",
     lessons: [
       {
         title: "GDScript Basics — Python-like Syntax",
@@ -15153,6 +15283,7 @@ const courses = [
     img: "https://images.pexels.com/photos/7325498/pexels-photo-7325498.jpeg?auto=compress&cs=tinysrgb&w=600",
     rating: 4.3,
     keywords: ["plsql", "oracle", "stored procedures", "database", "triggers"],
+    preview:"zsjvFFKOm3c",
     lessons: [
       {
         title: "PL/SQL Basics — Blocks & Variables",
