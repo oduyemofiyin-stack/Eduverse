@@ -326,7 +326,7 @@ export default function CourseDetail({ course: propCourse }) {
             <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'10px', padding:'0.7rem 1rem'}}>
               <div style={{fontSize:'0.68rem', fontWeight:'600', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:'0.2rem'}}>Prerequisites</div>
               <div style={{fontSize:'0.85rem', fontWeight:'500', color:'var(--text)'}}>
-                {course.level === 'beginner' ? 'No prerequisites. Anyone can start!' : course.level === 'intermediate' ? 'Basic knowledge of the topic recommended.' : 'Prior experience in this field is required.'}
+                {course.level === 'beginner' ? 'No prior knowledge needed — perfect for beginners' : course.level === 'intermediate' ? 'You should already understand the basics of this topic' : 'You need solid experience in this field before taking this course'}
               </div>
             </div>
             <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'10px', padding:'0.7rem 1rem'}}>
