@@ -3,13 +3,14 @@ import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import emailjs from '@emailjs/browser';
 import { saveUserData } from '../lib/firestore';
-import { isValidPassword, getPasswordErrors } from '../lib/sanitize';
+import { isValidPassword } from '../lib/sanitize';
 
 export default function Login() {
   const { login, users, addUser } = useApp();
   const router = useRouter();
   const [tab, setTab] = useState('login');
-  const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
+  const [showPass, setShowPass] = useState(false);
+  const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'', username:'' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showReset, setShowReset] = useState(false);
@@ -19,10 +20,11 @@ export default function Login() {
   const [resetCode, setResetCode] = useState('');
   const [resetCodeInput, setResetCodeInput] = useState('');
   const [resetNewPassword, setResetNewPassword] = useState('');
+  const [showResetPass, setShowResetPass] = useState(false);
 
   async function getRecaptchaToken(action) {
     if (typeof grecaptcha === 'undefined' || !grecaptcha?.enterprise) {
-      console.warn('reCAPTCHA not available — skipping check');
+      console.warn('reCAPTCHA unavailable — falling back to unverified');
       return 'fallback';
     }
     try {
@@ -33,7 +35,8 @@ export default function Login() {
   function switchTab(t) {
     setTab(t);
     setErrors({});
-    setForm({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
+    setShowPass(false);
+    setForm({ firstName:'', lastName:'', email:'', password:'', username:'' });
   }
 
   function validate() {
@@ -50,12 +53,10 @@ export default function Login() {
       } else if (!/^[A-Za-z][A-Za-z0-9_-]*$/.test(form.username.trim())) {
         errs.username = 'Letters, numbers, underscores, hyphens only';
       }
-      if (form.confirmEmail !== form.email) {
-        errs.confirmEmail = 'Emails don\'t match';
-      }
+      if (!form.password || !isValidPassword(form.password)) errs.password = 'Password needs 12+ characters, uppercase, lowercase, number, and special character';
     }
     if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email';
-    if (!form.password || !isValidPassword(form.password)) errs.password = 'Password needs 12+ characters, uppercase, lowercase, number, and special character';
+    if (tab === 'login' && !form.password) errs.password = 'Enter your password';
     return errs;
   }
 
@@ -63,7 +64,7 @@ export default function Login() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     const recaptchaToken = await getRecaptchaToken('LOGIN');
-    if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
+    if (!recaptchaToken) { setErrors({ general: 'Unable to verify security. Please try again.' }); return; }
     setLoading(true);
     setErrors({});
     const user = users.find(u =>
@@ -77,14 +78,14 @@ export default function Login() {
     }
     login(user);
     setLoading(false);
-    router.push('/');
+    router.replace('/');
   }
 
   async function handleSignup() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     const recaptchaToken = await getRecaptchaToken('SIGNUP');
-    if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
+    if (!recaptchaToken) { setErrors({ general: 'Unable to verify security. Please try again.' }); return; }
     setLoading(true);
     setErrors({});
       if (users.find(u => u.email === form.email)) {
@@ -112,7 +113,7 @@ export default function Login() {
     login(newUser);
     saveUserData(newUser.id, { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, username: newUser.username, picture: newUser.picture, provider: newUser.provider, createdAt: newUser.createdAt, wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
     setLoading(false);
-    router.push('/');
+    router.replace('/');
   }
 
   function handleGoogle() {
@@ -134,7 +135,7 @@ export default function Login() {
       return;
     }
     const recaptchaToken = await getRecaptchaToken('PASSWORD_RESET');
-    if (!recaptchaToken) { setErrors({ reset: 'Security check failed. Please refresh and try again.' }); return; }
+    if (!recaptchaToken) { setErrors({ reset: 'Unable to verify security. Please try again.' }); return; }
     setResetLoading(true);
     setErrors({});
     try {
@@ -327,36 +328,20 @@ export default function Login() {
             {errors.email && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.email}</div>}
           </div>
 
-          {tab === 'signup' && (
-            <div>
-              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Confirm Email</label>
-              <input type="email" placeholder="you@example.com" value={form.confirmEmail}
-                onChange={e => {
-                  const val = e.target.value;
-                  setForm(p => ({...p, confirmEmail: val}));
-                  if (val && val !== form.email) {
-                    setErrors(prev => ({...prev, confirmEmail: 'Emails do not correspond'}));
-                  } else {
-                    setErrors(prev => {
-                      const copy = {...prev};
-                      delete copy.confirmEmail;
-                      return copy;
-                    });
-                  }
-                }}
-                inputMode="email" autoComplete="email"
-                style={inp(errors.confirmEmail)}/>
-              {errors.confirmEmail && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.confirmEmail}</div>}
-            </div>
-          )}
+
 
           <div>
             <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
-            <input type="password" placeholder="At least 12 characters" value={form.password}
-              onChange={e => setForm(p => ({...p, password: e.target.value}))}
-              onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
-              inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
-              style={inp(errors.password)}/>
+            <div style={{position:'relative'}}>
+              <input type={showPass ? 'text' : 'password'} placeholder={tab === 'login' ? 'Enter your password' : 'Create a strong password'} value={form.password}
+                onChange={e => setForm(p => ({...p, password: e.target.value}))}
+                onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
+                inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
+                style={{...inp(errors.password), paddingRight:'2.5rem'}}/>
+              <span onClick={() => setShowPass(s => !s)} style={{position:'absolute', right:'0.8rem', top:'50%', transform:'translateY(-50%)', cursor:'pointer', fontSize:'0.85rem', color:'var(--muted2)', userSelect:'none', lineHeight:1}}>
+                {showPass ? '🙈' : '👁️'}
+              </span>
+            </div>
             {errors.password && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
             {tab === 'signup' && (
               <div style={{marginTop:'0.5rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
@@ -438,11 +423,16 @@ export default function Login() {
                 <>
                   <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Enter New Password</p>
                   <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Choose a strong new password for your account.</p>
-                  <input type="password" placeholder="At least 12 characters" value={resetNewPassword}
-                    onChange={e => setResetNewPassword(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleResetPassword()}
-                    inputMode="text" autoComplete="new-password"
-                    style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.resetPass ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.5rem'}}/>
+                  <div style={{position:'relative'}}>
+                    <input type={showResetPass ? 'text' : 'password'} placeholder="At least 12 characters" value={resetNewPassword}
+                      onChange={e => setResetNewPassword(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleResetPassword()}
+                      inputMode="text" autoComplete="new-password"
+                      style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.resetPass ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', paddingRight:'2.5rem', outline:'none', fontFamily:'inherit', marginBottom:'0.5rem'}}/>
+                    <span onClick={() => setShowResetPass(s => !s)} style={{position:'absolute', right:'0.8rem', top:'calc(50% - 0.25rem)', transform:'translateY(-50%)', cursor:'pointer', fontSize:'0.85rem', color:'var(--muted2)', userSelect:'none', lineHeight:1}}>
+                      {showResetPass ? '🙈' : '👁️'}
+                    </span>
+                  </div>
                   {errors.resetPass && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.resetPass}</div>}
                   <div style={{marginBottom:'0.6rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
                     {[

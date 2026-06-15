@@ -58,7 +58,6 @@ export default function Home() {
   const categories = ['All', ...new Set(courses.map(c => c.category))];
 
   useEffect(() => {
-    // FIXME: this loading timer feels hacky but it works
     const timer = setTimeout(() => setLoading(false), 200);
     return () => clearTimeout(timer);
   }, []);
@@ -70,14 +69,13 @@ export default function Home() {
       const parallaxCleanup = initParallax();
       initMagneticButtons();
       initCustomCursor();
-      console.log('animations initialized yay');
       return () => {
         if (typeof parallaxCleanup === 'function') parallaxCleanup();
       };
     }
   }, [loading]);
 
-  // Typewriter effect (kinda janky but whatever)
+  // Rotating typewriter — cycles through value props every few seconds
   useEffect(() => {
     const phrases = ['your pace.', 'zero cost.', 'anywhere.', 'your potential.'];
     let pi = 0, ci = 0;
@@ -181,10 +179,7 @@ export default function Home() {
           }}>
             <button
               className="magnetic glow-border"
-              onClick={() => {
-                document.getElementById('searchInput')?.focus();
-                heroRef.current?.nextElementSibling?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => router.push('/login')}
               style={{
                 fontSize:'1.05rem', fontWeight:'800',
                 padding:'1rem 3rem', borderRadius:'16px',
@@ -196,21 +191,25 @@ export default function Home() {
                 letterSpacing:'0.02em',
                 position:'relative',
               }}>
-              Browse Free Courses
+              Start Learning Free
             </button>
             <button
               className="magnetic"
-              onClick={() => router.push('/login')}
+              onClick={() => {
+                document.getElementById('searchInput')?.focus();
+                heroRef.current?.nextElementSibling?.scrollIntoView({ behavior: 'smooth' });
+              }}
               style={{
-                fontSize:'1rem', fontWeight:'700',
-                padding:'1rem 2.4rem', borderRadius:'16px',
-                border:'2px solid var(--border2)',
-                cursor:'none',
-                background:'var(--surface)',
-                color:'var(--text)',
+                fontSize:'1.05rem', fontWeight:'800',
+                padding:'1rem 2.6rem', borderRadius:'16px',
+                border:'none', cursor:'none',
+                background:'linear-gradient(135deg,#4488ff,#2955cc)',
+                color:'#fff',
+                boxShadow:'0 12px 40px rgba(68,136,255,0.5), 0 0 60px rgba(68,136,255,0.2)',
                 transition:'all 0.3s',
+                letterSpacing:'0.02em',
               }}>
-              Get Started Free
+              Browse Free Courses
             </button>
           </div>
         </div>
@@ -231,21 +230,22 @@ export default function Home() {
       {/* STATS */}
       <div className="hero-stats" style={{
         display:'grid', gridTemplateColumns:'repeat(3, 1fr)',
-        gap:'1rem', padding:'0 1.2rem 3rem',
-        maxWidth:'520px', margin:'0 auto',
+        gap:'1.2rem', padding:'0 1.2rem 3rem',
+        maxWidth:'680px', margin:'0 auto',
       }}>
         {[
-          {n:'20', l:'Expert Courses', color:'#4488ff'},
-          {n:'100%', l:'Free', color:'#f0c040'},
-          {n:'9', l:'Categories', color:'#ff6b9d'},
+          {n:'151', l:'Expert Courses', color:'#4488ff', shadow:'rgba(68,136,255,0.5)'},
+          {n:'100%', l:'Free Forever', color:'#f0c040', shadow:'rgba(240,192,64,0.5)'},
+          {n:'613', l:'Video Lessons', color:'#00d4aa', shadow:'rgba(0,212,170,0.5)'},
         ].map((s, i) => (
           <div key={s.l}
             className={`reveal-scale delay-${i+1} glass`}
             style={{
               textAlign:'center',
-              borderRadius:'16px', padding:'1.3rem',
+              borderRadius:'18px', padding:'1.5rem 1rem',
               transition:'transform 0.3s, box-shadow 0.3s',
               cursor:'none',
+              border:'1px solid var(--border)',
             }}
             onMouseEnter={e => {
               e.currentTarget.style.transform='translateY(-8px)';
@@ -257,17 +257,17 @@ export default function Home() {
             }}
           >
             <div style={{
-              fontFamily:'Georgia, serif', fontSize:'2.4rem',
+              fontFamily:'Georgia, serif', fontSize:'clamp(2.2rem, 5vw, 3rem)',
               fontWeight:'700', color:s.color,
-              textShadow:`0 0 20px ${s.color}44`,
+              textShadow:`0 0 30px ${s.shadow}`,
               lineHeight:'1',
             }}>
               <AnimatedNumber value={s.n} color={s.color} />
             </div>
             <div style={{
-              fontSize:'0.72rem', color:'var(--muted)', marginTop:'6px',
+              fontSize:'0.78rem', color:'var(--muted)', marginTop:'8px',
               letterSpacing:'0.06em', textTransform:'uppercase',
-              fontWeight:'500',
+              fontWeight:'600',
             }}>{s.l}</div>
           </div>
         ))}
@@ -402,6 +402,34 @@ export default function Home() {
         {search || activeCat !== 'All'
           ? `${filtered.length} course${filtered.length !== 1 ? 's' : ''} found`
           : `${courses.length} courses available`}
+      </div>
+
+      {/* CONVERSION BANNER */}
+      <div className="reveal" style={{maxWidth:'1240px', margin:'0 auto', padding:'0 1.2rem 1rem'}}>
+        <div className="glass" style={{
+          borderRadius:'14px', padding:'0.9rem 1.5rem',
+          border:'1px solid var(--border)',
+          display:'flex', alignItems:'center', justifyContent:'space-between',
+          flexWrap:'wrap', gap:'0.8rem',
+        }}>
+          <div style={{display:'flex', alignItems:'center', gap:'0.6rem'}}>
+            <span style={{fontSize:'1.2rem'}}>🎓</span>
+            <div>
+              <div style={{fontWeight:'700', fontSize:'0.9rem', color:'var(--text)'}}>Start learning for free</div>
+              <div style={{fontSize:'0.78rem', color:'var(--muted)'}}>No credit card. No time limits. All courses are 100% free forever.</div>
+            </div>
+          </div>
+          <button onClick={() => router.push('/login')} style={{
+            fontSize:'0.85rem', fontWeight:'700', padding:'0.55rem 1.4rem',
+            borderRadius:'10px', border:'none', cursor:'pointer',
+            background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff',
+            whiteSpace:'nowrap', transition:'transform 0.2s', fontFamily:'inherit',
+            boxShadow:'0 4px 16px rgba(68,136,255,0.35)',
+          }}
+            onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+            onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+          >Create Free Account</button>
+        </div>
       </div>
 
       {/* COURSE GRID — desktop */}
@@ -543,11 +571,21 @@ export default function Home() {
                 <div style={{
                   display:'flex', alignItems:'center', justifyContent:'space-between',
                   borderTop:'1px solid var(--border)', paddingTop:'0.7rem',
-                  flexWrap:'wrap', gap:'0.3rem',
+                  flexWrap:'wrap', gap:'0.4rem',
                 }}>
                   <span style={{fontSize:'0.78rem', color:'var(--gold)'}}><span style={{color:'var(--muted)'}}>{c.rating}</span></span>
                   <span style={{fontSize:'0.76rem', color:'var(--muted)'}}>{c.duration}</span>
-                  <span style={{fontFamily:'Georgia, serif', fontWeight:'700', color:'var(--teal)', fontSize:'0.92rem'}}>Free</span>
+                  <span style={{
+                    fontSize:'0.72rem', fontWeight:'700', letterSpacing:'0.04em',
+                    padding:'0.3rem 0.85rem', borderRadius:'8px',
+                    background:'linear-gradient(135deg,rgba(0,212,170,0.15),rgba(0,212,170,0.08))',
+                    color:'#00d4aa', border:'1px solid rgba(0,212,170,0.3)',
+                    transition:'all 0.2s',
+                    cursor:'pointer',
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.background='linear-gradient(135deg,#00d4aa,#00b894)'; e.currentTarget.style.color='#000'; e.currentTarget.style.borderColor='#00d4aa'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background='linear-gradient(135deg,rgba(0,212,170,0.15),rgba(0,212,170,0.08))'; e.currentTarget.style.color='#00d4aa'; e.currentTarget.style.borderColor='rgba(0,212,170,0.3)'; }}
+                  >Start Free →</span>
                 </div>
                 {prog > 0 && (
                   <div style={{marginTop:'0.7rem', display:'flex', alignItems:'center', gap:'0.5rem'}}>

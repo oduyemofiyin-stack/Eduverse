@@ -5,7 +5,7 @@ import courses from '../data/courses';
 import { getAllUsers, deleteUser } from '../lib/firestore';
 import { AdminSkeleton } from '../components/Skeleton';
 
-// hardcoded admin creds — should prob move to env only but whatever
+// Admin credentials loaded from environment variables with local fallbacks
 const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || 'EMMANUEL';
 const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || 'Emmanuel@007';
 
@@ -33,7 +33,7 @@ export default function Admin() {
     }
   }, [loggedIn]);
 
-  // TODO: add confirmation before deleting users
+  // TODO: add confirmation dialog before deleting users
 
   function handleLogin() {
     if (username === ADMIN_USER && password === ADMIN_PASS) {

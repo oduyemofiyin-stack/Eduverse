@@ -64,7 +64,9 @@ export default function CourseDetail({ course: propCourse }) {
             setPlaylistIdx(null);
           }
         }
-      } catch {}
+      } catch {
+        // Ignore non-JSON or unexpected messages from YouTube iframe
+      }
     }
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
