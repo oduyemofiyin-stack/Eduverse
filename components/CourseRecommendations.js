@@ -45,21 +45,21 @@ export default function CourseRecommendations({ currentCourseId }) {
           <div key={c.id}
             onClick={() => router.push(`/courses/${c.id}`)}
             style={{
-              background:'var(--surface)', border:'1px solid var(--border)',
+              background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
               borderRadius:'14px', overflow:'hidden', cursor:'pointer',
               transition:'all 0.2s',
             }}
             onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(68,136,255,0.22)'; e.currentTarget.style.transform='translateY(-3px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.transform='translateY(0)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
           >
             <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'140px', objectFit:'cover', display:'block'}}/>
             <div style={{padding:'0.9rem'}}>
-              <div style={{fontSize:'0.68rem', fontWeight:'600', textTransform:'uppercase', color:'var(--blue)', marginBottom:'0.3rem'}}>{c.category}</div>
+              <div style={{fontSize:'0.68rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.3rem'}}>{c.category}</div>
               <div style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', lineHeight:'1.3', marginBottom:'0.3rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>
-              <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'0.5rem'}}>by {c.instructor}</div>
+              <div style={{fontSize:'0.76rem', color:'#7a80a0', marginBottom:'0.5rem'}}>by {c.instructor}</div>
               <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
                 <span style={{fontSize:'0.76rem'}}>{c.rating}</span>
-                <span style={{fontSize:'0.76rem', color:'var(--teal)', fontWeight:'700'}}>Free</span>
+                <span style={{fontSize:'0.76rem', color:'#00d4aa', fontWeight:'700'}}>Free</span>
               </div>
             </div>
           </div>
