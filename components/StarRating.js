@@ -19,16 +19,16 @@ export default function StarRating({ courseId, courseName }) {
 
   return (
     <div style={{
-      background:'#0d1117', border:'1px solid rgba(255,255,255,0.06)',
+      background:'var(--surface)', border:'1px solid var(--border)',
       borderRadius:'14px', padding:'1.2rem', marginBottom:'1rem',
     }}>
       <h4 style={{
         fontFamily:'Georgia, serif', fontSize:'1rem',
-        fontWeight:'700', marginBottom:'0.4rem', color:'#f0c040',
+        fontWeight:'700', marginBottom:'0.4rem', color:'var(--gold)',
       }}>
         {userRating > 0 ? '⭐ Your Rating' : '🌟 Rate This Course'}
       </h4>
-      <p style={{fontSize:'0.82rem', color:'#7a80a0', marginBottom:'0.8rem'}}>
+      <p style={{fontSize:'0.82rem', color:'var(--muted)', marginBottom:'0.8rem'}}>
         {userRating > 0
           ? `You rated this course ${userRating} star${userRating > 1 ? 's' : ''}`
           : 'How would you rate this course?'}
@@ -55,7 +55,7 @@ export default function StarRating({ courseId, courseName }) {
         <button
           onClick={() => { rateCourse(courseId, 0); toast('Rating removed', 'error'); }}
           style={{
-            marginTop:'0.7rem', fontSize:'0.75rem', color:'#7a80a0',
+            marginTop:'0.7rem', fontSize:'0.75rem', color:'var(--muted)',
             background:'none', border:'none', cursor:'pointer', textDecoration:'underline',
           }}
         >

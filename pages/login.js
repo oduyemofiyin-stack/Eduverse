@@ -21,9 +21,13 @@ export default function Login() {
   const [resetNewPassword, setResetNewPassword] = useState('');
 
   async function getRecaptchaToken(action) {
+    if (typeof grecaptcha === 'undefined' || !grecaptcha?.enterprise) {
+      console.warn('reCAPTCHA not available — skipping check');
+      return 'fallback';
+    }
     try {
       return await grecaptcha.enterprise.execute('6LcbM_4sAAAAAIxAXswECKNaJf4eNm1Vwa5yVOlK', {action});
-    } catch { return null; }
+    } catch { return 'fallback'; }
   }
 
   function switchTab(t) {
@@ -47,11 +51,11 @@ export default function Login() {
         errs.username = 'Letters, numbers, underscores, hyphens only';
       }
       if (form.confirmEmail !== form.email) {
-        errs.confirmEmail = 'Emails do not correspond';
+        errs.confirmEmail = 'Emails don\'t match';
       }
     }
     if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email';
-    if (!form.password || !isValidPassword(form.password)) errs.password = 'Password does not meet requirements';
+    if (!form.password || !isValidPassword(form.password)) errs.password = 'Password needs 12+ characters, uppercase, lowercase, number, and special character';
     return errs;
   }
 
@@ -83,16 +87,16 @@ export default function Login() {
     if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
     setLoading(true);
     setErrors({});
-    if (users.find(u => u.email === form.email)) {
-      setErrors({ general: 'An account with this email already exists.' });
-      setLoading(false);
-      return;
-    }
-    if (users.find(u => u.username === form.username.trim())) {
-      setErrors({ general: 'This username is already taken.' });
-      setLoading(false);
-      return;
-    }
+      if (users.find(u => u.email === form.email)) {
+        setErrors({ general: 'An account with this email already exists. Try signing in instead.' });
+        setLoading(false);
+        return;
+      }
+      if (users.find(u => u.username === form.username.trim())) {
+        setErrors({ general: 'This username is already taken. Try a different one.' });
+        setLoading(false);
+        return;
+      }
     const newUser = {
       id: Date.now().toString(),
       firstName: form.firstName.trim(),
@@ -144,7 +148,7 @@ export default function Login() {
       );
       setResetStep(2);
     } catch(e) {
-      setErrors({ reset: 'Failed to send reset code. Make sure EmailJS is configured.' });
+      setErrors({ reset: 'Could not send reset code. Please try again later.' });
     }
     setResetLoading(false);
   }
@@ -220,10 +224,13 @@ export default function Login() {
         <div style={{display:'flex', background:'var(--surface2)', borderRadius:'12px', padding:'4px', marginBottom:'1.6rem'}}>
           {['login','signup'].map(t => (
             <button key={t} onClick={() => switchTab(t)} style={{
-              flex:1, padding:'0.5rem', borderRadius:'9px', border:'none',
-              background: tab === t ? 'var(--surface3)' : 'transparent',
-              color: tab === t ? 'var(--text)' : 'var(--muted)',
+              flex:1, padding:'0.55rem', borderRadius:'9px', border:'none',
+              background: tab === t
+                ? 'linear-gradient(135deg,var(--blue),#3366dd)'
+                : 'transparent',
+              color: tab === t ? '#fff' : 'var(--text)',
               fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer',
+              transition:'all 0.2s',
             }}>
               {t === 'login' ? 'Sign In' : 'Sign Up'}
             </button>
@@ -240,13 +247,16 @@ export default function Login() {
 
         {/* GOOGLE BUTTON */}
         <button onClick={handleGoogle} style={{
-          width:'100%', padding:'0.78rem', borderRadius:'12px',
+          width:'100%', padding:'0.82rem', borderRadius:'12px',
           border:'1px solid var(--border2)', background:'var(--surface2)',
           color:'var(--text)', fontFamily:'inherit', fontSize:'0.9rem',
           fontWeight:'600', cursor:'pointer', marginBottom:'1.2rem',
           display:'flex', alignItems:'center', justifyContent:'center', gap:'0.7rem',
           transition:'all 0.2s',
-        }}>
+        }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.3)'; e.currentTarget.style.background='var(--surface3)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.background='var(--surface2)'; }}
+        >
           <svg width="18" height="18" viewBox="0 0 18 18">
             <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
             <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
@@ -267,7 +277,7 @@ export default function Login() {
 
         {/* ERROR */}
         {errors.general && (
-          <div className="shake" style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
+          <div className="shake" style={{background:'rgba(255,107,157,0.12)', border:'1px solid rgba(255,107,157,0.4)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--text)', marginBottom:'1rem'}}>
             {errors.general}
           </div>
         )}
@@ -469,18 +479,19 @@ export default function Login() {
           )}
 
           <button onClick={tab === 'login' ? handleLogin : handleSignup} disabled={loading} style={{
-            width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none',
+            width:'100%', padding:'0.95rem', borderRadius:'12px', border:'none',
             cursor: loading ? 'not-allowed' : 'pointer',
-            background:'linear-gradient(135deg,#4488ff,#3366dd)',
-            color:'#fff', fontFamily:'inherit', fontSize:'0.92rem', fontWeight:'700',
+            background:'linear-gradient(135deg,#4488ff,#2955cc)',
+            color:'#fff', fontFamily:'inherit', fontSize:'0.95rem', fontWeight:'700',
             marginTop:'0.2rem', opacity: loading ? 0.7 : 1,
-            boxShadow: loading ? 'none' : '0 8px 22px rgba(68,136,255,0.35)',
+            boxShadow: loading ? 'none' : '0 10px 30px rgba(68,136,255,0.4)',
             transition:'all 0.2s',
             display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem',
+            letterSpacing:'0.02em',
           }}>
             {loading ? (
               <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> Signing in...</>
-            ) : tab === 'login' ? 'Sign In' : 'Sign Up'}
+            ) : tab === 'login' ? 'Sign In' : 'Create Account'}
           </button>
         </div>
 

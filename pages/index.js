@@ -176,7 +176,7 @@ export default function Home() {
           </p>
 
           <div className="reveal delay-4" style={{
-            display:'flex', gap:'1rem',
+            display:'flex', gap:'1.2rem',
             justifyContent:'center', flexWrap:'wrap',
           }}>
             <button
@@ -186,29 +186,31 @@ export default function Home() {
                 heroRef.current?.nextElementSibling?.scrollIntoView({ behavior: 'smooth' });
               }}
               style={{
-                fontSize:'0.95rem', fontWeight:'700',
-                padding:'0.9rem 2.4rem', borderRadius:'14px',
+                fontSize:'1.05rem', fontWeight:'800',
+                padding:'1rem 3rem', borderRadius:'16px',
                 border:'none', cursor:'none',
-                background:'linear-gradient(135deg,#f0c040,#c8960a)',
+                background:'linear-gradient(135deg,#f0c040,#d4a010)',
                 color:'#000',
-                boxShadow:'0 8px 30px rgba(240,192,64,0.4), 0 0 0 0 rgba(240,192,64,0)',
+                boxShadow:'0 12px 40px rgba(240,192,64,0.5), 0 0 60px rgba(240,192,64,0.2)',
                 transition:'all 0.3s',
                 letterSpacing:'0.02em',
+                position:'relative',
               }}>
-              Explore Courses
+              Browse Free Courses
             </button>
             <button
               className="magnetic"
-              onClick={() => router.push('/enrolled')}
+              onClick={() => router.push('/login')}
               style={{
-                fontSize:'0.95rem', fontWeight:'600',
-                padding:'0.9rem 2.2rem', borderRadius:'14px',
-                border:'1px solid var(--border2)',
-                cursor:'none', background:'var(--surface)',
-                color:'var(--text)', transition:'all 0.3s',
-                backdropFilter:'blur(10px)',
+                fontSize:'1rem', fontWeight:'700',
+                padding:'1rem 2.4rem', borderRadius:'16px',
+                border:'2px solid var(--border2)',
+                cursor:'none',
+                background:'var(--surface)',
+                color:'var(--text)',
+                transition:'all 0.3s',
               }}>
-              My Learning
+              Get Started Free
             </button>
           </div>
         </div>
@@ -341,19 +343,18 @@ export default function Home() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{
-              width:'100%', background:'var(--surface)',
-              border:'1px solid var(--border)',
+              width:'100%', background:'var(--surface2)',
+              border:'1px solid var(--border2)',
               borderRadius:'14px', padding:'0.95rem 1rem 0.95rem 3.2rem',
               fontSize:'0.95rem', color:'var(--text)', outline:'none',
               transition:'border 0.2s, box-shadow 0.2s',
-              backdropFilter:'blur(10px)',
             }}
             onFocus={e => {
-              e.target.style.borderColor='rgba(68,136,255,0.5)';
-              e.target.style.boxShadow='0 0 0 3px rgba(68,136,255,0.1), 0 8px 30px rgba(0,0,0,0.1)';
+              e.target.style.borderColor='var(--blue)';
+              e.target.style.boxShadow='0 0 0 3px rgba(68,136,255,0.15)';
             }}
             onBlur={e => {
-              e.target.style.borderColor='var(--border)';
+              e.target.style.borderColor='var(--border2)';
               e.target.style.boxShadow='none';
             }}
           />
@@ -378,8 +379,8 @@ export default function Home() {
               border: activeCat === cat ? 'none' : '1px solid var(--border)',
               background: activeCat === cat
                 ? 'linear-gradient(135deg,#4488ff,#3366dd)'
-                : 'var(--surface)',
-              color: activeCat === cat ? '#fff' : 'var(--muted)',
+                : 'var(--surface2)',
+              color: activeCat === cat ? '#fff' : 'var(--text)',
               cursor:'none', whiteSpace:'nowrap', flexShrink:0,
               transition:'all 0.25s',
               boxShadow: activeCat === cat ? '0 4px 16px rgba(68,136,255,0.35)' : 'none',

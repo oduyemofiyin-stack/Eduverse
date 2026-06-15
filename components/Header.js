@@ -29,12 +29,12 @@ export default function Header() {
   }, []);
 
   const navItems = [
-    {label:'Courses', path:'/'},
+    {label:'Browse Courses', path:'/'},
     {label:'Search', path:'/search'},
-    {label:'Paths', path:'/paths'},
+    {label:'Learning Paths', path:'/paths'},
     {label:'Dashboard', path:'/dashboard'},
     {label:`Wishlist${wishlist.length > 0 ? ` (${wishlist.length})` : ''}`, path:'/wishlist'},
-    {label:`My Learning${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
+    {label:`My Courses${enrolled.length > 0 ? ` (${enrolled.length})` : ''}`, path:'/enrolled'},
     {label:'Leaderboard', path:'/leaderboard'},
     {label:'Blog', path:'/blog'},
     {label:'About', path:'/about'},
@@ -215,9 +215,9 @@ export default function Header() {
                   {[
                   {ico:'👤', label:'My Profile', path:'/profile'},
                   {ico:'📊', label:'Dashboard', path:'/dashboard'},
-                  {ico:'📚', label:'My Learning', path:'/enrolled'},
+                  {ico:'📚', label:'My Courses', path:'/enrolled'},
                   {ico:'♡', label:'Wishlist', path:'/wishlist'},
-                  {ico:'🔍', label:'Search', path:'/search'},
+                  {ico:'🔍', label:'Search Courses', path:'/search'},
                   {ico:'🗺️', label:'Learning Paths', path:'/paths'},
                   {ico:'🏆', label:'Leaderboard', path:'/leaderboard'},
                   {ico:'📝', label:'Blog', path:'/blog'},
