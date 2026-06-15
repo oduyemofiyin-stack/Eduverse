@@ -97,6 +97,7 @@ export function AppProvider({ children }) {
     if (typeof window === 'undefined') return 30;
     try { return parseInt(localStorage.getItem('eduverse_planner_target')) || 30; } catch { return 30; }
   });
+  // TODO: move all these localStorage reads into a single helper function...
   const [unreadNotifications, setUnreadNotifications] = useState(() => {
     if (typeof window === 'undefined') return 0;
     try { return parseInt(localStorage.getItem('eduverse_unread_notifications')) || 0; } catch { return 0; }
@@ -147,12 +148,13 @@ export function AppProvider({ children }) {
       if (savedCerts) setCertificates(JSON.parse(savedCerts));
       const savedReviews = localStorage.getItem('eduverse_reviews');
       if (savedReviews) setReviews(JSON.parse(savedReviews));
-    } catch {}
+    } catch(e) {}
   }, []);
 
+  // Eagerly start Firebase init in background
   useEffect(() => { getDbInstance(); }, []);
 
-  // After local state is restored, merge in any Firestore data
+  // Firestore: load cloud data after localStorage
   useEffect(() => {
     if (!currentUser) return;
     loadUserData(currentUser.id).then(cloud => {
@@ -176,7 +178,7 @@ export function AppProvider({ children }) {
     }).catch(() => {});
   }, [currentUser?.id]);
 
-  // Debounced Firestore sync — called after every local state change
+  // Firestore sync helper
   const syncToFirestore = useCallback(() => {
     if (!currentUser) return;
     saveUserData(currentUser.id, {
@@ -192,7 +194,7 @@ export function AppProvider({ children }) {
     });
   }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
 
-  // Persist each slice of state to localStorage and Firestore on change
+  // Persist everything to localStorage + firestore (yes its a lot of useEffects lol)
   useEffect(() => { if (currentUser) { localStorage.setItem('eduverse_user', JSON.stringify(currentUser)); syncToFirestore(); } }, [currentUser]);
   useEffect(() => { localStorage.setItem('eduverse_wishlist', JSON.stringify(wishlist)); if (currentUser) syncToFirestore(); }, [wishlist]);
   useEffect(() => { localStorage.setItem('eduverse_enrolled', JSON.stringify(enrolled)); if (currentUser) syncToFirestore(); }, [enrolled]);
@@ -218,7 +220,7 @@ export function AppProvider({ children }) {
   useEffect(() => { localStorage.setItem('eduverse_unread_notifications', unreadNotifications.toString()); }, [unreadNotifications]);
   useEffect(() => { localStorage.setItem('eduverse_dismissed_notifs', JSON.stringify(dismissedNotifs)); }, [dismissedNotifs]);
   useEffect(() => { localStorage.setItem('eduverse_reviews', JSON.stringify(reviews)); }, [reviews]);
-  // Daily streak check — compares date strings to detect consecutive vs broken streaks
+  // Streak check on mount — im using date string compare, works fine
   useEffect(() => {
     if (!currentUser) return;
     const today = new Date().toDateString();
@@ -227,6 +229,7 @@ export function AppProvider({ children }) {
     if (lastActiveDate === yesterday) {
       setStreak(prev => prev + 1);
     } else if (lastActiveDate && lastActiveDate !== today) {
+      console.log('streak lost :(');
       setStreak(0);
     } else if (!lastActiveDate) {
       setStreak(1);
@@ -234,6 +237,7 @@ export function AppProvider({ children }) {
     setLastActiveDate(today);
   }, [currentUser]);
 
+  // Check if we earned any new badges
   useEffect(() => {
     if (streak >= 7 && !badges.includes('streak_7')) {
       setBadges(prev => [...prev, 'streak_7']);
@@ -320,6 +324,7 @@ export function AppProvider({ children }) {
       addBadgeIfMissing('first_lesson');
       addXp(10, `Completed lesson ${lessonIndex + 1} in course #${courseId}`);
       addActivity('lesson', `Completed lesson ${lessonIndex + 1} in course #${courseId}`);
+      // Check if course fully done
       if (updated.length === totalLessons) {
         addActivity('course_complete', `Finished all lessons in course #${courseId}`);
       }
@@ -398,6 +403,7 @@ export function AppProvider({ children }) {
     });
   }
 
+  // ─── Notes (user notes on lessons) ───
   function addNote(courseId, lessonIdx, text) {
     const key = `${courseId}_${lessonIdx}`;
     const note = { id: Date.now() + Math.random(), text, createdAt: new Date().toISOString() };
@@ -410,6 +416,7 @@ export function AppProvider({ children }) {
     setNotes(prev => ({ ...prev, [key]: (prev[key] || []).filter(n => n.id !== noteId) }));
   }
 
+  // ─── Bookmarks (might refactor this later) ───
   function toggleBookmark(courseId, lessonIdx) {
     setBookmarks(prev => {
       const list = prev[courseId] || [];
@@ -423,6 +430,7 @@ export function AppProvider({ children }) {
     return (bookmarks[courseId] || []).includes(lessonIdx);
   }
 
+  // ─── Comments on lessons ───
   function addComment(courseId, lessonIdx, userName, text, parentId = null) {
     const key = `${courseId}_${lessonIdx}`;
     const comment = { id: Date.now() + Math.random(), userName, text, parentId, createdAt: new Date().toISOString() };
@@ -438,12 +446,14 @@ export function AppProvider({ children }) {
     return (comments[`${courseId}_${lessonIdx}`] || []).filter(c => c.parentId === parentId);
   }
 
+  // ─── Quiz ───
   function markQuizPassed(courseId) {
     addBadgeIfMissing('quiz_whiz');
     addXp(20, `Passed quiz in course #${courseId}`);
     addActivity('quiz', `Passed quiz in course #${courseId}`);
   }
 
+  // ─── Study Time Tracking ───
   function startTracking(courseId) {
     if (trackingRef.current) clearInterval(trackingRef.current);
     trackingRef.current = setInterval(() => {
@@ -463,6 +473,7 @@ export function AppProvider({ children }) {
     return Math.floor(seconds / 60);
   }
 
+  // ─── Bookworm badge ───
   function checkBookworm(courseId, totalLessons) {
     const watched = (progress[courseId] || []).length;
     if (watched >= totalLessons && !badges.includes('bookworm')) {
@@ -470,7 +481,7 @@ export function AppProvider({ children }) {
     }
   }
 
-  // Leaderboard — local scores per course
+  // ─── Leaderboard ───
   const [leaderboard, setLeaderboard] = useState(() => {
     if (typeof window === 'undefined') return [];
     try {
@@ -537,6 +548,7 @@ export function AppProvider({ children }) {
     return Math.round((completedCount / pathCourses.length) * 100);
   }
 
+  // ─── Reviews ───
   function addReview(courseId, courseName, rating, text) {
     const review = {
       id: Date.now() + Math.random(),

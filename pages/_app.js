@@ -22,7 +22,7 @@ function AuthGuard({ Component, pageProps }) {
     setHydrated(true);
   }, []);
 
-  // Edge back-swipe detection — triggers browser-back for left-edge gestures
+  // Back-swipe gesture (works for iOS-like navigation, kinda janky on android)
   useEffect(() => {
     function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
     function onTouchEnd(e) {
