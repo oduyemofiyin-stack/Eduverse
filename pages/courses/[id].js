@@ -359,30 +359,26 @@ export default function CourseDetail({ course: propCourse }) {
             <div style={{marginBottom:'1.5rem'}}>
               <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.6rem'}}>Course Syllabus ({course.lessons.length} lessons)</h3>
               <div style={{display:'flex', flexDirection:'column', gap:'0.3rem'}}>
-                {course.lessons.map((lesson, i) => {
-                  const locked = i > 0 && !progress[course.id]?.includes(i - 1);
-                  return (
-                  <div key={i} onClick={() => { if (!locked) { setActiveTab('videos'); handleLessonOpen(i); } }} style={{
+                {course.lessons.map((lesson, i) => (
+                  <div key={i} onClick={() => { setActiveTab('videos'); handleLessonOpen(i); }} style={{
                     display:'flex', alignItems:'center', gap:'0.7rem',
                     padding:'0.6rem 0.9rem', borderRadius:'8px',
                     background:'var(--surface2)', border:'1px solid var(--border)',
-                    fontSize:'0.82rem', cursor: locked ? 'not-allowed' : 'pointer',
-                    opacity: locked ? 0.45 : 1,
+                    fontSize:'0.82rem', cursor:'pointer',
                     transition:'background 0.2s',
                   }}
-                    onMouseEnter={e => { if (!locked) e.currentTarget.style.background='var(--surface3)'; }}
-                    onMouseLeave={e => { if (!locked) e.currentTarget.style.background='var(--surface2)'; }}
+                    onMouseEnter={e => e.currentTarget.style.background='var(--surface3)'}
+                    onMouseLeave={e => e.currentTarget.style.background='var(--surface2)'}
                   >
                     <span style={{
                       width:'24px', height:'24px', borderRadius:'50%',
-                      background: locked ? 'var(--surface3)' : 'var(--surface3)', display:'flex', alignItems:'center', justifyContent:'center',
-                      fontSize:'0.7rem', fontWeight:'700', color: locked ? 'var(--muted2)' : 'var(--muted)', flexShrink:0,
-                    }}>{locked ? '🔒' : i + 1}</span>
-                    <span style={{flex:1, color: locked ? 'var(--muted2)' : 'var(--text)'}}>{lesson.title}</span>
-                    <span style={{fontSize:'0.72rem', color:'var(--muted2)', flexShrink:0}}>{locked ? 'Locked' : lesson.dur}</span>
+                      background:'var(--surface3)', display:'flex', alignItems:'center', justifyContent:'center',
+                      fontSize:'0.7rem', fontWeight:'700', color:'var(--muted)', flexShrink:0,
+                    }}>{i + 1}</span>
+                    <span style={{flex:1, color:'var(--text)'}}>{lesson.title}</span>
+                    <span style={{fontSize:'0.72rem', color:'var(--muted2)', flexShrink:0}}>{lesson.dur}</span>
                   </div>
-                  );
-                })}
+                ))}
               </div>
             </div>
           )}
