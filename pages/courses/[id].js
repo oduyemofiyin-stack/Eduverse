@@ -12,7 +12,7 @@ import resources from '../../data/resources';
 export default function CourseDetail({ course: propCourse }) {
   const router = useRouter();
   const { id } = router.query;
-  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution } = useApp();
+  const { currentUser, wishlist, toggleWishlist, enrolled, toggleEnroll, markLesson, getCourseProgress, progress, markCompleted, isBookmarked, toggleBookmark, notes, addNote, removeNote, comments, addComment, getReplies, markQuizPassed, certificates, leaderboard, addScore, startTracking, stopTracking, getStudyTime, readingProgress, markReading, getReadingProgress, getCombinedProgress, reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution } = useApp();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('videos');
   const [openLesson, setOpenLesson] = useState(null);
