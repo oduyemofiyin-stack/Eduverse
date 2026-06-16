@@ -24,13 +24,14 @@
 <summary><strong>🎓 Course Platform</strong></summary>
 
 - **151 courses** across Web Development, Data Science, AI/ML, Cybersecurity, Design, Mobile, Marketing, and Business
-- **Video lessons** with YouTube integration and auto-advancing playlists
+- **Video lessons** with YouTube integration — each video must finish to unlock the next
+- **Auto-advancing playlists** — next video plays automatically when current one ends
 - **Reading materials** with key takeaways per lesson
-- **Quizzes** per course (timed, 60% pass threshold)
+- **Quizzes** per course (timed, 60% pass threshold) — only accessible after all video lessons completed
 - **Short preview videos** (2–3 min) on every course — Fireship "X in 100 Seconds" style
 - **Course detail page** with What You'll Learn, prerequisites, instructor bio, preview video, and syllabus
 - **Progress tracking** per lesson and per course
-- **Certificate generation** on course completion (PDF download)
+- **Certificate generation** auto-opens on quiz pass (PDF download)
 - **Certificate verification** by public code
 - **Notes & bookmarks** per lesson
 - **Course reviews & ratings** (1–5 stars)
