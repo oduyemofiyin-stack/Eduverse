@@ -38,11 +38,11 @@ export default function CourseDetail({ course: propCourse }) {
   const isEnrolled = enrolled.includes(course.id);
   const isWishlisted = wishlist.includes(course.id);
   const progressPct = getCourseProgress(course.id, course.lessons.length);
+  const allLessonsComplete = progress[course.id]?.length === course.lessons.length;
 
   function handleLessonOpen(i) {
     setOpenLesson(openLesson === i ? null : i);
     if (openLesson !== i) {
-      markLesson(course.id, i, course.lessons.length);
       setPlaylistIdx(i);
     } else {
       setPlaylistIdx(null);
@@ -55,11 +55,11 @@ export default function CourseDetail({ course: propCourse }) {
       try {
         const data = JSON.parse(e.data);
         if (data.event === 'onStateChange' && data.info === 0 && playlistIdx !== null) {
+          markLesson(course.id, playlistIdx, course.lessons.length);
           const next = playlistIdx + 1;
           if (next < course.lessons.length) {
             setPlaylistIdx(next);
             setOpenLesson(next);
-            markLesson(course.id, next, course.lessons.length);
           } else {
             setPlaylistIdx(null);
           }
@@ -138,6 +138,7 @@ export default function CourseDetail({ course: propCourse }) {
       markCompleted(course.id, course.title);
       markQuizPassed(course.id);
       addScore(currentUser?.firstName || 'Anonymous', course.id, quizState.score, course.quiz.length);
+      setTimeout(() => setShowCert(true), 600);
     }
   }, [finished, passed]);
 
@@ -358,26 +359,30 @@ export default function CourseDetail({ course: propCourse }) {
             <div style={{marginBottom:'1.5rem'}}>
               <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.6rem'}}>Course Syllabus ({course.lessons.length} lessons)</h3>
               <div style={{display:'flex', flexDirection:'column', gap:'0.3rem'}}>
-                {course.lessons.map((lesson, i) => (
-                  <div key={i} onClick={() => { setActiveTab('videos'); handleLessonOpen(i); }} style={{
+                {course.lessons.map((lesson, i) => {
+                  const locked = i > 0 && !progress[course.id]?.includes(i - 1);
+                  return (
+                  <div key={i} onClick={() => { if (!locked) { setActiveTab('videos'); handleLessonOpen(i); } }} style={{
                     display:'flex', alignItems:'center', gap:'0.7rem',
                     padding:'0.6rem 0.9rem', borderRadius:'8px',
                     background:'var(--surface2)', border:'1px solid var(--border)',
-                    fontSize:'0.82rem', cursor:'pointer',
+                    fontSize:'0.82rem', cursor: locked ? 'not-allowed' : 'pointer',
+                    opacity: locked ? 0.45 : 1,
                     transition:'background 0.2s',
                   }}
-                    onMouseEnter={e => e.currentTarget.style.background='var(--surface3)'}
-                    onMouseLeave={e => e.currentTarget.style.background='var(--surface2)'}
+                    onMouseEnter={e => { if (!locked) e.currentTarget.style.background='var(--surface3)'; }}
+                    onMouseLeave={e => { if (!locked) e.currentTarget.style.background='var(--surface2)'; }}
                   >
                     <span style={{
                       width:'24px', height:'24px', borderRadius:'50%',
-                      background:'var(--surface3)', display:'flex', alignItems:'center', justifyContent:'center',
-                      fontSize:'0.7rem', fontWeight:'700', color:'var(--muted)', flexShrink:0,
-                    }}>{i + 1}</span>
-                    <span style={{flex:1, color:'var(--text)'}}>{lesson.title}</span>
-                    <span style={{fontSize:'0.72rem', color:'var(--muted2)', flexShrink:0}}>{lesson.dur}</span>
+                      background: locked ? 'var(--surface3)' : 'var(--surface3)', display:'flex', alignItems:'center', justifyContent:'center',
+                      fontSize:'0.7rem', fontWeight:'700', color: locked ? 'var(--muted2)' : 'var(--muted)', flexShrink:0,
+                    }}>{locked ? '🔒' : i + 1}</span>
+                    <span style={{flex:1, color: locked ? 'var(--muted2)' : 'var(--text)'}}>{lesson.title}</span>
+                    <span style={{fontSize:'0.72rem', color:'var(--muted2)', flexShrink:0}}>{locked ? 'Locked' : lesson.dur}</span>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -413,43 +418,52 @@ export default function CourseDetail({ course: propCourse }) {
 
           {/* TABS */}
           <div style={{display:'flex', borderBottom:'1px solid var(--border)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
-            {['videos','reading','quiz','resources','reviews'].map(tab => (
-              <button key={tab} onClick={() => setActiveTab(tab)} style={{
+            {['videos','reading','quiz','resources','reviews'].map(tab => {
+              const quizLocked = tab === 'quiz' && !allLessonsComplete;
+              return (
+              <button key={tab} onClick={() => { if (!quizLocked) setActiveTab(tab); }} style={{
                 fontSize:'0.82rem', fontWeight:'600',
                 padding:'0.6rem 1rem', border:'none', background:'transparent',
-                color: activeTab === tab ? 'var(--text)' : 'var(--muted)',
+                color: quizLocked ? 'var(--muted2)' : activeTab === tab ? 'var(--text)' : 'var(--muted)',
                 borderBottom: activeTab === tab ? '2px solid #f0c040' : '2px solid transparent',
-                cursor:'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
+                cursor: quizLocked ? 'not-allowed' : 'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
               }}>
-                  {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? 'Quiz' : tab === 'resources' ? 'Resources' : 'Reviews'}
+                  {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? (quizLocked ? '🔒 Quiz' : 'Quiz') : tab === 'resources' ? 'Resources' : 'Reviews'}
               </button>
-            ))}
+              );
+            })}
           </div>
 
           {/* VIDEOS TAB */}
           {activeTab === 'videos' && (
             <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
-              {course.lessons.map((l, i) => (
-                <div key={i} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', overflow:'hidden'}}>
-                  <div onClick={() => handleLessonOpen(i)}
-                    style={{display:'flex', alignItems:'center', gap:'0.8rem', padding:'0.8rem 1rem', cursor:'pointer'}}>
+              {course.lessons.map((l, i) => {
+                const locked = i > 0 && !progress[course.id]?.includes(i - 1);
+                return (
+                <div key={i} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', overflow:'hidden', opacity: locked ? 0.5 : 1}}>
+                  <div onClick={() => { if (!locked) handleLessonOpen(i); }}
+                    style={{display:'flex', alignItems:'center', gap:'0.8rem', padding:'0.8rem 1rem', cursor: locked ? 'not-allowed' : 'pointer'}}>
                     <div style={{
                       width:'26px', height:'26px', borderRadius:'50%',
-                      background: isBookmarked(course.id, i) ? 'rgba(240,192,64,0.2)' : 'var(--surface2)',
-                      border: `1px solid ${isBookmarked(course.id, i) ? 'rgba(240,192,64,0.4)' : 'var(--border2)'}`,
+                      background: locked ? 'var(--surface2)' : isBookmarked(course.id, i) ? 'rgba(240,192,64,0.2)' : 'var(--surface2)',
+                      border: `1px solid ${locked ? 'var(--border)' : isBookmarked(course.id, i) ? 'rgba(240,192,64,0.4)' : 'var(--border2)'}`,
                       display:'flex', alignItems:'center', justifyContent:'center',
                       fontSize:'0.7rem', fontWeight:'700',
-                      color: isBookmarked(course.id, i) ? '#f0c040' : 'var(--muted)', flexShrink:0,
-                    }}>{isBookmarked(course.id, i) ? '★' : i + 1}</div>
+                      color: locked ? 'var(--muted2)' : isBookmarked(course.id, i) ? '#f0c040' : 'var(--muted)', flexShrink:0,
+                    }}>{locked ? '🔒' : isBookmarked(course.id, i) ? '★' : i + 1}</div>
                     <div style={{flex:1, minWidth:0}}>
-                      <div style={{fontSize:'0.86rem', fontWeight:'600', marginBottom:'0.1rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{l.title}</div>
-                      <div style={{fontSize:'0.72rem', color:'var(--muted)'}}>▶ {l.dur}</div>
+                      <div style={{fontSize:'0.86rem', fontWeight:'600', marginBottom:'0.1rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', color: locked ? 'var(--muted2)' : 'var(--text)'}}>{l.title}</div>
+                      <div style={{fontSize:'0.72rem', color:'var(--muted)'}}>{locked ? '🔒 Locked' : `▶ ${l.dur}`}</div>
                     </div>
+                    {!locked && (
+                      <>
                     <button onClick={e => { e.stopPropagation(); toggleBookmark(course.id, i); }}
                       style={{background:'none', border:'none', cursor:'pointer', fontSize:'1rem', color: isBookmarked(course.id, i) ? 'var(--gold)' : 'var(--muted2)', padding:'0 0.2rem'}}
                       title={isBookmarked(course.id, i) ? 'Remove bookmark' : 'Bookmark this lesson'}
                     >{isBookmarked(course.id, i) ? '★' : '☆'}</button>
                     <span style={{fontSize:'0.78rem', color:'#4488ff', transform: openLesson === i ? 'rotate(90deg)' : 'none', transition:'transform 0.25s', flexShrink:0}}>▶</span>
+                    </>
+                    )}
                   </div>
                   {openLesson === i && (
                     <div style={{padding:'0 0.8rem 0.8rem'}}>
@@ -604,7 +618,18 @@ export default function CourseDetail({ course: propCourse }) {
           {/* QUIZ TAB */}
           {activeTab === 'quiz' && (
             <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem'}}>
-              {!isEnrolled ? (
+              {!allLessonsComplete ? (
+                <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
+                  <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>🔒</div>
+                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Complete All Lessons First</h3>
+                  <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Finish watching all {course.lessons.length} video lessons to unlock the quiz and earn your certificate.</p>
+                  <button onClick={() => setActiveTab('videos')} style={{
+                    fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                    borderRadius:'12px', border:'none', cursor:'pointer',
+                    background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
+                  }}>Go to Lessons</button>
+                </div>
+              ) : !isEnrolled ? (
                   <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
                     <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Enroll to Take the Quiz</h3>
                     <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Enroll in this course to unlock the quiz and earn your certificate.</p>
