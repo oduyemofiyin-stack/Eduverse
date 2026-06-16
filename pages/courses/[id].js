@@ -455,15 +455,11 @@ export default function CourseDetail({ course: propCourse }) {
                       <div style={{fontSize:'0.86rem', fontWeight:'600', marginBottom:'0.1rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', color: locked ? 'var(--muted2)' : 'var(--text)'}}>{l.title}</div>
                       <div style={{fontSize:'0.72rem', color:'var(--muted)'}}>{locked ? '🔒 Locked' : `▶ ${l.dur}`}</div>
                     </div>
-                    {!locked && (
-                      <>
                     <button onClick={e => { e.stopPropagation(); toggleBookmark(course.id, i); }}
-                      style={{background:'none', border:'none', cursor:'pointer', fontSize:'1rem', color: isBookmarked(course.id, i) ? 'var(--gold)' : 'var(--muted2)', padding:'0 0.2rem'}}
+                      style={{display: locked ? 'none' : undefined, background:'none', border:'none', cursor:'pointer', fontSize:'1rem', color: isBookmarked(course.id, i) ? 'var(--gold)' : 'var(--muted2)', padding:'0 0.2rem'}}
                       title={isBookmarked(course.id, i) ? 'Remove bookmark' : 'Bookmark this lesson'}
                     >{isBookmarked(course.id, i) ? '★' : '☆'}</button>
-                    <span style={{fontSize:'0.78rem', color:'#4488ff', transform: openLesson === i ? 'rotate(90deg)' : 'none', transition:'transform 0.25s', flexShrink:0}}>▶</span>
-                    </>
-                    )}
+                    <span style={{display: locked ? 'none' : undefined, fontSize:'0.78rem', color:'#4488ff', transform: openLesson === i ? 'rotate(90deg)' : 'none', transition:'transform 0.25s', flexShrink:0}}>▶</span>
                   </div>
                   {openLesson === i && (
                     <div style={{padding:'0 0.8rem 0.8rem'}}>
@@ -555,7 +551,8 @@ export default function CourseDetail({ course: propCourse }) {
                     </div>
                   )}
                 </div>
-              ))}
+              );
+            })}
             </div>
           )}
 
