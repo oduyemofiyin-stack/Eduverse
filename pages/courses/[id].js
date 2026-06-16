@@ -414,20 +414,17 @@ export default function CourseDetail({ course: propCourse }) {
 
           {/* TABS */}
           <div style={{display:'flex', borderBottom:'1px solid var(--border)', marginBottom:'1.3rem', overflowX:'auto', scrollbarWidth:'none'}}>
-            {['videos','reading','quiz','resources','reviews'].map(tab => {
-              const quizLocked = tab === 'quiz' && !allLessonsComplete;
-              return (
-              <button key={tab} onClick={() => { if (!quizLocked) setActiveTab(tab); }} style={{
+            {['videos','reading','resources','reviews'].map(tab => (
+              <button key={tab} onClick={() => setActiveTab(tab)} style={{
                 fontSize:'0.82rem', fontWeight:'600',
                 padding:'0.6rem 1rem', border:'none', background:'transparent',
-                color: quizLocked ? 'var(--muted2)' : activeTab === tab ? 'var(--text)' : 'var(--muted)',
+                color: activeTab === tab ? 'var(--text)' : 'var(--muted)',
                 borderBottom: activeTab === tab ? '2px solid #f0c040' : '2px solid transparent',
-                cursor: quizLocked ? 'not-allowed' : 'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
+                cursor:'pointer', marginBottom:'-1px', whiteSpace:'nowrap',
               }}>
-                  {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'quiz' ? (quizLocked ? '🔒 Quiz' : 'Quiz') : tab === 'resources' ? 'Resources' : 'Reviews'}
+                  {tab === 'videos' ? 'Videos' : tab === 'reading' ? 'Reading' : tab === 'resources' ? 'Resources' : 'Reviews'}
               </button>
-              );
-            })}
+            ))}
           </div>
 
           {/* VIDEOS TAB */}
@@ -549,6 +546,81 @@ export default function CourseDetail({ course: propCourse }) {
                 </div>
               );
             })}
+            {allLessonsComplete && (
+              <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem', marginTop:'1rem'}}>
+                {!quizState ? (
+                  <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Ready for the Quiz?</h3>
+                    <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>{course.quiz.length} questions · Pass with 60% to earn your certificate</p>
+                    <button onClick={startQuiz} style={{
+                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                      borderRadius:'12px', border:'none', cursor:'pointer',
+                      background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
+                    }}>Start Quiz</button>
+                  </div>
+                ) : finished && passed ? (
+                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
+                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed!</h3>
+                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Your certificate is ready!</p>
+                    <button onClick={() => setShowCert(true)} style={{
+                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                      borderRadius:'12px', border:'none', cursor:'pointer',
+                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                    }}>Get Your Certificate</button>
+                  </div>
+                ) : finished && !passed ? (
+                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
+                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
+                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>Keep Learning!</h3>
+                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>You need 60% to pass. Review and try again!</p>
+                    <button onClick={retake} style={{
+                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                      borderRadius:'12px', border:'1px solid var(--border2)',
+                      cursor:'pointer', background:'transparent', color:'var(--text)',
+                    }}>Retake Quiz</button>
+                  </div>
+                ) : (
+                  <div>
+                    <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                      <span>Question {quizState.idx + 1} of {course.quiz.length} · Score: {quizState.score}/{quizState.idx + (quizState.answered ? 1 : 0)}</span>
+                      <span style={{fontWeight:'700', fontFamily:'monospace', fontSize:'0.9rem', color:timerColor}}>{fmtTime(timer)}</span>
+                    </div>
+                    <p style={{fontSize:'0.9rem', fontWeight:'600', marginBottom:'0.85rem', lineHeight:'1.5'}}>
+                      {quizState.idx + 1}. {course.quiz[quizState.idx].q}
+                    </p>
+                    <div style={{display:'flex', flexDirection:'column', gap:'0.5rem', marginBottom:'1rem'}}>
+                      {course.quiz[quizState.idx].opts.map((opt, i) => {
+                        let bg = 'var(--surface2)', border = 'var(--border2)', color = 'var(--text)';
+                        if (quizState.answered) {
+                          if (i === course.quiz[quizState.idx].ans) { bg = 'rgba(0,212,170,0.1)'; border = '#00d4aa'; color = '#00d4aa'; }
+                          else if (i === quizState.answers[quizState.idx]) { bg = 'rgba(255,107,157,0.1)'; border = '#ff6b9d'; color = '#ff6b9d'; }
+                        }
+                        return (
+                          <button key={i} onClick={() => answerQ(i)} disabled={quizState.answered} style={{
+                            fontSize:'0.84rem', fontWeight:'500', padding:'0.65rem 1rem',
+                            borderRadius:'10px', border:`1px solid ${border}`,
+                            background:bg, color, cursor: quizState.answered ? 'default' : 'pointer',
+                            textAlign:'left',
+                          }}>{opt}</button>
+                        );
+                      })}
+                    </div>
+                    <div style={{display:'flex', justifyContent:'flex-end', gap:'0.7rem'}}>
+                      {quizState.idx > 0 && (
+                        <button onClick={prevQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'var(--surface3)', color:'var(--text)'}}>← Back</button>
+                      )}
+                      {quizState.answered && !finished && (
+                        <button onClick={nextQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'#4488ff', color:'#fff'}}>Next →</button>
+                      )}
+                      {quizState.answered && finished && passed && (
+                        <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Certificate</button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
             </div>
           )}
 
@@ -605,128 +677,6 @@ export default function CourseDetail({ course: propCourse }) {
                 );
               })}
 
-            </div>
-          )}
-
-          {/* QUIZ TAB */}
-          {activeTab === 'quiz' && (
-            <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem'}}>
-              {!allLessonsComplete ? (
-                <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                  <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>🔒</div>
-                  <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Complete All Lessons First</h3>
-                  <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Finish watching all {course.lessons.length} video lessons to unlock the quiz and earn your certificate.</p>
-                  <button onClick={() => setActiveTab('videos')} style={{
-                    fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                    borderRadius:'12px', border:'none', cursor:'pointer',
-                    background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
-                  }}>Go to Lessons</button>
-                </div>
-              ) : !isEnrolled ? (
-                  <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Enroll to Take the Quiz</h3>
-                    <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Enroll in this course to unlock the quiz and earn your certificate.</p>
-                    <button onClick={() => toggleEnroll(course.id, course.title, toast)} style={{
-                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                      borderRadius:'12px', border:'none', cursor:'pointer',
-                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                    }}>Enroll Now</button>
-                  </div>
-                ) : !quizState ? (
-                  <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Ready for the Quiz?</h3>
-                    <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>{course.quiz.length} questions · Pass with 60% to earn your certificate</p>
-                    <button onClick={startQuiz} style={{
-                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                      borderRadius:'12px', border:'none', cursor:'pointer',
-                      background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
-                    }}>Start Quiz</button>
-                  </div>
-                ) : finished && passed ? (
-                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
-                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed!</h3>
-                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Your certificate is ready!</p>
-                    <button onClick={() => setShowCert(true)} style={{
-                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                      borderRadius:'12px', border:'none', cursor:'pointer',
-                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                    }}>Get Your Certificate</button>
-                  </div>
-                ) : finished && !passed ? (
-                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
-                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>Keep Learning!</h3>
-                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>You need 60% to pass. Review and try again!</p>
-                    <button onClick={retake} style={{
-                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                      borderRadius:'12px', border:'1px solid var(--border2)',
-                      cursor:'pointer', background:'transparent', color:'var(--text)',
-                    }}>Retake Quiz</button>
-                  </div>
-              ) : (
-                <div>
-                  <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                    <span>Question {quizState.idx + 1} of {course.quiz.length} · Score: {quizState.score}/{quizState.idx + (quizState.answered ? 1 : 0)}</span>
-                    <span style={{fontWeight:'700', fontFamily:'monospace', fontSize:'0.9rem', color:timerColor}}>{fmtTime(timer)}</span>
-                  </div>
-                  <p style={{fontSize:'0.9rem', fontWeight:'600', marginBottom:'0.85rem', lineHeight:'1.5'}}>
-                    {quizState.idx + 1}. {course.quiz[quizState.idx].q}
-                  </p>
-                  <div style={{display:'flex', flexDirection:'column', gap:'0.5rem', marginBottom:'1rem'}}>
-                    {course.quiz[quizState.idx].opts.map((opt, i) => {
-                      let bg = 'var(--surface2)', border = 'var(--border2)', color = 'var(--text)';
-                      if (quizState.answered) {
-                        if (i === course.quiz[quizState.idx].ans) { bg = 'rgba(0,212,170,0.1)'; border = '#00d4aa'; color = '#00d4aa'; }
-                        else if (i === quizState.answers[quizState.idx]) { bg = 'rgba(255,107,157,0.1)'; border = '#ff6b9d'; color = '#ff6b9d'; }
-                      }
-                      return (
-                        <button key={i} onClick={() => answerQ(i)} disabled={quizState.answered} style={{
-                          fontSize:'0.84rem', fontWeight:'500', padding:'0.65rem 1rem',
-                          borderRadius:'10px', border:`1px solid ${border}`,
-                          background:bg, color, cursor: quizState.answered ? 'default' : 'pointer',
-                          textAlign:'left',
-                        }}>{opt}</button>
-                      );
-                    })}
-                  </div>
-                  <div style={{display:'flex', justifyContent:'flex-end', gap:'0.7rem'}}>
-                    {quizState.idx > 0 && (
-                      <button onClick={prevQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'var(--surface3)', color:'var(--text)'}}>← Back</button>
-                    )}
-                    {quizState.answered && !finished && (
-                      <button onClick={nextQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'#4488ff', color:'#fff'}}>Next →</button>
-                    )}
-                    {quizState.answered && finished && passed && (
-                      <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Certificate</button>
-                    )}
-                  </div>
-                </div>
-              )}
-              {isEnrolled && (
-                <div style={{marginTop:'1.5rem', borderTop:'1px solid var(--border)', paddingTop:'1.2rem'}}>
-                  <h4 style={{fontSize:'0.9rem', fontWeight:'700', marginBottom:'0.8rem', color:'var(--text)'}}>Leaderboard</h4>
-                  {courseLeaderboard.length === 0 ? (
-                    <p style={{fontSize:'0.8rem', color:'var(--muted)'}}>No scores yet. Be the first to take the quiz!</p>
-                  ) : (
-                    <div style={{display:'flex', flexDirection:'column', gap:'0.4rem'}}>
-                      {courseLeaderboard.map((entry, i) => (
-                        <div key={entry.date + entry.userName} style={{
-                          display:'flex', alignItems:'center', gap:'0.6rem',
-                          padding:'0.5rem 0.7rem', borderRadius:'8px',
-                          background: i === 0 ? 'rgba(240,192,64,0.08)' : 'transparent',
-                          border: i === 0 ? '1px solid rgba(240,192,64,0.15)' : 'none',
-                        }}>
-                          <span style={{fontSize:'0.85rem', fontWeight:'700', color: i === 0 ? '#f0c040' : 'var(--muted)', width:'20px'}}>#{i + 1}</span>
-                          <span style={{flex:1, fontSize:'0.82rem', fontWeight:'600', color:'var(--text)'}}>{entry.userName}</span>
-                          <span style={{fontSize:'0.82rem', fontWeight:'700', color:'#00d4aa'}}>{entry.score}/{entry.total}</span>
-                          <span style={{fontSize:'0.68rem', color:'var(--muted2)'}}>{new Date(entry.date).toLocaleDateString()}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           )}
 
