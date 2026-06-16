@@ -1,5 +1,7 @@
 /* Fonts loaded via link tags in _document.js */
 
+.grecaptcha-badge { visibility: hidden; opacity: 0; }
+
 /* ── DESIGN TOKENS (copied most of these from a template tbh) ── */
 :root {
   --bg: #06080f;
