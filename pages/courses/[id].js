@@ -40,6 +40,34 @@ export default function CourseDetail({ course: propCourse }) {
   const progressPct = getCourseProgress(course.id, course.lessons.length);
   const allLessonsComplete = progress[course.id]?.length === course.lessons.length;
 
+  const playerRef = useRef(null);
+  const progressTimerRef = useRef(null);
+  const playerContainerRef = useRef(null);
+
+  function loadYT() {
+    return new Promise(resolve => {
+      if (window.YT && window.YT.Player) { resolve(window.YT); return; }
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { prev?.(); resolve(window.YT); };
+      if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+        const s = document.createElement('script');
+        s.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(s);
+      }
+    });
+  }
+
+  function advanceLesson(idx) {
+    markLesson(course.id, idx, course.lessons.length);
+    const next = idx + 1;
+    if (next < course.lessons.length) {
+      setPlaylistIdx(next);
+      setOpenLesson(next);
+    } else {
+      setPlaylistIdx(null);
+    }
+  }
+
   function handleLessonOpen(i) {
     setOpenLesson(openLesson === i ? null : i);
     if (openLesson !== i) {
@@ -50,25 +78,75 @@ export default function CourseDetail({ course: propCourse }) {
   }
 
   useEffect(() => {
-    function onMessage(e) {
-      if (!e.origin || !e.origin.includes('youtube.com')) return;
-      try {
-        const data = JSON.parse(e.data);
-        if (data.event === 'onStateChange' && data.info === 0 && playlistIdx !== null) {
-          markLesson(course.id, playlistIdx, course.lessons.length);
-          const next = playlistIdx + 1;
-          if (next < course.lessons.length) {
-            setPlaylistIdx(next);
-            setOpenLesson(next);
-          } else {
-            setPlaylistIdx(null);
-          }
-        }
-      } catch {}
-    }
-    window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
-  }, [playlistIdx, course, markLesson]);
+    if (typeof openLesson !== 'number') return;
+    const idx = openLesson;
+    const videoId = course.lessons[idx]?.yt;
+    if (!videoId) return;
+
+    loadYT().then(YT => {
+      if (openLesson !== idx) return;
+      const container = playerContainerRef.current;
+      if (!container) return;
+
+      if (playerRef.current) {
+        playerRef.current.destroy();
+        playerRef.current = null;
+      }
+      container.innerHTML = '';
+
+      playerRef.current = new YT.Player(container, {
+        videoId,
+        playerVars: { rel: 0, modestbranding: 1 },
+        events: {
+          onStateChange: e => {
+            if (e.data === YT.PlayerState.PLAYING) {
+              const p = playerRef.current;
+              if (!p) return;
+              const dur = p.getDuration();
+              if (dur > 0) {
+                if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+                progressTimerRef.current = setInterval(() => {
+                  try {
+                    const p2 = playerRef.current;
+                    if (!p2) return;
+                    if (p2.getCurrentTime() / dur >= 0.75) {
+                      advanceLesson(idx);
+                      if (progressTimerRef.current) {
+                        clearInterval(progressTimerRef.current);
+                        progressTimerRef.current = null;
+                      }
+                    }
+                  } catch {}
+                }, 500);
+              }
+            } else if (e.data === YT.PlayerState.ENDED) {
+              advanceLesson(idx);
+              if (progressTimerRef.current) {
+                clearInterval(progressTimerRef.current);
+                progressTimerRef.current = null;
+              }
+            } else {
+              if (progressTimerRef.current) {
+                clearInterval(progressTimerRef.current);
+                progressTimerRef.current = null;
+              }
+            }
+          },
+        },
+      });
+    });
+
+    return () => {
+      if (progressTimerRef.current) {
+        clearInterval(progressTimerRef.current);
+        progressTimerRef.current = null;
+      }
+      if (playerRef.current) {
+        playerRef.current.destroy();
+        playerRef.current = null;
+      }
+    };
+  }, [openLesson]);
 
   function startQuiz() {
     setQuizState({ idx: 0, score: 0, answered: false, answers: new Array(course.quiz.length).fill(null) });
@@ -465,12 +543,7 @@ export default function CourseDetail({ course: propCourse }) {
                           <span style={{fontSize:'0.72rem', color:'var(--muted2)', fontWeight:'500'}}>{i + 1} / {course.lessons.length}</span>
                         </div>
                       )}
-                      <iframe
-                        style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', border:'none', background:'#000'}}
-                        src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen loading="lazy"
-                      />
+                      <div ref={playerContainerRef} style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', background:'#000'}} />
                       {/* NOTES */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
                         <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>Notes<button onClick={downloadNotes}
