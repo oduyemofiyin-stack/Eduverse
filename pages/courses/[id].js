@@ -41,14 +41,11 @@ export default function CourseDetail({ course: propCourse }) {
   const allLessonsComplete = progress[course.id]?.length === course.lessons.length;
 
   const lessonIdxRef = useRef(null);
-
-  function parseDur(s) {
-    const p = s?.split(':');
-    if (!p || p.length !== 2) return 0;
-    return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
-  }
+  const completedRef = useRef(new Set());
 
   function advanceLesson(idx) {
+    if (completedRef.current.has(idx)) return;
+    completedRef.current.add(idx);
     markLesson(course.id, idx, course.lessons.length);
     const next = idx + 1;
     if (next < course.lessons.length) {
@@ -70,27 +67,26 @@ export default function CourseDetail({ course: propCourse }) {
 
   lessonIdxRef.current = openLesson;
 
-  // Auto-advance at 75% of video duration (timer-based — 100% reliable)
-  useEffect(() => {
-    if (typeof openLesson !== 'number') return;
-    const idx = openLesson;
-    const dur = parseDur(course.lessons[idx]?.dur);
-    if (dur <= 0) return;
-
-    const ms = Math.round(dur * 0.75 * 1000);
-    const timer = setTimeout(() => advanceLesson(idx), ms);
-
-    return () => clearTimeout(timer);
-  }, [openLesson]);
-
-  // Backup: also advance if YouTube sends native video-ended event
+  // Advance lesson when video ends (primary) or reaches 95% (fallback polling)
   useEffect(() => {
     function onMessage(e) {
       if (!e.origin?.includes('youtube.com')) return;
       try {
         const data = JSON.parse(e.data);
-        if (data.event === 'onStateChange' && data.info === 0 && typeof lessonIdxRef.current === 'number') {
-          advanceLesson(lessonIdxRef.current);
+        const idx = lessonIdxRef.current;
+        if (typeof idx !== 'number') return;
+
+        if (data.event === 'onStateChange' && data.info === 0) {
+          advanceLesson(idx);
+          return;
+        }
+
+        // Fallback: YouTube sends periodic infoDelivery with currentTime/duration
+        if (data.event === 'infoDelivery' && data.info) {
+          const { currentTime, duration } = data.info;
+          if (currentTime > 0 && duration > 0 && currentTime / duration >= 0.95) {
+            advanceLesson(idx);
+          }
         }
       } catch {}
     }
