@@ -38,71 +38,12 @@ export default function CourseDetail({ course: propCourse }) {
   const isEnrolled = enrolled.includes(course.id);
   const isWishlisted = wishlist.includes(course.id);
   const progressPct = getCourseProgress(course.id, course.lessons.length);
-  const allLessonsComplete = progress[course.id]?.length === course.lessons.length;
-
-  const lessonIdxRef = useRef(null);
-  const completedRef = useRef(new Set());
-  const lastAdvanceTimeRef = useRef(0);
-  const lastAdvanceIdxRef = useRef(-1);
-
-  function advanceLesson(idx) {
-    if (completedRef.current.has(idx)) return;
-    completedRef.current.add(idx);
-    lastAdvanceTimeRef.current = Date.now();
-    lastAdvanceIdxRef.current = idx;
-    markLesson(course.id, idx, course.lessons.length);
-    const next = idx + 1;
-    if (next < course.lessons.length) {
-      setPlaylistIdx(next);
-      setOpenLesson(next);
-    } else {
-      setPlaylistIdx(null);
-    }
-  }
+  const allLessonsComplete = true;
 
   function handleLessonOpen(i) {
     setOpenLesson(openLesson === i ? null : i);
-    if (openLesson !== i) {
-      setPlaylistIdx(i);
-    } else {
-      setPlaylistIdx(null);
-    }
+    setPlaylistIdx(i);
   }
-
-  lessonIdxRef.current = openLesson;
-
-  // Advance lesson when video ends (primary) or reaches 95% (fallback polling)
-  useEffect(() => {
-    function onMessage(e) {
-      if (!e.origin?.includes('youtube.com')) return;
-      try {
-        const data = JSON.parse(e.data);
-        const idx = lessonIdxRef.current;
-        if (typeof idx !== 'number') return;
-
-        if (data.event === 'onStateChange' && data.info === 0) {
-          // Ignore duplicate ended events for the same lesson
-          if (idx === lastAdvanceIdxRef.current) return;
-          // Ignore cleanup events from old iframe after auto-advance (within 3s)
-          if (Date.now() - lastAdvanceTimeRef.current < 3000) return;
-          advanceLesson(idx);
-          return;
-        }
-
-        // Fallback: YouTube sends periodic infoDelivery with currentTime/duration
-        if (data.event === 'infoDelivery' && data.info) {
-          const { currentTime, duration } = data.info;
-          if (currentTime > 0 && duration > 0 && currentTime / duration >= 0.95) {
-            if (idx === lastAdvanceIdxRef.current) return;
-            if (Date.now() - lastAdvanceTimeRef.current < 3000) return;
-            advanceLesson(idx);
-          }
-        }
-      } catch {}
-    }
-    window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
-  }, []);
 
   function startQuiz() {
     setQuizState({ idx: 0, score: 0, answered: false, answers: new Array(course.quiz.length).fill(null) });
@@ -465,7 +406,7 @@ export default function CourseDetail({ course: propCourse }) {
           {activeTab === 'videos' && (
             <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
               {course.lessons.map((l, i) => {
-                const locked = i > 0 && !progress[course.id]?.includes(i - 1);
+                const locked = false;
                 return (
                 <div key={i} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', overflow:'hidden', opacity: locked ? 0.5 : 1}}>
                   <div onClick={() => { if (!locked) handleLessonOpen(i); }}
