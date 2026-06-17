@@ -42,10 +42,14 @@ export default function CourseDetail({ course: propCourse }) {
 
   const lessonIdxRef = useRef(null);
   const completedRef = useRef(new Set());
+  const lastAdvanceTimeRef = useRef(0);
+  const lastAdvanceIdxRef = useRef(-1);
 
   function advanceLesson(idx) {
     if (completedRef.current.has(idx)) return;
     completedRef.current.add(idx);
+    lastAdvanceTimeRef.current = Date.now();
+    lastAdvanceIdxRef.current = idx;
     markLesson(course.id, idx, course.lessons.length);
     const next = idx + 1;
     if (next < course.lessons.length) {
@@ -77,6 +81,10 @@ export default function CourseDetail({ course: propCourse }) {
         if (typeof idx !== 'number') return;
 
         if (data.event === 'onStateChange' && data.info === 0) {
+          // Ignore duplicate ended events for the same lesson
+          if (idx === lastAdvanceIdxRef.current) return;
+          // Ignore cleanup events from old iframe after auto-advance (within 3s)
+          if (Date.now() - lastAdvanceTimeRef.current < 3000) return;
           advanceLesson(idx);
           return;
         }
@@ -85,6 +93,8 @@ export default function CourseDetail({ course: propCourse }) {
         if (data.event === 'infoDelivery' && data.info) {
           const { currentTime, duration } = data.info;
           if (currentTime > 0 && duration > 0 && currentTime / duration >= 0.95) {
+            if (idx === lastAdvanceIdxRef.current) return;
+            if (Date.now() - lastAdvanceTimeRef.current < 3000) return;
             advanceLesson(idx);
           }
         }
