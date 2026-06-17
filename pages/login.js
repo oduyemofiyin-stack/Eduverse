@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import emailjs from '@emailjs/browser';
 import { saveUserData } from '../lib/firestore';
-import { isValidPassword, getPasswordErrors } from '../lib/sanitize';
+import { isValidPassword, getPasswordErrors, checkRateLimit } from '../lib/sanitize';
+import { logger } from '../lib/logger';
 
 export default function Login() {
   const { login, users, addUser } = useApp();
@@ -58,6 +59,8 @@ export default function Login() {
   async function handleLogin() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    const rl = checkRateLimit('login_' + form.email.toLowerCase(), 5, 600000);
+    if (!rl.allowed) { setErrors({ general: rl.message }); return; }
     const recaptchaToken = await getRecaptchaToken('LOGIN');
     if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
     setLoading(true);
@@ -67,10 +70,12 @@ export default function Login() {
       u.password === form.password
     );
     if (!user) {
+      logger.warn('Login', 'Failed login attempt', { email: form.email.toLowerCase() });
       setErrors({ general: 'Incorrect email or password. Please try again.' });
       setLoading(false);
       return;
     }
+    logger.info('Login', 'Successful login', { email: form.email.toLowerCase() });
     login(user);
     setLoading(false);
     router.push('/');
@@ -79,6 +84,8 @@ export default function Login() {
   async function handleSignup() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    const rl = checkRateLimit('signup_' + form.email.toLowerCase(), 3, 600000);
+    if (!rl.allowed) { setErrors({ general: rl.message }); return; }
     const recaptchaToken = await getRecaptchaToken('SIGNUP');
     if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
     setLoading(true);
@@ -104,6 +111,7 @@ export default function Login() {
       provider: 'email',
       createdAt: new Date().toISOString(),
     };
+    logger.info('Signup', 'New account created', { email: newUser.email });
     addUser(newUser);
     login(newUser);
     saveUserData(newUser.id, { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, username: newUser.username, picture: newUser.picture, provider: newUser.provider, createdAt: newUser.createdAt, wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
@@ -124,6 +132,8 @@ export default function Login() {
       setErrors({ reset: 'Please enter a valid email address' });
       return;
     }
+    const rl = checkRateLimit('reset_' + resetEmail.toLowerCase(), 3, 600000);
+    if (!rl.allowed) { setErrors({ reset: rl.message }); return; }
     const user = users.find(u => u.email === resetEmail);
     if (!user) {
       setErrors({ reset: 'No account found with this email' });

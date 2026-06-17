@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import ScrollToTop from '../components/ScrollToTop';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 import '../styles/globals.css';
 
@@ -115,11 +116,13 @@ function SwCleanup() {
 
 export default function MyApp({ Component, pageProps }) {
   return (
-    <AppProvider>
-      <ToastProvider>
-        <SwCleanup />
-        <AuthGuard Component={Component} pageProps={pageProps} />
-      </ToastProvider>
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <ToastProvider>
+          <SwCleanup />
+          <AuthGuard Component={Component} pageProps={pageProps} />
+        </ToastProvider>
+      </AppProvider>
+    </ErrorBoundary>
   );
 }
