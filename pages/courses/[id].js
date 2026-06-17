@@ -467,7 +467,7 @@ export default function CourseDetail({ course: propCourse }) {
                       )}
                       <iframe
                         style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', border:'none', background:'#000'}}
-                        src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1&enablejsapi=1`}
+                        src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen loading="lazy"
                       />
@@ -546,77 +546,98 @@ export default function CourseDetail({ course: propCourse }) {
                 </div>
               );
             })}
-            {allLessonsComplete && (
-              <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem', marginTop:'1rem'}}>
-                {!quizState ? (
-                  <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
-                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Ready for the Quiz?</h3>
-                    <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>{course.quiz.length} questions · Pass with 60% to earn your certificate</p>
-                    <button onClick={startQuiz} style={{
-                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                      borderRadius:'12px', border:'none', cursor:'pointer',
-                      background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
-                    }}>Start Quiz</button>
+            {/* Quiz lesson - appears as last item in lesson list */}
+            {course.quiz.length > 0 && (
+              <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'12px', overflow:'hidden', opacity: allLessonsComplete ? 1 : 0.5}}>
+                <div onClick={() => { if (allLessonsComplete) { setOpenLesson(openLesson === 'quiz' ? null : 'quiz'); setPlaylistIdx(null); } }}
+                  style={{display:'flex', alignItems:'center', gap:'0.8rem', padding:'0.8rem 1rem', cursor: allLessonsComplete ? 'pointer' : 'not-allowed'}}>
+                  <div style={{
+                    width:'26px', height:'26px', borderRadius:'50%',
+                    background: allLessonsComplete ? 'rgba(68,136,255,0.2)' : 'var(--surface2)',
+                    border: `1px solid ${allLessonsComplete ? 'rgba(68,136,255,0.4)' : 'var(--border)'}`,
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                    fontSize:'0.7rem', fontWeight:'700',
+                    color: allLessonsComplete ? '#4488ff' : 'var(--muted2)', flexShrink:0,
+                  }}>{allLessonsComplete ? '?' : '🔒'}</div>
+                  <div style={{flex:1, minWidth:0}}>
+                    <div style={{fontSize:'0.86rem', fontWeight:'600', marginBottom:'0.1rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', color: allLessonsComplete ? 'var(--text)' : 'var(--muted2)'}}>{allLessonsComplete ? 'Final Quiz' : '🔒 Final Quiz'}</div>
+                    <div style={{fontSize:'0.72rem', color:'var(--muted)'}}>{allLessonsComplete ? `${course.quiz.length} questions · Pass with 60%` : 'Complete all lessons to unlock'}</div>
                   </div>
-                ) : finished && passed ? (
-                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
-                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed!</h3>
-                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Your certificate is ready!</p>
-                    <button onClick={() => setShowCert(true)} style={{
-                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                      borderRadius:'12px', border:'none', cursor:'pointer',
-                      background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
-                    }}>Get Your Certificate</button>
-                  </div>
-                ) : finished && !passed ? (
-                  <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
-                    <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
-                    <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>Keep Learning!</h3>
-                    <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>You need 60% to pass. Review and try again!</p>
-                    <button onClick={retake} style={{
-                      fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
-                      borderRadius:'12px', border:'1px solid var(--border2)',
-                      cursor:'pointer', background:'transparent', color:'var(--text)',
-                    }}>Retake Quiz</button>
-                  </div>
-                ) : (
-                  <div>
-                    <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                      <span>Question {quizState.idx + 1} of {course.quiz.length} · Score: {quizState.score}/{quizState.idx + (quizState.answered ? 1 : 0)}</span>
-                      <span style={{fontWeight:'700', fontFamily:'monospace', fontSize:'0.9rem', color:timerColor}}>{fmtTime(timer)}</span>
-                    </div>
-                    <p style={{fontSize:'0.9rem', fontWeight:'600', marginBottom:'0.85rem', lineHeight:'1.5'}}>
-                      {quizState.idx + 1}. {course.quiz[quizState.idx].q}
-                    </p>
-                    <div style={{display:'flex', flexDirection:'column', gap:'0.5rem', marginBottom:'1rem'}}>
-                      {course.quiz[quizState.idx].opts.map((opt, i) => {
-                        let bg = 'var(--surface2)', border = 'var(--border2)', color = 'var(--text)';
-                        if (quizState.answered) {
-                          if (i === course.quiz[quizState.idx].ans) { bg = 'rgba(0,212,170,0.1)'; border = '#00d4aa'; color = '#00d4aa'; }
-                          else if (i === quizState.answers[quizState.idx]) { bg = 'rgba(255,107,157,0.1)'; border = '#ff6b9d'; color = '#ff6b9d'; }
-                        }
-                        return (
-                          <button key={i} onClick={() => answerQ(i)} disabled={quizState.answered} style={{
-                            fontSize:'0.84rem', fontWeight:'500', padding:'0.65rem 1rem',
-                            borderRadius:'10px', border:`1px solid ${border}`,
-                            background:bg, color, cursor: quizState.answered ? 'default' : 'pointer',
-                            textAlign:'left',
-                          }}>{opt}</button>
-                        );
-                      })}
-                    </div>
-                    <div style={{display:'flex', justifyContent:'flex-end', gap:'0.7rem'}}>
-                      {quizState.idx > 0 && (
-                        <button onClick={prevQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'var(--surface3)', color:'var(--text)'}}>← Back</button>
-                      )}
-                      {quizState.answered && !finished && (
-                        <button onClick={nextQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'#4488ff', color:'#fff'}}>Next →</button>
-                      )}
-                      {quizState.answered && finished && passed && (
-                        <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Certificate</button>
-                      )}
-                    </div>
+                  <span style={{display: allLessonsComplete ? undefined : 'none', fontSize:'0.78rem', color:'#4488ff', transform: openLesson === 'quiz' ? 'rotate(90deg)' : 'none', transition:'transform 0.25s', flexShrink:0}}>▶</span>
+                </div>
+                {openLesson === 'quiz' && (
+                  <div style={{padding:'0 0.8rem 0.8rem'}}>
+                    {!quizState ? (
+                      <div style={{textAlign:'center', padding:'1.5rem 1rem'}}>
+                        <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.2rem', marginBottom:'0.5rem'}}>Ready for the Quiz?</h3>
+                        <p style={{fontSize:'0.85rem', color:'var(--muted)', marginBottom:'1.2rem'}}>{course.quiz.length} questions · Pass with 60% to earn your certificate</p>
+                        <button onClick={startQuiz} style={{
+                          fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                          borderRadius:'12px', border:'none', cursor:'pointer',
+                          background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff',
+                        }}>Start Quiz</button>
+                      </div>
+                    ) : finished && passed ? (
+                      <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
+                        <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
+                        <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>You passed!</h3>
+                        <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>Your certificate is ready!</p>
+                        <button onClick={() => setShowCert(true)} style={{
+                          fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                          borderRadius:'12px', border:'none', cursor:'pointer',
+                          background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000',
+                        }}>Get Your Certificate</button>
+                      </div>
+                    ) : finished && !passed ? (
+                      <div style={{textAlign:'center', padding:'1.5rem 0.5rem'}}>
+                        <div style={{fontFamily:'Georgia, serif', fontSize:'2rem', fontWeight:'700', color:'#f0c040', marginBottom:'0.5rem'}}>{quizState.score}/{course.quiz.length} ({pct}%)</div>
+                        <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', marginBottom:'0.5rem'}}>Keep Learning!</h3>
+                        <p style={{fontSize:'0.86rem', color:'var(--muted)', marginBottom:'1.2rem'}}>You need 60% to pass. Review and try again!</p>
+                        <button onClick={retake} style={{
+                          fontSize:'0.9rem', fontWeight:'600', padding:'0.75rem 1.5rem',
+                          borderRadius:'12px', border:'1px solid var(--border2)',
+                          cursor:'pointer', background:'transparent', color:'var(--text)',
+                        }}>Retake Quiz</button>
+                      </div>
+                    ) : (
+                      <div>
+                        <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                          <span>Question {quizState.idx + 1} of {course.quiz.length} · Score: {quizState.score}/{quizState.idx + (quizState.answered ? 1 : 0)}</span>
+                          <span style={{fontWeight:'700', fontFamily:'monospace', fontSize:'0.9rem', color:timerColor}}>{fmtTime(timer)}</span>
+                        </div>
+                        <p style={{fontSize:'0.9rem', fontWeight:'600', marginBottom:'0.85rem', lineHeight:'1.5'}}>
+                          {quizState.idx + 1}. {course.quiz[quizState.idx].q}
+                        </p>
+                        <div style={{display:'flex', flexDirection:'column', gap:'0.5rem', marginBottom:'1rem'}}>
+                          {course.quiz[quizState.idx].opts.map((opt, i) => {
+                            let bg = 'var(--surface2)', border = 'var(--border2)', color = 'var(--text)';
+                            if (quizState.answered) {
+                              if (i === course.quiz[quizState.idx].ans) { bg = 'rgba(0,212,170,0.1)'; border = '#00d4aa'; color = '#00d4aa'; }
+                              else if (i === quizState.answers[quizState.idx]) { bg = 'rgba(255,107,157,0.1)'; border = '#ff6b9d'; color = '#ff6b9d'; }
+                            }
+                            return (
+                              <button key={i} onClick={() => answerQ(i)} disabled={quizState.answered} style={{
+                                fontSize:'0.84rem', fontWeight:'500', padding:'0.65rem 1rem',
+                                borderRadius:'10px', border:`1px solid ${border}`,
+                                background:bg, color, cursor: quizState.answered ? 'default' : 'pointer',
+                                textAlign:'left',
+                              }}>{opt}</button>
+                            );
+                          })}
+                        </div>
+                        <div style={{display:'flex', justifyContent:'flex-end', gap:'0.7rem'}}>
+                          {quizState.idx > 0 && (
+                            <button onClick={prevQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'var(--surface3)', color:'var(--text)'}}>← Back</button>
+                          )}
+                          {quizState.answered && !finished && (
+                            <button onClick={nextQ} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'#4488ff', color:'#fff'}}>Next →</button>
+                          )}
+                          {quizState.answered && finished && passed && (
+                            <button onClick={() => setShowCert(true)} style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'10px', border:'none', cursor:'pointer', background:'linear-gradient(135deg,#f0c040,#c8960a)', color:'#000'}}>Certificate</button>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
