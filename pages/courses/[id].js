@@ -41,7 +41,12 @@ export default function CourseDetail({ course: propCourse }) {
   const allLessonsComplete = progress[course.id]?.length === course.lessons.length;
 
   const lessonIdxRef = useRef(null);
-  const progressRef = useRef({ t: 0, d: 0 });
+
+  function parseDur(s) {
+    const p = s?.split(':');
+    if (!p || p.length !== 2) return 0;
+    return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+  }
 
   function advanceLesson(idx) {
     markLesson(course.id, idx, course.lessons.length);
@@ -65,36 +70,25 @@ export default function CourseDetail({ course: propCourse }) {
 
   lessonIdxRef.current = openLesson;
 
+  // Auto-advance at 75% of video duration (timer-based — 100% reliable)
   useEffect(() => {
     if (typeof openLesson !== 'number') return;
+    const idx = openLesson;
+    const dur = parseDur(course.lessons[idx]?.dur);
+    if (dur <= 0) return;
 
-    const interval = setInterval(() => {
-      const iframe = document.querySelector('iframe[src*="youtube.com/embed"]');
-      if (!iframe?.contentWindow) return;
-      iframe.contentWindow.postMessage(JSON.stringify({ event:'command', func:'getCurrentTime', id:'t' }), '*');
-      iframe.contentWindow.postMessage(JSON.stringify({ event:'command', func:'getDuration', id:'d' }), '*');
-    }, 1500);
+    const ms = Math.round(dur * 0.75 * 1000);
+    const timer = setTimeout(() => advanceLesson(idx), ms);
 
-    return () => {
-      clearInterval(interval);
-      progressRef.current = { t: 0, d: 0 };
-    };
+    return () => clearTimeout(timer);
   }, [openLesson]);
 
+  // Backup: also advance if YouTube sends native video-ended event
   useEffect(() => {
     function onMessage(e) {
       if (!e.origin?.includes('youtube.com')) return;
       try {
         const data = JSON.parse(e.data);
-        if (data.event === 'infoDelivery' && data.info) {
-          if (typeof data.info.currentTime === 'number') progressRef.current.t = data.info.currentTime;
-          if (typeof data.info.duration === 'number') progressRef.current.d = data.info.duration;
-          const { t, d } = progressRef.current;
-          if (d > 0 && t / d >= 0.75 && typeof lessonIdxRef.current === 'number') {
-            advanceLesson(lessonIdxRef.current);
-            progressRef.current = { t: 0, d: 0 };
-          }
-        }
         if (data.event === 'onStateChange' && data.info === 0 && typeof lessonIdxRef.current === 'number') {
           advanceLesson(lessonIdxRef.current);
         }
