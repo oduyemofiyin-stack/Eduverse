@@ -40,22 +40,8 @@ export default function CourseDetail({ course: propCourse }) {
   const progressPct = getCourseProgress(course.id, course.lessons.length);
   const allLessonsComplete = progress[course.id]?.length === course.lessons.length;
 
-  const playerRef = useRef(null);
-  const progressTimerRef = useRef(null);
-  const playerContainerRef = useRef(null);
-
-  function loadYT() {
-    return new Promise(resolve => {
-      if (window.YT && window.YT.Player) { resolve(window.YT); return; }
-      const prev = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => { prev?.(); resolve(window.YT); };
-      if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
-        const s = document.createElement('script');
-        s.src = 'https://www.youtube.com/iframe_api';
-        document.head.appendChild(s);
-      }
-    });
-  }
+  const lessonIdxRef = useRef(null);
+  const progressRef = useRef({ t: 0, d: 0 });
 
   function advanceLesson(idx) {
     markLesson(course.id, idx, course.lessons.length);
@@ -77,76 +63,46 @@ export default function CourseDetail({ course: propCourse }) {
     }
   }
 
+  lessonIdxRef.current = openLesson;
+
   useEffect(() => {
     if (typeof openLesson !== 'number') return;
-    const idx = openLesson;
-    const videoId = course.lessons[idx]?.yt;
-    if (!videoId) return;
 
-    loadYT().then(YT => {
-      if (openLesson !== idx) return;
-      const container = playerContainerRef.current;
-      if (!container) return;
-
-      if (playerRef.current) {
-        playerRef.current.destroy();
-        playerRef.current = null;
-      }
-      container.innerHTML = '';
-
-      playerRef.current = new YT.Player(container, {
-        videoId,
-        playerVars: { rel: 0, modestbranding: 1 },
-        events: {
-          onStateChange: e => {
-            if (e.data === YT.PlayerState.PLAYING) {
-              const p = playerRef.current;
-              if (!p) return;
-              const dur = p.getDuration();
-              if (dur > 0) {
-                if (progressTimerRef.current) clearInterval(progressTimerRef.current);
-                progressTimerRef.current = setInterval(() => {
-                  try {
-                    const p2 = playerRef.current;
-                    if (!p2) return;
-                    if (p2.getCurrentTime() / dur >= 0.75) {
-                      advanceLesson(idx);
-                      if (progressTimerRef.current) {
-                        clearInterval(progressTimerRef.current);
-                        progressTimerRef.current = null;
-                      }
-                    }
-                  } catch {}
-                }, 500);
-              }
-            } else if (e.data === YT.PlayerState.ENDED) {
-              advanceLesson(idx);
-              if (progressTimerRef.current) {
-                clearInterval(progressTimerRef.current);
-                progressTimerRef.current = null;
-              }
-            } else {
-              if (progressTimerRef.current) {
-                clearInterval(progressTimerRef.current);
-                progressTimerRef.current = null;
-              }
-            }
-          },
-        },
-      });
-    });
+    const interval = setInterval(() => {
+      const iframe = document.querySelector('iframe[src*="youtube.com/embed"]');
+      if (!iframe?.contentWindow) return;
+      iframe.contentWindow.postMessage(JSON.stringify({ event:'command', func:'getCurrentTime', id:'t' }), '*');
+      iframe.contentWindow.postMessage(JSON.stringify({ event:'command', func:'getDuration', id:'d' }), '*');
+    }, 1500);
 
     return () => {
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
-      if (playerRef.current) {
-        playerRef.current.destroy();
-        playerRef.current = null;
-      }
+      clearInterval(interval);
+      progressRef.current = { t: 0, d: 0 };
     };
   }, [openLesson]);
+
+  useEffect(() => {
+    function onMessage(e) {
+      if (!e.origin?.includes('youtube.com')) return;
+      try {
+        const data = JSON.parse(e.data);
+        if (data.event === 'infoDelivery' && data.info) {
+          if (typeof data.info.currentTime === 'number') progressRef.current.t = data.info.currentTime;
+          if (typeof data.info.duration === 'number') progressRef.current.d = data.info.duration;
+          const { t, d } = progressRef.current;
+          if (d > 0 && t / d >= 0.75 && typeof lessonIdxRef.current === 'number') {
+            advanceLesson(lessonIdxRef.current);
+            progressRef.current = { t: 0, d: 0 };
+          }
+        }
+        if (data.event === 'onStateChange' && data.info === 0 && typeof lessonIdxRef.current === 'number') {
+          advanceLesson(lessonIdxRef.current);
+        }
+      } catch {}
+    }
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
 
   function startQuiz() {
     setQuizState({ idx: 0, score: 0, answered: false, answers: new Array(course.quiz.length).fill(null) });
@@ -543,7 +499,12 @@ export default function CourseDetail({ course: propCourse }) {
                           <span style={{fontSize:'0.72rem', color:'var(--muted2)', fontWeight:'500'}}>{i + 1} / {course.lessons.length}</span>
                         </div>
                       )}
-                      <div ref={playerContainerRef} style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', background:'#000'}} />
+                      <iframe
+                        style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', border:'none', background:'#000'}}
+                        src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1&enablejsapi=1`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen loading="lazy"
+                      />
                       {/* NOTES */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
                         <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>Notes<button onClick={downloadNotes}
