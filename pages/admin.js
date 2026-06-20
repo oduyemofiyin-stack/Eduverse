@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
-import { getAllUsers, deleteUser } from '../lib/firestore';
+import { getAllProfiles, deleteProfile } from '../lib/supabase-db';
 import { AdminSkeleton } from '../components/Skeleton';
 
-// hardcoded admin creds — should prob move to env only but whatever
 const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || 'EMMANUEL';
 const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || 'Emmanuel@007';
 
@@ -24,16 +23,14 @@ export default function Admin() {
   const [newCourse, setNewCourse] = useState({
     title:'', instructor:'', category:'', duration:'', description:'', img:'', rating:4.5,
   });
-  const [allUsers, setAllUsers] = useState([]);
-  const [usersLoading, setUsersLoading] = useState(false);
+  const [allProfiles, setAllProfiles] = useState([]);
+  const [profilesLoading, setProfilesLoading] = useState(false);
 
   useEffect(() => {
     if (loggedIn) {
-      getAllUsers().then(u => { setAllUsers(u); setUsersLoading(false); });
+      getAllProfiles().then(p => { setAllProfiles(p); setProfilesLoading(false); });
     }
   }, [loggedIn]);
-
-  // TODO: add confirmation before deleting users
 
   function handleLogin() {
     if (username === ADMIN_USER && password === ADMIN_PASS) {
@@ -84,14 +81,13 @@ export default function Admin() {
     fontFamily:'inherit', width:'100%', boxSizing:'border-box',
   };
 
-  // LOGIN PAGE
   if (!loggedIn) {
     return (
       <div style={{minHeight:'100vh', background:'var(--bg)', display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
         backgroundImage:'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%)'}}>
         <div style={{background:'var(--surface)', border:'1px solid var(--border2)', borderRadius:'20px', padding:'2.5rem', width:'100%', maxWidth:'400px', boxSizing:'border-box'}}>
           <div style={{textAlign:'center', marginBottom:'1.8rem'}}>
-                <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.5rem', fontWeight:'700', marginBottom:'0.3rem'}}>Admin Dashboard</h1>
+            <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.5rem', fontWeight:'700', marginBottom:'0.3rem'}}>Admin Dashboard</h1>
             <p style={{fontSize:'0.83rem', color:'var(--muted)'}}>Restricted access — Eduverse staff only</p>
           </div>
           {error && (
@@ -129,15 +125,12 @@ export default function Admin() {
     );
   }
 
-  // DASHBOARD
   const totalCourses = courseList.length;
   const categories = [...new Set(courseList.map(c => c.category))];
   const avgRating = (courseList.reduce((s, c) => s + c.rating, 0) / totalCourses).toFixed(1);
 
   return (
     <div style={{minHeight:'100vh', background:'var(--bg)', color:'var(--text)'}}>
-
-      {/* ADMIN HEADER */}
       <header style={{
         height:'64px', padding:'0 1.5rem',
         display:'flex', alignItems:'center', justifyContent:'space-between',
@@ -162,8 +155,6 @@ export default function Admin() {
       </header>
 
       <div style={{maxWidth:'1200px', margin:'0 auto', padding:'2rem 1.5rem 4rem'}}>
-
-        {/* TABS */}
         <div style={{display:'flex', gap:'0.5rem', marginBottom:'2rem', flexWrap:'wrap'}}>
           {[
             {id:'overview', label:'Overview'},
@@ -182,7 +173,6 @@ export default function Admin() {
           ))}
         </div>
 
-        {/* OVERVIEW TAB */}
         {activeTab === 'overview' && (
           <div>
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>Dashboard Overview</h2>
@@ -200,8 +190,6 @@ export default function Admin() {
                 </div>
               ))}
             </div>
-
-            {/* CATEGORIES BREAKDOWN */}
             <h3 style={{fontFamily:'Georgia, serif', fontSize:'1.1rem', fontWeight:'700', marginBottom:'1rem'}}>Courses by Category</h3>
             <div style={{display:'flex', flexDirection:'column', gap:'0.7rem'}}>
               {categories.map(cat => {
@@ -223,61 +211,60 @@ export default function Admin() {
           </div>
         )}
 
-        {/* USERS TAB */}
         {activeTab === 'users' && (
           <div>
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>
-              Registered Users (from Firestore)
+              Registered Users (from Supabase)
             </h2>
-            <button onClick={() => { setUsersLoading(true); getAllUsers().then(u => { setAllUsers(u); setUsersLoading(false); }); }}
+            <button onClick={() => { setProfilesLoading(true); getAllProfiles().then(p => { setAllProfiles(p); setProfilesLoading(false); }); }}
               style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.5rem 1rem', borderRadius:'9px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', marginBottom:'1rem'}}>
               Refresh
             </button>
-            {usersLoading ? (
+            {profilesLoading ? (
               <AdminSkeleton/>
-            ) : allUsers.length === 0 ? (
+            ) : allProfiles.length === 0 ? (
               <div style={{textAlign:'center', padding:'3rem', color:'var(--muted)'}}>
-                <p>No users found in Firestore yet.</p>
-                <p style={{fontSize:'0.82rem', marginTop:'0.5rem'}}>Users appear here after they sign in and their data syncs to the cloud.</p>
+                <p>No users found in Supabase yet.</p>
+                <p style={{fontSize:'0.82rem', marginTop:'0.5rem'}}>Users appear here after they sign up and their profile is created.</p>
               </div>
             ) : (
               <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
-                {allUsers.map(u => (
-                  <div key={u.id} style={{
-                    background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1rem',
-                  }}>
-                    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.5rem'}}>
-                      <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
-                        {u.picture ? (
-                          <img src={u.picture} alt="" style={{width:'40px', height:'40px', borderRadius:'50%', objectFit:'cover'}}/>
-                        ) : (
-                          <div style={{width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg,var(--blue),var(--teal))', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'700', fontSize:'0.85rem', color:'#fff'}}>
-                            {(u.firstName?.[0]||'')+(u.lastName?.[0]||'')}
+                {allProfiles.map(u => {
+                  const d = u.data || {};
+                  return (
+                    <div key={u.id} style={{
+                      background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1rem',
+                    }}>
+                      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.5rem'}}>
+                        <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
+                          {u.picture ? (
+                            <img src={u.picture} alt="" style={{width:'40px', height:'40px', borderRadius:'50%', objectFit:'cover'}}/>
+                          ) : (
+                            <div style={{width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg,var(--blue),var(--teal))', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'700', fontSize:'0.85rem', color:'#fff'}}>
+                              {(u.first_name?.[0]||'')+(u.last_name?.[0]||'')}
+                            </div>
+                          )}
+                          <div>
+                            <div style={{fontWeight:'600', fontSize:'0.9rem'}}>{u.first_name} {u.last_name}</div>
+                            <div style={{fontSize:'0.76rem', color:'var(--muted)'}}>{u.email} · {u.provider || 'email'}</div>
                           </div>
-                        )}
-                        <div>
-                          <div style={{fontWeight:'600', fontSize:'0.9rem'}}>{u.firstName} {u.lastName}</div>
-                          <div style={{fontSize:'0.76rem', color:'var(--muted)'}}>{u.email} · {u.provider || 'email'}</div>
+                        </div>
+                        <div style={{display:'flex', gap:'0.5rem', alignItems:'center', flexWrap:'wrap'}}>
+                          <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'var(--gold)', border:'1px solid rgba(240,192,64,0.3)'}}>{d.xp || 0} XP</span>
+                          <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'var(--blue)', border:'1px solid rgba(68,136,255,0.3)'}}>{(d.enrolled||[]).length} enrolled</span>
+                          <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.15)', color:'var(--teal)', border:'1px solid rgba(0,212,170,0.3)'}}>{(d.completed||[]).length} completed</span>
+                          <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(255,107,157,0.15)', color:'var(--pink)', border:'1px solid rgba(255,107,157,0.3)'}}>{(d.badges||[]).length} badges</span>
                         </div>
                       </div>
-                      <div style={{display:'flex', gap:'0.5rem', alignItems:'center', flexWrap:'wrap'}}>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(240,192,64,0.15)', color:'var(--gold)', border:'1px solid rgba(240,192,64,0.3)'}}>{u.xp || 0} XP</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(68,136,255,0.15)', color:'var(--blue)', border:'1px solid rgba(68,136,255,0.3)'}}>{(u.enrolled||[]).length} enrolled</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(0,212,170,0.15)', color:'var(--teal)', border:'1px solid rgba(0,212,170,0.3)'}}>{(u.completed||[]).length} completed</span>
-                        <span style={{fontSize:'0.72rem', padding:'0.2rem 0.6rem', borderRadius:'100px', background:'rgba(255,107,157,0.15)', color:'var(--pink)', border:'1px solid rgba(255,107,157,0.3)'}}>{(u.badges||[]).length} badges</span>
-                      </div>
+                      <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.5rem'}}>Joined: {new Date(u.created_at).toLocaleString()}</div>
                     </div>
-                    {u.updatedAt && (
-                      <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.5rem'}}>Last synced: {new Date(u.updatedAt).toLocaleString()}</div>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
         )}
 
-        {/* COURSES TAB */}
         {activeTab === 'courses' && (
           <div>
             <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem'}}>
@@ -292,7 +279,6 @@ export default function Admin() {
               {courseList.map(c => (
                 <div key={c.id} style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem'}}>
                   {editingId === c.id ? (
-                    // EDIT MODE
                     <div style={{display:'flex', flexDirection:'column', gap:'0.8rem'}}>
                       <div className="admin-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%), 1fr))', gap:'0.8rem'}}>
                         {[
@@ -315,21 +301,20 @@ export default function Admin() {
                           style={{...inp, minHeight:'80px', resize:'vertical'}}/>
                       </div>
                       <div style={{display:'flex', gap:'0.7rem'}}>
-                         <button onClick={() => saveEdit(c.id)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'var(--teal)', color:'#000'}}>Save</button>
+                        <button onClick={() => saveEdit(c.id)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'var(--teal)', color:'#000'}}>Save</button>
                         <button onClick={() => setEditingId(null)} style={{fontSize:'0.84rem', fontWeight:'600', padding:'0.55rem 1.2rem', borderRadius:'9px', border:'none', cursor:'pointer', background:'var(--surface3)', color:'var(--text)'}}>Cancel</button>
                       </div>
                     </div>
                   ) : (
-                    // VIEW MODE
                     <div style={{display:'flex', alignItems:'center', gap:'1rem', flexWrap:'wrap'}}>
-                          <img src={c.img} alt={c.title} loading="lazy" style={{width:'70px', height:'50px', borderRadius:'8px', objectFit:'cover', flexShrink:0}}/>
+                      <img src={c.img} alt={c.title} loading="lazy" style={{width:'70px', height:'50px', borderRadius:'8px', objectFit:'cover', flexShrink:0}}/>
                       <div style={{flex:1, minWidth:'150px'}}>
                         <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
-                         <div style={{fontSize:'0.78rem', color:'var(--muted)'}}>by {c.instructor} · {c.category} · {c.duration} · {c.rating}</div>
+                        <div style={{fontSize:'0.78rem', color:'var(--muted)'}}>by {c.instructor} · {c.category} · {c.duration} · {c.rating}</div>
                       </div>
                       <div style={{display:'flex', gap:'0.5rem', flexShrink:0}}>
-                          <button onClick={() => startEdit(c)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(var(--blue-rgb,68,136,255),0.15)', color:'var(--blue)'}}>Edit</button>
-                          <button onClick={() => deleteCourse(c.id)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(255,107,107,0.15)', color:'#ff6b6b'}}>Delete</button>
+                        <button onClick={() => startEdit(c)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(var(--blue-rgb,68,136,255),0.15)', color:'var(--blue)'}}>Edit</button>
+                        <button onClick={() => deleteCourse(c.id)} style={{fontSize:'0.8rem', fontWeight:'600', padding:'0.45rem 0.9rem', borderRadius:'8px', border:'none', cursor:'pointer', background:'rgba(255,107,107,0.15)', color:'#ff6b6b'}}>Delete</button>
                       </div>
                     </div>
                   )}
@@ -339,12 +324,11 @@ export default function Admin() {
           </div>
         )}
 
-        {/* ADD COURSE TAB */}
         {activeTab === 'add' && (
           <div>
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>Add New Course</h2>
             {error && (
-            <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--pink)', marginBottom:'1rem'}}>
+              <div style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--pink)', marginBottom:'1rem'}}>
                 {error}
               </div>
             )}
@@ -380,7 +364,6 @@ export default function Admin() {
                 />
               </div>
 
-              {/* PREVIEW */}
               {newCourse.title && (
                 <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'12px', padding:'1rem', marginBottom:'1.2rem'}}>
                   <div style={{fontSize:'0.74rem', color:'var(--muted)', marginBottom:'0.5rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Preview</div>
@@ -393,8 +376,8 @@ export default function Admin() {
                 <button onClick={addCourse} style={{
                   fontSize:'0.9rem', fontWeight:'700', padding:'0.78rem 1.7rem',
                   borderRadius:'12px', border:'none', cursor:'pointer',
-                background:'linear-gradient(135deg,var(--gold),#c8960a)', color:'#000',
-                 }}>Add Course</button>
+                  background:'linear-gradient(135deg,var(--gold),#c8960a)', color:'#000',
+                }}>Add Course</button>
                 <button onClick={() => { setNewCourse({title:'',instructor:'',category:'',duration:'',description:'',img:'',rating:4.5}); setError(''); }} style={{
                   fontSize:'0.9rem', fontWeight:'600', padding:'0.78rem 1.7rem',
                   borderRadius:'12px', border:'1px solid var(--border2)',

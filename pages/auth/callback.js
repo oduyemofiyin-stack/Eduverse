@@ -1,52 +1,24 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useApp } from '../../context/AppContext';
-import { saveUserData } from '../../lib/firestore';
+import { getSupabase } from '../../lib/supabase';
 
 export default function AuthCallback() {
-  const { login, addUser } = useApp();
   const router = useRouter();
 
   useEffect(() => {
-    function processToken(token) {
-      fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(res => res.json())
-        .then(data => {
-          const user = {
-            id: data.sub,
-            firstName: data.given_name || data.name?.split(' ')[0] || 'User',
-            lastName: data.family_name || data.name?.split(' ').slice(1).join(' ') || '',
-            email: data.email,
-            picture: data.picture || '',
-            provider: 'Google',
-          };
-          addUser(user);
-          login(user);
-          saveUserData(user.id, { email: user.email, firstName: user.firstName, lastName: user.lastName, picture: user.picture, provider: user.provider, createdAt: new Date().toISOString(), wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
-          router.push('/');
-        })
-        .catch(() => router.push('/login'));
-    }
-
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get('access_token');
-
-    if (accessToken) {
-      processToken(accessToken);
+    const supabase = getSupabase();
+    if (!supabase) {
+      router.push('/login');
       return;
     }
 
-    const stored = sessionStorage.getItem('google_token');
-    if (stored) {
-      sessionStorage.removeItem('google_token');
-      processToken(stored);
-      return;
-    }
-
-    router.push('/login');
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        router.push('/');
+      } else {
+        router.push('/login');
+      }
+    });
   }, []);
 
   return (
@@ -61,7 +33,7 @@ export default function AuthCallback() {
         borderTop:'3px solid #4488ff',
         animation:'spin 0.8s linear infinite',
       }}/>
-      <p style={{fontSize:'0.85rem', color:'var(--muted)'}}>Signing you in with Google...</p>
+      <p style={{fontSize:'0.85rem', color:'var(--muted)'}}>Signing you in...</p>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );

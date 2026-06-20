@@ -5,7 +5,7 @@ import { ProfileSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
 export default function Profile() {
-  const { currentUser, enrolled, wishlist, completed, getCourseProgress, logout, xp, streak, badges, getLevelInfo, BADGE_DEFS, certificates, syncToFirestore } = useApp();
+  const { currentUser, enrolled, wishlist, completed, getCourseProgress, logout, xp, streak, badges, getLevelInfo, BADGE_DEFS, certificates, manualSync } = useApp();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
@@ -98,7 +98,7 @@ export default function Profile() {
 
         {/* SYNC */}
         <button
-          onClick={() => { setSyncing(true); syncToFirestore(); setTimeout(() => setSyncing(false), 1200); }}
+          onClick={() => { setSyncing(true); manualSync(); setTimeout(() => setSyncing(false), 1200); }}
           style={{
             fontSize:'0.82rem', fontWeight:'600',
             padding:'0.6rem 1.2rem', borderRadius:'10px',

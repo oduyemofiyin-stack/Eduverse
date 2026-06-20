@@ -1,35 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
-import emailjs from '@emailjs/browser';
-import { saveUserData } from '../lib/firestore';
-import { isValidPassword, getPasswordErrors, checkRateLimit } from '../lib/sanitize';
+import { getSupabase } from '../lib/supabase';
+import { checkUsername } from '../lib/supabase-db';
+import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
 
 export default function Login() {
-  const { login, users, addUser } = useApp();
+  const { currentUser } = useApp();
   const router = useRouter();
   const [tab, setTab] = useState('login');
   const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [showReset, setShowReset] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetLoading, setResetLoading] = useState(false);
-  const [resetStep, setResetStep] = useState(1); // 1=email, 2=code, 3=new password, 4=done
-  const [resetCode, setResetCode] = useState('');
-  const [resetCodeInput, setResetCodeInput] = useState('');
-  const [resetNewPassword, setResetNewPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-  async function getRecaptchaToken(action) {
-    try {
-      return await grecaptcha.enterprise.execute('6LcbM_4sAAAAAIxAXswECKNaJf4eNm1Vwa5yVOlK', {action});
-    } catch { return null; }
-  }
+  useEffect(() => {
+    if (currentUser) router.push('/');
+  }, [currentUser]);
 
   function switchTab(t) {
     setTab(t);
     setErrors({});
+    setMessage('');
     setForm({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
   }
 
@@ -52,31 +45,42 @@ export default function Login() {
       }
     }
     if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Please enter a valid email';
-    if (!form.password || !isValidPassword(form.password)) errs.password = 'Password does not meet requirements';
+    if (!form.password) {
+      errs.password = 'Password is required';
+    } else if (tab === 'signup' && !isValidPassword(form.password)) {
+      errs.password = 'Password does not meet requirements';
+    }
     return errs;
   }
 
   async function handleLogin() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    const rl = checkRateLimit('login_' + form.email.toLowerCase(), 5, 600000);
+    const rl = checkRateLimit('login_' + form.email.toLowerCase(), 10, 600000);
     if (!rl.allowed) { setErrors({ general: rl.message }); return; }
-    const recaptchaToken = await getRecaptchaToken('LOGIN');
-    if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
     setLoading(true);
     setErrors({});
-    const user = users.find(u =>
-      u.email.toLowerCase() === form.email.toLowerCase() &&
-      u.password === form.password
-    );
-    if (!user) {
-      logger.warn('Login', 'Failed login attempt', { email: form.email.toLowerCase() });
-      setErrors({ general: 'Incorrect email or password. Please try again.' });
+
+    const supabase = getSupabase();
+    if (!supabase) { setErrors({ general: 'Backend not configured. Add Supabase credentials.' }); setLoading(false); return; }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    });
+
+    if (error) {
+      logger.warn('Login', 'Failed login attempt', { email: form.email.toLowerCase(), error: error.message });
+      if (error.message.includes('Email not confirmed')) {
+        setErrors({ general: 'Please confirm your email before signing in. Check your inbox.' });
+      } else {
+        setErrors({ general: 'Incorrect email or password. Please try again.' });
+      }
       setLoading(false);
       return;
     }
+
     logger.info('Login', 'Successful login', { email: form.email.toLowerCase() });
-    login(user);
     setLoading(false);
     router.push('/');
   }
@@ -86,106 +90,56 @@ export default function Login() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     const rl = checkRateLimit('signup_' + form.email.toLowerCase(), 3, 600000);
     if (!rl.allowed) { setErrors({ general: rl.message }); return; }
-    const recaptchaToken = await getRecaptchaToken('SIGNUP');
-    if (!recaptchaToken) { setErrors({ general: 'Security check failed. Please refresh and try again.' }); return; }
     setLoading(true);
     setErrors({});
-    if (users.find(u => u.email === form.email)) {
-      setErrors({ general: 'An account with this email already exists.' });
-      setLoading(false);
-      return;
-    }
-    if (users.find(u => u.username === form.username.trim())) {
+
+    const supabase = getSupabase();
+    if (!supabase) { setErrors({ general: 'Backend not configured. Add Supabase credentials.' }); setLoading(false); return; }
+
+    const usernameAvailable = await checkUsername(form.username.trim());
+    if (!usernameAvailable) {
       setErrors({ general: 'This username is already taken.' });
       setLoading(false);
       return;
     }
-    const newUser = {
-      id: Date.now().toString(),
-      firstName: form.firstName.trim(),
-      lastName: form.lastName.trim(),
-      username: form.username.trim(),
+
+    const { error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
-      picture: '',
-      provider: 'email',
-      createdAt: new Date().toISOString(),
-    };
-    logger.info('Signup', 'New account created', { email: newUser.email });
-    addUser(newUser);
-    login(newUser);
-    saveUserData(newUser.id, { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName, username: newUser.username, picture: newUser.picture, provider: newUser.provider, createdAt: newUser.createdAt, wishlist: [], enrolled: [], progress: {}, completed: [], xp: 0, streak: 0, badges: [] });
+      options: {
+        data: {
+          first_name: form.firstName.trim(),
+          last_name: form.lastName.trim(),
+          username: form.username.trim(),
+        },
+      },
+    });
+
+    if (error) {
+      logger.warn('Signup', 'Failed', { email: form.email.toLowerCase(), error: error.message });
+      if (error.message.includes('already registered')) {
+        setErrors({ general: 'An account with this email already exists.' });
+      } else {
+        setErrors({ general: error.message });
+      }
+      setLoading(false);
+      return;
+    }
+
+    logger.info('Signup', 'Account created', { email: form.email.toLowerCase() });
+    setMessage('Account created! Check your email to confirm your sign-in.');
     setLoading(false);
-    router.push('/');
   }
 
   function handleGoogle() {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    const redirectUri = encodeURIComponent(window.location.origin + '/auth/callback');
-    const scope = encodeURIComponent('openid email profile');
-    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
-    window.location.href = url;
-  }
-
-  async function handleSendResetCode() {
-    if (!resetEmail || !/\S+@\S+\.\S+/.test(resetEmail)) {
-      setErrors({ reset: 'Please enter a valid email address' });
-      return;
-    }
-    const rl = checkRateLimit('reset_' + resetEmail.toLowerCase(), 3, 600000);
-    if (!rl.allowed) { setErrors({ reset: rl.message }); return; }
-    const user = users.find(u => u.email === resetEmail);
-    if (!user) {
-      setErrors({ reset: 'No account found with this email' });
-      return;
-    }
-    const recaptchaToken = await getRecaptchaToken('PASSWORD_RESET');
-    if (!recaptchaToken) { setErrors({ reset: 'Security check failed. Please refresh and try again.' }); return; }
-    setResetLoading(true);
-    setErrors({});
-    try {
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      setResetCode(code);
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        { to_name: `${user.firstName} ${user.lastName}`, to_email: resetEmail, reset_code: code },
-        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
-      );
-      setResetStep(2);
-    } catch(e) {
-      setErrors({ reset: 'Failed to send reset code. Make sure EmailJS is configured.' });
-    }
-    setResetLoading(false);
-  }
-
-  function handleVerifyCode() {
-    if (resetCodeInput !== resetCode) {
-      setErrors({ reset: 'Incorrect code. Please try again.' });
-      return;
-    }
-    setErrors({});
-    setResetStep(3);
-  }
-
-  function handleResetPassword() {
-    const user = users.find(u => u.email === resetEmail);
-    if (!user) return;
-    const errs = {};
-    if (!resetNewPassword || !isValidPassword(resetNewPassword)) errs.resetPass = 'Password does not meet requirements';
-    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    addUser({ ...user, password: resetNewPassword });
-    setResetStep(4);
-  }
-
-  function resetPanelClose() {
-    setShowReset(false);
-    setResetStep(1);
-    setResetEmail('');
-    setResetCode('');
-    setResetCodeInput('');
-    setResetNewPassword('');
-    setErrors({});
+    const supabase = getSupabase();
+    if (!supabase) { setErrors({ general: 'Backend not configured.' }); return; }
+    supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/auth/callback',
+      },
+    });
   }
 
   const inp = (hasErr) => ({
@@ -275,6 +229,13 @@ export default function Login() {
           <div style={{flex:1, height:'1px', background:'var(--border2)'}}/>
         </div>
 
+        {/* MESSAGE */}
+        {message && (
+          <div style={{background:'rgba(0,212,170,0.1)', border:'1px solid rgba(0,212,170,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#00d4aa', marginBottom:'1rem'}}>
+            {message}
+          </div>
+        )}
+
         {/* ERROR */}
         {errors.general && (
           <div className="shake" style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
@@ -352,7 +313,7 @@ export default function Login() {
 
           <div>
             <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
-            <input type="password" placeholder="At least 12 characters" value={form.password}
+            <input type="password" placeholder={tab === 'login' ? 'Enter your password' : 'At least 12 characters'} value={form.password}
               onChange={e => setForm(p => ({...p, password: e.target.value}))}
               onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
               inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
@@ -376,108 +337,6 @@ export default function Login() {
             )}
           </div>
 
-          {/* FORGOT PASSWORD LINK */}
-          {tab === 'login' && !showReset && (
-            <div style={{textAlign:'right', marginTop:'-0.3rem'}}>
-              <span onClick={() => setShowReset(true)} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer', fontWeight:'500'}}>
-                Forgot password?
-              </span>
-            </div>
-          )}
-
-          {/* FORGOT PASSWORD PANEL */}
-          {showReset && (
-            <div style={{background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:'12px', padding:'1.2rem'}}>
-              {/* Step 1: Enter Email */}
-              {resetStep === 1 && (
-                <>
-                  <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Reset Password</p>
-                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Enter your email address and we'll send you a secure code to reset your password.</p>
-                  <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email Address</label>
-                  <input type="email" placeholder="Enter your email address" value={resetEmail}
-                    onChange={e => setResetEmail(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && !resetLoading && handleSendResetCode()}
-                    inputMode="email" autoComplete="email"
-                    style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.6rem'}}/>
-                  {errors.reset && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.reset}</div>}
-                  <div style={{display:'flex', gap:'0.6rem'}}>
-                    <button onClick={handleSendResetCode} disabled={resetLoading} style={{flex:1, padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer', opacity: resetLoading ? 0.7 : 1}}>
-                      {resetLoading ? 'Sending...' : 'Send Reset Link'}
-                    </button>
-                    <button onClick={resetPanelClose} style={{padding:'0.65rem 1rem', borderRadius:'9px', border:'1px solid var(--border2)', background:'transparent', color:'var(--muted)', fontFamily:'inherit', fontSize:'0.85rem', cursor:'pointer'}}>
-                      Cancel
-                    </button>
-                  </div>
-                </>
-              )}
-
-              {/* Step 2: Enter Code */}
-              {resetStep === 2 && (
-                <>
-                  <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Check Your Email</p>
-                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>We sent a 6-digit code to <strong style={{color:'var(--text)'}}>{resetEmail}</strong>. Enter it below to reset your password.</p>
-                  <input type="text" placeholder="Enter 6-digit code" value={resetCodeInput}
-                    onChange={e => setResetCodeInput(e.target.value.replace(/\D/g, '').slice(0,6))}
-                    onKeyDown={e => e.key === 'Enter' && resetCodeInput.length === 6 && handleVerifyCode()}
-                    inputMode="numeric" autoComplete="one-time-code"
-                    style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.reset ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'1.2rem', color:'var(--text)', outline:'none', fontFamily:'monospace', marginBottom:'0.6rem', textAlign:'center', letterSpacing:'0.3em'}}/>
-                  {errors.reset && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.reset}</div>}
-                  <div style={{display:'flex', gap:'0.6rem'}}>
-                    <button onClick={handleVerifyCode} disabled={resetCodeInput.length !== 6} style={{flex:1, padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer', opacity: resetCodeInput.length !== 6 ? 0.5 : 1}}>
-                      Verify Code
-                    </button>
-                  </div>
-                  <div style={{textAlign:'center', marginTop:'0.7rem'}}>
-                    <span onClick={() => { setResetStep(1); setErrors({}); }} style={{fontSize:'0.78rem', color:'#4488ff', cursor:'pointer', fontWeight:'500'}}>Change email</span>
-                  </div>
-                </>
-              )}
-
-              {/* Step 3: New Password */}
-              {resetStep === 3 && (
-                <>
-                  <p style={{fontSize:'0.82rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.5rem'}}>Enter New Password</p>
-                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Choose a strong new password for your account.</p>
-                  <input type="password" placeholder="At least 12 characters" value={resetNewPassword}
-                    onChange={e => setResetNewPassword(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleResetPassword()}
-                    inputMode="text" autoComplete="new-password"
-                    style={{width:'100%', boxSizing:'border-box', background:'var(--surface)', border:`1px solid ${errors.resetPass ? '#ff6b9d' : 'var(--border2)'}`, borderRadius:'9px', padding:'0.65rem 0.9rem', fontSize:'0.88rem', color:'var(--text)', outline:'none', fontFamily:'inherit', marginBottom:'0.5rem'}}/>
-                  {errors.resetPass && <div style={{fontSize:'0.75rem', color:'#ff6b9d', marginBottom:'0.6rem'}}>{errors.resetPass}</div>}
-                  <div style={{marginBottom:'0.6rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
-                    {[
-                      { check: resetNewPassword.length >= 12, label: 'At least 12 characters' },
-                      { check: /[A-Z]/.test(resetNewPassword), label: 'One uppercase letter (A-Z)' },
-                      { check: /[a-z]/.test(resetNewPassword), label: 'One lowercase letter (a-z)' },
-                      { check: /[0-9]/.test(resetNewPassword), label: 'One number (0-9)' },
-                      { check: /[^A-Za-z0-9]/.test(resetNewPassword), label: 'One special character' },
-                    ].map((item, i) => (
-                      <div key={i} style={{display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.73rem', color: item.check ? 'var(--green, #00d4aa)' : 'var(--muted)'}}>
-                        <span style={{fontSize:'0.65rem'}}>{item.check ? '✓' : '✗'}</span>
-                        {item.label}
-                      </div>
-                    ))}
-                  </div>
-                  <button onClick={handleResetPassword} style={{width:'100%', padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer'}}>
-                    Reset Password
-                  </button>
-                </>
-              )}
-
-              {/* Step 4: Success */}
-              {resetStep === 4 && (
-                <div style={{textAlign:'center'}}>
-                  <div style={{fontSize:'2rem', marginBottom:'0.5rem'}}>✓</div>
-                  <p style={{fontSize:'0.9rem', color:'var(--text)', fontWeight:'600', marginBottom:'0.3rem'}}>Password reset successfully!</p>
-                  <p style={{fontSize:'0.78rem', color:'var(--muted)', marginBottom:'0.8rem'}}>Your password has been updated. Sign in with your new password.</p>
-                  <button onClick={resetPanelClose} style={{width:'100%', padding:'0.65rem', borderRadius:'9px', border:'none', background:'linear-gradient(135deg,#4488ff,#3366dd)', color:'#fff', fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer'}}>
-                    Back to Sign In
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-
           <button onClick={tab === 'login' ? handleLogin : handleSignup} disabled={loading} style={{
             width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none',
             cursor: loading ? 'not-allowed' : 'pointer',
@@ -489,7 +348,7 @@ export default function Login() {
             display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem',
           }}>
             {loading ? (
-              <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> Signing in...</>
+              <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> {tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
             ) : tab === 'login' ? 'Sign In' : 'Sign Up'}
           </button>
         </div>
@@ -509,4 +368,3 @@ export default function Login() {
     </div>
   );
 }
-  

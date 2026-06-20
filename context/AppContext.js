@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { saveUserData, loadUserData } from '../lib/firestore';
-import { getDbInstance } from '../lib/firebase';
+import { getSupabase } from '../lib/supabase';
+import { getProfile, upsertUserData } from '../lib/supabase-db';
 
 const AppContext = createContext();
 
@@ -43,184 +43,171 @@ const BADGE_DEFS = {
   bookworm: { label: 'Bookworm', desc: 'Read all materials in a course', icon: '📚' },
 };
 
-export function AppProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(() => {
-    if (typeof window === 'undefined') return null;
-    try {
-      const saved = localStorage.getItem('eduverse_user');
-      return saved ? JSON.parse(saved) : null;
-    } catch { return null; }
-  });
-  const [wishlist, setWishlist] = useState([]);
-  const [enrolled, setEnrolled] = useState([]);
-  const [progress, setProgress] = useState({});
-  const [readingProgress, setReadingProgress] = useState({});
-  const [completed, setCompleted] = useState([]);
-  const [ratings, setRatings] = useState({});
-  const [theme, setTheme] = useState('dark');
-  const [users, setUsers] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const saved = localStorage.getItem('eduverse_users');
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
-  const [xp, setXp] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [lastActiveDate, setLastActiveDate] = useState(null);
-  const [badges, setBadges] = useState([]);
-  const [activityLog, setActivityLog] = useState([]);
-  const [reviews, setReviews] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    try { return JSON.parse(localStorage.getItem('eduverse_reviews') || '[]'); } catch { return []; }
-  });
-  const [notes, setNotes] = useState({});
-  const [bookmarks, setBookmarks] = useState({});
-  const [comments, setComments] = useState({});
-  const [certificates, setCertificates] = useState([]);
-  const [studyTime, setStudyTime] = useState(() => {
-    if (typeof window === 'undefined') return {};
-    try {
-      const saved = localStorage.getItem('eduverse_study_time');
-      return saved ? JSON.parse(saved) : {};
-    } catch { return {}; }
-  });
-  const [followingPaths, setFollowingPaths] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    try { return JSON.parse(localStorage.getItem('eduverse_following_paths') || '[]'); } catch { return []; }
-  });
-  const [plannerGoals, setPlannerGoals] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    try { return JSON.parse(localStorage.getItem('eduverse_planner_goals') || '[]'); } catch { return []; }
-  });
-  const [plannerTarget, setPlannerTarget] = useState(() => {
-    if (typeof window === 'undefined') return 30;
-    try { return parseInt(localStorage.getItem('eduverse_planner_target')) || 30; } catch { return 30; }
-  });
-  // TODO: move all these localStorage reads into a single helper function...
-  const [unreadNotifications, setUnreadNotifications] = useState(() => {
-    if (typeof window === 'undefined') return 0;
-    try { return parseInt(localStorage.getItem('eduverse_unread_notifications')) || 0; } catch { return 0; }
-  });
-  const [dismissedNotifs, setDismissedNotifs] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    try { return JSON.parse(localStorage.getItem('eduverse_dismissed_notifs') || '[]'); } catch { return []; }
-  });
-  const trackingRef = useRef(null);
+function loadLocal(key, fallback = null) {
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch { return fallback; }
+}
 
+function saveLocal(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
+export function AppProvider({ children }) {
+  const [currentUser, setCurrentUser] = useState(() => loadLocal('eduverse_user'));
+  const [wishlist, setWishlist] = useState(() => loadLocal('eduverse_wishlist', []));
+  const [enrolled, setEnrolled] = useState(() => loadLocal('eduverse_enrolled', []));
+  const [progress, setProgress] = useState(() => loadLocal('eduverse_progress', {}));
+  const [readingProgress, setReadingProgress] = useState(() => loadLocal('eduverse_reading_progress', {}));
+  const [completed, setCompleted] = useState(() => loadLocal('eduverse_completed', []));
+  const [ratings, setRatings] = useState(() => loadLocal('eduverse_ratings', {}));
+  const [theme, setTheme] = useState(() => loadLocal('eduverse_theme', 'dark'));
+  const [xp, setXp] = useState(() => loadLocal('eduverse_xp', 0));
+  const [streak, setStreak] = useState(() => loadLocal('eduverse_streak', 0));
+  const [lastActiveDate, setLastActiveDate] = useState(() => loadLocal('eduverse_last_active_date'));
+  const [badges, setBadges] = useState(() => loadLocal('eduverse_badges', []));
+  const [activityLog, setActivityLog] = useState(() => loadLocal('eduverse_activity', []));
+  const [notes, setNotes] = useState(() => loadLocal('eduverse_notes', {}));
+  const [bookmarks, setBookmarks] = useState(() => loadLocal('eduverse_bookmarks', {}));
+  const [comments, setComments] = useState(() => loadLocal('eduverse_comments', {}));
+  const [certificates, setCertificates] = useState(() => loadLocal('eduverse_certificates', []));
+  const [reviews, setReviews] = useState(() => loadLocal('eduverse_reviews', []));
+  const [studyTime, setStudyTime] = useState(() => loadLocal('eduverse_study_time', {}));
+  const [followingPaths, setFollowingPaths] = useState(() => loadLocal('eduverse_following_paths', []));
+  const [plannerGoals, setPlannerGoals] = useState(() => loadLocal('eduverse_planner_goals', []));
+  const [plannerTarget, setPlannerTarget] = useState(() => loadLocal('eduverse_planner_target', 30));
+  const [unreadNotifications, setUnreadNotifications] = useState(() => loadLocal('eduverse_unread_notifications', 0));
+  const [dismissedNotifs, setDismissedNotifs] = useState(() => loadLocal('eduverse_dismissed_notifs', []));
+  const [leaderboard, setLeaderboard] = useState(() => loadLocal('eduverse_leaderboard', []));
+  const trackingRef = useRef(null);
+  const syncTimeoutRef = useRef(null);
+
+  // ─── Supabase Auth Listener ───
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('eduverse_user');
-      const savedWishlist = localStorage.getItem('eduverse_wishlist');
-      const savedEnrolled = localStorage.getItem('eduverse_enrolled');
-      const savedProgress = localStorage.getItem('eduverse_progress');
-      const savedCompleted = localStorage.getItem('eduverse_completed');
-      const savedRatings = localStorage.getItem('eduverse_ratings');
-      const savedTheme = localStorage.getItem('eduverse_theme');
-      if (savedUser) setCurrentUser(JSON.parse(savedUser));
-      if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
-      if (savedEnrolled) setEnrolled(JSON.parse(savedEnrolled));
-      if (savedProgress) setProgress(JSON.parse(savedProgress));
-      const savedReading = localStorage.getItem('eduverse_reading_progress');
-      if (savedReading) setReadingProgress(JSON.parse(savedReading));
-      if (savedCompleted) setCompleted(JSON.parse(savedCompleted));
-      if (savedRatings) setRatings(JSON.parse(savedRatings));
-      if (savedTheme) setTheme(savedTheme);
-      const savedUsers = localStorage.getItem('eduverse_users');
-      if (savedUsers) setUsers(JSON.parse(savedUsers));
-      const savedXp = localStorage.getItem('eduverse_xp');
-      if (savedXp) setXp(parseInt(savedXp) || 0);
-      const savedStreak = localStorage.getItem('eduverse_streak');
-      if (savedStreak) setStreak(parseInt(savedStreak) || 0);
-      const savedLastActive = localStorage.getItem('eduverse_last_active');
-      if (savedLastActive) setLastActiveDate(savedLastActive);
-      const savedBadges = localStorage.getItem('eduverse_badges');
-      if (savedBadges) setBadges(JSON.parse(savedBadges));
-      const savedActivity = localStorage.getItem('eduverse_activity');
-      if (savedActivity) setActivityLog(JSON.parse(savedActivity));
-      const savedNotes = localStorage.getItem('eduverse_notes');
-      if (savedNotes) setNotes(JSON.parse(savedNotes));
-      const savedBookmarks = localStorage.getItem('eduverse_bookmarks');
-      if (savedBookmarks) setBookmarks(JSON.parse(savedBookmarks));
-      const savedComments = localStorage.getItem('eduverse_comments');
-      if (savedComments) setComments(JSON.parse(savedComments));
-      const savedCerts = localStorage.getItem('eduverse_certificates');
-      if (savedCerts) setCertificates(JSON.parse(savedCerts));
-      const savedReviews = localStorage.getItem('eduverse_reviews');
-      if (savedReviews) setReviews(JSON.parse(savedReviews));
-    } catch(e) {}
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        handleAuthUser(session.user);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          handleAuthUser(session.user);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        clearUserState();
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  // Eagerly start Firebase init in background
-  useEffect(() => { getDbInstance(); }, []);
+  async function handleAuthUser(authUser) {
+    const profile = await getProfile(authUser.id);
+    const user = {
+      id: authUser.id,
+      email: authUser.email || '',
+      firstName: profile?.first_name || authUser.user_metadata?.first_name || '',
+      lastName: profile?.last_name || authUser.user_metadata?.last_name || '',
+      username: profile?.username || '',
+      picture: profile?.picture || authUser.user_metadata?.avatar_url || '',
+      provider: profile?.provider || authUser.app_metadata?.provider || 'email',
+      createdAt: profile?.created_at || authUser.created_at,
+    };
+    setCurrentUser(user);
+    saveLocal('eduverse_user', user);
 
-  // Firestore: load cloud data after localStorage
-  useEffect(() => {
-    if (!currentUser) return;
-    loadUserData(currentUser.id).then(cloud => {
-      if (!cloud) return;
-      if (cloud.wishlist) setWishlist(cloud.wishlist);
-      if (cloud.enrolled) setEnrolled(cloud.enrolled);
-      if (cloud.progress) setProgress(cloud.progress);
-      if (cloud.readingProgress) setReadingProgress(cloud.readingProgress);
-      if (cloud.completed) setCompleted(cloud.completed);
-      if (cloud.ratings) setRatings(cloud.ratings);
-      if (cloud.xp !== undefined) setXp(cloud.xp);
-      if (cloud.streak !== undefined) setStreak(cloud.streak);
-      if (cloud.lastActiveDate) setLastActiveDate(cloud.lastActiveDate);
-      if (cloud.badges) setBadges(cloud.badges);
-      if (cloud.activityLog) setActivityLog(cloud.activityLog);
-      if (cloud.notes) setNotes(cloud.notes);
-      if (cloud.bookmarks) setBookmarks(cloud.bookmarks);
-      if (cloud.comments) setComments(cloud.comments);
-      if (cloud.certificates) setCertificates(cloud.certificates);
-      if (cloud.reviews) setReviews(cloud.reviews);
-    }).catch(() => {});
-  }, [currentUser?.id]);
+    if (profile?.data) {
+      const d = profile.data;
+      if (d.wishlist) setWishlist(d.wishlist);
+      if (d.enrolled) setEnrolled(d.enrolled);
+      if (d.progress) setProgress(d.progress);
+      if (d.readingProgress) setReadingProgress(d.readingProgress);
+      if (d.completed) setCompleted(d.completed);
+      if (d.ratings) setRatings(d.ratings);
+      if (d.xp !== undefined) setXp(d.xp);
+      if (d.streak !== undefined) setStreak(d.streak);
+      if (d.lastActiveDate) setLastActiveDate(d.lastActiveDate);
+      if (d.badges) setBadges(d.badges);
+      if (d.activityLog) setActivityLog(d.activityLog);
+      if (d.notes) setNotes(d.notes);
+      if (d.bookmarks) setBookmarks(d.bookmarks);
+      if (d.comments) setComments(d.comments);
+      if (d.certificates) setCertificates(d.certificates);
+      if (d.reviews) setReviews(d.reviews);
+      if (d.studyTime) setStudyTime(d.studyTime);
+      if (d.followingPaths) setFollowingPaths(d.followingPaths);
+    }
+  }
 
-  // Firestore sync helper
-  const syncToFirestore = useCallback(() => {
-    if (!currentUser) return;
-    saveUserData(currentUser.id, {
-      email: currentUser.email,
-      firstName: currentUser.firstName,
-      lastName: currentUser.lastName,
-      picture: currentUser.picture,
-      provider: currentUser.provider,
-      wishlist, enrolled, progress, readingProgress, completed, ratings,
-      xp, streak, lastActiveDate, badges, activityLog,
-      notes, bookmarks, comments, certificates, studyTime,
-      reviews,
-    });
-  }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, studyTime]);
+  function clearUserState() {
+    setCurrentUser(null);
+    setWishlist([]); setEnrolled([]); setProgress({}); setReadingProgress({});
+    setCompleted([]); setRatings({}); setXp(0); setStreak(0);
+    setLastActiveDate(null); setBadges([]); setActivityLog([]);
+    setNotes({}); setBookmarks({}); setComments({}); setCertificates([]);
+    setReviews([]); setStudyTime({}); setFollowingPaths([]);
+    const keys = [
+      'eduverse_user', 'eduverse_wishlist', 'eduverse_enrolled', 'eduverse_progress',
+      'eduverse_reading_progress', 'eduverse_completed', 'eduverse_ratings',
+      'eduverse_xp', 'eduverse_streak', 'eduverse_last_active_date', 'eduverse_badges',
+      'eduverse_activity', 'eduverse_notes', 'eduverse_bookmarks', 'eduverse_comments',
+      'eduverse_certificates', 'eduverse_reviews', 'eduverse_study_time',
+      'eduverse_following_paths',
+    ];
+    keys.forEach(k => localStorage.removeItem(k));
+  }
 
-  // Persist everything to localStorage + firestore (yes its a lot of useEffects lol)
-  useEffect(() => { if (currentUser) { localStorage.setItem('eduverse_user', JSON.stringify(currentUser)); syncToFirestore(); } }, [currentUser]);
-  useEffect(() => { localStorage.setItem('eduverse_wishlist', JSON.stringify(wishlist)); if (currentUser) syncToFirestore(); }, [wishlist]);
-  useEffect(() => { localStorage.setItem('eduverse_enrolled', JSON.stringify(enrolled)); if (currentUser) syncToFirestore(); }, [enrolled]);
-  useEffect(() => { localStorage.setItem('eduverse_progress', JSON.stringify(progress)); if (currentUser) syncToFirestore(); }, [progress]);
-  useEffect(() => { localStorage.setItem('eduverse_reading_progress', JSON.stringify(readingProgress)); if (currentUser) syncToFirestore(); }, [readingProgress]);
-  useEffect(() => { localStorage.setItem('eduverse_completed', JSON.stringify(completed)); if (currentUser) syncToFirestore(); }, [completed]);
-  useEffect(() => { localStorage.setItem('eduverse_ratings', JSON.stringify(ratings)); if (currentUser) syncToFirestore(); }, [ratings]);
-  useEffect(() => { localStorage.setItem('eduverse_theme', theme); document.documentElement.setAttribute('data-theme', theme); }, [theme]);
-  useEffect(() => { localStorage.setItem('eduverse_users', JSON.stringify(users)); if (currentUser) saveUserData(currentUser.id, { users }).catch(() => {}); }, [users]);
-  useEffect(() => { localStorage.setItem('eduverse_xp', xp.toString()); if (currentUser) syncToFirestore(); }, [xp]);
-  useEffect(() => { localStorage.setItem('eduverse_streak', streak.toString()); if (currentUser) syncToFirestore(); }, [streak]);
-  useEffect(() => { localStorage.setItem('eduverse_last_active', lastActiveDate || ''); if (currentUser) syncToFirestore(); }, [lastActiveDate]);
-  useEffect(() => { localStorage.setItem('eduverse_badges', JSON.stringify(badges)); if (currentUser) syncToFirestore(); }, [badges]);
-  useEffect(() => { localStorage.setItem('eduverse_activity', JSON.stringify(activityLog)); if (currentUser) syncToFirestore(); }, [activityLog]);
-  useEffect(() => { localStorage.setItem('eduverse_notes', JSON.stringify(notes)); if (currentUser) syncToFirestore(); }, [notes]);
-  useEffect(() => { localStorage.setItem('eduverse_bookmarks', JSON.stringify(bookmarks)); if (currentUser) syncToFirestore(); }, [bookmarks]);
-  useEffect(() => { localStorage.setItem('eduverse_comments', JSON.stringify(comments)); if (currentUser) syncToFirestore(); }, [comments]);
-  useEffect(() => { localStorage.setItem('eduverse_certificates', JSON.stringify(certificates)); if (currentUser) syncToFirestore(); }, [certificates]);
-  useEffect(() => { localStorage.setItem('eduverse_study_time', JSON.stringify(studyTime)); if (currentUser) syncToFirestore(); }, [studyTime]);
-  useEffect(() => { localStorage.setItem('eduverse_following_paths', JSON.stringify(followingPaths)); }, [followingPaths]);
-  useEffect(() => { localStorage.setItem('eduverse_planner_goals', JSON.stringify(plannerGoals)); }, [plannerGoals]);
-  useEffect(() => { localStorage.setItem('eduverse_planner_target', plannerTarget.toString()); }, [plannerTarget]);
-  useEffect(() => { localStorage.setItem('eduverse_unread_notifications', unreadNotifications.toString()); }, [unreadNotifications]);
-  useEffect(() => { localStorage.setItem('eduverse_dismissed_notifs', JSON.stringify(dismissedNotifs)); }, [dismissedNotifs]);
-  useEffect(() => { localStorage.setItem('eduverse_reviews', JSON.stringify(reviews)); }, [reviews]);
-  // Streak check on mount — im using date string compare, works fine
+  // ─── Debounced Supabase Sync ───
+  const scheduleSync = useCallback(() => {
+    if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
+    syncTimeoutRef.current = setTimeout(() => {
+      if (!currentUser) return;
+      upsertUserData(currentUser.id, {
+        wishlist, enrolled, progress, readingProgress,
+        completed, ratings, xp, streak, lastActiveDate,
+        badges, activityLog, notes, bookmarks, comments,
+        certificates, reviews, studyTime, followingPaths,
+      });
+    }, 2000);
+  }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, reviews, studyTime, followingPaths]);
+
+  // ─── Persist to localStorage + schedule Supabase sync ───
+  useEffect(() => { if (currentUser) { saveLocal('eduverse_user', currentUser); scheduleSync(); } }, [currentUser]);
+  useEffect(() => { saveLocal('eduverse_wishlist', wishlist); if (currentUser) scheduleSync(); }, [wishlist]);
+  useEffect(() => { saveLocal('eduverse_enrolled', enrolled); if (currentUser) scheduleSync(); }, [enrolled]);
+  useEffect(() => { saveLocal('eduverse_progress', progress); if (currentUser) scheduleSync(); }, [progress]);
+  useEffect(() => { saveLocal('eduverse_reading_progress', readingProgress); if (currentUser) scheduleSync(); }, [readingProgress]);
+  useEffect(() => { saveLocal('eduverse_completed', completed); if (currentUser) scheduleSync(); }, [completed]);
+  useEffect(() => { saveLocal('eduverse_ratings', ratings); if (currentUser) scheduleSync(); }, [ratings]);
+  useEffect(() => { saveLocal('eduverse_theme', theme); document.documentElement.setAttribute('data-theme', theme); }, [theme]);
+  useEffect(() => { saveLocal('eduverse_xp', xp); if (currentUser) scheduleSync(); }, [xp]);
+  useEffect(() => { saveLocal('eduverse_streak', streak); if (currentUser) scheduleSync(); }, [streak]);
+  useEffect(() => { saveLocal('eduverse_last_active_date', lastActiveDate); if (currentUser) scheduleSync(); }, [lastActiveDate]);
+  useEffect(() => { saveLocal('eduverse_badges', badges); if (currentUser) scheduleSync(); }, [badges]);
+  useEffect(() => { saveLocal('eduverse_activity', activityLog); if (currentUser) scheduleSync(); }, [activityLog]);
+  useEffect(() => { saveLocal('eduverse_notes', notes); if (currentUser) scheduleSync(); }, [notes]);
+  useEffect(() => { saveLocal('eduverse_bookmarks', bookmarks); if (currentUser) scheduleSync(); }, [bookmarks]);
+  useEffect(() => { saveLocal('eduverse_comments', comments); if (currentUser) scheduleSync(); }, [comments]);
+  useEffect(() => { saveLocal('eduverse_certificates', certificates); if (currentUser) scheduleSync(); }, [certificates]);
+  useEffect(() => { saveLocal('eduverse_study_time', studyTime); if (currentUser) scheduleSync(); }, [studyTime]);
+  useEffect(() => { saveLocal('eduverse_following_paths', followingPaths); }, [followingPaths]);
+  useEffect(() => { saveLocal('eduverse_planner_goals', plannerGoals); }, [plannerGoals]);
+  useEffect(() => { saveLocal('eduverse_planner_target', plannerTarget); }, [plannerTarget]);
+  useEffect(() => { saveLocal('eduverse_unread_notifications', unreadNotifications); }, [unreadNotifications]);
+  useEffect(() => { saveLocal('eduverse_dismissed_notifs', dismissedNotifs); }, [dismissedNotifs]);
+  useEffect(() => { saveLocal('eduverse_reviews', reviews); }, [reviews]);
+  useEffect(() => { saveLocal('eduverse_leaderboard', leaderboard); }, [leaderboard]);
+
+  // ─── Streak check on mount ───
   useEffect(() => {
     if (!currentUser) return;
     const today = new Date().toDateString();
@@ -229,7 +216,6 @@ export function AppProvider({ children }) {
     if (lastActiveDate === yesterday) {
       setStreak(prev => prev + 1);
     } else if (lastActiveDate && lastActiveDate !== today) {
-      console.log('streak lost :(');
       setStreak(0);
     } else if (!lastActiveDate) {
       setStreak(1);
@@ -237,39 +223,32 @@ export function AppProvider({ children }) {
     setLastActiveDate(today);
   }, [currentUser]);
 
-  // Check if we earned any new badges
   useEffect(() => {
     if (streak >= 7 && !badges.includes('streak_7')) {
       setBadges(prev => [...prev, 'streak_7']);
     }
   }, [streak]);
 
-  function login(user) {
-    setCurrentUser(user);
-    localStorage.setItem('eduverse_user', JSON.stringify(user));
+  function logout() {
+    const supabase = getSupabase();
+    if (supabase) supabase.auth.signOut();
+    clearUserState();
   }
 
-  function logout() {
-    setCurrentUser(null);
-    setWishlist([]); setEnrolled([]); setProgress({}); setCompleted([]); setRatings({});
-    setXp(0); setStreak(0); setLastActiveDate(null); setBadges([]); setActivityLog([]);
-    setNotes({}); setBookmarks({}); setComments({}); setCertificates([]); setStudyTime({});
-    setReviews([]);
-    localStorage.removeItem('eduverse_user'); localStorage.removeItem('eduverse_wishlist');
-    localStorage.removeItem('eduverse_enrolled'); localStorage.removeItem('eduverse_progress'); localStorage.removeItem('eduverse_reading_progress');
-    localStorage.removeItem('eduverse_completed'); localStorage.removeItem('eduverse_ratings');
-    localStorage.removeItem('eduverse_xp'); localStorage.removeItem('eduverse_streak');
-    localStorage.removeItem('eduverse_last_active'); localStorage.removeItem('eduverse_badges');
-    localStorage.removeItem('eduverse_activity'); localStorage.removeItem('eduverse_notes');
-    localStorage.removeItem('eduverse_bookmarks'); localStorage.removeItem('eduverse_comments');
-    localStorage.removeItem('eduverse_certificates'); localStorage.removeItem('eduverse_study_time');
-    localStorage.removeItem('eduverse_reviews');
+  function manualSync() {
+    if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
+    if (!currentUser) return;
+    upsertUserData(currentUser.id, {
+      wishlist, enrolled, progress, readingProgress,
+      completed, ratings, xp, streak, lastActiveDate,
+      badges, activityLog, notes, bookmarks, comments,
+      certificates, reviews, studyTime, followingPaths,
+    });
   }
 
   function addXp(amount, reason) {
     setXp(prev => {
       const newXp = prev + amount;
-      // Check centurion badge
       if (prev < 1000 && newXp >= 1000 && !badges.includes('centurion')) {
         setBadges(b => [...b, 'centurion']);
       }
@@ -320,11 +299,9 @@ export function AppProvider({ children }) {
       if (courseProgress.includes(lessonIndex)) return prev;
       const updated = [...courseProgress, lessonIndex];
       const res = { ...prev, [courseId]: updated };
-      // Auto-check first lesson badge
       addBadgeIfMissing('first_lesson');
       addXp(10, `Completed lesson ${lessonIndex + 1} in course #${courseId}`);
       addActivity('lesson', `Completed lesson ${lessonIndex + 1} in course #${courseId}`);
-      // Check if course fully done
       if (updated.length === totalLessons) {
         addActivity('course_complete', `Finished all lessons in course #${courseId}`);
       }
@@ -363,7 +340,6 @@ export function AppProvider({ children }) {
       addBadgeIfMissing('graduate');
       addXp(50, `Completed "${courseName}"`);
       addActivity('certificate', `Earned certificate for "${courseName}"`);
-      // Generate certificate
       const code = `EDU-${courseId}-${Date.now().toString(36).toUpperCase()}`;
       setCertificates(c => [...c, {
         courseId, courseName,
@@ -388,22 +364,6 @@ export function AppProvider({ children }) {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   }
 
-  function addUser(user) {
-    setUsers(prev => {
-      const exists = prev.findIndex(u => u.email === user.email);
-      let updated;
-      if (exists > -1) {
-        updated = [...prev];
-        updated[exists] = user;
-      } else {
-        updated = [...prev, user];
-      }
-      localStorage.setItem('eduverse_users', JSON.stringify(updated));
-      return updated;
-    });
-  }
-
-  // ─── Notes (user notes on lessons) ───
   function addNote(courseId, lessonIdx, text) {
     const key = `${courseId}_${lessonIdx}`;
     const note = { id: Date.now() + Math.random(), text, createdAt: new Date().toISOString() };
@@ -416,7 +376,6 @@ export function AppProvider({ children }) {
     setNotes(prev => ({ ...prev, [key]: (prev[key] || []).filter(n => n.id !== noteId) }));
   }
 
-  // ─── Bookmarks (might refactor this later) ───
   function toggleBookmark(courseId, lessonIdx) {
     setBookmarks(prev => {
       const list = prev[courseId] || [];
@@ -430,7 +389,6 @@ export function AppProvider({ children }) {
     return (bookmarks[courseId] || []).includes(lessonIdx);
   }
 
-  // ─── Comments on lessons ───
   function addComment(courseId, lessonIdx, userName, text, parentId = null) {
     const key = `${courseId}_${lessonIdx}`;
     const comment = { id: Date.now() + Math.random(), userName, text, parentId, createdAt: new Date().toISOString() };
@@ -446,14 +404,12 @@ export function AppProvider({ children }) {
     return (comments[`${courseId}_${lessonIdx}`] || []).filter(c => c.parentId === parentId);
   }
 
-  // ─── Quiz ───
   function markQuizPassed(courseId) {
     addBadgeIfMissing('quiz_whiz');
     addXp(20, `Passed quiz in course #${courseId}`);
     addActivity('quiz', `Passed quiz in course #${courseId}`);
   }
 
-  // ─── Study Time Tracking ───
   function startTracking(courseId) {
     if (trackingRef.current) clearInterval(trackingRef.current);
     trackingRef.current = setInterval(() => {
@@ -473,26 +429,12 @@ export function AppProvider({ children }) {
     return Math.floor(seconds / 60);
   }
 
-  // ─── Bookworm badge ───
   function checkBookworm(courseId, totalLessons) {
     const watched = (progress[courseId] || []).length;
     if (watched >= totalLessons && !badges.includes('bookworm')) {
       addBadgeIfMissing('bookworm');
     }
   }
-
-  // ─── Leaderboard ───
-  const [leaderboard, setLeaderboard] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const saved = localStorage.getItem('eduverse_leaderboard');
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
-
-  useEffect(() => {
-    localStorage.setItem('eduverse_leaderboard', JSON.stringify(leaderboard));
-  }, [leaderboard]);
 
   function addScore(userName, courseId, score, total) {
     const entry = { userName, courseId, score, total, date: new Date().toISOString() };
@@ -548,7 +490,6 @@ export function AppProvider({ children }) {
     return Math.round((completedCount / pathCourses.length) * 100);
   }
 
-  // ─── Reviews ───
   function addReview(courseId, courseName, rating, text) {
     const review = {
       id: Date.now() + Math.random(),
@@ -589,8 +530,9 @@ export function AppProvider({ children }) {
     courseReviews.forEach(r => { if (r.rating >= 1 && r.rating <= 5) dist[r.rating - 1]++; });
     return dist;
   }
+
   const ctxValue = useMemo(() => ({
-    currentUser, login, logout,
+    currentUser, logout,
     wishlist, toggleWishlist,
     enrolled, toggleEnroll,
     progress, markLesson, getCourseProgress,
@@ -598,7 +540,6 @@ export function AppProvider({ children }) {
     completed, markCompleted,
     ratings, rateCourse, getUserRating,
     theme, toggleTheme,
-    users, addUser, syncToFirestore,
     xp, streak, badges, activityLog, getLevelInfo, BADGE_DEFS,
     notes, addNote, removeNote,
     bookmarks, toggleBookmark, isBookmarked,
@@ -610,9 +551,10 @@ export function AppProvider({ children }) {
     plannerGoals, plannerTarget, setPlannerTarget, addPlannerGoal, togglePlannerGoal, removePlannerGoal, getPlannerProgress,
     unreadNotifications, addNotification, markNotificationsRead, dismissNotification, dismissedNotifs,
     reviews, addReview, updateReview, deleteReview, getCourseReviews, getAverageRating, getRatingDistribution,
+    manualSync,
   }), [
     currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings,
-    theme, users, xp, streak, lastActiveDate, badges, activityLog,
+    theme, xp, streak, lastActiveDate, badges, activityLog,
     notes, bookmarks, comments, certificates, studyTime,
     leaderboard, followingPaths, plannerGoals, plannerTarget,
     unreadNotifications, dismissedNotifs, reviews,
