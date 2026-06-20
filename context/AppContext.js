@@ -58,7 +58,7 @@ function saveLocal(key, value) {
 
 export function AppProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => loadLocal('eduverse_user'));
-  const [authInitialized, setAuthInitialized] = useState(false);
+  const [authInitialized] = useState(true);
   const [wishlist, setWishlist] = useState(() => loadLocal('eduverse_wishlist', []));
   const [enrolled, setEnrolled] = useState(() => loadLocal('eduverse_enrolled', []));
   const [progress, setProgress] = useState(() => loadLocal('eduverse_progress', {}));
@@ -85,11 +85,6 @@ export function AppProvider({ children }) {
   const [leaderboard, setLeaderboard] = useState(() => loadLocal('eduverse_leaderboard', []));
   const trackingRef = useRef(null);
   const syncTimeoutRef = useRef(null);
-
-  // ─── Auth Initialization ───
-  useEffect(() => {
-    setAuthInitialized(true);
-  }, []);
 
   function signInWithGoogle(user) {
     setCurrentUser(user);
