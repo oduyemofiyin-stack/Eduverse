@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { getSupabase } from '../lib/supabase';
@@ -14,6 +14,48 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const googleCallbackRef = useRef(null);
+
+  async function handleGoogleCredentialResponse(response) {
+    const supabase = getSupabase();
+    if (!supabase) { setErrors({ general: 'Backend not configured.' }); return; }
+
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithIdToken({
+      provider: 'google',
+      token: response.credential,
+    });
+    setLoading(false);
+
+    if (error) {
+      logger.warn('Google Sign-In', 'Failed', { error: error.message });
+      setErrors({ general: error.message });
+    } else {
+      logger.info('Google Sign-In', 'Successful');
+      router.push('/');
+    }
+  }
+
+  useEffect(() => {
+    googleCallbackRef.current = handleGoogleCredentialResponse;
+  });
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+          callback: (res) => googleCallbackRef.current(res),
+          cancel_on_tap_outside: false,
+        });
+      }
+    };
+    document.head.appendChild(script);
+  }, []);
 
   useEffect(() => {
     if (currentUser) router.push('/');
@@ -132,14 +174,11 @@ export default function Login() {
   }
 
   function handleGoogle() {
-    const supabase = getSupabase();
-    if (!supabase) { setErrors({ general: 'Backend not configured.' }); return; }
-    supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin + '/auth/callback',
-      },
-    });
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.prompt();
+    } else {
+      setErrors({ general: 'Google sign-in is loading. Please try again.' });
+    }
   }
 
   const inp = (hasErr) => ({
