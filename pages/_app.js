@@ -11,17 +11,12 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import '../styles/globals.css';
 
 function AuthGuard({ Component, pageProps }) {
-  const { currentUser, theme } = useApp();
+  const { currentUser, authInitialized, theme } = useApp();
   const router = useRouter();
   const [transitioning, setTransitioning] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
   const touchStartX = useRef(0);
 
   const publicPaths = ['/login', '/admin', '/auth/callback'];
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   useEffect(() => {
     function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
@@ -55,12 +50,14 @@ function AuthGuard({ Component, pageProps }) {
   }, [theme]);
 
   useEffect(() => {
-    if (!currentUser && !publicPaths.includes(router.pathname)) {
+    if (authInitialized && !currentUser && !publicPaths.includes(router.pathname)) {
       router.push('/login');
     }
-  }, [currentUser]);
+  }, [currentUser, authInitialized]);
 
-  if (!hydrated) return null;
+  if (!authInitialized) {
+    return null;
+  }
 
   if (!currentUser && !publicPaths.includes(router.pathname)) {
     return null;

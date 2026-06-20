@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { getSupabase } from '../lib/supabase';
-import { getProfile, upsertUserData } from '../lib/supabase-db';
+import { upsertUserData } from '../lib/supabase-db';
 
 const AppContext = createContext();
 
@@ -59,6 +58,7 @@ function saveLocal(key, value) {
 
 export function AppProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => loadLocal('eduverse_user'));
+  const [authInitialized, setAuthInitialized] = useState(false);
   const [wishlist, setWishlist] = useState(() => loadLocal('eduverse_wishlist', []));
   const [enrolled, setEnrolled] = useState(() => loadLocal('eduverse_enrolled', []));
   const [progress, setProgress] = useState(() => loadLocal('eduverse_progress', {}));
@@ -86,66 +86,14 @@ export function AppProvider({ children }) {
   const trackingRef = useRef(null);
   const syncTimeoutRef = useRef(null);
 
-  // ─── Supabase Auth Listener ───
+  // ─── Auth Initialization ───
   useEffect(() => {
-    const supabase = getSupabase();
-    if (!supabase) return;
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        handleAuthUser(session.user);
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-          handleAuthUser(session.user);
-        }
-      } else if (event === 'SIGNED_OUT') {
-        clearUserState();
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    setAuthInitialized(true);
   }, []);
 
-  async function handleAuthUser(authUser) {
-    const profile = await getProfile(authUser.id);
-    const user = {
-      id: authUser.id,
-      email: authUser.email || '',
-      firstName: profile?.first_name || authUser.user_metadata?.first_name || '',
-      lastName: profile?.last_name || authUser.user_metadata?.last_name || '',
-      username: profile?.username || '',
-      picture: profile?.picture || authUser.user_metadata?.avatar_url || '',
-      provider: profile?.provider || authUser.app_metadata?.provider || 'email',
-      createdAt: profile?.created_at || authUser.created_at,
-    };
+  function signInWithGoogle(user) {
     setCurrentUser(user);
     saveLocal('eduverse_user', user);
-
-    if (profile?.data) {
-      const d = profile.data;
-      if (d.wishlist) setWishlist(d.wishlist);
-      if (d.enrolled) setEnrolled(d.enrolled);
-      if (d.progress) setProgress(d.progress);
-      if (d.readingProgress) setReadingProgress(d.readingProgress);
-      if (d.completed) setCompleted(d.completed);
-      if (d.ratings) setRatings(d.ratings);
-      if (d.xp !== undefined) setXp(d.xp);
-      if (d.streak !== undefined) setStreak(d.streak);
-      if (d.lastActiveDate) setLastActiveDate(d.lastActiveDate);
-      if (d.badges) setBadges(d.badges);
-      if (d.activityLog) setActivityLog(d.activityLog);
-      if (d.notes) setNotes(d.notes);
-      if (d.bookmarks) setBookmarks(d.bookmarks);
-      if (d.comments) setComments(d.comments);
-      if (d.certificates) setCertificates(d.certificates);
-      if (d.reviews) setReviews(d.reviews);
-      if (d.studyTime) setStudyTime(d.studyTime);
-      if (d.followingPaths) setFollowingPaths(d.followingPaths);
-    }
   }
 
   function clearUserState() {
@@ -230,8 +178,6 @@ export function AppProvider({ children }) {
   }, [streak]);
 
   function logout() {
-    const supabase = getSupabase();
-    if (supabase) supabase.auth.signOut();
     clearUserState();
   }
 
@@ -532,7 +478,7 @@ export function AppProvider({ children }) {
   }
 
   const ctxValue = useMemo(() => ({
-    currentUser, logout,
+    currentUser, authInitialized, signInWithGoogle, logout,
     wishlist, toggleWishlist,
     enrolled, toggleEnroll,
     progress, markLesson, getCourseProgress,
