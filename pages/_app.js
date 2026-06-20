@@ -23,7 +23,6 @@ function AuthGuard({ Component, pageProps }) {
     setHydrated(true);
   }, []);
 
-  // Back-swipe gesture (works for iOS-like navigation, kinda janky on android)
   useEffect(() => {
     function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
     function onTouchEnd(e) {
@@ -61,7 +60,6 @@ function AuthGuard({ Component, pageProps }) {
     }
   }, [currentUser]);
 
-  // Wait for hydration so server & first client render always match
   if (!hydrated) return null;
 
   if (!currentUser && !publicPaths.includes(router.pathname)) {
@@ -74,28 +72,33 @@ function AuthGuard({ Component, pageProps }) {
 
   return (
     <div style={{
-      minHeight:'100vh',
-      background:'var(--bg)',
-      color:'var(--text)',
-      display:'flex',
-      flexDirection:'column',
-      transition:'background 0.3s ease, color 0.3s ease',
+      minHeight: '100vh',
+      background: 'var(--bg)',
+      color: 'var(--text)',
+      display: 'flex',
+      flexDirection: 'column',
+      transition: 'background 0.4s ease, color 0.4s ease',
     }}>
       <div style={{
-        position:'fixed', inset:0,
+        position: 'fixed', inset: 0,
         background: theme === 'dark'
-          ? 'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.1) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.08) 0%, transparent 60%)'
-          : 'radial-gradient(ellipse 70% 50% at 15% 0%, rgba(68,136,255,0.05) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 100%, rgba(0,212,170,0.04) 0%, transparent 60%)',
-        pointerEvents:'none', zIndex:0,
-      }}/>
+          ? 'radial-gradient(ellipse 60% 45% at 10% 0%, rgba(99,102,241,0.08) 0%, transparent 65%), radial-gradient(ellipse 45% 40% at 90% 100%, rgba(94,234,212,0.06) 0%, transparent 60%)'
+          : 'radial-gradient(ellipse 60% 45% at 10% 0%, rgba(99,102,241,0.04) 0%, transparent 65%), radial-gradient(ellipse 45% 40% at 90% 100%, rgba(94,234,212,0.03) 0%, transparent 60%)',
+        pointerEvents: 'none', zIndex: 0,
+      }} />
       <Header />
-      <main style={{flex:1, position:'relative', zIndex:1, transition:'opacity 0.2s, transform 0.2s', opacity: transitioning ? 0.7 : 1, transform: transitioning ? 'scale(0.98)' : 'scale(1)'}}>
+      <main style={{
+        flex: 1, position: 'relative', zIndex: 1,
+        transition: 'opacity 0.25s ease, transform 0.25s ease',
+        opacity: transitioning ? 0.7 : 1,
+        transform: transitioning ? 'scale(0.98)' : 'scale(1)',
+      }}>
         <Component {...pageProps} />
       </main>
       <Footer />
       <BottomNav />
       <ScrollToTop />
-      <div className="back-swipe-area"/>
+      <div className="back-swipe-area" />
     </div>
   );
 }
