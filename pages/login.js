@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { useApp } from '../context/AppContext';
 import { getSupabase } from '../lib/supabase';
 import { checkUsername } from '../lib/supabase-db';
@@ -76,7 +77,7 @@ export default function Login() {
       if (!form.username.trim()) {
         errs.username = 'Username is required';
       } else if (form.username.trim().length < 4 || form.username.trim().length > 20) {
-        errs.username = 'Username must be 4–20 characters';
+        errs.username = 'Username must be 4-20 characters';
       } else if (!/^[A-Za-z]/.test(form.username.trim())) {
         errs.username = 'Must start with a letter';
       } else if (!/^[A-Za-z][A-Za-z0-9_-]*$/.test(form.username.trim())) {
@@ -183,13 +184,17 @@ export default function Login() {
 
   const inp = (hasErr) => ({
     width:'100%', boxSizing:'border-box', background:'var(--surface2)',
-    border:`1px solid ${hasErr ? '#ff6b9d' : 'var(--border2)'}`,
+    border:`1px solid ${hasErr ? 'var(--red)' : 'var(--border2)'}`,
     borderRadius:'11px', padding:'0.78rem 1rem',
     fontSize:'0.9rem', color:'var(--text)', outline:'none',
     fontFamily:'inherit', transition:'border 0.2s',
   });
 
   return (
+    <main>
+      <Head>
+        <title>{tab === 'login' ? 'Sign In' : 'Sign Up'} | Eduverse</title>
+      </Head>
       <div suppressHydrationWarning style={{
         minHeight:'100vh', background:'var(--bg)',
         display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem',
@@ -216,13 +221,13 @@ export default function Login() {
               <linearGradient id="lg3" x1="14" y1="14" x2="22" y2="22"><stop stopColor="#f0c040"/><stop offset="1" stopColor="#4488ff"/></linearGradient>
             </defs>
           </svg>
-          <span style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>Eduverse</span>
+          <span className="heading-serif" style={{fontSize:'1.4rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>Eduverse</span>
         </div>
 
         {/* TABS */}
         <div style={{display:'flex', background:'var(--surface2)', borderRadius:'12px', padding:'4px', marginBottom:'1.6rem'}}>
           {['login','signup'].map(t => (
-            <button key={t} onClick={() => switchTab(t)} style={{
+            <button key={t} type="button" onClick={() => switchTab(t)} style={{
               flex:1, padding:'0.5rem', borderRadius:'9px', border:'none',
               background: tab === t ? 'var(--surface3)' : 'transparent',
               color: tab === t ? 'var(--text)' : 'var(--muted)',
@@ -234,7 +239,7 @@ export default function Login() {
         </div>
 
         {/* TITLE */}
-        <div style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700', textAlign:'center', marginBottom:'0.3rem', color:'var(--text)'}}>
+        <div className="heading-serif" style={{fontSize:'1.3rem', fontWeight:'700', textAlign:'center', marginBottom:'0.3rem', color:'var(--text)'}}>
           {tab === 'login' ? 'Welcome back' : 'Sign Up'}
         </div>
         <div style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', marginBottom:'1.4rem'}}>
@@ -242,7 +247,7 @@ export default function Login() {
         </div>
 
         {/* GOOGLE BUTTON */}
-        <button onClick={handleGoogle} style={{
+        <button type="button" onClick={handleGoogle} style={{
           width:'100%', padding:'0.78rem', borderRadius:'12px',
           border:'1px solid var(--border2)', background:'var(--surface2)',
           color:'var(--text)', fontFamily:'inherit', fontSize:'0.9rem',
@@ -262,7 +267,7 @@ export default function Login() {
         {/* DIVIDER */}
         <div style={{display:'flex', alignItems:'center', gap:'0.8rem', marginBottom:'1.2rem'}}>
           <div style={{flex:1, height:'1px', background:'var(--border2)'}}/>
-          <span style={{fontSize:'0.73rem', color:'var(--muted2)', whiteSpace:'nowrap'}}>
+          <span style={{fontSize:'0.73rem', color:'var(--text2)', whiteSpace:'nowrap'}}>
             or {tab === 'login' ? 'sign in' : 'sign up'} with email
           </span>
           <div style={{flex:1, height:'1px', background:'var(--border2)'}}/>
@@ -270,140 +275,144 @@ export default function Login() {
 
         {/* MESSAGE */}
         {message && (
-          <div style={{background:'rgba(0,212,170,0.1)', border:'1px solid rgba(0,212,170,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#00d4aa', marginBottom:'1rem'}}>
+          <div style={{background:'rgba(94,234,212,0.1)', border:'1px solid rgba(94,234,212,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--opal-teal)', marginBottom:'1rem'}}>
             {message}
           </div>
         )}
 
         {/* ERROR */}
         {errors.general && (
-          <div className="shake" style={{background:'rgba(255,107,157,0.1)', border:'1px solid rgba(255,107,157,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'#ff6b9d', marginBottom:'1rem'}}>
+          <div className="shake" style={{background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--red)', marginBottom:'1rem'}}>
             {errors.general}
           </div>
         )}
 
         {/* FORM */}
-        <div style={{display:'flex', flexDirection:'column', gap:'0.85rem'}}>
-          {tab === 'signup' && (
-            <div className="name-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.7rem'}}>
-              <div>
-                <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>First Name</label>
-                <input type="text" placeholder="John" value={form.firstName}
-                  onChange={e => setForm(p => ({...p, firstName: e.target.value}))}
-                  inputMode="text" autoComplete="given-name"
-                  style={inp(errors.firstName)}/>
-                {errors.firstName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.firstName}</div>}
-              </div>
-              <div>
-                <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Last Name</label>
-                <input type="text" placeholder="Doe" value={form.lastName}
-                  onChange={e => setForm(p => ({...p, lastName: e.target.value}))}
-                  inputMode="text" autoComplete="family-name"
-                  style={inp(errors.lastName)}/>
-                {errors.lastName && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.lastName}</div>}
-              </div>
-            </div>
-          )}
-
-          {tab === 'signup' && (
-            <div>
-              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Username</label>
-              <input type="text" placeholder="e.g. johndoe" value={form.username}
-                onChange={e => setForm(p => ({...p, username: e.target.value}))}
-                inputMode="text" autoComplete="username"
-                style={inp(errors.username)}/>
-              {errors.username && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.username}</div>}
-              <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.3rem', lineHeight:'1.4'}}>4–20 characters. Letters, numbers, underscores, and hyphens. Must start with a letter.</div>
-            </div>
-          )}
-
-          <div>
-            <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email</label>
-            <input type="email" placeholder="you@example.com" value={form.email}
-              onChange={e => setForm(p => ({...p, email: e.target.value}))}
-              onKeyDown={e => e.key === 'Enter' && tab === 'login' && handleLogin()}
-              inputMode="email" autoComplete="email"
-              style={inp(errors.email)}/>
-            {errors.email && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.email}</div>}
-          </div>
-
-          {tab === 'signup' && (
-            <div>
-              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Confirm Email</label>
-              <input type="email" placeholder="you@example.com" value={form.confirmEmail}
-                onChange={e => {
-                  const val = e.target.value;
-                  setForm(p => ({...p, confirmEmail: val}));
-                  if (val && val !== form.email) {
-                    setErrors(prev => ({...prev, confirmEmail: 'Emails do not correspond'}));
-                  } else {
-                    setErrors(prev => {
-                      const copy = {...prev};
-                      delete copy.confirmEmail;
-                      return copy;
-                    });
-                  }
-                }}
-                inputMode="email" autoComplete="email"
-                style={inp(errors.confirmEmail)}/>
-              {errors.confirmEmail && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.confirmEmail}</div>}
-            </div>
-          )}
-
-          <div>
-            <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
-            <input type="password" placeholder={tab === 'login' ? 'Enter your password' : 'At least 12 characters'} value={form.password}
-              onChange={e => setForm(p => ({...p, password: e.target.value}))}
-              onKeyDown={e => e.key === 'Enter' && (tab === 'login' ? handleLogin() : handleSignup())}
-              inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
-              style={inp(errors.password)}/>
-            {errors.password && <div style={{fontSize:'0.73rem', color:'#ff6b9d', marginTop:'0.3rem'}}>{errors.password}</div>}
+        <form onSubmit={e => {
+          e.preventDefault();
+          tab === 'login' ? handleLogin() : handleSignup();
+        }}>
+          <div style={{display:'flex', flexDirection:'column', gap:'0.85rem'}}>
             {tab === 'signup' && (
-              <div style={{marginTop:'0.5rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
-                {[
-                  { check: form.password.length >= 12, label: 'At least 12 characters' },
-                  { check: /[A-Z]/.test(form.password), label: 'One uppercase letter (A-Z)' },
-                  { check: /[a-z]/.test(form.password), label: 'One lowercase letter (a-z)' },
-                  { check: /[0-9]/.test(form.password), label: 'One number (0-9)' },
-                  { check: /[^A-Za-z0-9]/.test(form.password), label: 'One special character (e.g. @, #, $, !, %)' },
-                ].map((item, i) => (
-                  <div key={i} style={{display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.73rem', color: item.check ? 'var(--green, #00d4aa)' : 'var(--muted)'}}>
-                    <span style={{fontSize:'0.65rem'}}>{item.check ? '✓' : '✗'}</span>
-                    {item.label}
-                  </div>
-                ))}
+              <div className="name-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.7rem'}}>
+                <div>
+                  <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>First Name</label>
+                  <input type="text" placeholder="John" value={form.firstName}
+                    onChange={e => setForm(p => ({...p, firstName: e.target.value}))}
+                    inputMode="text" autoComplete="given-name"
+                    style={inp(errors.firstName)}/>
+                  {errors.firstName && <div style={{fontSize:'0.73rem', color:'var(--red)', marginTop:'0.3rem'}}>{errors.firstName}</div>}
+                </div>
+                <div>
+                  <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Last Name</label>
+                  <input type="text" placeholder="Doe" value={form.lastName}
+                    onChange={e => setForm(p => ({...p, lastName: e.target.value}))}
+                    inputMode="text" autoComplete="family-name"
+                    style={inp(errors.lastName)}/>
+                  {errors.lastName && <div style={{fontSize:'0.73rem', color:'var(--red)', marginTop:'0.3rem'}}>{errors.lastName}</div>}
+                </div>
               </div>
             )}
-          </div>
 
-          <button onClick={tab === 'login' ? handleLogin : handleSignup} disabled={loading} style={{
-            width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            background:'linear-gradient(135deg,#4488ff,#3366dd)',
-            color:'#fff', fontFamily:'inherit', fontSize:'0.92rem', fontWeight:'700',
-            marginTop:'0.2rem', opacity: loading ? 0.7 : 1,
-            boxShadow: loading ? 'none' : '0 8px 22px rgba(68,136,255,0.35)',
-            transition:'all 0.2s',
-            display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem',
-          }}>
-            {loading ? (
-              <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> {tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
-            ) : tab === 'login' ? 'Sign In' : 'Sign Up'}
-          </button>
-        </div>
+            {tab === 'signup' && (
+              <div>
+                <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Username</label>
+                <input type="text" placeholder="e.g. johndoe" value={form.username}
+                  onChange={e => setForm(p => ({...p, username: e.target.value}))}
+                  inputMode="text" autoComplete="username"
+                  style={inp(errors.username)}/>
+                {errors.username && <div style={{fontSize:'0.73rem', color:'var(--red)', marginTop:'0.3rem'}}>{errors.username}</div>}
+                <div style={{fontSize:'0.7rem', color:'var(--muted2)', marginTop:'0.3rem', lineHeight:'1.4'}}>4-20 characters. Letters, numbers, underscores, and hyphens. Must start with a letter.</div>
+              </div>
+            )}
+
+            <div>
+              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email</label>
+              <input type="email" placeholder="you@example.com" value={form.email}
+                onChange={e => setForm(p => ({...p, email: e.target.value}))}
+                inputMode="email" autoComplete="email"
+                style={inp(errors.email)}/>
+              {errors.email && <div style={{fontSize:'0.73rem', color:'var(--red)', marginTop:'0.3rem'}}>{errors.email}</div>}
+            </div>
+
+            {tab === 'signup' && (
+              <div>
+                <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Confirm Email</label>
+                <input type="email" placeholder="you@example.com" value={form.confirmEmail}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setForm(p => ({...p, confirmEmail: val}));
+                    if (val && val !== form.email) {
+                      setErrors(prev => ({...prev, confirmEmail: 'Emails do not correspond'}));
+                    } else {
+                      setErrors(prev => {
+                        const copy = {...prev};
+                        delete copy.confirmEmail;
+                        return copy;
+                      });
+                    }
+                  }}
+                  inputMode="email" autoComplete="email"
+                  style={inp(errors.confirmEmail)}/>
+                {errors.confirmEmail && <div style={{fontSize:'0.73rem', color:'var(--red)', marginTop:'0.3rem'}}>{errors.confirmEmail}</div>}
+              </div>
+            )}
+
+            <div>
+              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
+              <input type="password" placeholder={tab === 'login' ? 'Enter your password' : 'At least 12 characters'} value={form.password}
+                onChange={e => setForm(p => ({...p, password: e.target.value}))}
+                inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
+                style={inp(errors.password)}/>
+              {errors.password && <div style={{fontSize:'0.73rem', color:'var(--red)', marginTop:'0.3rem'}}>{errors.password}</div>}
+              {tab === 'signup' && (
+                <div style={{marginTop:'0.5rem', display:'flex', flexDirection:'column', gap:'0.2rem'}}>
+                  {[
+                    { check: form.password.length >= 12, label: 'At least 12 characters' },
+                    { check: /[A-Z]/.test(form.password), label: 'One uppercase letter (A-Z)' },
+                    { check: /[a-z]/.test(form.password), label: 'One lowercase letter (a-z)' },
+                    { check: /[0-9]/.test(form.password), label: 'One number (0-9)' },
+                    { check: /[^A-Za-z0-9]/.test(form.password), label: 'One special character (e.g. @, #, $, !, %)' },
+                  ].map((item, i) => (
+                    <div key={i} style={{display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.73rem', color: item.check ? 'var(--opal-teal)' : 'var(--muted)'}}>
+                      <span style={{fontSize:'0.65rem'}}>{item.check ? '✓' : '✗'}</span>
+                      {item.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button type="submit" disabled={loading} style={{
+              width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              background:'var(--accent)',
+              color:'#fff', fontFamily:'inherit', fontSize:'0.92rem', fontWeight:'700',
+              marginTop:'0.2rem', opacity: loading ? 0.7 : 1,
+              boxShadow: loading ? 'none' : '0 8px 22px rgba(99,102,241,0.35)',
+              transition:'all 0.2s',
+              display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem',
+            }}>
+              {loading ? (
+                <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> {tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
+              ) : tab === 'login' ? 'Sign In' : 'Sign Up'}
+            </button>
+          </div>
+        </form>
 
         <div style={{fontSize:'0.77rem', color:'var(--muted)', textAlign:'center', marginTop:'1rem'}}>
           {tab === 'login' ? (
             <>Don&apos;t have an account?{' '}
-              <span onClick={() => switchTab('signup')} style={{color:'#4488ff', cursor:'pointer', fontWeight:'600'}}>Create one free</span>
+              <span onClick={() => switchTab('signup')} style={{color:'var(--accent)', cursor:'pointer', fontWeight:'600'}}>Create one free</span>
             </>
           ) : (
             <>Already have an account?{' '}
-              <span onClick={() => switchTab('login')} style={{color:'#4488ff', cursor:'pointer', fontWeight:'600'}}>Sign in</span>
+              <span onClick={() => switchTab('login')} style={{color:'var(--accent)', cursor:'pointer', fontWeight:'600'}}>Sign in</span>
             </>
           )}
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
