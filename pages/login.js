@@ -30,50 +30,53 @@ export default function Login() {
     if (currentUser) router.push('/');
   }, [currentUser]);
 
-  async function handleGoogle() {
+  useEffect(() => {
+    loadGis();
+  }, []);
+
+  function handleGoogle() {
     setLoading(true);
     setErrors({});
-    try {
-      await loadGis();
-      const client = google.accounts.oauth2.initTokenClient({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        scope: 'openid profile email',
-        callback: async (res) => {
-          if (res.access_token) {
-            try {
-              const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                headers: { Authorization: `Bearer ${res.access_token}` },
-              });
-              const info = await r.json();
-              const user = {
-                id: info.sub,
-                email: info.email || '',
-                firstName: info.given_name || '',
-                lastName: info.family_name || '',
-                username: '',
-                picture: info.picture || '',
-                provider: 'google',
-                createdAt: new Date().toISOString(),
-              };
-              signInWithGoogle(user);
-              logger.info('Google Sign-In', 'Successful', { email: info.email });
-              router.push('/');
-            } catch {
-              setErrors({ general: 'Failed to get user info from Google' });
-            }
-          }
-          setLoading(false);
-        },
-        error_callback: () => {
-          setErrors({ general: 'Popup blocked or cancelled. Please allow popups for this site.' });
-          setLoading(false);
-        },
-      });
-      client.requestAccessToken();
-    } catch (e) {
-      setErrors({ general: 'Google sign-in failed. Make sure popups are allowed.' });
+    if (!window.google?.accounts?.oauth2) {
+      setErrors({ general: 'Google sign-in not loaded yet. Try again.' });
       setLoading(false);
+      return;
     }
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      scope: 'openid profile email',
+      callback: async (res) => {
+        if (res.access_token) {
+          try {
+            const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+              headers: { Authorization: `Bearer ${res.access_token}` },
+            });
+            const info = await r.json();
+            const user = {
+              id: info.sub,
+              email: info.email || '',
+              firstName: info.given_name || '',
+              lastName: info.family_name || '',
+              username: '',
+              picture: info.picture || '',
+              provider: 'google',
+              createdAt: new Date().toISOString(),
+            };
+            signInWithGoogle(user);
+            logger.info('Google Sign-In', 'Successful', { email: info.email });
+            router.push('/');
+          } catch {
+            setErrors({ general: 'Failed to get user info from Google' });
+          }
+        }
+        setLoading(false);
+      },
+      error_callback: () => {
+        setErrors({ general: 'Popup blocked or cancelled. Please allow popups for this site and try again.' });
+        setLoading(false);
+      },
+    });
+    client.requestAccessToken();
   }
 
   function switchTab(t) {
