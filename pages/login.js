@@ -2,10 +2,20 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useApp } from '../context/AppContext';
-import { getSupabase } from '../lib/supabase';
 import { checkUsername } from '../lib/supabase-db';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
+
+function loadGis() {
+  if (window.google?.accounts) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
 
 export default function Login() {
   const { currentUser, signInWithGoogle } = useApp();
@@ -24,18 +34,44 @@ export default function Login() {
     setLoading(true);
     setErrors({});
     try {
-      const supabase = getSupabase();
-      if (!supabase) { setErrors({ general: 'Backend not configured.' }); setLoading(false); return; }
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: `${window.location.origin}/auth/callback` },
+      await loadGis();
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        scope: 'openid profile email',
+        callback: async (res) => {
+          if (res.access_token) {
+            try {
+              const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${res.access_token}` },
+              });
+              const info = await r.json();
+              const user = {
+                id: info.sub,
+                email: info.email || '',
+                firstName: info.given_name || '',
+                lastName: info.family_name || '',
+                username: '',
+                picture: info.picture || '',
+                provider: 'google',
+                createdAt: new Date().toISOString(),
+              };
+              signInWithGoogle(user);
+              logger.info('Google Sign-In', 'Successful', { email: info.email });
+              router.push('/');
+            } catch {
+              setErrors({ general: 'Failed to get user info from Google' });
+            }
+          }
+          setLoading(false);
+        },
+        error_callback: () => {
+          setErrors({ general: 'Popup blocked or cancelled. Please allow popups for this site.' });
+          setLoading(false);
+        },
       });
-      if (error) {
-        setErrors({ general: error.message });
-        setLoading(false);
-      }
-    } catch {
-      setErrors({ general: 'Failed to start Google sign-in' });
+      client.requestAccessToken();
+    } catch (e) {
+      setErrors({ general: 'Google sign-in failed. Make sure popups are allowed.' });
       setLoading(false);
     }
   }
