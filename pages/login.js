@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useApp } from '../context/AppContext';
@@ -7,17 +7,15 @@ import { checkUsername } from '../lib/supabase-db';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
 
-function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    ).join(''));
-    return JSON.parse(jsonPayload);
-  } catch {
-    return null;
-  }
+function loadGis() {
+  if (window.google?.accounts) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
 }
 
 export default function Login() {
@@ -28,56 +26,68 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const googleCallbackRef = useRef(null);
-
-  function handleGoogleCredentialResponse(response) {
-    const payload = decodeJwt(response.credential);
-    if (!payload) {
-      setErrors({ general: 'Failed to verify sign-in. Please try again.' });
-      return;
-    }
-
-    setLoading(true);
-    setErrors({});
-
-    signInWithGoogle({
-      id: payload.sub,
-      email: payload.email || '',
-      firstName: payload.given_name || '',
-      lastName: payload.family_name || '',
-      username: '',
-      picture: payload.picture || '',
-      provider: 'google',
-      createdAt: new Date().toISOString(),
-    });
-    logger.info('Google Sign-In', 'Successful', { email: payload.email });
-    router.push('/');
-  }
-
-  useEffect(() => {
-    googleCallbackRef.current = handleGoogleCredentialResponse;
-  });
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      if (window.google?.accounts?.id) {
-        window.google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-          callback: (res) => googleCallbackRef.current(res),
-          cancel_on_tap_outside: false,
-        });
-      }
-    };
-    document.head.appendChild(script);
-  }, []);
 
   useEffect(() => {
     if (currentUser) router.push('/');
   }, [currentUser]);
+
+  async function handleGoogle() {
+    setLoading(true);
+    setErrors({});
+    try {
+      await loadGis();
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        scope: 'openid profile email',
+        callback: async (tokenResponse) => {
+          if (tokenResponse.access_token) {
+            try {
+              const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+              });
+              const info = await res.json();
+
+              const user = {
+                id: info.sub,
+                email: info.email || '',
+                firstName: info.given_name || '',
+                lastName: info.family_name || '',
+                username: '',
+                picture: info.picture || '',
+                provider: 'google',
+                createdAt: new Date().toISOString(),
+              };
+
+              try {
+                const supabase = getSupabase();
+                if (supabase && tokenResponse.id_token) {
+                  await supabase.auth.signInWithIdToken({
+                    provider: 'google',
+                    token: tokenResponse.id_token,
+                  });
+                }
+              } catch {}
+
+              signInWithGoogle(user);
+              logger.info('Google Sign-In', 'Successful', { email: info.email });
+              router.push('/');
+            } catch {
+              setErrors({ general: 'Failed to get user info' });
+            }
+          }
+          setLoading(false);
+        },
+        error_callback: () => {
+          setErrors({ general: 'Google sign-in was cancelled or failed' });
+          setLoading(false);
+        },
+      });
+      client.requestAccessToken();
+    } catch {
+      setErrors({ general: 'Failed to load Google sign-in' });
+      setLoading(false);
+    }
+  }
 
   function switchTab(t) {
     setTab(t);
@@ -215,14 +225,6 @@ export default function Login() {
     logger.info('Signup', 'Account created', { email: form.email.toLowerCase() });
     setMessage('Account created! Check your email to confirm your sign-in.');
     setLoading(false);
-  }
-
-  function handleGoogle() {
-    if (window.google?.accounts?.id) {
-      window.google.accounts.id.prompt();
-    } else {
-      setErrors({ general: 'Google sign-in is loading. Please try again.' });
-    }
   }
 
   const inp = (hasErr) => ({
