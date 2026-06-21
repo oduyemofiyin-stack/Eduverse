@@ -7,6 +7,7 @@ import { getSupabase } from '../lib/supabase';
 export default function Login() {
   const { currentUser, signInWithGoogle } = useApp();
   const router = useRouter();
+  const [tab, setTab] = useState('login');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -52,7 +53,6 @@ export default function Login() {
                 createdAt: new Date().toISOString(),
               };
 
-              // Create Supabase session in background for DB access
               try {
                 const supabase = getSupabase();
                 if (supabase && tokenResponse.id_token) {
@@ -85,7 +85,7 @@ export default function Login() {
   return (
     <main>
       <Head>
-        <title>Sign In | Eduverse</title>
+        <title>{tab === 'login' ? 'Sign In' : 'Sign Up'} | Eduverse</title>
       </Head>
       <div suppressHydrationWarning style={{
         minHeight:'100vh', background:'var(--bg)',
@@ -116,12 +116,26 @@ export default function Login() {
             <span className="heading-serif" style={{fontSize:'1.4rem', fontWeight:'700', background:'linear-gradient(135deg,#f0c040,#4488ff 55%,#00d4aa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>Eduverse</span>
           </div>
 
+          {/* TABS */}
+          <div style={{display:'flex', background:'var(--surface2)', borderRadius:'12px', padding:'4px', marginBottom:'1.6rem'}}>
+            {['login','signup'].map(t => (
+              <button key={t} type="button" onClick={() => { setTab(t); setError(''); }} style={{
+                flex:1, padding:'0.5rem', borderRadius:'9px', border:'none',
+                background: tab === t ? 'var(--surface3)' : 'transparent',
+                color: tab === t ? 'var(--text)' : 'var(--muted)',
+                fontFamily:'inherit', fontSize:'0.85rem', fontWeight:'600', cursor:'pointer',
+              }}>
+                {t === 'login' ? 'Sign In' : 'Sign Up'}
+              </button>
+            ))}
+          </div>
+
           {/* TITLE */}
           <div className="heading-serif" style={{fontSize:'1.3rem', fontWeight:'700', textAlign:'center', marginBottom:'0.3rem', color:'var(--text)'}}>
-            Welcome back
+            {tab === 'login' ? 'Welcome back' : 'Sign Up'}
           </div>
           <div style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', marginBottom:'1.4rem'}}>
-            Sign in to continue your learning journey
+            {tab === 'login' ? 'Sign in to continue your learning journey' : 'Join Eduverse and start learning'}
           </div>
 
           {/* ERROR */}
@@ -151,7 +165,7 @@ export default function Login() {
                 <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
               </svg>
             )}
-            Continue with Google
+            {tab === 'login' ? 'Continue with Google' : 'Sign up with Google'}
           </button>
 
           <div style={{fontSize:'0.77rem', color:'var(--muted)', textAlign:'center', marginTop:'0.5rem'}}>
