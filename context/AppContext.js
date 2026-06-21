@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { getSupabase } from '../lib/supabase';
 import { upsertUserData } from '../lib/supabase-db';
 
 const AppContext = createContext();
@@ -90,6 +91,35 @@ export function AppProvider({ children }) {
     setCurrentUser(user);
     saveLocal('eduverse_user', user);
   }
+
+  // ─── Supabase Session Restore (for DB access) ───
+  useEffect(() => {
+    const supabase = getSupabase();
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        const stored = loadLocal('eduverse_user');
+        if (!stored) {
+          setCurrentUser({
+            id: session.user.id,
+            email: session.user.email || '',
+            firstName: session.user.user_metadata?.first_name || '',
+            lastName: session.user.user_metadata?.last_name || '',
+            username: '',
+            picture: session.user.user_metadata?.avatar_url || '',
+            provider: session.user.app_metadata?.provider || 'email',
+            createdAt: session.user.created_at,
+          });
+        }
+      }
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        clearUserState();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   function clearUserState() {
     setCurrentUser(null);
