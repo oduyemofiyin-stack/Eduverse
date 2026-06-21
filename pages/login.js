@@ -17,55 +17,27 @@ export default function Login() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // Handle OAuth redirect back (token in URL fragment)
-    const hash = window.location.hash.substring(1);
-    if (hash) {
-      const params = new URLSearchParams(hash);
-      const accessToken = params.get('access_token');
-      if (accessToken) {
-        window.history.replaceState({}, '', window.location.pathname);
-        fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        })
-        .then(r => r.json())
-        .then(async (info) => {
-          const user = {
-            id: info.sub,
-            email: info.email || '',
-            firstName: info.given_name || '',
-            lastName: info.family_name || '',
-            username: '',
-            picture: info.picture || '',
-            provider: 'google',
-            createdAt: new Date().toISOString(),
-          };
-          const idToken = params.get('id_token');
-          if (idToken) {
-            try {
-              const supabase = getSupabase();
-              if (supabase) await supabase.auth.signInWithIdToken({ provider: 'google', token: idToken });
-            } catch {}
-          }
-          signInWithGoogle(user);
-          logger.info('Google Sign-In', 'Successful', { email: info.email });
-          router.push('/');
-        })
-        .catch(() => setErrors({ general: 'Failed to get user info from Google' }));
-        return;
-      }
-    }
     if (currentUser) router.push('/');
   }, [currentUser]);
 
-  function handleGoogle() {
-    const params = new URLSearchParams({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      redirect_uri: window.location.origin,
-      response_type: 'token id_token',
-      scope: 'openid profile email',
-      nonce: Math.random().toString(36),
-    });
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+  async function handleGoogle() {
+    setLoading(true);
+    setErrors({});
+    try {
+      const supabase = getSupabase();
+      if (!supabase) { setErrors({ general: 'Backend not configured.' }); setLoading(false); return; }
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/auth/callback` },
+      });
+      if (error) {
+        setErrors({ general: error.message });
+        setLoading(false);
+      }
+    } catch {
+      setErrors({ general: 'Failed to start Google sign-in' });
+      setLoading(false);
+    }
   }
 
   function switchTab(t) {

@@ -5,7 +5,8 @@ export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace('/login');
+    const t = setTimeout(() => router.replace('/'), 2000);
+    return () => clearTimeout(t);
   }, []);
 
   return null;

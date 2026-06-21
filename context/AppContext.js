@@ -114,7 +114,23 @@ export function AppProvider({ children }) {
       }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') {
+      if (session?.user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+        const stored = loadLocal('eduverse_user');
+        if (!stored) {
+          const user = {
+            id: session.user.id,
+            email: session.user.email || '',
+            firstName: session.user.user_metadata?.first_name || '',
+            lastName: session.user.user_metadata?.last_name || '',
+            username: '',
+            picture: session.user.user_metadata?.avatar_url || '',
+            provider: session.user.app_metadata?.provider || 'email',
+            createdAt: session.user.created_at,
+          };
+          setCurrentUser(user);
+          saveLocal('eduverse_user', user);
+        }
+      } else if (event === 'SIGNED_OUT') {
         clearUserState();
       }
     });
