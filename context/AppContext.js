@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { upsertUserData } from '../lib/supabase-db';
+import { getSupabase } from '../lib/supabase';
+import { getProfile, upsertUserData } from '../lib/supabase-db';
 
 const AppContext = createContext();
 
@@ -89,6 +90,65 @@ export function AppProvider({ children }) {
   function signInWithGoogle(user) {
     setCurrentUser(user);
     saveLocal('eduverse_user', user);
+  }
+
+  // ─── Supabase Auth Listener (handles OAuth callback & session restore) ───
+  useEffect(() => {
+    const supabase = getSupabase();
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) handleAuthUser(session.user);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+        handleAuthUser(session.user);
+      } else if (event === 'SIGNED_OUT') {
+        clearUserState();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleAuthUser(authUser) {
+    const user = {
+      id: authUser.id,
+      email: authUser.email || '',
+      firstName: authUser.user_metadata?.first_name || '',
+      lastName: authUser.user_metadata?.last_name || '',
+      username: '',
+      picture: authUser.user_metadata?.avatar_url || '',
+      provider: authUser.app_metadata?.provider || 'email',
+      createdAt: authUser.created_at,
+    };
+    setCurrentUser(user);
+    saveLocal('eduverse_user', user);
+    const profile = await getProfile(authUser.id);
+    if (profile) {
+      const enriched = { ...user, firstName: profile.first_name || user.firstName, lastName: profile.last_name || user.lastName, username: profile.username || user.username, picture: profile.picture || user.picture, provider: profile.provider || user.provider, createdAt: profile.created_at || user.createdAt };
+      setCurrentUser(enriched);
+      saveLocal('eduverse_user', enriched);
+      if (profile.data) {
+        const d = profile.data;
+        if (d.wishlist) setWishlist(d.wishlist);
+        if (d.enrolled) setEnrolled(d.enrolled);
+        if (d.progress) setProgress(d.progress);
+        if (d.readingProgress) setReadingProgress(d.readingProgress);
+        if (d.completed) setCompleted(d.completed);
+        if (d.ratings) setRatings(d.ratings);
+        if (d.xp !== undefined) setXp(d.xp);
+        if (d.streak !== undefined) setStreak(d.streak);
+        if (d.lastActiveDate) setLastActiveDate(d.lastActiveDate);
+        if (d.badges) setBadges(d.badges);
+        if (d.activityLog) setActivityLog(d.activityLog);
+        if (d.notes) setNotes(d.notes);
+        if (d.bookmarks) setBookmarks(d.bookmarks);
+        if (d.comments) setComments(d.comments);
+        if (d.certificates) setCertificates(d.certificates);
+        if (d.reviews) setReviews(d.reviews);
+        if (d.studyTime) setStudyTime(d.studyTime);
+        if (d.followingPaths) setFollowingPaths(d.followingPaths);
+      }
+    }
   }
 
   function clearUserState() {

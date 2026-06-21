@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useApp } from '../context/AppContext';
@@ -6,19 +6,6 @@ import { getSupabase } from '../lib/supabase';
 import { checkUsername } from '../lib/supabase-db';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
-
-function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    ).join(''));
-    return JSON.parse(jsonPayload);
-  } catch {
-    return null;
-  }
-}
 
 export default function Login() {
   const { currentUser, signInWithGoogle } = useApp();
@@ -28,7 +15,6 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const tokenClientRef = useRef(null);
 
   useEffect(() => {
     if (currentUser) router.push('/');
@@ -146,54 +132,18 @@ export default function Login() {
     setLoading(false);
   }
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      if (window.google?.accounts?.oauth2) {
-        tokenClientRef.current = window.google.accounts.oauth2.initTokenClient({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-          scope: 'openid email profile',
-          callback: (response) => {
-            if (response.error) {
-              setErrors({ general: 'Sign-in cancelled or failed.' });
-              setLoading(false);
-              return;
-            }
-            const payload = decodeJwt(response.id_token);
-            if (!payload) {
-              setErrors({ general: 'Failed to verify sign-in.' });
-              setLoading(false);
-              return;
-            }
-            signInWithGoogle({
-              id: payload.sub,
-              email: payload.email || '',
-              firstName: payload.given_name || '',
-              lastName: payload.family_name || '',
-              username: '',
-              picture: payload.picture || '',
-              provider: 'google',
-              createdAt: new Date().toISOString(),
-            });
-            logger.info('Google Sign-In', 'Successful', { email: payload.email });
-            router.push('/');
-          },
-        });
-      }
-    };
-    document.head.appendChild(script);
-  }, []);
-
-  function handleGoogle() {
-    if (tokenClientRef.current) {
-      setLoading(true);
-      setErrors({});
-      tokenClientRef.current.requestAccessToken();
-    } else {
-      setErrors({ general: 'Google sign-in is loading. Please try again.' });
+  async function handleGoogle() {
+    const supabase = getSupabase();
+    if (!supabase) { setErrors({ general: 'Backend not configured.' }); return; }
+    setLoading(true);
+    setErrors({});
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (error) {
+      setErrors({ general: error.message });
+      setLoading(false);
     }
   }
 
