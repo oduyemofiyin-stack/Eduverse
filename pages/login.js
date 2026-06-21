@@ -6,15 +6,15 @@ import { checkUsername } from '../lib/supabase-db';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
 
-function loadGis() {
-  if (window.google?.accounts) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
+function decodeJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+    return JSON.parse(jsonPayload);
+  } catch { return null; }
 }
 
 export default function Login() {
@@ -31,52 +31,40 @@ export default function Login() {
   }, [currentUser]);
 
   useEffect(() => {
-    loadGis();
+    if (window.google?.accounts?.id) return;
+    const s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.onload = () => {
+      google.accounts.id.initialize({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        callback: (res) => {
+          const payload = decodeJwt(res.credential);
+          if (!payload) { setErrors({ general: 'Failed to verify sign-in.' }); return; }
+          const user = {
+            id: payload.sub,
+            email: payload.email || '',
+            firstName: payload.given_name || '',
+            lastName: payload.family_name || '',
+            username: '',
+            picture: payload.picture || '',
+            provider: 'google',
+            createdAt: new Date().toISOString(),
+          };
+          signInWithGoogle(user);
+          logger.info('Google Sign-In', 'Successful', { email: payload.email });
+          router.push('/');
+        },
+      });
+    };
+    document.head.appendChild(s);
   }, []);
 
   function handleGoogle() {
-    setLoading(true);
-    setErrors({});
-    if (!window.google?.accounts?.oauth2) {
+    if (window.google?.accounts?.id) {
+      google.accounts.id.prompt();
+    } else {
       setErrors({ general: 'Google sign-in not loaded yet. Try again.' });
-      setLoading(false);
-      return;
     }
-    const client = google.accounts.oauth2.initTokenClient({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      scope: 'openid profile email',
-      callback: async (res) => {
-        if (res.access_token) {
-          try {
-            const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-              headers: { Authorization: `Bearer ${res.access_token}` },
-            });
-            const info = await r.json();
-            const user = {
-              id: info.sub,
-              email: info.email || '',
-              firstName: info.given_name || '',
-              lastName: info.family_name || '',
-              username: '',
-              picture: info.picture || '',
-              provider: 'google',
-              createdAt: new Date().toISOString(),
-            };
-            signInWithGoogle(user);
-            logger.info('Google Sign-In', 'Successful', { email: info.email });
-            router.push('/');
-          } catch {
-            setErrors({ general: 'Failed to get user info from Google' });
-          }
-        }
-        setLoading(false);
-      },
-      error_callback: () => {
-        setErrors({ general: 'Popup blocked or cancelled. Please allow popups for this site and try again.' });
-        setLoading(false);
-      },
-    });
-    client.requestAccessToken();
   }
 
   function switchTab(t) {
