@@ -28,52 +28,7 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const googleCallbackRef = useRef(null);
-
-  function handleGoogleCredentialResponse(response) {
-    const payload = decodeJwt(response.credential);
-    if (!payload) {
-      setErrors({ general: 'Failed to verify sign-in. Please try again.' });
-      return;
-    }
-
-    setLoading(true);
-    setErrors({});
-
-    signInWithGoogle({
-      id: payload.sub,
-      email: payload.email || '',
-      firstName: payload.given_name || '',
-      lastName: payload.family_name || '',
-      username: '',
-      picture: payload.picture || '',
-      provider: 'google',
-      createdAt: new Date().toISOString(),
-    });
-    logger.info('Google Sign-In', 'Successful', { email: payload.email });
-    router.push('/');
-  }
-
-  useEffect(() => {
-    googleCallbackRef.current = handleGoogleCredentialResponse;
-  });
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      if (window.google?.accounts?.id) {
-        window.google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-          callback: (res) => googleCallbackRef.current(res),
-          cancel_on_tap_outside: false,
-        });
-      }
-    };
-    document.head.appendChild(script);
-  }, []);
+  const tokenClientRef = useRef(null);
 
   useEffect(() => {
     if (currentUser) router.push('/');
@@ -191,9 +146,52 @@ export default function Login() {
     setLoading(false);
   }
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (window.google?.accounts?.oauth2) {
+        tokenClientRef.current = window.google.accounts.oauth2.initTokenClient({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+          scope: 'openid email profile',
+          callback: (response) => {
+            if (response.error) {
+              setErrors({ general: 'Sign-in cancelled or failed.' });
+              setLoading(false);
+              return;
+            }
+            const payload = decodeJwt(response.id_token);
+            if (!payload) {
+              setErrors({ general: 'Failed to verify sign-in.' });
+              setLoading(false);
+              return;
+            }
+            signInWithGoogle({
+              id: payload.sub,
+              email: payload.email || '',
+              firstName: payload.given_name || '',
+              lastName: payload.family_name || '',
+              username: '',
+              picture: payload.picture || '',
+              provider: 'google',
+              createdAt: new Date().toISOString(),
+            });
+            logger.info('Google Sign-In', 'Successful', { email: payload.email });
+            router.push('/');
+          },
+        });
+      }
+    };
+    document.head.appendChild(script);
+  }, []);
+
   function handleGoogle() {
-    if (window.google?.accounts?.id) {
-      window.google.accounts.id.prompt();
+    if (tokenClientRef.current) {
+      setLoading(true);
+      setErrors({});
+      tokenClientRef.current.requestAccessToken();
     } else {
       setErrors({ general: 'Google sign-in is loading. Please try again.' });
     }
