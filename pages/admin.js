@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
-import { getAllProfiles, deleteProfile } from '../lib/supabase-db';
+import { getAllUsers, deleteUser } from '../lib/firestore';
 import { AdminSkeleton } from '../components/Skeleton';
 
 const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || 'EMMANUEL';
@@ -28,7 +28,7 @@ export default function Admin() {
 
   useEffect(() => {
     if (loggedIn) {
-      getAllProfiles().then(p => { setAllProfiles(p); setProfilesLoading(false); });
+      getAllUsers().then(p => { setAllProfiles(p); setProfilesLoading(false); });
     }
   }, [loggedIn]);
 
@@ -214,9 +214,9 @@ export default function Admin() {
         {activeTab === 'users' && (
           <div>
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>
-              Registered Users (from Supabase)
+              Registered Users (from Firestore)
             </h2>
-            <button onClick={() => { setProfilesLoading(true); getAllProfiles().then(p => { setAllProfiles(p); setProfilesLoading(false); }); }}
+            <button onClick={() => { setProfilesLoading(true); getAllUsers().then(p => { setAllProfiles(p); setProfilesLoading(false); }); }}
               style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.5rem 1rem', borderRadius:'9px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', marginBottom:'1rem'}}>
               Refresh
             </button>
@@ -224,7 +224,7 @@ export default function Admin() {
               <AdminSkeleton/>
             ) : allProfiles.length === 0 ? (
               <div style={{textAlign:'center', padding:'3rem', color:'var(--muted)'}}>
-                <p>No users found in Supabase yet.</p>
+                <p>No users found in Firestore yet.</p>
                 <p style={{fontSize:'0.82rem', marginTop:'0.5rem'}}>Users appear here after they sign up and their profile is created.</p>
               </div>
             ) : (

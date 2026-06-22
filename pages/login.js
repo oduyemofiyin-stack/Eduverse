@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useApp } from '../context/AppContext';
-import { checkUsername } from '../lib/supabase-db';
+import { checkUsername } from '../lib/firestore';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
 
@@ -21,6 +21,7 @@ export default function Login() {
   const { currentUser, signInWithGoogle } = useApp();
   const router = useRouter();
   const [tab, setTab] = useState('login');
+  const [useFirebase, setUseFirebase] = useState(false);
   const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -109,41 +110,14 @@ export default function Login() {
     setLoading(true);
     setErrors({});
 
-    const supabase = getSupabase();
-    if (!supabase) { setErrors({ general: 'Backend not configured.' }); setLoading(false); return; }
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    });
-
-    if (error) {
-      logger.warn('Login', 'Failed login attempt', { email: form.email.toLowerCase(), error: error.message });
-      if (error.message.includes('Email not confirmed')) {
-        setErrors({ general: 'Please confirm your email before signing in. Check your inbox.' });
-      } else {
-        setErrors({ general: 'Incorrect email or password. Please try again.' });
-      }
+    if (!useFirebase) {
+      setErrors({ general: 'Email login is currently unavailable. Please use Google sign-in.' });
       setLoading(false);
       return;
     }
 
-    if (data?.user) {
-      signInWithGoogle({
-        id: data.user.id,
-        email: data.user.email || form.email,
-        firstName: data.user.user_metadata?.first_name || '',
-        lastName: data.user.user_metadata?.last_name || '',
-        username: '',
-        picture: data.user.user_metadata?.avatar_url || '',
-        provider: 'email',
-        createdAt: data.user.created_at,
-      });
-    }
-
-    logger.info('Login', 'Successful login', { email: form.email.toLowerCase() });
+    setErrors({ general: 'Email login is not available with the current setup.' });
     setLoading(false);
-    setTimeout(() => router.push('/'), 300);
   }
 
   async function handleSignup() {
@@ -154,8 +128,11 @@ export default function Login() {
     setLoading(true);
     setErrors({});
 
-    const supabase = getSupabase();
-    if (!supabase) { setErrors({ general: 'Backend not configured.' }); setLoading(false); return; }
+    if (!useFirebase) {
+      setErrors({ general: 'Email signup is currently unavailable. Please use Google sign-in.' });
+      setLoading(false);
+      return;
+    }
 
     const usernameAvailable = await checkUsername(form.username.trim());
     if (!usernameAvailable) {
@@ -164,44 +141,19 @@ export default function Login() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
+    signInWithGoogle({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2),
       email: form.email,
-      password: form.password,
-      options: {
-        data: {
-          first_name: form.firstName.trim(),
-          last_name: form.lastName.trim(),
-          username: form.username.trim(),
-        },
-      },
+      firstName: form.firstName.trim(),
+      lastName: form.lastName.trim(),
+      username: form.username.trim(),
+      picture: '',
+      provider: 'email',
+      createdAt: new Date().toISOString(),
     });
 
-    if (error) {
-      logger.warn('Signup', 'Failed', { email: form.email.toLowerCase(), error: error.message });
-      if (error.message.includes('already registered')) {
-        setErrors({ general: 'An account with this email already exists.' });
-      } else {
-        setErrors({ general: error.message });
-      }
-      setLoading(false);
-      return;
-    }
-
-    if (data?.user) {
-      signInWithGoogle({
-        id: data.user.id,
-        email: data.user.email || form.email,
-        firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
-        username: form.username.trim(),
-        picture: data.user.user_metadata?.avatar_url || '',
-        provider: 'email',
-        createdAt: data.user.created_at,
-      });
-    }
-
     logger.info('Signup', 'Account created', { email: form.email.toLowerCase() });
-    setMessage('Account created! Check your email to confirm your sign-in.');
+    setMessage('Account created! You are now signed in.');
     setLoading(false);
   }
 

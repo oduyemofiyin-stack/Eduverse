@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { upsertUserData } from '../lib/supabase-db';
+import { saveUserData, loadUserData } from '../lib/firestore';
+import { getDbInstance } from '../lib/firebase';
 
 const AppContext = createContext();
 
@@ -58,7 +59,7 @@ function saveLocal(key, value) {
 
 export function AppProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => loadLocal('eduverse_user'));
-  const [authInitialized] = useState(true);
+  const [authInitialized, setAuthInitialized] = useState(false);
   const [wishlist, setWishlist] = useState(() => loadLocal('eduverse_wishlist', []));
   const [enrolled, setEnrolled] = useState(() => loadLocal('eduverse_enrolled', []));
   const [progress, setProgress] = useState(() => loadLocal('eduverse_progress', {}));
@@ -88,7 +89,30 @@ export function AppProvider({ children }) {
 
   function signInWithGoogle(user) {
     setCurrentUser(user);
+    setAuthInitialized(true);
     saveLocal('eduverse_user', user);
+    loadUserData(user.id).then(data => {
+      if (data) {
+        if (data.wishlist) setWishlist(data.wishlist);
+        if (data.enrolled) setEnrolled(data.enrolled);
+        if (data.progress) setProgress(data.progress);
+        if (data.readingProgress) setReadingProgress(data.readingProgress);
+        if (data.completed) setCompleted(data.completed);
+        if (data.ratings) setRatings(data.ratings);
+        if (data.xp !== undefined) setXp(data.xp);
+        if (data.streak !== undefined) setStreak(data.streak);
+        if (data.lastActiveDate) setLastActiveDate(data.lastActiveDate);
+        if (data.badges) setBadges(data.badges);
+        if (data.activityLog) setActivityLog(data.activityLog);
+        if (data.notes) setNotes(data.notes);
+        if (data.bookmarks) setBookmarks(data.bookmarks);
+        if (data.comments) setComments(data.comments);
+        if (data.certificates) setCertificates(data.certificates);
+        if (data.reviews) setReviews(data.reviews);
+        if (data.studyTime) setStudyTime(data.studyTime);
+        if (data.followingPaths) setFollowingPaths(data.followingPaths);
+      }
+    });
   }
 
   function clearUserState() {
@@ -109,12 +133,39 @@ export function AppProvider({ children }) {
     keys.forEach(k => localStorage.removeItem(k));
   }
 
-  // ─── Debounced Supabase Sync ───
+  // ─── Load user data from Firestore on mount ───
+  useEffect(() => {
+    if (!currentUser) { setAuthInitialized(true); return; }
+    setAuthInitialized(true);
+    loadUserData(currentUser.id).then(data => {
+      if (!data) return;
+      if (data.wishlist) setWishlist(data.wishlist);
+      if (data.enrolled) setEnrolled(data.enrolled);
+      if (data.progress) setProgress(data.progress);
+      if (data.readingProgress) setReadingProgress(data.readingProgress);
+      if (data.completed) setCompleted(data.completed);
+      if (data.ratings) setRatings(data.ratings);
+      if (data.xp !== undefined) setXp(data.xp);
+      if (data.streak !== undefined) setStreak(data.streak);
+      if (data.lastActiveDate) setLastActiveDate(data.lastActiveDate);
+      if (data.badges) setBadges(data.badges);
+      if (data.activityLog) setActivityLog(data.activityLog);
+      if (data.notes) setNotes(data.notes);
+      if (data.bookmarks) setBookmarks(data.bookmarks);
+      if (data.comments) setComments(data.comments);
+      if (data.certificates) setCertificates(data.certificates);
+      if (data.reviews) setReviews(data.reviews);
+      if (data.studyTime) setStudyTime(data.studyTime);
+      if (data.followingPaths) setFollowingPaths(data.followingPaths);
+    });
+  }, [currentUser]);
+
+  // ─── Debounced Firestore Sync ───
   const scheduleSync = useCallback(() => {
     if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
     syncTimeoutRef.current = setTimeout(() => {
       if (!currentUser) return;
-      upsertUserData(currentUser.id, {
+      saveUserData(currentUser.id, {
         wishlist, enrolled, progress, readingProgress,
         completed, ratings, xp, streak, lastActiveDate,
         badges, activityLog, notes, bookmarks, comments,
@@ -123,7 +174,7 @@ export function AppProvider({ children }) {
     }, 2000);
   }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, reviews, studyTime, followingPaths]);
 
-  // ─── Persist to localStorage + schedule Supabase sync ───
+  // ─── Persist to localStorage + schedule Firestore sync ───
   useEffect(() => { if (currentUser) { saveLocal('eduverse_user', currentUser); scheduleSync(); } }, [currentUser]);
   useEffect(() => { saveLocal('eduverse_wishlist', wishlist); if (currentUser) scheduleSync(); }, [wishlist]);
   useEffect(() => { saveLocal('eduverse_enrolled', enrolled); if (currentUser) scheduleSync(); }, [enrolled]);
@@ -179,7 +230,7 @@ export function AppProvider({ children }) {
   function manualSync() {
     if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
     if (!currentUser) return;
-    upsertUserData(currentUser.id, {
+    saveUserData(currentUser.id, {
       wishlist, enrolled, progress, readingProgress,
       completed, ratings, xp, streak, lastActiveDate,
       badges, activityLog, notes, bookmarks, comments,
