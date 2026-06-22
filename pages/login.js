@@ -6,17 +6,6 @@ import { checkUsername } from '../lib/firestore';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
 
-function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    ).join(''));
-    return JSON.parse(jsonPayload);
-  } catch { return null; }
-}
-
 export default function Login() {
   const { currentUser, signInWithGoogle } = useApp();
   const router = useRouter();
@@ -32,37 +21,44 @@ export default function Login() {
   }, [currentUser]);
 
   useEffect(() => {
-    if (window.google?.accounts?.id) return;
+    if (window.google?.accounts?.oauth2) return;
     const s = document.createElement('script');
     s.src = 'https://accounts.google.com/gsi/client';
-    s.onload = () => {
-      google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        callback: (res) => {
-          const payload = decodeJwt(res.credential);
-          if (!payload) { setErrors({ general: 'Failed to verify sign-in.' }); return; }
-          const user = {
-            id: payload.sub,
-            email: payload.email || '',
-            firstName: payload.given_name || '',
-            lastName: payload.family_name || '',
-            username: '',
-            picture: payload.picture || '',
-            provider: 'google',
-            createdAt: new Date().toISOString(),
-          };
-          signInWithGoogle(user);
-          logger.info('Google Sign-In', 'Successful', { email: payload.email });
-          router.push('/');
-        },
-      });
-    };
     document.head.appendChild(s);
   }, []);
 
   function handleGoogle() {
-    if (window.google?.accounts?.id) {
-      google.accounts.id.prompt();
+    if (window.google?.accounts?.oauth2) {
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        scope: 'openid email profile',
+        callback: (response) => {
+          if (response.access_token) {
+            fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+              headers: { Authorization: `Bearer ${response.access_token}` }
+            }).then(r => r.json()).then(user => {
+              signInWithGoogle({
+                id: user.sub,
+                email: user.email,
+                firstName: user.given_name || '',
+                lastName: user.family_name || '',
+                username: '',
+                picture: user.picture || '',
+                provider: 'google',
+                createdAt: new Date().toISOString(),
+              });
+              logger.info('Google Sign-In', 'Successful', { email: user.email });
+              router.push('/');
+            }).catch(() => {
+              setErrors({ general: 'Failed to get your profile from Google.' });
+            });
+          }
+        },
+        error_callback: () => {
+          setErrors({ general: 'Sign-in was cancelled or failed.' });
+        },
+      });
+      client.requestAccessToken();
     } else {
       setErrors({ general: 'Google sign-in not loaded yet. Try again.' });
     }
