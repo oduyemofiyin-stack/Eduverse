@@ -16,7 +16,7 @@ function AuthGuard({ Component, pageProps }) {
   const [transitioning, setTransitioning] = useState(false);
   const touchStartX = useRef(0);
 
-  const publicPaths = ['/login', '/admin', '/auth/callback'];
+  const publicPaths = ['/login', '/admin', '/auth/callback', '/', '/courses/[id]', '/paths', '/paths/[id]', '/instructors', '/instructors/[id]', '/blog', '/blog/[id]', '/about', '/contact', '/privacy', '/terms', '/search'];
 
   useEffect(() => {
     function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
@@ -60,11 +60,11 @@ function AuthGuard({ Component, pageProps }) {
   }
 
   if (!currentUser && !publicPaths.includes(router.pathname)) {
-    return null;
-  }
-
-  if (publicPaths.includes(router.pathname)) {
-    return <Component {...pageProps} />;
+    return (
+      <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 32, height: 32, borderRadius: '50%', border: '3px solid var(--border2)', borderTopColor: 'var(--accent)', animation: 'spin 0.6s linear infinite' }} />
+      </div>
+    );
   }
 
   return (

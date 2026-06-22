@@ -497,6 +497,11 @@ img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
 .list-item:nth-child(9) { animation-delay: 0.34s; }
 .list-item:nth-child(10) { animation-delay: 0.38s; }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* ── Flow canvas ── */
 #flow-canvas {
   position: absolute;

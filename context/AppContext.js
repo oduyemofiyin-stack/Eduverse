@@ -59,7 +59,7 @@ function saveLocal(key, value) {
 
 export function AppProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => loadLocal('eduverse_user'));
-  const [authInitialized, setAuthInitialized] = useState(false);
+  const [authInitialized] = useState(true);
   const [wishlist, setWishlist] = useState(() => loadLocal('eduverse_wishlist', []));
   const [enrolled, setEnrolled] = useState(() => loadLocal('eduverse_enrolled', []));
   const [progress, setProgress] = useState(() => loadLocal('eduverse_progress', {}));
@@ -89,7 +89,6 @@ export function AppProvider({ children }) {
 
   function signInWithGoogle(user) {
     setCurrentUser(user);
-    setAuthInitialized(true);
     saveLocal('eduverse_user', user);
     loadUserData(user.id).then(data => {
       if (data) {
@@ -135,8 +134,7 @@ export function AppProvider({ children }) {
 
   // ─── Load user data from Firestore on mount ───
   useEffect(() => {
-    if (!currentUser) { setAuthInitialized(true); return; }
-    setAuthInitialized(true);
+    if (!currentUser) return;
     loadUserData(currentUser.id).then(data => {
       if (!data) return;
       if (data.wishlist) setWishlist(data.wishlist);
