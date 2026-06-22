@@ -67,6 +67,10 @@ function AuthGuard({ Component, pageProps }) {
     );
   }
 
+  if (publicPaths.includes(router.pathname)) {
+    return <Component {...pageProps} />;
+  }
+
   return (
     <div style={{
       minHeight: '100vh',
