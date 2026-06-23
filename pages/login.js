@@ -20,57 +20,11 @@ export default function Login() {
     if (currentUser) router.push('/');
   }, [currentUser]);
 
-  useEffect(() => {
-    checkRedirectResult();
-  }, []);
-
-  async function getFirebaseAuth() {
-    const { initializeApp, getApps } = await import('firebase/app');
-    const { getAuth } = await import('firebase/auth');
-    const config = {
-      apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-      authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-    };
-    const app = getApps().length === 0 ? initializeApp(config) : getApps()[0];
-    return getAuth(app);
-  }
-
-  async function checkRedirectResult() {
-    try {
-      const { getRedirectResult } = await import('firebase/auth');
-      const auth = await getFirebaseAuth();
-      const result = await getRedirectResult(auth);
-      if (!result?.user) return;
-      const u = result.user;
-      signInWithGoogle({
-        id: u.uid,
-        email: u.email || '',
-        firstName: u.displayName?.split(' ')[0] || '',
-        lastName: u.displayName?.split(' ').slice(1).join(' ') || '',
-        username: '',
-        picture: u.photoURL || '',
-        provider: 'google',
-        createdAt: new Date().toISOString(),
-      });
-      logger.info('Google Sign-In', 'Successful redirect', { email: u.email });
-      router.push('/');
-    } catch {}
-  }
-
-  async function handleGoogle() {
-    try {
-      const { signInWithRedirect, GoogleAuthProvider } = await import('firebase/auth');
-      const auth = await getFirebaseAuth();
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      await signInWithRedirect(auth, provider);
-    } catch {
-      setErrors({ general: 'Failed to start Google sign-in.' });
-    }
+  function handleGoogle() {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    const redirectUri = encodeURIComponent(window.location.origin + '/auth/callback');
+    const scope = encodeURIComponent('openid email profile');
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
   }
 
   function switchTab(t) {
