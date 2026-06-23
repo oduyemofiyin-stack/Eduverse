@@ -95,8 +95,8 @@
 | **Framework** | [Next.js 16](https://nextjs.org/) (Pages Router) |
 | **UI Library** | [React 19](https://react.dev/) |
 | **Styling** | CSS Custom Properties (dark/light themes) |
-| **Backend** | [Firebase](https://firebase.google.com/) (Firestore, Auth, Analytics) |
-| **Authentication** | Custom OAuth 2.0 (Google) + Email/Password |
+| **Backend** | [Firebase](https://firebase.google.com/) (Firestore, Analytics) |
+| **Authentication** | Google OAuth 2.0 (implicit grant) + Email/Password |
 | **PDF Generation** | [jsPDF](https://github.com/parallax/jsPDF) + [html2canvas](https://html2canvas.hertzen.com/) |
 | **Internationalization** | [i18next](https://www.i18next.com/) (planned) |
 | **Email** | [EmailJS](https://www.emailjs.com/) (password reset) |
@@ -227,10 +227,11 @@ eduverse/
 │   └── resources.js         # External resource links
 │
 ├── lib/                     # Utilities & configuration
-│   ├── firebase.js          # Firebase initialization
+│   ├── firebase.js          # Firebase init (Firestore, Analytics)
 │   ├── firestore.js         # Firestore CRUD operations
 │   ├── animations.js        # Scroll reveal, parallax, magnetic, etc.
-│   └── sanitize.js          # Input sanitization & rate limiting
+│   ├── sanitize.js          # Input sanitization & rate limiting
+│   └── logger.js            # Client-side activity logger
 │
 ├── pages/                   # Next.js Pages Router
 │   ├── index.js             # Home page
