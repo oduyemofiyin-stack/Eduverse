@@ -1,21 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useApp } from '../context/AppContext';
+import { getAuthInstance } from '../lib/firebase';
 import { checkUsername } from '../lib/firestore';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
-
-function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    ).join(''));
-    return JSON.parse(jsonPayload);
-  } catch { return null; }
-}
 
 export default function Login() {
   const { currentUser, signInWithGoogle } = useApp();
@@ -31,49 +21,47 @@ export default function Login() {
     if (currentUser) router.push('/');
   }, [currentUser]);
 
-  const gBtnRef = useRef(null);
-
   useEffect(() => {
-    if (window.google?.accounts?.id) return;
-    const s = document.createElement('script');
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.onload = () => {
-      google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        callback: (res) => {
-          const payload = decodeJwt(res.credential);
-          if (!payload) { setErrors({ general: 'Failed to verify sign-in.' }); return; }
-          const user = {
-            id: payload.sub,
-            email: payload.email || '',
-            firstName: payload.given_name || '',
-            lastName: payload.family_name || '',
-            username: '',
-            picture: payload.picture || '',
-            provider: 'google',
-            createdAt: new Date().toISOString(),
-          };
-          signInWithGoogle(user);
-          logger.info('Google Sign-In', 'Successful', { email: payload.email });
-          router.push('/');
-        },
-      });
-      google.accounts.id.renderButton(gBtnRef.current, {
-        type: 'standard', shape: 'rectangular',
-        theme: 'outline', size: 'large',
-        text: 'continue_with', logo_alignment: 'left',
-      });
-    };
-    document.head.appendChild(s);
+    checkRedirectResult();
   }, []);
 
-  function handleGoogle() {
-    const btn = gBtnRef.current?.querySelector('div[role=button]');
-    if (btn) { btn.click(); return; }
-    if (window.google?.accounts?.id) {
-      google.accounts.id.prompt();
-    } else {
-      setErrors({ general: 'Google sign-in not loaded yet. Try again.' });
+  async function checkRedirectResult() {
+    try {
+      const { getRedirectResult } = await import('firebase/auth');
+      const auth = getAuthInstance();
+      if (!auth) return;
+      const result = await getRedirectResult(auth);
+      if (!result?.user) return;
+      const u = result.user;
+      signInWithGoogle({
+        id: u.uid,
+        email: u.email || '',
+        firstName: u.displayName?.split(' ')[0] || '',
+        lastName: u.displayName?.split(' ').slice(1).join(' ') || '',
+        username: '',
+        picture: u.photoURL || '',
+        provider: 'google',
+        createdAt: new Date().toISOString(),
+      });
+      logger.info('Google Sign-In', 'Successful redirect', { email: u.email });
+      router.push('/');
+    } catch {}
+  }
+
+  async function handleGoogle() {
+    try {
+      const { signInWithRedirect } = await import('firebase/auth');
+      const { getGoogleProvider } = await import('../lib/firebase');
+      const auth = getAuthInstance();
+      const provider = getGoogleProvider();
+      if (!auth || !provider) {
+        setErrors({ general: 'Google sign-in is initializing. Try again.' });
+        return;
+      }
+      provider.setCustomParameters({ prompt: 'select_account' });
+      await signInWithRedirect(auth, provider);
+    } catch {
+      setErrors({ general: 'Failed to start Google sign-in.' });
     }
   }
 
@@ -247,7 +235,6 @@ export default function Login() {
           </svg>
           {tab === 'login' ? 'Continue with Google' : 'Sign up with Google'}
         </button>
-        <div ref={gBtnRef} style={{ display: 'none' }} />
 
         {/* DIVIDER */}
         <div style={{display:'flex', alignItems:'center', gap:'0.8rem', marginBottom:'1.2rem'}}>
