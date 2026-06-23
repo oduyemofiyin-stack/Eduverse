@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useApp } from '../context/AppContext';
-import { getAuthInstance } from '../lib/firebase';
 import { checkUsername } from '../lib/firestore';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
@@ -25,11 +24,25 @@ export default function Login() {
     checkRedirectResult();
   }, []);
 
+  async function getFirebaseAuth() {
+    const { initializeApp, getApps } = await import('firebase/app');
+    const { getAuth } = await import('firebase/auth');
+    const config = {
+      apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+      authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    };
+    const app = getApps().length === 0 ? initializeApp(config) : getApps()[0];
+    return getAuth(app);
+  }
+
   async function checkRedirectResult() {
     try {
       const { getRedirectResult } = await import('firebase/auth');
-      const auth = getAuthInstance();
-      if (!auth) return;
+      const auth = await getFirebaseAuth();
       const result = await getRedirectResult(auth);
       if (!result?.user) return;
       const u = result.user;
@@ -50,14 +63,9 @@ export default function Login() {
 
   async function handleGoogle() {
     try {
-      const { signInWithRedirect } = await import('firebase/auth');
-      const { getGoogleProvider } = await import('../lib/firebase');
-      const auth = getAuthInstance();
-      const provider = getGoogleProvider();
-      if (!auth || !provider) {
-        setErrors({ general: 'Google sign-in is initializing. Try again.' });
-        return;
-      }
+      const { signInWithRedirect, GoogleAuthProvider } = await import('firebase/auth');
+      const auth = await getFirebaseAuth();
+      const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: 'select_account' });
       await signInWithRedirect(auth, provider);
     } catch {
