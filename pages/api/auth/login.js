@@ -1,0 +1,67 @@
+import { verifyGoogleToken } from '../../../lib/verify-google';
+import { signToken } from '../../../lib/jwt';
+import { getUserById, saveUser } from '../../../lib/firestore-admin';
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const { idToken } = req.body;
+  if (!idToken) {
+    return res.status(400).json({ error: 'Missing idToken' });
+  }
+
+  const payload = await verifyGoogleToken(idToken);
+  if (!payload) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+
+  const userId = payload.sub;
+  const now = new Date().toISOString();
+
+  const userData = {
+    email: payload.email || '',
+    firstName: payload.given_name || payload.name?.split(' ')[0] || '',
+    lastName: payload.family_name || payload.name?.split(' ').slice(1).join(' ') || '',
+    picture: payload.picture || '',
+    provider: 'google',
+    lastLogin: now,
+  };
+
+  const existing = await getUserById(userId);
+  if (!existing) {
+    userData.createdAt = now;
+    userData.wishlist = [];
+    userData.enrolled = [];
+    userData.progress = {};
+    userData.readingProgress = {};
+    userData.completed = [];
+    userData.ratings = {};
+    userData.xp = 0;
+    userData.streak = 0;
+    userData.badges = [];
+    userData.activityLog = [];
+    userData.notes = {};
+    userData.bookmarks = {};
+    userData.comments = {};
+    userData.certificates = [];
+    userData.reviews = [];
+    userData.studyTime = {};
+    userData.followingPaths = [];
+  }
+
+  await saveUser(userId, userData);
+
+  const token = signToken({
+    sub: userId,
+    email: userData.email,
+    name: `${userData.firstName} ${userData.lastName}`.trim(),
+    picture: userData.picture,
+  });
+
+  res.status(200).json({
+    token,
+    user: { id: userId, ...userData },
+  });
+}

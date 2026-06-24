@@ -24,7 +24,9 @@ export default function Login() {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     const redirectUri = encodeURIComponent(window.location.origin + '/auth/callback');
     const scope = encodeURIComponent('openid email profile');
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
+    const nonce = Math.random().toString(36).substring(2) + Date.now().toString(36);
+    sessionStorage.setItem('google_nonce', nonce);
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=id_token token&scope=${scope}&nonce=${nonce}`;
   }
 
   function switchTab(t) {
