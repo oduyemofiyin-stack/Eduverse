@@ -29,7 +29,7 @@ export default function About() {
         }}>
           <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'0.7rem', color:'#f0c040'}}>Our Mission</h2>
           <p style={{fontSize:'0.93rem', color:'var(--muted)', lineHeight:'1.8', maxWidth:'560px', margin:'0 auto'}}>
-            To make world-class education accessible to everyone, everywhere — for free. We believe knowledge is a fundamental right, not a privilege.
+            To make world-class education accessible to everyone, everywhere for free. We believe knowledge is a fundamental right, not a privilege.
           </p>
         </div>
       </div>
@@ -43,7 +43,7 @@ export default function About() {
         padding:'0 1.2rem',
       }}>
         {[
-          {ico:null, title:'Accessibility', body:'Every course on Eduverse is completely free. No paywalls, no hidden fees, no subscriptions — ever.', color:'#4488ff'},
+          {ico:null, title:'Accessibility', body:'Every course on Eduverse is completely free. No paywalls, no hidden fees, no subscriptions.', color:'#4488ff'},
           {ico:null, title:'Excellence', body:'We curate only the best content from world-class instructors and trusted educational sources.', color:'#f0c040'},
           {ico:null, title:'Passion', body:'Learning should be exciting. Every experience is designed to ignite curiosity and keep you motivated.', color:'#ff6b9d'},
           {ico:null, title:'Community', body:'We are building a global community of learners who inspire, support, and grow together.', color:'#00d4aa'},

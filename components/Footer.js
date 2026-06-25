@@ -29,7 +29,7 @@ export default function Footer() {
               Eduverse
             </div>
             <p style={{ fontSize: '0.82rem', color: 'var(--muted)', lineHeight: '1.7', marginBottom: '1rem', maxWidth: '320px' }}>
-              World-class courses, real video lessons, reading materials, and free certificates — completely free forever.
+              World-class courses, real video lessons, reading materials, and free certificates completely free.
             </p>
             <div style={{ display: 'flex', gap: '0.6rem' }}>
               {[
