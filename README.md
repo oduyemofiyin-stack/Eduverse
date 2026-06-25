@@ -2,7 +2,7 @@
   <img src="./public/favicon.svg" width="80" alt="Eduverse Logo" />
   <h1 align="center">Eduverse</h1>
   <p align="center">
-    <strong>Learn free. Actually free.</strong>
+    <strong>World-class courses, real video lessons, reading materials, and free certificates completely free.</strong>
   </p>
   <p align="center">
     A modern, open-source learning platform built with Next.js — featuring interactive courses, gamification, certificates, and a full-featured user experience.
@@ -79,10 +79,16 @@
 - **Firebase Firestore** — cloud sync for all user data
 - **reCAPTCHA Enterprise** — bot protection on login, signup, and password reset
 - **Content Security Policy** headers
-- **Input sanitization** — XSS prevention
-- **Rate limiting** — brute force protection
+- **Server-side input sanitization** — XSS & injection prevention across all API routes
+- **Rate limiting** — 10 req/min per IP on login with auto IP ban after repeated violations
+- **IP ban system** — auto-ban after abuse + admin UI to ban/unban IPs
+- **Generic error messages** — no info leakage (always "Incorrect email or password")
+- **JWT authentication** — backend-issued tokens verified server-side
+- **Vercel Analytics & Speed Insights** — real-time usage and performance monitoring
+- **Centralized logging** — structured JSON logger across all services
+- **Error boundary** — caught rendering errors logged via centralized logger
 - **Service worker** cache management
-- **Admin panel** — user and course management
+- **Admin panel** — user, course, and IP ban management
 
 </details>
 
