@@ -14,6 +14,10 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+          {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",

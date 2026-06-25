@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppProvider, useApp } from '../context/AppContext';
 import { ToastProvider } from '../components/Toast';
 import Header from '../components/Header';
@@ -129,6 +131,8 @@ export default function MyApp({ Component, pageProps }) {
         <ToastProvider>
           <SwCleanup />
           <AuthGuard Component={Component} pageProps={pageProps} />
+          <Analytics />
+          <SpeedInsights />
         </ToastProvider>
       </AppProvider>
     </ErrorBoundary>

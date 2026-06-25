@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "firebase": "^12.15.0",
     "firebase-admin": "^14.1.0",
     "html2canvas": "^1.4.1",
