@@ -2,34 +2,7 @@ import { verifyGoogleToken } from '../../../lib/verify-google';
 import { signToken } from '../../../lib/jwt';
 import { getUserById, saveUser } from '../../../lib/firestore-admin';
 import { sanitize } from '../../../lib/sanitize';
-
-const rateMap = new Map();
-
-function getClientIp(req) {
-  return req.headers['x-forwarded-for']?.split(',')[0]?.trim()
-    || req.headers['x-real-ip']
-    || req.socket?.remoteAddress
-    || 'unknown';
-}
-
-function checkRateLimit(ip) {
-  const key = `login:${ip}`;
-  const now = Date.now();
-  const windowMs = 60000;
-  const maxRequests = 10;
-
-  const entry = rateMap.get(key);
-  if (!entry || now - entry.start > windowMs) {
-    rateMap.set(key, { count: 1, start: now });
-    return { allowed: true, remaining: maxRequests - 1 };
-  }
-
-  entry.count++;
-  if (entry.count > maxRequests) {
-    return { allowed: false };
-  }
-  return { allowed: true, remaining: maxRequests - entry.count };
-}
+import { getClientIp, checkBan, checkRateLimit } from '../../../lib/ip-ban';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -37,6 +10,12 @@ export default async function handler(req, res) {
   }
 
   const ip = getClientIp(req);
+
+  const ban = checkBan(ip);
+  if (ban.banned) {
+    return res.status(429).json({ error: 'Incorrect email or password' });
+  }
+
   const rate = checkRateLimit(ip);
   if (!rate.allowed) {
     return res.status(429).json({ error: 'Incorrect email or password' });

@@ -25,6 +25,10 @@ export default function Admin() {
   });
   const [allProfiles, setAllProfiles] = useState([]);
   const [profilesLoading, setProfilesLoading] = useState(false);
+  const [bannedIps, setBannedIps] = useState([]);
+  const [banIpInput, setBanIpInput] = useState('');
+  const [banReason, setBanReason] = useState('');
+  const [securityMsg, setSecurityMsg] = useState('');
 
   useEffect(() => {
     if (loggedIn) {
@@ -161,6 +165,7 @@ export default function Admin() {
             {id:'users', label:'Users'},
             {id:'courses', label:'Courses'},
             {id:'add', label:'Add Course'},
+            {id:'security', label:'Security'},
           ].map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
               fontSize:'0.85rem', fontWeight:'600', padding:'0.6rem 1.2rem',
@@ -385,6 +390,101 @@ export default function Admin() {
                 }}>Clear Form</button>
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'security' && (
+          <div>
+            <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>IP Ban Management</h2>
+
+            <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem', marginBottom:'1.5rem'}}>
+              <h3 style={{fontSize:'0.95rem', fontWeight:'600', marginBottom:'0.8rem'}}>Ban an IP</h3>
+              <div style={{display:'flex', gap:'0.7rem', flexWrap:'wrap', alignItems:'end'}}>
+                <div style={{flex:1, minWidth:'180px'}}>
+                  <label style={{display:'block', fontSize:'0.72rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.3rem', textTransform:'uppercase'}}>IP Address</label>
+                  <input type="text" placeholder="e.g. 192.168.1.1" value={banIpInput}
+                    onChange={e => setBanIpInput(e.target.value)} style={inp}/>
+                </div>
+                <div style={{flex:2, minWidth:'200px'}}>
+                  <label style={{display:'block', fontSize:'0.72rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.3rem', textTransform:'uppercase'}}>Reason</label>
+                  <input type="text" placeholder="e.g. Suspicious activity" value={banReason}
+                    onChange={e => setBanReason(e.target.value)} style={inp}/>
+                </div>
+                <button onClick={async () => {
+                  if (!banIpInput.trim()) return;
+                  await fetch('/api/admin/ip-bans', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('eduverse_token')}` },
+                    body: JSON.stringify({ ip: banIpInput.trim(), reason: banReason.trim() }),
+                  });
+                  setBanIpInput(''); setBanReason('');
+                  const res = await fetch('/api/admin/ip-bans', { headers: { Authorization: `Bearer ${localStorage.getItem('eduverse_token')}` } });
+                  const d = await res.json();
+                  setBannedIps(d.banned || []);
+                  setSecurityMsg('IP banned successfully.');
+                  setTimeout(() => setSecurityMsg(''), 3000);
+                }} style={{
+                  fontSize:'0.85rem', fontWeight:'600', padding:'0.6rem 1.2rem',
+                  borderRadius:'9px', border:'none', cursor:'pointer',
+                  background:'#ff6b6b', color:'#fff',
+                }}>Ban IP</button>
+              </div>
+            </div>
+
+            {securityMsg && (
+              <div style={{background:'rgba(94,234,212,0.1)', border:'1px solid rgba(94,234,212,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--teal)', marginBottom:'1rem'}}>
+                {securityMsg}
+              </div>
+            )}
+
+            <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1rem', flexWrap:'wrap', gap:'0.5rem'}}>
+              <h3 style={{fontSize:'0.95rem', fontWeight:'600'}}>Banned IPs ({bannedIps.length})</h3>
+              <button onClick={async () => {
+                const token = localStorage.getItem('eduverse_token');
+                const res = await fetch('/api/admin/ip-bans', { headers: { Authorization: `Bearer ${token}` } });
+                const d = await res.json();
+                setBannedIps(d.banned || []);
+              }} style={{
+                fontSize:'0.82rem', fontWeight:'600', padding:'0.45rem 0.9rem',
+                borderRadius:'8px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer',
+              }}>Refresh</button>
+            </div>
+
+            {bannedIps.length === 0 ? (
+              <div style={{textAlign:'center', padding:'2rem', color:'var(--muted)'}}>
+                <p style={{fontSize:'0.9rem'}}>No IPs are currently banned.</p>
+              </div>
+            ) : (
+              <div style={{display:'flex', flexDirection:'column', gap:'0.6rem'}}>
+                {bannedIps.map(b => (
+                  <div key={b.ip} style={{
+                    background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1rem',
+                    display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.5rem',
+                  }}>
+                    <div>
+                      <div style={{fontWeight:'600', fontSize:'0.9rem', fontFamily:'monospace'}}>{b.ip}</div>
+                      <div style={{fontSize:'0.76rem', color:'var(--muted)', marginTop:'0.2rem'}}>
+                        {b.reason} · Banned {new Date(b.bannedAt).toLocaleString()} · Expires {new Date(b.expiresAt).toLocaleString()}
+                      </div>
+                    </div>
+                    <button onClick={async () => {
+                      await fetch('/api/admin/ip-bans', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('eduverse_token')}` },
+                        body: JSON.stringify({ ip: b.ip }),
+                      });
+                      setBannedIps(prev => prev.filter(x => x.ip !== b.ip));
+                      setSecurityMsg(`Unbanned ${b.ip}.`);
+                      setTimeout(() => setSecurityMsg(''), 3000);
+                    }} style={{
+                      fontSize:'0.82rem', fontWeight:'600', padding:'0.45rem 0.9rem',
+                      borderRadius:'8px', border:'none', cursor:'pointer',
+                      background:'rgba(var(--blue-rgb,68,136,255),0.15)', color:'var(--blue)',
+                    }}>Unban</button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
