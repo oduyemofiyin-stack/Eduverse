@@ -55,6 +55,14 @@ function AuthGuard({ Component, pageProps }) {
     }
   }, [currentUser, authInitialized]);
 
+  if (!authInitialized) {
+    return (
+      <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 32, height: 32, borderRadius: '50%', border: '3px solid var(--border2)', borderTopColor: 'var(--accent)', animation: 'spin 0.6s linear infinite' }} />
+      </div>
+    );
+  }
+
   if (authInitialized && !currentUser && !publicPaths.includes(router.pathname)) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

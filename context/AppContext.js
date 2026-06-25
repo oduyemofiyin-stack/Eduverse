@@ -58,32 +58,32 @@ function saveLocal(key, value) {
 }
 
 export function AppProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(() => loadLocal('eduverse_user'));
-  const [authInitialized] = useState(true);
-  const [wishlist, setWishlist] = useState(() => loadLocal('eduverse_wishlist', []));
-  const [enrolled, setEnrolled] = useState(() => loadLocal('eduverse_enrolled', []));
-  const [progress, setProgress] = useState(() => loadLocal('eduverse_progress', {}));
-  const [readingProgress, setReadingProgress] = useState(() => loadLocal('eduverse_reading_progress', {}));
-  const [completed, setCompleted] = useState(() => loadLocal('eduverse_completed', []));
-  const [ratings, setRatings] = useState(() => loadLocal('eduverse_ratings', {}));
-  const [theme, setTheme] = useState(() => loadLocal('eduverse_theme', 'dark'));
-  const [xp, setXp] = useState(() => loadLocal('eduverse_xp', 0));
-  const [streak, setStreak] = useState(() => loadLocal('eduverse_streak', 0));
-  const [lastActiveDate, setLastActiveDate] = useState(() => loadLocal('eduverse_last_active_date'));
-  const [badges, setBadges] = useState(() => loadLocal('eduverse_badges', []));
-  const [activityLog, setActivityLog] = useState(() => loadLocal('eduverse_activity', []));
-  const [notes, setNotes] = useState(() => loadLocal('eduverse_notes', {}));
-  const [bookmarks, setBookmarks] = useState(() => loadLocal('eduverse_bookmarks', {}));
-  const [comments, setComments] = useState(() => loadLocal('eduverse_comments', {}));
-  const [certificates, setCertificates] = useState(() => loadLocal('eduverse_certificates', []));
-  const [reviews, setReviews] = useState(() => loadLocal('eduverse_reviews', []));
-  const [studyTime, setStudyTime] = useState(() => loadLocal('eduverse_study_time', {}));
-  const [followingPaths, setFollowingPaths] = useState(() => loadLocal('eduverse_following_paths', []));
-  const [plannerGoals, setPlannerGoals] = useState(() => loadLocal('eduverse_planner_goals', []));
-  const [plannerTarget, setPlannerTarget] = useState(() => loadLocal('eduverse_planner_target', 30));
-  const [unreadNotifications, setUnreadNotifications] = useState(() => loadLocal('eduverse_unread_notifications', 0));
-  const [dismissedNotifs, setDismissedNotifs] = useState(() => loadLocal('eduverse_dismissed_notifs', []));
-  const [leaderboard, setLeaderboard] = useState(() => loadLocal('eduverse_leaderboard', []));
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authInitialized, setAuthInitialized] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
+  const [enrolled, setEnrolled] = useState([]);
+  const [progress, setProgress] = useState({});
+  const [readingProgress, setReadingProgress] = useState({});
+  const [completed, setCompleted] = useState([]);
+  const [ratings, setRatings] = useState({});
+  const [theme, setTheme] = useState('dark');
+  const [xp, setXp] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [lastActiveDate, setLastActiveDate] = useState(null);
+  const [badges, setBadges] = useState([]);
+  const [activityLog, setActivityLog] = useState([]);
+  const [notes, setNotes] = useState({});
+  const [bookmarks, setBookmarks] = useState({});
+  const [comments, setComments] = useState({});
+  const [certificates, setCertificates] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [studyTime, setStudyTime] = useState({});
+  const [followingPaths, setFollowingPaths] = useState([]);
+  const [plannerGoals, setPlannerGoals] = useState([]);
+  const [plannerTarget, setPlannerTarget] = useState(30);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [dismissedNotifs, setDismissedNotifs] = useState([]);
+  const [leaderboard, setLeaderboard] = useState([]);
   const trackingRef = useRef(null);
   const syncTimeoutRef = useRef(null);
 
@@ -121,16 +121,50 @@ export function AppProvider({ children }) {
     setLastActiveDate(null); setBadges([]); setActivityLog([]);
     setNotes({}); setBookmarks({}); setComments({}); setCertificates([]);
     setReviews([]); setStudyTime({}); setFollowingPaths([]);
+    setPlannerGoals([]); setPlannerTarget(30);
+    setUnreadNotifications(0); setDismissedNotifs([]); setLeaderboard([]);
     const keys = [
       'eduverse_user', 'eduverse_wishlist', 'eduverse_enrolled', 'eduverse_progress',
       'eduverse_reading_progress', 'eduverse_completed', 'eduverse_ratings',
       'eduverse_xp', 'eduverse_streak', 'eduverse_last_active_date', 'eduverse_badges',
       'eduverse_activity', 'eduverse_notes', 'eduverse_bookmarks', 'eduverse_comments',
       'eduverse_certificates', 'eduverse_reviews', 'eduverse_study_time',
-      'eduverse_following_paths',
+      'eduverse_following_paths', 'eduverse_planner_goals', 'eduverse_planner_target',
+      'eduverse_unread_notifications', 'eduverse_dismissed_notifs', 'eduverse_leaderboard',
+      'eduverse_theme',
     ];
     keys.forEach(k => localStorage.removeItem(k));
   }
+
+  useEffect(() => {
+    const savedUser = loadLocal('eduverse_user');
+    if (savedUser) setCurrentUser(savedUser);
+    setWishlist(loadLocal('eduverse_wishlist', []));
+    setEnrolled(loadLocal('eduverse_enrolled', []));
+    setProgress(loadLocal('eduverse_progress', {}));
+    setReadingProgress(loadLocal('eduverse_reading_progress', {}));
+    setCompleted(loadLocal('eduverse_completed', []));
+    setRatings(loadLocal('eduverse_ratings', {}));
+    setTheme(loadLocal('eduverse_theme', 'dark'));
+    setXp(loadLocal('eduverse_xp', 0));
+    setStreak(loadLocal('eduverse_streak', 0));
+    setLastActiveDate(loadLocal('eduverse_last_active_date'));
+    setBadges(loadLocal('eduverse_badges', []));
+    setActivityLog(loadLocal('eduverse_activity', []));
+    setNotes(loadLocal('eduverse_notes', {}));
+    setBookmarks(loadLocal('eduverse_bookmarks', {}));
+    setComments(loadLocal('eduverse_comments', {}));
+    setCertificates(loadLocal('eduverse_certificates', []));
+    setReviews(loadLocal('eduverse_reviews', []));
+    setStudyTime(loadLocal('eduverse_study_time', {}));
+    setFollowingPaths(loadLocal('eduverse_following_paths', []));
+    setPlannerGoals(loadLocal('eduverse_planner_goals', []));
+    setPlannerTarget(loadLocal('eduverse_planner_target', 30));
+    setUnreadNotifications(loadLocal('eduverse_unread_notifications', 0));
+    setDismissedNotifs(loadLocal('eduverse_dismissed_notifs', []));
+    setLeaderboard(loadLocal('eduverse_leaderboard', []));
+    setAuthInitialized(true);
+  }, []);
 
   // ─── Load user data from Firestore on mount ───
   useEffect(() => {
