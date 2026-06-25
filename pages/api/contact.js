@@ -1,3 +1,5 @@
+import { sanitize, isValidEmail } from '../../lib/sanitize';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -5,10 +7,20 @@ export default async function handler(req, res) {
 
   const { name, email, subject, message } = req.body;
   if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: 'Invalid request' });
   }
 
-  const contactData = { name, email, subject: subject || '', message, receivedAt: new Date().toISOString() };
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: 'Invalid request' });
+  }
+
+  const contactData = {
+    name: sanitize(name),
+    email: sanitize(email),
+    subject: sanitize(subject || ''),
+    message: sanitize(message),
+    receivedAt: new Date().toISOString(),
+  };
 
   if (process.env.CONTACT_WEBHOOK_URL) {
     try {

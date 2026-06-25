@@ -7,7 +7,7 @@ async function handler(req, res) {
   }
 
   if (!isReady()) {
-    return res.status(503).json({ error: 'Firestore admin not configured. Set FIREBASE_SERVICE_ACCOUNT env var.' });
+    return res.status(503).json({ error: 'Service unavailable' });
   }
 
   const users = await getAllUsers();
