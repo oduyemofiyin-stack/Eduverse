@@ -4,7 +4,6 @@ import { useApp } from '../context/AppContext';
 import { CourseGridSkeleton } from '../components/Skeleton';
 import courses from '../data/courses';
 
-// Wishlist / saved courses page
 export default function Wishlist() {
   const { wishlist, toggleWishlist } = useApp();
   const router = useRouter();

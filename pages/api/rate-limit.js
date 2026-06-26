@@ -1,4 +1,6 @@
-const rateMap = new Map();
+import { getDb } from '../../lib/firestore-admin';
+
+const COLLECTION = 'rate_limits';
 
 function getClientIp(req) {
   return req.headers['x-forwarded-for']?.split(',')[0]?.trim()
@@ -7,9 +9,9 @@ function getClientIp(req) {
     || 'unknown';
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'This endpoint only accepts POST requests.' });
   }
 
   const { key, maxRequests = 5, windowMs = 60000 } = req.body;
@@ -17,21 +19,38 @@ export default function handler(req, res) {
   const rateKey = `${ip}:${key || 'default'}`;
   const now = Date.now();
 
-  const entry = rateMap.get(rateKey);
-  if (!entry || now - entry.start > windowMs) {
-    rateMap.set(rateKey, { count: 1, start: now });
+  const firestore = getDb();
+  if (!firestore) {
     return res.status(200).json({ allowed: true, remaining: maxRequests - 1 });
   }
 
-  entry.count++;
-  if (entry.count > maxRequests) {
-    const retryAfter = Math.ceil((windowMs - (now - entry.start)) / 1000);
-    return res.status(429).json({
-      allowed: false,
-      message: 'Too many requests. Please try again later.',
-      retryAfter,
-    });
-  }
+  const ref = firestore.collection(COLLECTION).doc(rateKey);
 
-  res.status(200).json({ allowed: true, remaining: maxRequests - entry.count });
+  try {
+    const result = await firestore.runTransaction(async (transaction) => {
+      const snap = await transaction.get(ref);
+      const entry = snap.data();
+      if (!entry) {
+        transaction.set(ref, { count: 1, start: new Date(now) });
+        return { allowed: true, remaining: maxRequests - 1 };
+      }
+      const start = entry.start?.toMillis?.() ?? entry.start;
+      if (now - start > windowMs) {
+        transaction.set(ref, { count: 1, start: new Date(now) });
+        return { allowed: true, remaining: maxRequests - 1 };
+      }
+      const count = entry.count + 1;
+      if (count > maxRequests) {
+        const retryAfter = Math.ceil((windowMs - (now - start)) / 1000);
+        transaction.set(ref, { count, start: entry.start });
+        return { allowed: false, message: 'Too many requests. Please try again later.', retryAfter };
+      }
+      transaction.set(ref, { count, start: entry.start });
+      return { allowed: true, remaining: maxRequests - count };
+    });
+    return res.status(result.allowed ? 200 : 429).json(result);
+  } catch (e) {
+    console.warn('Rate limit DB error:', e.message);
+    return res.status(200).json({ allowed: true, remaining: maxRequests - 1 });
+  }
 }

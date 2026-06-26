@@ -1,6 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
-// Custom document head with fonts and manifest
 export default function Document() {
   return (
     <Html lang="en">
@@ -21,7 +20,7 @@ export default function Document() {
             `,
           }}
         />
-        <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcbM_4sAAAAAIxAXswECKNaJf4eNm1Vwa5yVOlK"></script>
+        <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcbM_4sAAAAAIxAXswECKNaJf4eNm1Vwa5yVOlK" async></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

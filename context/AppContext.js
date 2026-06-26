@@ -54,7 +54,9 @@ function loadLocal(key, fallback = null) {
 function saveLocal(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch {}
+  } catch (e) {
+    console.warn('Failed to save to localStorage:', e.message);
+  }
 }
 
 export function AppProvider({ children }) {
@@ -206,32 +208,36 @@ export function AppProvider({ children }) {
     }, 2000);
   }, [currentUser, wishlist, enrolled, progress, readingProgress, completed, ratings, xp, streak, lastActiveDate, badges, activityLog, notes, bookmarks, comments, certificates, reviews, studyTime, followingPaths]);
 
-  // ─── Persist to localStorage + schedule Firestore sync ───
-  useEffect(() => { if (currentUser) { saveLocal('eduverse_user', currentUser); scheduleSync(); } }, [currentUser]);
-  useEffect(() => { saveLocal('eduverse_wishlist', wishlist); if (currentUser) scheduleSync(); }, [wishlist]);
-  useEffect(() => { saveLocal('eduverse_enrolled', enrolled); if (currentUser) scheduleSync(); }, [enrolled]);
-  useEffect(() => { saveLocal('eduverse_progress', progress); if (currentUser) scheduleSync(); }, [progress]);
-  useEffect(() => { saveLocal('eduverse_reading_progress', readingProgress); if (currentUser) scheduleSync(); }, [readingProgress]);
-  useEffect(() => { saveLocal('eduverse_completed', completed); if (currentUser) scheduleSync(); }, [completed]);
-  useEffect(() => { saveLocal('eduverse_ratings', ratings); if (currentUser) scheduleSync(); }, [ratings]);
+  const persist = useCallback((key, value, sync = false) => {
+    saveLocal(key, value);
+    if (sync && currentUser) scheduleSync();
+  }, [currentUser, scheduleSync]);
+
+  useEffect(() => { persist('eduverse_user', currentUser, true); }, [currentUser, persist]);
+  useEffect(() => { persist('eduverse_wishlist', wishlist, true); }, [wishlist, persist]);
+  useEffect(() => { persist('eduverse_enrolled', enrolled, true); }, [enrolled, persist]);
+  useEffect(() => { persist('eduverse_progress', progress, true); }, [progress, persist]);
+  useEffect(() => { persist('eduverse_reading_progress', readingProgress, true); }, [readingProgress, persist]);
+  useEffect(() => { persist('eduverse_completed', completed, true); }, [completed, persist]);
+  useEffect(() => { persist('eduverse_ratings', ratings, true); }, [ratings, persist]);
   useEffect(() => { saveLocal('eduverse_theme', theme); document.documentElement.setAttribute('data-theme', theme); }, [theme]);
-  useEffect(() => { saveLocal('eduverse_xp', xp); if (currentUser) scheduleSync(); }, [xp]);
-  useEffect(() => { saveLocal('eduverse_streak', streak); if (currentUser) scheduleSync(); }, [streak]);
-  useEffect(() => { saveLocal('eduverse_last_active_date', lastActiveDate); if (currentUser) scheduleSync(); }, [lastActiveDate]);
-  useEffect(() => { saveLocal('eduverse_badges', badges); if (currentUser) scheduleSync(); }, [badges]);
-  useEffect(() => { saveLocal('eduverse_activity', activityLog); if (currentUser) scheduleSync(); }, [activityLog]);
-  useEffect(() => { saveLocal('eduverse_notes', notes); if (currentUser) scheduleSync(); }, [notes]);
-  useEffect(() => { saveLocal('eduverse_bookmarks', bookmarks); if (currentUser) scheduleSync(); }, [bookmarks]);
-  useEffect(() => { saveLocal('eduverse_comments', comments); if (currentUser) scheduleSync(); }, [comments]);
-  useEffect(() => { saveLocal('eduverse_certificates', certificates); if (currentUser) scheduleSync(); }, [certificates]);
-  useEffect(() => { saveLocal('eduverse_study_time', studyTime); if (currentUser) scheduleSync(); }, [studyTime]);
-  useEffect(() => { saveLocal('eduverse_following_paths', followingPaths); }, [followingPaths]);
-  useEffect(() => { saveLocal('eduverse_planner_goals', plannerGoals); }, [plannerGoals]);
-  useEffect(() => { saveLocal('eduverse_planner_target', plannerTarget); }, [plannerTarget]);
-  useEffect(() => { saveLocal('eduverse_unread_notifications', unreadNotifications); }, [unreadNotifications]);
-  useEffect(() => { saveLocal('eduverse_dismissed_notifs', dismissedNotifs); }, [dismissedNotifs]);
-  useEffect(() => { saveLocal('eduverse_reviews', reviews); }, [reviews]);
-  useEffect(() => { saveLocal('eduverse_leaderboard', leaderboard); }, [leaderboard]);
+  useEffect(() => { persist('eduverse_xp', xp, true); }, [xp, persist]);
+  useEffect(() => { persist('eduverse_streak', streak, true); }, [streak, persist]);
+  useEffect(() => { persist('eduverse_last_active_date', lastActiveDate, true); }, [lastActiveDate, persist]);
+  useEffect(() => { persist('eduverse_badges', badges, true); }, [badges, persist]);
+  useEffect(() => { persist('eduverse_activity', activityLog, true); }, [activityLog, persist]);
+  useEffect(() => { persist('eduverse_notes', notes, true); }, [notes, persist]);
+  useEffect(() => { persist('eduverse_bookmarks', bookmarks, true); }, [bookmarks, persist]);
+  useEffect(() => { persist('eduverse_comments', comments, true); }, [comments, persist]);
+  useEffect(() => { persist('eduverse_certificates', certificates, true); }, [certificates, persist]);
+  useEffect(() => { persist('eduverse_study_time', studyTime, true); }, [studyTime, persist]);
+  useEffect(() => { persist('eduverse_following_paths', followingPaths); }, [followingPaths, persist]);
+  useEffect(() => { persist('eduverse_planner_goals', plannerGoals); }, [plannerGoals, persist]);
+  useEffect(() => { persist('eduverse_planner_target', plannerTarget); }, [plannerTarget, persist]);
+  useEffect(() => { persist('eduverse_unread_notifications', unreadNotifications); }, [unreadNotifications, persist]);
+  useEffect(() => { persist('eduverse_dismissed_notifs', dismissedNotifs); }, [dismissedNotifs, persist]);
+  useEffect(() => { persist('eduverse_reviews', reviews); }, [reviews, persist]);
+  useEffect(() => { persist('eduverse_leaderboard', leaderboard); }, [leaderboard, persist]);
 
   // ─── Streak check on mount ───
   useEffect(() => {

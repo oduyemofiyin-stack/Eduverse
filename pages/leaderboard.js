@@ -3,6 +3,46 @@ import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
 
+const RankCard = ({ rank, title, value, icon, color }) => (
+  <div style={{padding:'1.2rem', borderRadius:'16px', background:'var(--card-bg)', border:'1px solid var(--border)', textAlign:'center'}}>
+    <div style={{fontSize:'0.65rem', fontWeight:'600', textTransform:'uppercase', letterSpacing:'0.06em', color:'var(--muted)', marginBottom:'0.2rem'}}>{title}</div>
+    <div style={{fontSize:'2rem', fontWeight:'700', color: color || 'var(--text)'}}>{value}</div>
+    <div style={{fontSize:'0.7rem', color:'var(--muted2)'}}>{icon}</div>
+  </div>
+);
+
+const BadgeList = ({ badges }) => {
+  const allBadges = [
+    { id: 'first_lesson', icon: '', label: 'First Steps' },
+    { id: 'quiz_whiz', icon: '', label: 'Quiz Whiz' },
+    { id: 'streak_7', icon: '', label: 'Streak Master' },
+    { id: 'graduate', icon: '', label: 'Course Graduate' },
+    { id: 'explorer', icon: '', label: 'Knowledge Seeker' },
+    { id: 'centurion', icon: '', label: 'Centurion' },
+    { id: 'bookworm', icon: '', label: 'Bookworm' },
+  ];
+  return (
+    <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(130px, 1fr))', gap:'0.8rem'}}>
+      {allBadges.map(b => {
+        const earned = badges.includes(b.id);
+        return (
+          <div key={b.id} style={{
+            padding:'1rem', borderRadius:'12px', textAlign:'center',
+            background: earned ? `${'rgba(0,212,170,0.1)'}` : 'var(--surface2)',
+            border: `1px solid ${earned ? 'rgba(0,212,170,0.2)' : 'var(--border)'}`,
+            opacity: earned ? 1 : 0.4,
+            transition:'opacity 0.2s, transform 0.2s',
+          }}>
+            <div style={{fontSize:'1.5rem', marginBottom:'0.2rem', filter: earned ? 'none' : 'grayscale(1)'}}>{b.icon}</div>
+            <div style={{fontSize:'0.72rem', fontWeight:'600', color: earned ? 'var(--teal)' : 'var(--muted)'}}>{b.label}</div>
+            {earned && <div style={{fontSize:'0.6rem', color:'var(--teal)'}}>✓ Earned</div>}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export default function Leaderboard() {
   const { xp, streak, badges, getLevelInfo, enrolled, completed, activityLog } = useApp();
   const router = useRouter();
@@ -31,46 +71,6 @@ export default function Leaderboard() {
       </div>
     </div>
   );
-
-  const RankCard = ({ rank, title, value, icon, color }) => (
-    <div style={{padding:'1.2rem', borderRadius:'16px', background:'var(--card-bg)', border:'1px solid var(--border)', textAlign:'center'}}>
-      <div style={{fontSize:'0.65rem', fontWeight:'600', textTransform:'uppercase', letterSpacing:'0.06em', color:'var(--muted)', marginBottom:'0.2rem'}}>{title}</div>
-      <div style={{fontSize:'2rem', fontWeight:'700', color: color || 'var(--text)'}}>{value}</div>
-      <div style={{fontSize:'0.7rem', color:'var(--muted2)'}}>{icon}</div>
-    </div>
-  );
-
-  const BadgeList = () => {
-    const allBadges = [
-      { id: 'first_lesson', icon: '', label: 'First Steps' },
-      { id: 'quiz_whiz', icon: '', label: 'Quiz Whiz' },
-      { id: 'streak_7', icon: '', label: 'Streak Master' },
-      { id: 'graduate', icon: '', label: 'Course Graduate' },
-      { id: 'explorer', icon: '', label: 'Knowledge Seeker' },
-      { id: 'centurion', icon: '', label: 'Centurion' },
-      { id: 'bookworm', icon: '', label: 'Bookworm' },
-    ];
-    return (
-      <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(130px, 1fr))', gap:'0.8rem'}}>
-        {allBadges.map(b => {
-          const earned = badges.includes(b.id);
-          return (
-            <div key={b.id} style={{
-              padding:'1rem', borderRadius:'12px', textAlign:'center',
-              background: earned ? `${'rgba(0,212,170,0.1)'}` : 'var(--surface2)',
-              border: `1px solid ${earned ? 'rgba(0,212,170,0.2)' : 'var(--border)'}`,
-              opacity: earned ? 1 : 0.4,
-              transition:'opacity 0.2s, transform 0.2s',
-            }}>
-              <div style={{fontSize:'1.5rem', marginBottom:'0.2rem', filter: earned ? 'none' : 'grayscale(1)'}}>{b.icon}</div>
-              <div style={{fontSize:'0.72rem', fontWeight:'600', color: earned ? 'var(--teal)' : 'var(--muted)'}}>{b.label}</div>
-              {earned && <div style={{fontSize:'0.6rem', color:'var(--teal)'}}>✓ Earned</div>}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
 
   return (
     <div className="page-transition" style={{padding:'0 0 3rem'}}>
@@ -132,7 +132,7 @@ export default function Leaderboard() {
           </>
         )}
 
-        {tab === 'badges' && <BadgeList />}
+        {tab === 'badges' && <BadgeList badges={badges} />}
       </div>
     </div>
   );

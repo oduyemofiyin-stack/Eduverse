@@ -16,7 +16,6 @@ const sections = [
   { title:'13. Contact Us', body:'If you have any questions about these Terms, please contact us at: Eduverse Academy Ltd, 10 Osoro Street, Papa Ajao, Mushin, Lagos, Nigeria. Email: Oduyemofiyin@gmail.com' },
 ];
 
-// Terms of use page
 export default function Terms() {
   return (
     <div className="page-container" style={{maxWidth:'800px', margin:'0 auto', padding:'3rem 1.2rem 5rem'}}>

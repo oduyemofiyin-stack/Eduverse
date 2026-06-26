@@ -62,7 +62,7 @@ export default function Planner() {
         </div>
 
         <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.8rem'}}>
-          <h2 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700'}}>Today's Goals</h2>
+          <h2 style={{fontFamily:'Georgia, serif', fontSize:'1rem', fontWeight:'700'}}>Today&apos;s Goals</h2>
           <button onClick={() => setShowAdd(!showAdd)} style={{
             fontSize:'0.78rem', fontWeight:'600', padding:'0.4rem 1rem', borderRadius:'100px',
             border:'none', background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff',

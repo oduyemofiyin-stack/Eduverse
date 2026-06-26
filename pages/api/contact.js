@@ -7,11 +7,11 @@ export default async function handler(req, res) {
 
   const { name, email, subject, message } = req.body;
   if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Invalid request' });
+    return res.status(400).json({ error: 'Please provide your name, email, and a message.' });
   }
 
   if (!isValidEmail(email)) {
-    return res.status(400).json({ error: 'Invalid request' });
+    return res.status(400).json({ error: 'That email address looks invalid. Please check and try again.' });
   }
 
   const contactData = {
@@ -29,8 +29,8 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(contactData),
       });
-    } catch {
-      // Webhook failure is non-fatal
+    } catch (e) {
+      console.warn('Contact webhook failed:', e.message);
     }
   }
 

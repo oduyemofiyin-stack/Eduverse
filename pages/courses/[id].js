@@ -33,6 +33,72 @@ export default function CourseDetail({ course: propCourse }) {
   const [editText, setEditText] = useState('');
   const [editHover, setEditHover] = useState(0);
   const course = propCourse || courses.find(c => c.id === parseInt(id));
+
+  useEffect(() => {
+    if (!timerRunning || !course) return;
+    const id = setInterval(() => setTimer(prev => Math.max(0, prev - 1)), 1000);
+    return () => clearInterval(id);
+  }, [timerRunning]);
+
+  useEffect(() => {
+    if (!course?.id) return;
+    if (timer !== 0 || finished || !quizState) return;
+    setQuizState(prev => ({ ...prev, idx: course.quiz.length - 1, answered: true }));
+  }, [timer, finished, quizState, course?.id]);
+
+  useEffect(() => {
+    if (!course?.id) return;
+    if (finished && passed) {
+      markCompleted(course.id, course.title);
+      markQuizPassed(course.id);
+      addScore(currentUser?.firstName || 'Anonymous', course.id, quizState.score, course.quiz.length);
+      setTimeout(() => setShowCert(true), 600);
+    }
+  }, [finished, passed, course, currentUser?.firstName, quizState?.score, quizState?.length]);
+
+  useEffect(() => {
+    if (!course?.id) return;
+    startTracking(course.id);
+    return () => stopTracking();
+  }, [course?.id]);
+
+  const readingTimers = useRef({});
+  const autoMarkReading = useCallback((idx) => {
+    if (!course?.id) return;
+    markReading(course.id, idx);
+  }, [course, markReading]);
+
+  useEffect(() => {
+    if (!course?.id) return;
+    const els = document.querySelectorAll('[data-reading-idx]');
+    if (!els.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const idx = parseInt(entry.target.getAttribute('data-reading-idx'));
+        if (isNaN(idx)) return;
+        const alreadyRead = readingProgress[course.id]?.includes(idx);
+
+        if (entry.isIntersecting && !alreadyRead && !readingTimers.current[idx]) {
+          readingTimers.current[idx] = setTimeout(() => {
+            autoMarkReading(idx);
+            delete readingTimers.current[idx];
+          }, 3000);
+        } else if (!entry.isIntersecting && readingTimers.current[idx]) {
+          clearTimeout(readingTimers.current[idx]);
+          delete readingTimers.current[idx];
+        }
+      });
+    }, { threshold: 0.6 });
+
+    els.forEach(el => observer.observe(el));
+    return () => {
+      observer.disconnect();
+      Object.values(readingTimers.current).forEach(clearTimeout);
+      readingTimers.current = {};
+    };
+  }, [activeTab, course?.id, autoMarkReading]);
+
   if (!course) return <CourseDetailSkeleton/>;
 
   const isEnrolled = enrolled.includes(course.id);
@@ -94,70 +160,6 @@ export default function CourseDetail({ course: propCourse }) {
   const fmtTime = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
   const timerColor = timer <= 30 ? '#ff6b9d' : timer <= 60 ? '#f0c040' : 'var(--text)';
   const courseLeaderboard = leaderboard.filter(e => e.courseId === course.id).sort((a, b) => b.score - a.score || new Date(a.date) - new Date(b.date)).slice(0, 10);
-
-  // Timer countdown
-  useEffect(() => {
-    if (!timerRunning) return;
-    const id = setInterval(() => setTimer(prev => Math.max(0, prev - 1)), 1000);
-    return () => clearInterval(id);
-  }, [timerRunning]);
-
-  // Time-up auto-submit
-  useEffect(() => {
-    if (timer !== 0 || finished || !quizState) return;
-    setQuizState(prev => ({ ...prev, idx: course.quiz.length - 1, answered: true }));
-  }, [timer, finished, quizState]);
-
-  useEffect(() => {
-    if (finished && passed) {
-      markCompleted(course.id, course.title);
-      markQuizPassed(course.id);
-      addScore(currentUser?.firstName || 'Anonymous', course.id, quizState.score, course.quiz.length);
-      setTimeout(() => setShowCert(true), 600);
-    }
-  }, [finished, passed]);
-
-  // Study time tracking
-  useEffect(() => {
-    startTracking(course.id);
-    return () => stopTracking();
-  }, [course.id]);
-
-  // Auto-mark reading sections as read when visible for 3+ seconds
-  const readingTimers = useRef({});
-  const autoMarkReading = useCallback((idx) => {
-    markReading(course.id, idx);
-  }, [course.id, markReading]);
-
-  useEffect(() => {
-    const els = document.querySelectorAll('[data-reading-idx]');
-    if (!els.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const idx = parseInt(entry.target.getAttribute('data-reading-idx'));
-        if (isNaN(idx)) return;
-        const alreadyRead = readingProgress[course.id]?.includes(idx);
-
-        if (entry.isIntersecting && !alreadyRead && !readingTimers.current[idx]) {
-          readingTimers.current[idx] = setTimeout(() => {
-            autoMarkReading(idx);
-            delete readingTimers.current[idx];
-          }, 3000);
-        } else if (!entry.isIntersecting && readingTimers.current[idx]) {
-          clearTimeout(readingTimers.current[idx]);
-          delete readingTimers.current[idx];
-        }
-      });
-    }, { threshold: 0.6 });
-
-    els.forEach(el => observer.observe(el));
-    return () => {
-      observer.disconnect();
-      Object.values(readingTimers.current).forEach(clearTimeout);
-      readingTimers.current = {};
-    };
-  }, [activeTab, course.id, autoMarkReading]);
 
   return (
     <div style={{maxWidth:'1100px', margin:'0 auto', padding:'0 0 4rem'}}>
@@ -281,7 +283,7 @@ export default function CourseDetail({ course: propCourse }) {
           {/* WHAT YOU'LL LEARN */}
           {course.reading && course.reading.length > 0 && (
             <div style={{background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem 1.4rem', marginBottom:'1.5rem'}}>
-              <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.8rem'}}>What You'll Learn</h3>
+              <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.8rem'}}>What You&apos;ll Learn</h3>
               <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.5rem 1.5rem'}} className="learn-grid">
                 {course.reading.flatMap(r => r.points || []).slice(0, 8).map((point, i) => (
                   <div key={i} style={{display:'flex', alignItems:'flex-start', gap:'0.5rem', fontSize:'0.85rem', color:'var(--text2)'}}>

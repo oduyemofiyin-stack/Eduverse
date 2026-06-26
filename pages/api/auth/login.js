@@ -6,17 +6,17 @@ import { getClientIp, checkBan, checkRateLimit } from '../../../lib/ip-ban';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'This endpoint only accepts POST requests.' });
   }
 
   const ip = getClientIp(req);
 
-  const ban = checkBan(ip);
+  const ban = await checkBan(ip);
   if (ban.banned) {
     return res.status(429).json({ error: 'Incorrect email or password' });
   }
 
-  const rate = checkRateLimit(ip);
+  const rate = await checkRateLimit(ip);
   if (!rate.allowed) {
     return res.status(429).json({ error: 'Incorrect email or password' });
   }

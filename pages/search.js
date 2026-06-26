@@ -27,9 +27,7 @@ export default function Search() {
   const sentinelRef = useRef(null);
   const searchRef = useRef(null);
 
-  useEffect(() => {
-    if (q) setSearch(q);
-  }, [q]);
+  
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 600);

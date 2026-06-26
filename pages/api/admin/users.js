@@ -15,7 +15,7 @@ async function handler(req, res) {
 
   if (req.method === 'DELETE') {
     const { userId } = req.body;
-    if (!userId) return res.status(400).json({ error: 'Invalid request' });
+    if (!userId) return res.status(400).json({ error: 'Please provide the user ID to delete.' });
     await deleteUserById(sanitize(userId));
     return res.status(200).json({ success: true });
   }

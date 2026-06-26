@@ -11,7 +11,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [celebration, setCelebration] = useState(null);
 
-  // Show celebration modal for new badges (runs once on load)
   useEffect(() => {
     if (!loading && badges.length > 0) {
       const lastBadge = badges[badges.length - 1];
@@ -77,7 +76,7 @@ export default function Dashboard() {
       }}>
         <div>
           <div style={{fontSize:'0.76rem', color:'var(--muted)', fontWeight:'600', letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:'0.2rem'}}>Welcome back</div>
-          <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700'}}>{currentUser.firstName}'s Dashboard</h1>
+          <h1 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700'}}>{currentUser.firstName}&apos;s Dashboard</h1>
         </div>
         <div style={{display:'flex', gap:'1rem', flexWrap:'wrap'}}>
           <div style={{textAlign:'center', padding:'0.5rem 1rem', background:'var(--surface)', borderRadius:'12px', border:'1px solid var(--border)'}}>

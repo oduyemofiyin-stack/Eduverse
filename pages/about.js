@@ -1,4 +1,3 @@
-// About page — mission, vision, team info
 export default function About() {
   return (
     <div style={{padding:'0 0 3rem'}}>

@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
 
-// List all earned certificates, allow printing & sharing
 export default function Certificates() {
   const { certificates } = useApp();
   const router = useRouter();
