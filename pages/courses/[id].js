@@ -34,6 +34,10 @@ export default function CourseDetail({ course: propCourse }) {
   const [editText, setEditText] = useState('');
   const [editHover, setEditHover] = useState(0);
   const course = propCourse || courses.find(c => c.id === parseInt(id));
+  const pct = quizState ? Math.round((quizState.score / course.quiz.length) * 100) : 0;
+  const finished = quizState && quizState.idx === course.quiz.length - 1 && quizState.answered;
+  const passed = pct >= 60;
+  const timerRunning = timer !== null && timer > 0 && !finished;
 
   useEffect(() => {
     if (!timerRunning || !course) return;
@@ -154,11 +158,6 @@ export default function CourseDetail({ course: propCourse }) {
     document.body.appendChild(a); a.click();
     document.body.removeChild(a); URL.revokeObjectURL(url);
   }
-
-  const pct = quizState ? Math.round((quizState.score / course.quiz.length) * 100) : 0;
-  const finished = quizState && quizState.idx === course.quiz.length - 1 && quizState.answered;
-  const passed = pct >= 60;
-  const timerRunning = timer !== null && timer > 0 && !finished;
   const fmtTime = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
   const timerColor = timer <= 30 ? '#ff6b9d' : timer <= 60 ? '#f0c040' : 'var(--text)';
   const courseLeaderboard = leaderboard.filter(e => e.courseId === course.id).sort((a, b) => b.score - a.score || new Date(a.date) - new Date(b.date)).slice(0, 10);
