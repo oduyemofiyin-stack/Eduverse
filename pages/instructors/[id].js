@@ -88,7 +88,7 @@ export default function InstructorDetail() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(68,136,255,0.25)'; e.currentTarget.style.boxShadow='0 8px 30px rgba(68,136,255,0.1)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.boxShadow='none'; }}
               >
-                <div style={{height:'140px', overflow:'hidden', background:'var(--surface2)'}}>
+                <div style={{height:'140px', overflow:'hidden', background:'var(--surface2)', position:'relative'}}>
                   <Image src={c.img} alt={c.title} fill style={{objectFit:'cover'}}/>
                 </div>
                 <div style={{padding:'1rem'}}>

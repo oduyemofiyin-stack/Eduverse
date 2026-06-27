@@ -69,7 +69,7 @@ export default function BlogPost() {
                 <div key={r.id} className="list-item" style={{borderRadius:'12px', overflow:'hidden', border:'1px solid var(--border)', cursor:'pointer', background:'var(--card-bg)'}}
                   onClick={() => router.push(`/blog/${r.id}`)}
                 >
-                  <div style={{height:'120px', overflow:'hidden', background:'var(--surface2)'}}>
+                  <div style={{height:'120px', overflow:'hidden', background:'var(--surface2)', position:'relative'}}>
                     <Image src={r.image} alt={r.title} fill style={{objectFit:'cover'}}/>
                   </div>
                   <div style={{padding:'0.8rem'}}>
