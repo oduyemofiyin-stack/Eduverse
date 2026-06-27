@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../components/Toast';
@@ -396,7 +397,7 @@ export default function Search() {
             onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.background='var(--surface)'; }}
           >
             <div style={{width:'100%', height:'175px', position:'relative', overflow:'hidden', background:'var(--surface2)'}}>
-              <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}}/>
+              <Image src={c.img} alt={c.title} fill style={{objectFit:'cover', display:'block'}}/>
               <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)'}}/>
               {enrolled.includes(c.id) ? (
                 <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(var(--blue-rgb,68,136,255),0.2)', color:'var(--blue)', border:'1px solid rgba(var(--blue-rgb,68,136,255),0.3)'}}>Enrolled</span>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { ProfileSkeleton } from '../components/Skeleton';
@@ -42,12 +43,12 @@ export default function Profile() {
         {/* AVATAR */}
         <div style={{position:'relative', flexShrink:0}}>
           {currentUser.picture && !pfpError ? (
-            <img
+            <Image
               src={currentUser.picture}
               alt="avatar"
               referrerPolicy="no-referrer"
               onError={() => setPfpError(true)}
-              style={{width:'90px', height:'90px', borderRadius:'50%', objectFit:'cover'}}
+              width={90} height={90} style={{borderRadius:'50%', objectFit:'cover'}}
             />
           ) : (
             <div style={{
@@ -198,7 +199,7 @@ export default function Profile() {
                   onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(var(--blue-rgb,68,136,255),0.22)'; e.currentTarget.style.background='var(--surface2)'; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.background='var(--surface)'; }}
                 >
-                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'60px', height:'60px', borderRadius:'10px', objectFit:'cover', flexShrink:0}}/>
+                  <Image src={c.img} alt={c.title} width={60} height={60} style={{borderRadius:'10px', objectFit:'cover', flexShrink:0}}/>
                   <div style={{flex:1, minWidth:'150px'}}>
                     <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
                     <div style={{fontSize:'0.76rem', color:'var(--muted)', marginBottom:'0.5rem'}}>by {c.instructor}</div>

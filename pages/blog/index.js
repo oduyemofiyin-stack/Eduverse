@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import blogPosts from '../../data/blog';
 
@@ -54,15 +55,12 @@ export default function Blog() {
               onClick={() => router.push(`/blog/${post.id}`)}
             >
               <div style={{height:'180px', overflow:'hidden', background:'var(--surface2)', position:'relative'}}>
-                <img src={post.image} alt={post.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s'}}
-                  onMouseEnter={e => e.target.style.transform='scale(1.1)'}
-                  onMouseLeave={e => e.target.style.transform='scale(1)'}
-                />
+                <Image src={post.image} alt={post.title} fill style={{objectFit:'cover'}}/>
                 <div style={{position:'absolute', top:'10px', left:'10px', fontSize:'0.6rem', fontWeight:'700', padding:'0.25rem 0.6rem', borderRadius:'100px', background:'rgba(6,8,15,0.7)', backdropFilter:'blur(10px)', color:'#fff', border:'1px solid rgba(255,255,255,0.1)'}}>{post.category}</div>
               </div>
               <div style={{padding:'1.2rem'}}>
                 <div style={{display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.4rem'}}>
-                  <img src={post.authorAvatar} alt="" style={{width:'22px', height:'22px', borderRadius:'50%'}}/>
+                  <Image src={post.authorAvatar} alt="" width={22} height={22} style={{borderRadius:'50%'}}/>
                   <span style={{fontSize:'0.72rem', color:'var(--muted)'}}>{post.author}</span>
                   <span style={{fontSize:'0.65rem', color:'var(--muted2)'}}>·</span>
                   <span style={{fontSize:'0.7rem', color:'var(--muted2)'}}>{post.readTime}</span>

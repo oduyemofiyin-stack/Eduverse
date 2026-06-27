@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import courses from '../data/courses';
 
@@ -52,7 +53,7 @@ export default function CourseRecommendations({ currentCourseId }) {
             onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(68,136,255,0.22)'; e.currentTarget.style.transform='translateY(-3px)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.06)'; e.currentTarget.style.transform='translateY(0)'; }}
           >
-            <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'140px', objectFit:'cover', display:'block'}}/>
+            <Image src={c.img} alt={c.title} width={260} height={140} style={{width:'100%', height:'140px', objectFit:'cover', display:'block'}}/>
             <div style={{padding:'0.9rem'}}>
               <div style={{fontSize:'0.68rem', fontWeight:'600', textTransform:'uppercase', color:'#4488ff', marginBottom:'0.3rem'}}>{c.category}</div>
               <div style={{fontFamily:'Georgia, serif', fontSize:'0.92rem', fontWeight:'700', lineHeight:'1.3', marginBottom:'0.3rem', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>{c.title}</div>

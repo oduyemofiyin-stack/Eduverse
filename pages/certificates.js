@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
@@ -80,7 +81,7 @@ export default function Certificates() {
                     {course && (
                       <div style={{display:'flex', alignItems:'center', gap:'0.5rem', marginTop:'0.6rem'}}>
                         <div style={{width:'32px', height:'32px', borderRadius:'6px', overflow:'hidden', flexShrink:0, background:'var(--surface2)'}}>
-                          <img src={course.img} alt="" loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                          <Image src={course.img} alt="" width={32} height={32} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
                         </div>
                         <span style={{fontSize:'0.72rem', color:'var(--muted)'}}>{course.category}</span>
                       </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
@@ -243,7 +244,7 @@ export default function Admin() {
                       <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.5rem'}}>
                         <div style={{display:'flex', alignItems:'center', gap:'0.8rem'}}>
                           {u.picture ? (
-                            <img src={u.picture} alt="" style={{width:'40px', height:'40px', borderRadius:'50%', objectFit:'cover'}}/>
+                            <Image src={u.picture} alt="" width={40} height={40} style={{borderRadius:'50%', objectFit:'cover'}}/>
                           ) : (
                             <div style={{width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg,var(--blue),var(--teal))', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'700', fontSize:'0.85rem', color:'#fff'}}>
                               {(u.first_name?.[0]||'')+(u.last_name?.[0]||'')}
@@ -312,7 +313,7 @@ export default function Admin() {
                     </div>
                   ) : (
                     <div style={{display:'flex', alignItems:'center', gap:'1rem', flexWrap:'wrap'}}>
-                      <img src={c.img} alt={c.title} loading="lazy" style={{width:'70px', height:'50px', borderRadius:'8px', objectFit:'cover', flexShrink:0}}/>
+                      <Image src={c.img} alt={c.title} width={70} height={50} style={{borderRadius:'8px', objectFit:'cover', flexShrink:0}}/>
                       <div style={{flex:1, minWidth:'150px'}}>
                         <div style={{fontFamily:'Georgia, serif', fontSize:'0.95rem', fontWeight:'700', marginBottom:'0.2rem'}}>{c.title}</div>
                         <div style={{fontSize:'0.78rem', color:'var(--muted)'}}>by {c.instructor} · {c.category} · {c.duration} · {c.rating}</div>

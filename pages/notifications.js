@@ -14,7 +14,7 @@ export default function Notifications() {
 
   useEffect(() => {
     markNotificationsRead();
-  }, []);
+  }, [markNotificationsRead]);
 
   const typeColors = {
     xp: 'var(--gold)',

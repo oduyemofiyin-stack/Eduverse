@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import instructors from '../../data/instructors';
 import courses from '../../data/courses';
@@ -46,7 +47,7 @@ export default function Instructors() {
                     width:'80px', height:'80px', borderRadius:'50%', overflow:'hidden', flexShrink:0,
                     background: inst.coverColor, padding:'3px',
                   }}>
-                    <img src={inst.avatar} alt={inst.name} style={{width:'100%', height:'100%', borderRadius:'50%', background:'var(--bg)'}}/>
+                    <Image src={inst.avatar} alt={inst.name} width={80} height={80} style={{borderRadius:'50%', background:'var(--bg)'}}/>
                   </div>
                   <div style={{flex:1, minWidth:'200px'}}>
                     <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.3rem', fontWeight:'700', marginBottom:'0.15rem'}}>{inst.name}</h2>

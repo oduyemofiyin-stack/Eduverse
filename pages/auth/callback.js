@@ -130,7 +130,7 @@ export default function AuthCallback() {
     }
 
     router.push('/login');
-  }, []);
+  }, [signInWithGoogle, router]);
 
   return (
     <div style={{

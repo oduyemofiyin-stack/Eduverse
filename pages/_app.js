@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -18,7 +18,7 @@ function AuthGuard({ Component, pageProps }) {
   const [transitioning, setTransitioning] = useState(false);
   const touchStartX = useRef(0);
 
-  const publicPaths = ['/login', '/admin', '/auth/callback'];
+  const publicPaths = useMemo(() => ['/login', '/admin', '/auth/callback'], []);
 
   useEffect(() => {
     function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
@@ -34,7 +34,7 @@ function AuthGuard({ Component, pageProps }) {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
     };
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     function onStart() { setTransitioning(true); }
@@ -45,7 +45,7 @@ function AuthGuard({ Component, pageProps }) {
       router.events.off('routeChangeStart', onStart);
       router.events.off('routeChangeComplete', onComplete);
     };
-  }, []);
+  }, [router.events]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -55,7 +55,7 @@ function AuthGuard({ Component, pageProps }) {
     if (authInitialized && !currentUser && !publicPaths.includes(router.pathname)) {
       router.push('/login');
     }
-  }, [currentUser, authInitialized]);
+  }, [currentUser, authInitialized, router, publicPaths]);
 
   if (!authInitialized) {
     return (

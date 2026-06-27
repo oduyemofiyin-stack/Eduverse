@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
 import learningPaths from '../../data/paths';
@@ -99,7 +100,7 @@ export default function PathDetail() {
                   border: `2px solid ${done ? path.color : 'var(--border)'}`,
                 }}>{done ? '✓' : idx + 1}</div>
                 <div style={{width:'48px', height:'48px', borderRadius:'10px', overflow:'hidden', flexShrink:0, background:'var(--surface2)'}}>
-                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                  <Image src={c.img} alt={c.title} width={48} height={48} style={{width:'100%', height:'100%', objectFit:'cover'}}/>
                 </div>
                 <div style={{flex:1, minWidth:0}}>
                   <div style={{fontWeight:'700', fontSize:'0.9rem', marginBottom:'0.15rem', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{c.title}</div>

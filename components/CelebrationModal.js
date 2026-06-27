@@ -9,7 +9,7 @@ export default function CelebrationModal({ open, onClose, icon, title, desc }) {
     }
     document.body.style.overflow = '';
     return () => { document.body.style.overflow = ''; };
-  }, [open]);
+  }, [open, onClose]);
 
   if (!open) return null;
 

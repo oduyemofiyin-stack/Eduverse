@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import { CourseGridSkeleton } from '../components/Skeleton';
@@ -62,7 +63,7 @@ export default function Wishlist() {
               onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.borderColor='var(--border)'; }}
             >
               <div style={{width:'100%', height:'170px', position:'relative', overflow:'hidden'}}>
-                <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+                <Image src={c.img} alt={c.title} fill style={{objectFit:'cover'}}/>
                 <div style={{position:'absolute', inset:0, background:'linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 55%)'}}/>
                 <span style={{position:'absolute', top:'9px', left:'9px', fontSize:'0.67rem', fontWeight:'700', textTransform:'uppercase', padding:'0.22rem 0.65rem', borderRadius:'100px', background:'rgba(0,212,170,0.18)', color:'var(--teal)', border:'1px solid rgba(0,212,170,0.28)'}}>Free</span>
                 <div

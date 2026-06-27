@@ -16,9 +16,11 @@ export default function Dashboard() {
       const lastBadge = badges[badges.length - 1];
       const def = BADGE_DEFS[lastBadge];
       if (def) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCelebration({ icon: def.icon, title: `Badge Earned: ${def.label}`, desc: def.desc });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   useEffect(() => {

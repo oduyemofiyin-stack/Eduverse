@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
 import learningPaths from '../../data/paths';
@@ -77,7 +78,7 @@ export default function LearningPaths() {
                         onMouseEnter={e => { e.currentTarget.style.borderColor = path.color + '66'; e.currentTarget.style.transform = 'scale(1.1)'; }}
                         onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'scale(1)'; }}
                       >
-                        <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}} />
+                        <Image src={c.img} alt={c.title} width={32} height={32} style={{width:'100%', height:'100%', objectFit:'cover'}} />
                       </div>
                       );
                     })}

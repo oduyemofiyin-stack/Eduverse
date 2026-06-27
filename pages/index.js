@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { useApp } from '../context/AppContext';
@@ -247,7 +248,7 @@ export default function Home() {
                   width: '48px', height: '48px', borderRadius: 'var(--radius-md)', overflow: 'hidden', flexShrink: 0,
                   background: 'var(--surface2)',
                 }}>
-                  <img src={course.img} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <Image src={course.img} alt="" width={48} height={48} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div>
                   <div className="eyebrow" style={{ marginBottom: '0.15rem' }}>Continue Learning</div>
@@ -387,14 +388,9 @@ export default function Home() {
                   position: 'relative', overflow: 'hidden',
                   background: 'var(--surface2)',
                 }}>
-                  <img
-                    src={c.img} alt={c.title} loading="lazy"
-                    style={{
-                      width: '100%', height: '100%', objectFit: 'cover',
-                      display: 'block', transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
-                    onMouseEnter={e => e.target.style.transform = 'scale(1.12)'}
-                    onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                  <Image
+                    src={c.img} alt={c.title}
+                    fill style={{ objectFit: 'cover', display: 'block' }}
                   />
                   <div style={{
                     position: 'absolute', inset: 0,
@@ -511,7 +507,7 @@ export default function Home() {
                   style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', cursor: 'pointer' }}
                 >
                   <div style={{ width: '100%', height: '150px', overflow: 'hidden', position: 'relative', background: 'var(--surface2)' }}>
-                    <img src={c.img} alt={c.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <Image src={c.img} alt={c.title} fill style={{ objectFit: 'cover' }} />
                     <span className="badge" style={{
                       position: 'absolute', top: '8px', left: '8px',
                       borderColor: 'rgba(94,234,212,0.25)',
@@ -556,7 +552,7 @@ export default function Home() {
                   style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', cursor: 'pointer' }}
                 >
                   <div style={{ width: '100%', height: '150px', overflow: 'hidden', position: 'relative', background: 'var(--surface2)' }}>
-                    <img src={c.img} alt={c.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <Image src={c.img} alt={c.title} fill style={{ objectFit: 'cover' }} />
                     <span className="badge" style={{
                       position: 'absolute', top: '8px', left: '8px',
                       borderColor: 'rgba(94,234,212,0.25)',

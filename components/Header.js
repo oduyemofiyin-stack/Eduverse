@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useApp } from '../context/AppContext';
 import { useRouter } from 'next/router';
 
@@ -179,9 +180,9 @@ export default function Header() {
                     cursor: 'pointer', transition: 'background 0.2s ease',
                   }}>
                   {currentUser.picture && !avatarError ? (
-                    <img src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
+                    <Image src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
                       onError={() => setAvatarError(true)}
-                      style={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover' }} />
+                      width={26} height={26} style={{ borderRadius: '50%', objectFit: 'cover' }} />
                   ) : (
                     <div style={{
                       width: '26px', height: '26px', borderRadius: '50%',
@@ -305,9 +306,9 @@ export default function Header() {
               <>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', padding: '0.6rem 0.8rem', borderBottom: '1px solid var(--border)', marginBottom: '0.2rem' }}>
                   {currentUser.picture && !avatarError ? (
-                    <img src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
+                    <Image src={currentUser.picture} alt="avatar" referrerPolicy="no-referrer"
                       onError={() => setAvatarError(true)}
-                      style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover' }} />
+                      width={30} height={30} style={{ borderRadius: '50%', objectFit: 'cover' }} />
                   ) : (
                     <div style={{
                       width: '30px', height: '30px', borderRadius: '50%',

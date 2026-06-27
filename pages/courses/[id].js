@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
 import { useToast } from '../../components/Toast';
@@ -38,13 +39,14 @@ export default function CourseDetail({ course: propCourse }) {
     if (!timerRunning || !course) return;
     const id = setInterval(() => setTimer(prev => Math.max(0, prev - 1)), 1000);
     return () => clearInterval(id);
-  }, [timerRunning]);
+  }, [timerRunning, course]);
 
   useEffect(() => {
     if (!course?.id) return;
     if (timer !== 0 || finished || !quizState) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setQuizState(prev => ({ ...prev, idx: course.quiz.length - 1, answered: true }));
-  }, [timer, finished, quizState, course?.id]);
+  }, [timer, finished, quizState, course?.id, course?.quiz?.length]);
 
   useEffect(() => {
     if (!course?.id) return;
@@ -54,13 +56,13 @@ export default function CourseDetail({ course: propCourse }) {
       addScore(currentUser?.firstName || 'Anonymous', course.id, quizState.score, course.quiz.length);
       setTimeout(() => setShowCert(true), 600);
     }
-  }, [finished, passed, course, currentUser?.firstName, quizState?.score, quizState?.length]);
+  }, [finished, passed, course, currentUser?.firstName, quizState?.score, quizState?.length, markCompleted, markQuizPassed, addScore]);
 
   useEffect(() => {
     if (!course?.id) return;
     startTracking(course.id);
     return () => stopTracking();
-  }, [course?.id]);
+  }, [course?.id, startTracking, stopTracking]);
 
   const readingTimers = useRef({});
   const autoMarkReading = useCallback((idx) => {
@@ -97,7 +99,7 @@ export default function CourseDetail({ course: propCourse }) {
       Object.values(readingTimers.current).forEach(clearTimeout);
       readingTimers.current = {};
     };
-  }, [activeTab, course?.id, autoMarkReading]);
+  }, [activeTab, course?.id, autoMarkReading, readingProgress]);
 
   if (!course) return <CourseDetailSkeleton/>;
 
@@ -176,7 +178,7 @@ export default function CourseDetail({ course: propCourse }) {
       {/* MOBILE HERO IMAGE */}
       <div style={{width:'100%', height:'200px', overflow:'hidden', marginTop:'1rem', position:'relative'}}
         className="mobile-hero-img">
-        <img src={course.img} alt={course.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover'}}/>
+        <Image src={course.img} alt={course.title} fill style={{objectFit:'cover'}}/>
         <div style={{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(6,8,15,0.8) 0%, transparent 60%)'}}/>
       </div>
 
@@ -186,8 +188,8 @@ export default function CourseDetail({ course: propCourse }) {
         {/* SIDEBAR */}
         <div className="detail-sidebar">
           <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', overflow:'hidden'}}>
-            <img src={course.img} alt={course.title} loading="lazy"
-              style={{width:'100%', height:'160px', objectFit:'cover', display:'block'}}
+            <Image src={course.img} alt={course.title}
+              width={308} height={160} style={{objectFit:'cover', display:'block'}}
               className="sidebar-img"
             />
             <div style={{padding:'1.2rem'}}>
@@ -368,8 +370,8 @@ export default function CourseDetail({ course: propCourse }) {
               <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'14px', padding:'1.2rem 1.4rem', marginBottom:'1.5rem'}}>
                 <h3 style={{fontSize:'0.88rem', fontWeight:'700', marginBottom:'0.8rem'}}>About the Instructor</h3>
                 <div style={{display:'flex', gap:'1rem', alignItems:'flex-start'}} className="instructor-bio">
-                  <img src={instr.avatar} alt={instr.name} loading="lazy" style={{
-                    width:'56px', height:'56px', borderRadius:'50%', objectFit:'cover', flexShrink:0,
+                  <Image src={instr.avatar} alt={instr.name} width={56} height={56} style={{
+                    borderRadius:'50%', objectFit:'cover', flexShrink:0,
                     border:'2px solid var(--border)',
                   }}/>
                   <div>

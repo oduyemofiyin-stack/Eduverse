@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../../context/AppContext';
 import instructors from '../../data/instructors';
@@ -41,7 +42,7 @@ export default function InstructorDetail() {
         <div style={{borderRadius:'20px', overflow:'hidden', border:'1px solid var(--border)', padding:'2rem', background:'var(--card-bg)'}}>
           <div style={{display:'flex', flexWrap:'wrap', gap:'1.5rem', alignItems:'center', marginBottom:'1.5rem'}}>
             <div style={{width:'100px', height:'100px', borderRadius:'50%', overflow:'hidden', flexShrink:0, background: instructor.coverColor, padding:'3px'}}>
-              <img src={instructor.avatar} alt={instructor.name} style={{width:'100%', height:'100%', borderRadius:'50%', background:'var(--bg)'}}/>
+              <Image src={instructor.avatar} alt={instructor.name} width={100} height={100} style={{borderRadius:'50%', background:'var(--bg)'}}/>
             </div>
             <div style={{flex:1}}>
               <h1 style={{fontFamily:'Georgia, serif', fontSize:'clamp(1.4rem, 3vw, 2rem)', fontWeight:'700', marginBottom:'0.2rem'}}>{instructor.name}</h1>
@@ -88,10 +89,7 @@ export default function InstructorDetail() {
                 onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.boxShadow='none'; }}
               >
                 <div style={{height:'140px', overflow:'hidden', background:'var(--surface2)'}}>
-                  <img src={c.img} alt={c.title} loading="lazy" style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s'}}
-                    onMouseEnter={e => e.target.style.transform='scale(1.1)'}
-                    onMouseLeave={e => e.target.style.transform='scale(1)'}
-                  />
+                  <Image src={c.img} alt={c.title} fill style={{objectFit:'cover'}}/>
                 </div>
                 <div style={{padding:'1rem'}}>
                   <div style={{fontSize:'0.66rem', fontWeight:'600', textTransform:'uppercase', letterSpacing:'0.07em', color:'var(--blue)', marginBottom:'0.2rem'}}>{c.category}</div>
