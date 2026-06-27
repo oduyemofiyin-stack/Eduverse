@@ -169,21 +169,6 @@ export default function Home() {
             >
               Explore Courses
             </button>
-            <button
-              onClick={() => router.push('/enrolled')}
-              className="glass"
-              style={{
-                fontSize: '0.95rem', fontWeight: '600',
-                padding: '0.9rem 2.2rem', borderRadius: '14px',
-                border: '1px solid var(--border)', cursor: 'pointer',
-                color: 'var(--text)',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.3)'; e.currentTarget.style.background = 'rgba(17,17,21,0.7)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = ''; }}
-            >
-              My Learning
-            </button>
           </div>
         </div>
       </div>
