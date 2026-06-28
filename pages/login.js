@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useApp } from '../context/AppContext';
-import { checkUsername } from '../lib/firestore';
 import { isValidPassword, checkRateLimit } from '../lib/sanitize';
 import { logger } from '../lib/logger';
 
@@ -10,7 +9,6 @@ export default function Login() {
   const { currentUser, signInWithGoogle } = useApp();
   const router = useRouter();
   const [tab, setTab] = useState('login');
-  const [useFirebase, setUseFirebase] = useState(false);
   const [form, setForm] = useState({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -71,14 +69,26 @@ export default function Login() {
     setLoading(true);
     setErrors({});
 
-    if (!useFirebase) {
-      setErrors({ general: 'Email login is currently unavailable. Please use Google sign-in.' });
+    try {
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email, password: form.password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrors({ general: data.error || 'Sign in failed.' });
+        setLoading(false);
+        return;
+      }
+      localStorage.setItem('eduverse_token', data.token);
+      signInWithGoogle(data.user);
+      logger.info('Login', 'User signed in', { email: form.email.toLowerCase() });
+      router.push('/');
+    } catch {
+      setErrors({ general: 'Network error. Please try again.' });
       setLoading(false);
-      return;
     }
-
-    setErrors({ general: 'Email login is not available with the current setup.' });
-    setLoading(false);
   }
 
   async function handleSignup() {
@@ -89,33 +99,33 @@ export default function Login() {
     setLoading(true);
     setErrors({});
 
-    if (!useFirebase) {
-      setErrors({ general: 'Email signup is currently unavailable. Please use Google sign-in.' });
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          email: form.email,
+          username: form.username.trim(),
+          password: form.password,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrors({ general: data.error || 'Sign up failed.' });
+        setLoading(false);
+        return;
+      }
+      localStorage.setItem('eduverse_token', data.token);
+      signInWithGoogle(data.user);
+      logger.info('Signup', 'Account created', { email: form.email.toLowerCase() });
+      setMessage('Account created! You are now signed in.');
       setLoading(false);
-      return;
-    }
-
-    const usernameAvailable = await checkUsername(form.username.trim());
-    if (!usernameAvailable) {
-      setErrors({ general: 'This username is already taken.' });
+    } catch {
+      setErrors({ general: 'Network error. Please try again.' });
       setLoading(false);
-      return;
     }
-
-    signInWithGoogle({
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2),
-      email: form.email,
-      firstName: form.firstName.trim(),
-      lastName: form.lastName.trim(),
-      username: form.username.trim(),
-      picture: '',
-      provider: 'email',
-      createdAt: new Date().toISOString(),
-    });
-
-    logger.info('Signup', 'Account created', { email: form.email.toLowerCase() });
-    setMessage('Account created! You are now signed in.');
-    setLoading(false);
   }
 
   const inp = (hasErr) => ({
