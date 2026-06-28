@@ -85,7 +85,8 @@ export default function Login() {
       signInWithGoogle(data.user);
       logger.info('Login', 'User signed in', { email: form.email.toLowerCase() });
       router.push('/');
-    } catch {
+    } catch (e) {
+      console.error('Sign in error:', e);
       setErrors({ general: 'Network error. Please try again.' });
       setLoading(false);
     }
@@ -122,7 +123,8 @@ export default function Login() {
       logger.info('Signup', 'Account created', { email: form.email.toLowerCase() });
       setMessage('Account created! You are now signed in.');
       setLoading(false);
-    } catch {
+    } catch (e) {
+      console.error('Sign up error:', e);
       setErrors({ general: 'Network error. Please try again.' });
       setLoading(false);
     }
