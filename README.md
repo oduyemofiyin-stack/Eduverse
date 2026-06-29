@@ -45,7 +45,7 @@
 <summary><strong>👤 User System</strong></summary>
 
 - **Email/password** registration with validation
-- **Password reset** via EmailJS (6-digit code sent to email)
+- **Password reset** via email (Resend)
 - **Google OAuth 2.0** sign-in
 - **User profiles** with avatar (Google or initial-based)
 - **Dashboard** with XP, streak, level, and activity heatmap
@@ -77,7 +77,7 @@
 <summary><strong>🔐 Security & Infrastructure</strong></summary>
 
 - **Firebase Firestore** — cloud sync for all user data
-- **reCAPTCHA Enterprise** — bot protection on login, signup, and password reset
+- **reCAPTCHA Enterprise** — bot protection on login and signup
 - **Content Security Policy** headers
 - **Server-side input sanitization** — XSS & injection prevention across all API routes
 - **Rate limiting** — 10 req/min per IP on login with auto IP ban after repeated violations
@@ -105,7 +105,7 @@
 | **Authentication** | Google OAuth 2.0 (implicit grant) + Email/Password |
 | **PDF Generation** | [jsPDF](https://github.com/parallax/jsPDF) + [html2canvas](https://html2canvas.hertzen.com/) |
 | **Internationalization** | [i18next](https://www.i18next.com/) (planned) |
-| **Email** | [EmailJS](https://www.emailjs.com/) (password reset) |
+| **Email** | [Resend](https://resend.com/) (password reset) |
 | **Animations** | Custom (scroll reveal, parallax, Three.js starfield) |
 | **Linting** | [ESLint](https://eslint.org/) + `eslint-config-next` |
 | **Fonts** | [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) |
@@ -120,7 +120,7 @@
 - **npm**, **yarn**, or **pnpm**
 - A **Firebase** project (for cloud sync)
 - A **Google Cloud Console** OAuth 2.0 Client ID (for Google sign-in)
-- An **EmailJS** account (for password reset emails — optional)
+- A **Resend** account and API key (for password reset emails — optional)
 
 ### Installation
 
@@ -159,10 +159,8 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
 # ── reCAPTCHA Enterprise (Bot Protection) ─────────────
 # Site key is hardcoded in _document.js and login.js
 
-# ── EmailJS (Password Reset) ──────────────────────────
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id                  # Required for password reset
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id                # Required for password reset
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key                  # Required for password reset
+# ── Resend (Password Reset) ──────────────────────────
+RESEND_API_KEY=re_xxxxxxxxxxxx                                  # Required for password reset
 
 # ── Admin Credentials (Optional — has defaults) ────────
 NEXT_PUBLIC_ADMIN_USER=admin                                    # Optional
@@ -331,9 +329,8 @@ Eduverse uses a **hybrid authentication** approach:
 
 1. **Email/Password** — Users are stored in `localStorage` (client-side). No backend database is required for basic functionality.
 2. **Google OAuth 2.0** — Uses the implicit grant flow. The access token is exchanged for user info via the Google UserInfo API.
-3. **Password Reset** — A 4-step flow: enter email → receive 6-digit code via EmailJS → verify code → set new password. The code is never displayed on screen.
-4. **reCAPTCHA Enterprise** — Protects login, signup, and password reset from automated abuse.
-5. **Firebase Firestore** — All user data (progress, XP, badges, certificates, etc.) is optionally synced to Firestore for cross-device persistence.
+3. **Password Reset** — Enter email → receive a reset link via Resend → click link → set new password. The link expires in 1 hour.
+4. **Firebase Firestore** — All user data (progress, XP, badges, certificates, etc.) is optionally synced to Firestore for cross-device persistence.
 
 All state is managed through React Context (`context/AppContext.js`), which persists to `localStorage` on every change.
 

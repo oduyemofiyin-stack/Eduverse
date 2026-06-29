@@ -13,6 +13,10 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [showForgot, setShowForgot] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   useEffect(() => {
     if (currentUser) router.push('/');
@@ -32,6 +36,9 @@ export default function Login() {
     setErrors({});
     setMessage('');
     setForm({ firstName:'', lastName:'', email:'', password:'', username:'', confirmEmail:'' });
+    setShowForgot(false);
+    setResetSent(false);
+    setResetEmail('');
   }
 
   function validate() {
@@ -127,6 +134,35 @@ export default function Login() {
       console.error('Sign up error:', e);
       setErrors({ general: 'Network error. Please try again.' });
       setLoading(false);
+    }
+  }
+
+  async function handleForgotPassword(e) {
+    e.preventDefault();
+    if (!resetEmail || !/\S+@\S+\.\S+/.test(resetEmail)) {
+      setErrors({ reset: 'Please enter a valid email address' });
+      return;
+    }
+    setResetLoading(true);
+    setErrors({});
+    try {
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: resetEmail }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrors({ reset: data.error || 'Something went wrong.' });
+        setResetLoading(false);
+        return;
+      }
+      setResetSent(true);
+      setResetLoading(false);
+    } catch (e) {
+      console.error('Forgot password error:', e);
+      setErrors({ reset: 'Network error. Please try again.' });
+      setResetLoading(false);
     }
   }
 
@@ -235,7 +271,55 @@ export default function Login() {
           </div>
         )}
 
-        {/* FORM */}
+        {/* FORGOT PASSWORD */}
+        {showForgot && tab === 'login' ? (
+          <form onSubmit={handleForgotPassword}>
+            <div style={{display:'flex', flexDirection:'column', gap:'0.85rem'}}>
+              {resetSent ? (
+                <>
+                  <div style={{background:'rgba(94,234,212,0.1)', border:'1px solid rgba(94,234,212,0.3)', borderRadius:'10px', padding:'0.65rem 1rem', fontSize:'0.82rem', color:'var(--opal-teal)', marginBottom:'0.5rem'}}>
+                    If an account with that email exists, a reset link has been sent.
+                  </div>
+                  <button type="button" onClick={() => { setShowForgot(false); setResetSent(false); setResetEmail(''); }} style={{
+                    width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none',
+                    cursor:'pointer', background:'var(--accent)', color:'#fff',
+                    fontFamily:'inherit', fontSize:'0.92rem', fontWeight:'700',
+                    boxShadow:'0 8px 22px rgba(99,102,241,0.35)',
+                  }}>
+                    Back to Sign In
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Email Address</label>
+                    <input type="email" placeholder="you@example.com" value={resetEmail}
+                      onChange={e => setResetEmail(e.target.value)}
+                      inputMode="email" autoComplete="email"
+                      style={inp(errors.reset)}/>
+                    {errors.reset && <div style={{fontSize:'0.73rem', color:'var(--red)', marginTop:'0.3rem'}}>{errors.reset}</div>}
+                  </div>
+                  <button type="submit" disabled={resetLoading} style={{
+                    width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none',
+                    cursor: resetLoading ? 'not-allowed' : 'pointer',
+                    background:'var(--accent)', color:'#fff',
+                    fontFamily:'inherit', fontSize:'0.92rem', fontWeight:'700',
+                    marginTop:'0.2rem', opacity: resetLoading ? 0.7 : 1,
+                    boxShadow: resetLoading ? 'none' : '0 8px 22px rgba(99,102,241,0.35)',
+                    display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem',
+                  }}>
+                    {resetLoading ? (
+                      <><span style={{display:'inline-block', width:'18px', height:'18px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #fff', animation:'spin 0.6s linear infinite'}}/> Sending...</>
+                    ) : 'Send Reset Link'}
+                  </button>
+                  <div style={{fontSize:'0.77rem', color:'var(--muted)', textAlign:'center', marginTop:'0.5rem'}}>
+                    <span onClick={() => { setShowForgot(false); setErrors({}); setResetEmail(''); }} style={{color:'var(--accent)', cursor:'pointer', fontWeight:'600'}}>Back to Sign In</span>
+                  </div>
+                </>
+              )}
+            </div>
+          </form>
+        ) : (
         <form onSubmit={e => {
           e.preventDefault();
           tab === 'login' ? handleLogin() : handleSignup();
@@ -307,7 +391,12 @@ export default function Login() {
             )}
 
             <div>
-              <label style={{display:'block', fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', marginBottom:'0.35rem', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'0.35rem'}}>
+                <label style={{fontSize:'0.76rem', fontWeight:'600', color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.04em'}}>Password</label>
+                {tab === 'login' && (
+                  <span onClick={() => setShowForgot(true)} style={{fontSize:'0.73rem', color:'var(--accent)', cursor:'pointer', fontWeight:'600'}}>Forgot password?</span>
+                )}
+              </div>
               <input type="password" placeholder={tab === 'login' ? 'Enter your password' : 'At least 12 characters'} value={form.password}
                 onChange={e => setForm(p => ({...p, password: e.target.value}))}
                 inputMode="text" autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
@@ -347,6 +436,7 @@ export default function Login() {
             </button>
           </div>
         </form>
+        )}
 
         <div style={{fontSize:'0.77rem', color:'var(--muted)', textAlign:'center', marginTop:'1rem'}}>
           {tab === 'login' ? (
