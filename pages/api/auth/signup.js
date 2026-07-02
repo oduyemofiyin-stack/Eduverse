@@ -10,28 +10,19 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    let ip, ban, rate;
-    try {
-      ip = getClientIp(req);
-      ban = await checkBan(ip);
-      if (ban.banned) {
-        return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
-      }
+    const ip = getClientIp(req);
 
-      rate = await checkRateLimit(ip);
-      if (!rate.allowed) {
-        return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
-      }
-    } catch (e) {
-      return res.status(500).json({ error: 'Internal server error (ip/rate check).', debug: e?.message });
+    const ban = await checkBan(ip);
+    if (ban.banned) {
+      return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
     }
 
-    let firstName, lastName, email, password, username;
-    try {
-      ({ firstName, lastName, email, password, username } = req.body);
-    } catch (e) {
-      return res.status(500).json({ error: 'Internal server error (body parse).', debug: e?.message });
+    const rate = await checkRateLimit(ip);
+    if (!rate.allowed) {
+      return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
     }
+
+    const { firstName, lastName, email, password, username } = req.body;
 
     if (!firstName || !lastName || !email || !password || !username) {
       return res.status(400).json({ error: 'All fields are required.' });
@@ -61,27 +52,17 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Letters, numbers, underscores, hyphens only.' });
     }
 
-    try {
-      const existingEmail = await getUserByEmail(sanitizedEmail);
-      if (existingEmail) {
-        return res.status(409).json({ error: 'An account with this email already exists.' });
-      }
-
-      const existingUser = await getUserById(sanitizedUsername);
-      if (existingUser) {
-        return res.status(409).json({ error: 'This username is already taken.' });
-      }
-    } catch (e) {
-      return res.status(500).json({ error: 'Internal server error (user lookup).', debug: e?.message });
+    const existingEmail = await getUserByEmail(sanitizedEmail);
+    if (existingEmail) {
+      return res.status(409).json({ error: 'An account with this email already exists.' });
     }
 
-    let hashedPassword;
-    try {
-      hashedPassword = await bcrypt.hash(password, 12);
-    } catch (e) {
-      return res.status(500).json({ error: 'Internal server error (hashing).', debug: e?.message });
+    const existingUser = await getUserById(sanitizedUsername);
+    if (existingUser) {
+      return res.status(409).json({ error: 'This username is already taken.' });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 12);
     const now = new Date().toISOString();
     const userId = sanitizedUsername;
 
@@ -114,25 +95,19 @@ export default async function handler(req, res) {
       followingPaths: [],
     };
 
-    try {
-      const saved = await saveUser(userId, userData);
-      if (!saved) {
-        return res.status(500).json({ error: 'Could not create account. Please try again.' });
-      }
-    } catch (e) {
-      return res.status(500).json({ error: 'Internal server error (save).', debug: e?.message });
+    const saved = await saveUser(userId, userData);
+    if (!saved) {
+      return res.status(500).json({ error: 'Could not create account. Please try again.' });
     }
 
-    let token;
-    try {
-      token = signToken({
-        sub: userId,
-        email: sanitizedEmail,
-        name: `${sanitize(firstName.trim())} ${sanitize(lastName.trim())}`.trim(),
-        picture: '',
-      });
-    } catch (e) {
-      return res.status(500).json({ error: 'Internal server error (token).', debug: e?.message });
+    const token = signToken({
+      sub: userId,
+      email: sanitizedEmail,
+      name: `${sanitize(firstName.trim())} ${sanitize(lastName.trim())}`.trim(),
+      picture: '',
+    });
+    if (!token) {
+      return res.status(500).json({ error: 'Could not create account. Please try again.' });
     }
 
     const { password: _, ...safeUser } = userData;
@@ -143,6 +118,6 @@ export default async function handler(req, res) {
     });
   } catch (e) {
     console.error('Signup API error:', e?.message || e, e?.stack || '');
-    res.status(500).json({ error: 'Internal server error. Please try again.', debug: e?.message, stack: (e?.stack || '').substring(0, 500) });
+    res.status(500).json({ error: 'Internal server error. Please try again.' });
   }
 }
