@@ -114,7 +114,7 @@ export default async function handler(req, res) {
       user: { id: userId, ...safeUser },
     });
   } catch (e) {
-    console.error('Signup API error:', e?.message || e, e?.stack ? e.stack.slice(0, 200) : '');
-    res.status(500).json({ error: 'Internal server error. Please try again.' });
+    console.error('Signup API error:', e?.message || e, e?.stack || '');
+    res.status(500).json({ error: 'Internal server error. Please try again.', debug: e?.message });
   }
 }
