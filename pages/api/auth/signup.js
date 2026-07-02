@@ -115,6 +115,6 @@ export default async function handler(req, res) {
     });
   } catch (e) {
     console.error('Signup API error:', e?.message || e, e?.stack || '');
-    res.status(500).json({ error: 'Internal server error. Please try again.', debug: e?.message });
+    res.status(500).json({ error: 'Internal server error. Please try again.', debug: e?.message, stack: (e?.stack || '').substring(0, 500) });
   }
 }
