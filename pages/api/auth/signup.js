@@ -95,7 +95,10 @@ export default async function handler(req, res) {
       followingPaths: [],
     };
 
-    await saveUser(userId, userData);
+    const saved = await saveUser(userId, userData);
+    if (!saved) {
+      return res.status(500).json({ error: 'Could not create account. Please try again.' });
+    }
 
     const token = signToken({
       sub: userId,

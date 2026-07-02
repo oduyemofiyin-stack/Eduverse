@@ -50,6 +50,8 @@ export default function Home() {
   const [activeCat, setActiveCat] = useState('All');
   const [loading, setLoading] = useState(true);
   const [showAllMobile, setShowAllMobile] = useState(false);
+  const [showAllDesktop, setShowAllDesktop] = useState(false);
+  const DISPLAY_LIMIT = 5;
   const router = useRouter();
   const heroRef = useRef(null);
   const isLight = theme === 'light';
@@ -352,7 +354,7 @@ export default function Home() {
               background: 'var(--accent)', color: '#fff',
             }}>Reset Filters</button>
           </div>
-        ) : filtered.map((c, i) => {
+        ) : (showAllDesktop ? filtered : filtered.slice(0, DISPLAY_LIMIT)).map((c, i) => {
           const prog = enrolled.includes(c.id) ? getCourseProgress(c.id, c.lessons.length) : 0;
           return (
             <div
@@ -461,6 +463,23 @@ export default function Home() {
           );
         })}
       </div>
+
+      {/* SHOW MORE / LESS — desktop */}
+      {!loading && filtered.length > DISPLAY_LIMIT && (
+        <div style={{ textAlign: 'center', padding: '0 1.2rem 3rem' }} className="course-grid-desktop">
+          <button onClick={() => setShowAllDesktop(!showAllDesktop)} style={{
+            fontSize: '0.88rem', fontWeight: '700', padding: '0.75rem 2rem',
+            borderRadius: '12px', border: '1px solid var(--border2)',
+            background: 'var(--surface)', color: 'var(--text)',
+            cursor: 'pointer', transition: 'all 0.2s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.borderColor = 'var(--border2)'; }}
+          >
+            {showAllDesktop ? `Show Less` : `See All Courses (${filtered.length})`}
+          </button>
+        </div>
+      )}
 
       {/* COURSE CAROUSEL — mobile */}
       <div style={{ padding: '0 0 3rem' }} className="carousel-section-mobile">

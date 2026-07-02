@@ -1764,7 +1764,6 @@ const resources = [
   ]}
 ];
 
-export default resources;
 
 export function getResources(courseId, lessonIdx) {
   const entry = resources.find(r => r.courseId === courseId && r.lessonIdx === lessonIdx);
@@ -1774,3 +1773,5 @@ export function getResources(courseId, lessonIdx) {
 export function getAllResourcesForCourse(courseId) {
   return resources.filter(r => r.courseId === courseId);
 }
+
+export default resources;

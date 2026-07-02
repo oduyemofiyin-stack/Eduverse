@@ -33,6 +33,7 @@ export default function CourseDetail({ course: propCourse }) {
   const [editRating, setEditRating] = useState(0);
   const [editText, setEditText] = useState('');
   const [editHover, setEditHover] = useState(0);
+  const [videoErrors, setVideoErrors] = useState({});
   const course = propCourse || courses.find(c => c.id === parseInt(id));
   const pct = quizState ? Math.round((quizState.score / course.quiz.length) * 100) : 0;
   const finished = quizState && quizState.idx === course.quiz.length - 1 && quizState.answered;
@@ -67,6 +68,16 @@ export default function CourseDetail({ course: propCourse }) {
     startTracking(course.id);
     return () => stopTracking();
   }, [course?.id, startTracking, stopTracking]);
+
+  useEffect(() => {
+    if (openLesson === null || openLesson === 'quiz' || !course?.lessons[openLesson]) return;
+    const ytId = course.lessons[openLesson].yt;
+    if (!ytId || videoErrors[openLesson] !== undefined) return;
+    const img = new Image();
+    img.onload = () => setVideoErrors(prev => ({ ...prev, [openLesson]: false }));
+    img.onerror = () => setVideoErrors(prev => ({ ...prev, [openLesson]: true }));
+    img.src = `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
+  }, [openLesson, course, videoErrors]);
 
   const readingTimers = useRef({});
   const autoMarkReading = useCallback((idx) => {
@@ -443,12 +454,19 @@ export default function CourseDetail({ course: propCourse }) {
                           <span style={{fontSize:'0.72rem', color:'var(--muted2)', fontWeight:'500'}}>{i + 1} / {course.lessons.length}</span>
                         </div>
                       )}
-                      <iframe
-                        style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', border:'none', background:'#000'}}
-                        src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1&enablejsapi=1`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen loading="lazy"
-                      />
+                      {videoErrors[i] ? (
+                        <div style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', background:'var(--surface2)', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:'0.5rem', border:'1px solid var(--border)'}}>
+                          <span style={{fontSize:'2rem', opacity:0.5}}>▶</span>
+                          <p style={{fontSize:'0.82rem', color:'var(--muted)', textAlign:'center', maxWidth:'300px'}}>This video lesson is currently unavailable. The content is being prepared.</p>
+                        </div>
+                      ) : (
+                        <iframe
+                          style={{width:'100%', aspectRatio:'16/9', borderRadius:'10px', border:'none', background:'#000'}}
+                          src={`https://www.youtube.com/embed/${l.yt}?rel=0&modestbranding=1&enablejsapi=1`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen loading="lazy"
+                        />
+                      )}
                       {/* NOTES */}
                       <div style={{marginTop:'0.8rem', background:'var(--surface2)', borderRadius:'10px', padding:'0.8rem'}}>
                         <div style={{fontSize:'0.78rem', fontWeight:'700', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.3rem'}}>Notes<button onClick={downloadNotes}
