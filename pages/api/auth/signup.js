@@ -10,19 +10,28 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const ip = getClientIp(req);
+    let ip, ban, rate;
+    try {
+      ip = getClientIp(req);
+      ban = await checkBan(ip);
+      if (ban.banned) {
+        return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
+      }
 
-    const ban = await checkBan(ip);
-    if (ban.banned) {
-      return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
+      rate = await checkRateLimit(ip);
+      if (!rate.allowed) {
+        return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
+      }
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal server error (ip/rate check).', debug: e?.message });
     }
 
-    const rate = await checkRateLimit(ip);
-    if (!rate.allowed) {
-      return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
+    let firstName, lastName, email, password, username;
+    try {
+      ({ firstName, lastName, email, password, username } = req.body);
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal server error (body parse).', debug: e?.message });
     }
-
-    const { firstName, lastName, email, password, username } = req.body;
 
     if (!firstName || !lastName || !email || !password || !username) {
       return res.status(400).json({ error: 'All fields are required.' });
@@ -52,17 +61,27 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Letters, numbers, underscores, hyphens only.' });
     }
 
-    const existingEmail = await getUserByEmail(sanitizedEmail);
-    if (existingEmail) {
-      return res.status(409).json({ error: 'An account with this email already exists.' });
+    try {
+      const existingEmail = await getUserByEmail(sanitizedEmail);
+      if (existingEmail) {
+        return res.status(409).json({ error: 'An account with this email already exists.' });
+      }
+
+      const existingUser = await getUserById(sanitizedUsername);
+      if (existingUser) {
+        return res.status(409).json({ error: 'This username is already taken.' });
+      }
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal server error (user lookup).', debug: e?.message });
     }
 
-    const existingUser = await getUserById(sanitizedUsername);
-    if (existingUser) {
-      return res.status(409).json({ error: 'This username is already taken.' });
+    let hashedPassword;
+    try {
+      hashedPassword = await bcrypt.hash(password, 12);
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal server error (hashing).', debug: e?.message });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
     const now = new Date().toISOString();
     const userId = sanitizedUsername;
 
@@ -95,17 +114,26 @@ export default async function handler(req, res) {
       followingPaths: [],
     };
 
-    const saved = await saveUser(userId, userData);
-    if (!saved) {
-      return res.status(500).json({ error: 'Could not create account. Please try again.' });
+    try {
+      const saved = await saveUser(userId, userData);
+      if (!saved) {
+        return res.status(500).json({ error: 'Could not create account. Please try again.' });
+      }
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal server error (save).', debug: e?.message });
     }
 
-    const token = signToken({
-      sub: userId,
-      email: sanitizedEmail,
-      name: `${sanitize(firstName.trim())} ${sanitize(lastName.trim())}`.trim(),
-      picture: '',
-    });
+    let token;
+    try {
+      token = signToken({
+        sub: userId,
+        email: sanitizedEmail,
+        name: `${sanitize(firstName.trim())} ${sanitize(lastName.trim())}`.trim(),
+        picture: '',
+      });
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal server error (token).', debug: e?.message });
+    }
 
     const { password: _, ...safeUser } = userData;
 
