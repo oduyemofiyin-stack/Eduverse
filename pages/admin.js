@@ -3,11 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useApp } from '../context/AppContext';
 import courses from '../data/courses';
-import { getAllUsers, deleteUser } from '../lib/firestore';
 import { AdminSkeleton } from '../components/Skeleton';
-
-const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || 'EMMANUEL';
-const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || 'Emmanuel@007';
 
 export default function Admin() {
   const { theme } = useApp();
@@ -16,6 +12,7 @@ export default function Admin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loggingIn, setLoggingIn] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [courseList, setCourseList] = useState(courses);
   const [editingId, setEditingId] = useState(null);
@@ -31,19 +28,42 @@ export default function Admin() {
   const [banReason, setBanReason] = useState('');
   const [securityMsg, setSecurityMsg] = useState('');
 
-  useEffect(() => {
-    if (loggedIn) {
-      getAllUsers().then(p => { setAllProfiles(p); setProfilesLoading(false); });
+  async function fetchUsers() {
+    setProfilesLoading(true);
+    try {
+      const res = await fetch('/api/admin/users');
+      if (!res.ok) throw new Error('Failed to fetch users');
+      const d = await res.json();
+      setAllProfiles(d.users || []);
+    } catch {
+      setAllProfiles([]);
     }
+    setProfilesLoading(false);
+  }
+
+  useEffect(() => {
+    if (loggedIn) fetchUsers();
   }, [loggedIn]);
 
-  function handleLogin() {
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-      setLoggedIn(true);
-      setError('');
-    } else {
-      setError('Invalid username or password');
+  async function handleLogin() {
+    setLoggingIn(true);
+    setError('');
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Login failed');
+      } else {
+        setLoggedIn(true);
+      }
+    } catch {
+      setError('Network error. Please try again.');
     }
+    setLoggingIn(false);
   }
 
   function startEdit(course) {
@@ -113,12 +133,12 @@ export default function Admin() {
                 onKeyDown={e => e.key === 'Enter' && handleLogin()}
                 style={inp}/>
             </div>
-            <button onClick={handleLogin} style={{
-              width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none', cursor:'pointer',
+            <button onClick={handleLogin} disabled={loggingIn} style={{
+              width:'100%', padding:'0.88rem', borderRadius:'12px', border:'none', cursor: loggingIn ? 'not-allowed' : 'pointer',
               background:'linear-gradient(135deg,var(--blue),#3366dd)', color:'#fff',
               fontFamily:'inherit', fontSize:'0.95rem', fontWeight:'700',
-              boxShadow:'0 8px 22px rgba(68,136,255,0.28)', marginTop:'0.3rem',
-            }}>Sign In to Dashboard</button>
+              boxShadow:'0 8px 22px rgba(68,136,255,0.28)', marginTop:'0.3rem', opacity: loggingIn ? 0.7 : 1,
+            }}>{loggingIn ? 'Signing in...' : 'Sign In to Dashboard'}</button>
             <button onClick={() => router.push('/')} style={{
               width:'100%', padding:'0.7rem', borderRadius:'12px',
               border:'1px solid var(--border2)', background:'transparent',
@@ -222,7 +242,7 @@ export default function Admin() {
             <h2 style={{fontFamily:'Georgia, serif', fontSize:'1.4rem', fontWeight:'700', marginBottom:'1.5rem'}}>
               Registered Users (from Firestore)
             </h2>
-            <button onClick={() => { setProfilesLoading(true); getAllUsers().then(p => { setAllProfiles(p); setProfilesLoading(false); }); }}
+            <button onClick={fetchUsers}
               style={{fontSize:'0.82rem', fontWeight:'600', padding:'0.5rem 1rem', borderRadius:'9px', border:'1px solid var(--border)', background:'var(--surface2)', color:'var(--text)', cursor:'pointer', marginBottom:'1rem'}}>
               Refresh
             </button>
@@ -415,11 +435,11 @@ export default function Admin() {
                   if (!banIpInput.trim()) return;
                   await fetch('/api/admin/ip-bans', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('eduverse_token')}` },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ ip: banIpInput.trim(), reason: banReason.trim() }),
                   });
                   setBanIpInput(''); setBanReason('');
-                  const res = await fetch('/api/admin/ip-bans', { headers: { Authorization: `Bearer ${localStorage.getItem('eduverse_token')}` } });
+                  const res = await fetch('/api/admin/ip-bans');
                   const d = await res.json();
                   setBannedIps(d.banned || []);
                   setSecurityMsg('IP banned successfully.');
@@ -441,8 +461,7 @@ export default function Admin() {
             <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1rem', flexWrap:'wrap', gap:'0.5rem'}}>
               <h3 style={{fontSize:'0.95rem', fontWeight:'600'}}>Banned IPs ({bannedIps.length})</h3>
               <button onClick={async () => {
-                const token = localStorage.getItem('eduverse_token');
-                const res = await fetch('/api/admin/ip-bans', { headers: { Authorization: `Bearer ${token}` } });
+                const res = await fetch('/api/admin/ip-bans');
                 const d = await res.json();
                 setBannedIps(d.banned || []);
               }} style={{
@@ -471,7 +490,7 @@ export default function Admin() {
                     <button onClick={async () => {
                       await fetch('/api/admin/ip-bans', {
                         method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('eduverse_token')}` },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ ip: b.ip }),
                       });
                       setBannedIps(prev => prev.filter(x => x.ip !== b.ip));
